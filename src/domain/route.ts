@@ -2,7 +2,7 @@ import { AggregateRoot } from "../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 
 import { Result } from "../core/logic/Result";
-import { routeId} from "./routeId";
+import { RouteId} from "./routeId";
 
 import IRouteDTO from "../dto/IRouteDTO";
 
@@ -15,8 +15,8 @@ export class Route extends AggregateRoot<RouteProps> {
     return this._id;
   }
 
-  get routeId (): routeId {
-    return routeId.caller(this.id)
+  get routeId (): RouteId {
+    return RouteId.caller(this.id)
   }
   get distance (): number {
     return this.props.distance;
