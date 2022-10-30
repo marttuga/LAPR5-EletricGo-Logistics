@@ -15,12 +15,9 @@ interface TruckProps {
 }
 
 export class Truck extends AggregateRoot<TruckProps> {
-  get id (): UniqueEntityID {
-    return this._id;
-  }
 
-  get LicencePlate ():LicencePlate{
-    return new LicencePlate(this.LicencePlate.toValue());
+  get licencePlate (): LicencePlate {
+    return LicencePlate.caller(this.id)
   }
   get tare (): number {
     return this.props.tare;
