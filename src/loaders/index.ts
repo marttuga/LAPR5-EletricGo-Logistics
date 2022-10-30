@@ -5,6 +5,9 @@ import Logger from './logger';
 
 import config from '../../config';
 import RouteController from '../controllers/routeController';
+import TruckController from '../controllers/TruckController';
+import truckSchema from '../persistence/schemas/truckSchema';
+
 
 export default async ({ expressApp }) => {
   const mongoConnection = await mongooseLoader();
@@ -27,6 +30,11 @@ export default async ({ expressApp }) => {
     name: 'routeSchema',
     schema: '../persistence/schemas/routeSchema',
   };
+  const truckSchema = {
+    // compare with the approach followed in repos and services
+    name: 'truckSchema',
+    schema: '../persistence/schemas/truckSchema',
+  };
 
   const roleController = {
     name: config.controllers.role.name,
@@ -36,6 +44,10 @@ export default async ({ expressApp }) => {
   const routeController = {
     name: config.controllers.route.name,
     path: config.controllers.route.path
+  }
+  const truckController = {
+    name: config.controllers.truck.name,
+    path: config.controllers.truck.path
   }
 
   const roleRepo = {
@@ -52,6 +64,10 @@ export default async ({ expressApp }) => {
     name: config.repos.user.name,
     path: config.repos.user.path
   }
+  const truckRepo = {
+    name: config.repos.truck.name,
+    path: config.repos.truck.path
+  }
 
   const roleService = {
     name: config.services.role.name,
@@ -62,26 +78,34 @@ export default async ({ expressApp }) => {
     name: config.services.route.name,
     path: config.services.route.path
   }
+  const truckService = {
+    name: config.services.truck.name,
+    path: config.services.truck.path
+  }
 
   await dependencyInjectorLoader({
     mongoConnection,
     schemas: [
       userSchema,
       roleSchema,
-      routeSchema
+      routeSchema,
+      truckSchema
     ],
     controllers: [
       roleController,
-      routeController
+      routeController,
+      truckController
     ],
     repos: [
       roleRepo,
       userRepo,
-      routeRepo
+      routeRepo,
+      truckRepo
     ],
     services: [
       roleService,
-      routeService
+      routeService,
+      truckService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
