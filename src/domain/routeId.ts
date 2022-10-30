@@ -2,14 +2,16 @@ import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { ValueObject } from "../core/domain/ValueObject";
 
 interface RouteProps {
-    rId: string;
+    routeId: string;
   }
 
 export class RouteId extends ValueObject<RouteProps> {
-get rId(): string {
-    return this.props.rId;
+get routeId(): string {
+    return this.props.routeId;
 }
 
-//private constructor(props: RouteProps) 
+private constructor(props: RouteProps) {
+    super(props);
+}
     
 }
