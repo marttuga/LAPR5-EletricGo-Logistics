@@ -45,4 +45,20 @@ export default class RouteController implements IRouteController /* TODO: extend
       return next(e);
     }
   };
+
+  public async getRouteId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const RouteOrError = await this.RouteServiceInstance.getRouteId(req.body as number) as Result<IRouteDTO>;
+
+      if (RouteOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const RouteDTO = RouteOrError.getValue();
+      return res.status(201).json( RouteDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
 }
