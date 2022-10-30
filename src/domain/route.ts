@@ -8,6 +8,10 @@ import IRouteDTO from "../dto/IRouteDTO";
 
 interface RouteProps {
   distance: number;
+  routeTime: number;
+  batteryWaste: number;
+  arrivalId: string;
+  departureId: string;
 }
 
 export class Route extends AggregateRoot<RouteProps> {
@@ -18,6 +22,14 @@ export class Route extends AggregateRoot<RouteProps> {
   get routeId (): RouteId {
     return RouteId.caller(this.id)
   }
+
+  get routeTime (): number {
+    return this.props.routeTime;
+  }
+  set routeTime ( value: number) {
+    this.props.routeTime = value;
+  }
+
   get distance (): number {
     return this.props.distance;
   }
@@ -25,6 +37,26 @@ export class Route extends AggregateRoot<RouteProps> {
     this.props.distance = value;
   }
 
+  get batteryWaste (): number {
+    return this.props.batteryWaste;
+  }
+  set batteryWaste ( value: number) {
+    this.props.batteryWaste = value;
+  }
+
+  get arrivalId (): string {
+    return this.props.arrivalId;
+  }
+  set arrivalId ( value: string) {
+    this.props.arrivalId = value;
+  }
+
+  get departureId (): string {
+    return this.props.departureId;
+  }
+  set departureId ( value: string) {
+    this.props.departureId = value;
+  }
 
   private constructor (props: RouteProps, id?: UniqueEntityID) {
     super(props, id);
@@ -32,13 +64,17 @@ export class Route extends AggregateRoot<RouteProps> {
 
   public static create (RouteDTO: IRouteDTO, id?: UniqueEntityID): Result<Route> {
     const distance = RouteDTO.distance;
+    const routeTime = RouteDTO.routeTime;
+    const batteryWaste = RouteDTO.batteryWaste;
+    const arrivalId = RouteDTO.arrivalId;
+    const departureId = RouteDTO.departureId;
 
 
     if ( distance=== 0) {
       return Result.fail<Route>('Route must have a distance not null!')
     } else {
 
-      const route = new Route({ distance: distance}, id);
+      const route = new Route({ distance: distance, routeTime: routeTime, batteryWaste: batteryWaste, arrivalId: arrivalId, departureId: departureId}, id);
       return Result.ok<Route>( route )
     }
   }
