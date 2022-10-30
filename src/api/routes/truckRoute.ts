@@ -29,4 +29,7 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.updateTruck(req, res, next) );
+
+    truck.get('',(req,res,next) => ctrl.createTruck(req, res, next) );
+
 };
