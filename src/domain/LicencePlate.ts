@@ -1,6 +1,17 @@
-import { UniqueEntityID } from "../core/domain/UniqueEntityID";
+import { ValueObject } from "../core/domain/ValueObject";
 
-export class LicencePlate extends UniqueEntityID {
-
+   
+    interface TruckProps {
+        licencePlate: string;
+      }
+    
+    export class LicencePlate extends ValueObject<TruckProps> {
+    get licencePlate(): string {
+        return this.props.licencePlate;
+    }
+    
+    private constructor(props: TruckProps) {
+        super(props);
+    }
     
 }

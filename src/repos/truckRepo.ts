@@ -1,11 +1,11 @@
 import { Service, Inject } from 'typedi';
 
-import { Document, Model } from 'mongoose';
+import { Document, FilterQuery, Model } from 'mongoose';
 import { ITruckPersistence } from '../dataschema/ITruckPersistence';
 
 import ITruckRepo from "../services/IRepos/ITruckRepo";
 import { Truck } from "../domain/Truck";
-import { LicencePlate } from "../../domain/LicencePlate";
+import { LicencePlate } from "../domain/LicencePlate";
 import { TruckMap } from "../mappers/TruckMap";
 
 @Service()
@@ -13,9 +13,8 @@ export default class TruckRepo implements ITruckRepo {
   private models: any;
 
   constructor(
-    @Inject('TruckSchema') private TruckSchema : Model<ITruckPersistence & Document>,
-    @Inject('logger') private logger
-  ) { }
+    @Inject('truckSchema') private truckSchema : Model<ITruckPersistence & Document>,
+  ) {}
 
   private createBaseQuery (): any {
     return {
@@ -23,26 +22,26 @@ export default class TruckRepo implements ITruckRepo {
     }
   }
 
-  public async exists (LicencePlate: LicencePlate | string): Promise<boolean> {
-
-    const idX = LicencePlate instanceof LicencePlate ? (<LicencePlate>LicencePlate).id.toValue() : LicencePlate;
+  public async exists(truck: Truck): Promise<boolean> {
+    
+    const idX = truck.id instanceof LicencePlate ? (<LicencePlate>truck.id).licencePlate : truck.id;
 
     const query = { domainId: idX}; 
-    const TruckDocument = await this.TruckSchema.findOne( query );
+    const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document>);
 
-    return !!TruckDocument === true;
+    return !!truckDocument === true;
   }
 
   public async save (Truck: Truck): Promise<Truck> {
     const query = { domainId: Truck.id.toString() }; 
 
-    const TruckDocument = await this.TruckSchema.findOne( query );
+    const TruckDocument = await this.truckSchema.findOne( query );
 
     try {
       if (TruckDocument === null ) {
         const rawTruck: any = TruckMap.toPersistence(Truck);
 
-        const TruckCreated = await this.TruckSchema.create(rawTruck);
+        const TruckCreated = await this.truckSchema.create(rawTruck);
 
         return TruckMap.toDomain(TruckCreated);
       } else {
@@ -60,18 +59,15 @@ export default class TruckRepo implements ITruckRepo {
     }
   }
 
-
   public async findByLicencePlate (licencePlate: LicencePlate | string): Promise<Truck> {
+    const query = { domainId: licencePlate};
+    const truckRecord = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document> );
 
-    const idX = licencePlate instanceof LicencePlate ? (<LicencePlate>licencePlate).id.toValue() : LicencePlate;
-
-    const query = { domainId: idX }; 
-    const TruckRecord = await this.TruckSchema.findOne( query );
-
-    if( TruckRecord != null) {
-      return TruckMap.toDomain(TruckRecord);
+    if( truckRecord != null) {
+      return TruckMap.toDomain(truckRecord);
     }
     else
       return null;
   }
+ 
 }
