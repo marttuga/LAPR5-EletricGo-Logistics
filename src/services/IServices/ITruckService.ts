@@ -5,5 +5,5 @@ export default interface ITruckService  {
   createTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>>;
   updateTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>>;
 
-  getLicencePlate (licencePlate: string): Promise<Result<ITruckDTO>>;
+  getLicencePlate(licencePlate: string): Promise<Result<ITruckDTO>>;
 }
