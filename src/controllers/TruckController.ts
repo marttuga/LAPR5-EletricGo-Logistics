@@ -45,4 +45,20 @@ export default class TruckController implements ITruckController /* TODO: extend
       return next(e);
     }
   };
+
+  public async getLicencePlate(req: Request, res: Response, next: NextFunction) {
+    try {
+      const truckOrError = await this.truckServiceInstance.getLicencePlate(req.body as string) as Result<ITruckDTO>;
+
+      if (truckOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const TruckDTO = truckOrError.getValue();
+      return res.status(201).json( TruckDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
 }
