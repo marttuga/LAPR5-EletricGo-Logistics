@@ -10,7 +10,7 @@ import { TruckMap } from "../mappers/TruckMap";
 @Service()
 export default class TruckService implements ITruckService {
   constructor(
-      @Inject(config.repos.Truck.name) private truckRepo : ITruckRepo
+      @Inject(config.repos.truck.name) private truckRepo : ITruckRepo
   ) {}
 
   public async getLicencePlate( licencePlate: string): Promise<Result<ITruckDTO>> {
