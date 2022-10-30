@@ -22,37 +22,38 @@ export default class TruckRepo implements ITruckRepo {
     }
   }
 
-  public async exists(truck: Truck): Promise<boolean> {
+  public async exists(licencePlate: LicencePlate): Promise<boolean> {
     
-    const idX = truck.id instanceof LicencePlate ? (<LicencePlate>truck.id).licencePlate : truck.id;
+    const idX = licencePlate instanceof LicencePlate ? (<LicencePlate>licencePlate).licencePlate : licencePlate;
 
     const query = { domainId: idX}; 
     const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document>);
 
     return !!truckDocument === true;
   }
+  
 
-  public async save (Truck: Truck): Promise<Truck> {
-    const query = { domainId: Truck.id.toString() }; 
+  public async save (truck: Truck): Promise<Truck> {
+    const query = { domainId: truck.id.toString()}; 
 
-    const TruckDocument = await this.truckSchema.findOne( query );
+    const truckDocument = await this.truckSchema.findOne( query );
 
     try {
-      if (TruckDocument === null ) {
-        const rawTruck: any = TruckMap.toPersistence(Truck);
+      if (truckDocument === null ) {
+        const rawTruck: any = TruckMap.toPersistence(truck);
 
-        const TruckCreated = await this.truckSchema.create(rawTruck);
+        const truckCreated = await this.truckSchema.create(rawTruck);
 
-        return TruckMap.toDomain(TruckCreated);
+        return TruckMap.toDomain(truckCreated);
       } else {
-        TruckDocument.tare= Truck.tare,
-        Truck.capacity= Truck.capacity,
-        Truck.maxBateryCapacity= Truck.maxBateryCapacity,
-        Truck.autonomyFullChargeLoad= Truck.autonomyFullChargeLoad,
-        Truck.timeCharging= Truck.timeCharging;
-        await TruckDocument.save();
+        truckDocument.tare = truck.tare;
+        truckDocument.capacity = truck.tare;
+        truckDocument.maxBateryCapacity = truck.tare;
+        truckDocument.autonomyFullChargeLoad = truck.tare;
+        truckDocument.timeCharging = truck.tare;
+        await truckDocument.save();
 
-        return Truck;
+        return truck;
       }
     } catch (err) {
       throw err;
