@@ -5,7 +5,6 @@ import { Container, Service } from 'typedi';
 import IRouteController from '../../controllers/IControllers/IRouteController'; 
 
 import config from "../../../config";
-import middlewares from '../middlewares';
 
 const route = Router();
 
