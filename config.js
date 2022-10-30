@@ -48,6 +48,10 @@ export default {
     truck: {
       name: "TruckController",
       path: "../controllers/truckController"
+    },
+    route: {
+      name: "RouteController",
+      path: "../controllers/routeController"
     }
   },
 
@@ -63,6 +67,10 @@ export default {
     truck: {
       name: "TruckRepo",
       path: "../repos/truckRepo"
+    },
+    route: {
+      name: "RouteRepo",
+      path: "../repos/RouteRepo"
     }
   },
 
@@ -75,6 +83,11 @@ export default {
     truck: {
       name: "TruckService",
       path: "../services/truckService"
+    },
+
+    route: {
+      name: "RouteService",
+      path: "../services/routeService"
     }
   },
 };
