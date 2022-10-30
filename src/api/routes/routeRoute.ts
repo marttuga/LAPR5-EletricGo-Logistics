@@ -5,6 +5,7 @@ import { Container, Service } from 'typedi';
 import IRouteController from '../../controllers/IControllers/IRouteController'; 
 
 import config from "../../../config";
+import middlewares from '../middlewares';
 
 const route = Router();
 
@@ -29,4 +30,6 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.updateRoute(req, res, next) );
+
+    route.get('',(req,res,next) => ctrl.createRoute(req, res, next) );
 };
