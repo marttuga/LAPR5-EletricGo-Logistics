@@ -11,7 +11,7 @@ import { Result } from "../core/logic/Result";
 @Service()
 export default class RouteController implements IRouteController /* TODO: extends ../core/infra/BaseController */ {
   constructor(
-      @Inject(config.services.role.name) private RouteServiceInstance : IRouteService
+      @Inject(config.services.route.name) private RouteServiceInstance : IRouteService
   ) {}
 
   public async createRoute(req: Request, res: Response, next: NextFunction) {
