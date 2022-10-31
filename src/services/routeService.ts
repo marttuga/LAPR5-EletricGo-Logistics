@@ -53,7 +53,7 @@ export default class RouteService implements IRouteService {
     }
   }
 
-  public async updateRoute(routeId: IRouteDTO | string, routeDTO: IRouteDTO): Promise<Result<IRouteDTO>> {
+  public async updateRoute(routeDTO: IRouteDTO): Promise<Result<IRouteDTO>> {
     try {
       const route = await this.routeRepo.findByRouteId(routeDTO.routeId);
 
@@ -61,11 +61,11 @@ export default class RouteService implements IRouteService {
         return Result.fail<IRouteDTO>("Route not found");
       }
       else {
-        routeDTO.distance = routeDTO.distance;
-        routeDTO.routeTime = routeDTO.routeTime;
-        routeDTO.batteryWaste = routeDTO.batteryWaste;
-        routeDTO.arrivalId = routeDTO.arrivalId;
-        routeDTO.departureId = routeDTO.departureId;
+        route.distance = routeDTO.distance;
+        route.routeTime = routeDTO.routeTime;
+        route.batteryWaste = routeDTO.batteryWaste;
+        route.arrivalId = routeDTO.arrivalId;
+        route.departureId = routeDTO.departureId;
         await this.routeRepo.save(route);
 
         const routeDTOResult = RouteMap.toDTO( route ) as IRouteDTO;
