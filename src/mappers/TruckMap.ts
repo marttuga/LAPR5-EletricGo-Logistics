@@ -6,6 +6,7 @@ import ITruckDTO from "../dto/ITruckDTO";
 
 import { Truck } from "../domain/Truck";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
+import TruckRepo from '../repos/truckRepo';
 
 
 export class TruckMap extends Mapper<Truck> {
@@ -22,10 +23,10 @@ export class TruckMap extends Mapper<Truck> {
   }
 
   public static async toDomain (raw: any): Promise<Truck> {
-    //const truckLicencePlateOrError = LicencePlate.create(raw.licencePlate);
+    const repo = Container.get(TruckRepo);
+    const licencePlate = await repo.findByLicencePlate(raw.licencePlate);
 
     const TruckOrError = Truck.create({
-     // licencePlate:truckLicencePlateOrError.getValue(),
      licencePlate: raw.licencePlate,
       tare: raw.tare,
       capacity: raw.capacity,
