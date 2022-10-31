@@ -14,6 +14,22 @@ export default class TruckController implements ITruckController /* TODO: extend
       @Inject(config.services.role.name) private truckServiceInstance : ITruckService
   ) {}
 
+  
+  public async get(req: Request, res: Response, next: NextFunction) {
+    try {
+      const truckOrError = await this.truckServiceInstance.getLicencePlate(req.body as string) as Result<ITruckDTO>;
+
+      if (truckOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const truckDTO = truckOrError.getValue();
+      return res.json( truckDTO ).status(201);    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
   public async createTruck(req: Request, res: Response, next: NextFunction) {
     try {
       const truckOrError = await this.truckServiceInstance.createTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
@@ -39,8 +55,7 @@ export default class TruckController implements ITruckController /* TODO: extend
       }
 
       const truckDTO = truckOrError.getValue();
-      return res.status(201).json( truckDTO );
-    }
+      return res.json( truckDTO ).status(201);    }
     catch (e) {
       return next(e);
     }
@@ -54,8 +69,8 @@ export default class TruckController implements ITruckController /* TODO: extend
         return res.status(404).send();
       }
 
-      const TruckDTO = truckOrError.getValue();
-      return res.status(201).json( TruckDTO );
+      const truckDTO = truckOrError.getValue();
+      return res.json( truckDTO ).status(201);
     }
     catch (e) {
       return next(e);
