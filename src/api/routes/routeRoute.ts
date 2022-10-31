@@ -13,10 +13,14 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.route.name) as IRouteController;
 
-  route.post('',
+  route.post('/createRoute',
     celebrate({
       body: Joi.object({
-        name: Joi.string().required()
+        distance: Joi.number().required(),
+        routeTime: Joi.number().required(),
+        batteryWaste: Joi.number().required(),
+        arrivalId: Joi.string().required(),
+        departureId: Joi.string().required()
       })
     }),
     (req, res, next) => ctrl.createRoute(req, res, next) );
