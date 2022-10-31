@@ -7,6 +7,7 @@ import ITruckRepo from "../services/IRepos/ITruckRepo";
 import { Truck } from "../domain/Truck";
 import { LicencePlate } from "../domain/LicencePlate";
 import { TruckMap } from "../mappers/TruckMap";
+import { throws } from 'assert';
 
 @Service()
 export default class TruckRepo implements ITruckRepo {
@@ -22,16 +23,26 @@ export default class TruckRepo implements ITruckRepo {
     }
   }
 
-  public async exists(licencePlate: LicencePlate): Promise<boolean> {
+  public async exists(truck: Truck): Promise<boolean> {
     
-    const idX = licencePlate instanceof LicencePlate ? (<LicencePlate>licencePlate).licencePlate : licencePlate;
+    const idX = truck instanceof LicencePlate ? (<LicencePlate>truck).licencePlate : truck;
 
     const query = { domainId: idX}; 
-    const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document>);
+    const routeDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document>);
 
-    return !!truckDocument === true;
+    return !!routeDocument === true;
   }
   
+  public async getAll(): Promise<Truck[]> {
+    try {
+      return this.truckSchema.find({}) as any;
+    } catch (e) {
+      throw new Error(e);
+
+      
+    }
+  
+  }
 
   public async save (truck: Truck): Promise<Truck> {
     const query = { domainId: truck.id.toString()}; 

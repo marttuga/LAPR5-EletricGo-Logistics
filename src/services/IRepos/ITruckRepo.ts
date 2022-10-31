@@ -3,6 +3,7 @@ import { Truck } from "../../domain/Truck";
 import { LicencePlate } from "../../domain/LicencePlate";
 
 export default interface ITruckRepo extends Repo<Truck> {
+	getAll():Promise<Truck[]>;
 	save(Truck: Truck): Promise<Truck>;
 	findByLicencePlate (LicencePlate: LicencePlate | string): Promise<Truck>;
 }
