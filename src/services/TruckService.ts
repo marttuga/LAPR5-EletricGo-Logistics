@@ -11,7 +11,33 @@ import { TruckMap } from "../mappers/TruckMap";
 export default class TruckService implements ITruckService {
   constructor(
       @Inject(config.repos.truck.name) private truckRepo : ITruckRepo
-  ) {}
+  ) {
+    this.truckRepo=truckRepo;
+  }
+
+  public async getTrucks(): Promise<Result<ITruckDTO>> {
+    try {
+      const truck = await this.truckRepo.getAll();
+
+     
+
+      if (truck === null) {
+        return Result.fail<ITruckDTO>("Truck not found");
+      }
+      else { 
+
+        let truckDTOResult;
+        for (let i = 0; i < truck.length; i++) {
+         truckDTOResult = TruckMap.toDTO(truck[i]) as ITruckDTO;
+          
+        }
+        
+        return Result.ok<ITruckDTO>( truckDTOResult ); 
+        }
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 
   public async getLicencePlate( licencePlate: string): Promise<Result<ITruckDTO>> {
     try {
