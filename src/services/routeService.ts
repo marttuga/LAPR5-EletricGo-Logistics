@@ -6,14 +6,17 @@ import IRouteRepo from '../services/IRepos/IRouteRepo';
 import IRouteService from './IServices/IRouteService';
 import { Result } from "../core/logic/Result";
 import { RouteMap } from "../mappers/RouteMap";
+import { RouteId } from '../domain/routeId';
 
 @Service()
 export default class RouteService implements IRouteService {
   constructor(
       @Inject(config.repos.route.name) private routeRepo : IRouteRepo
-  ) {}
+  ) {
+    this.routeRepo = routeRepo;
+  }
 
-  public async getRouteId( routeId: number): Promise<Result<IRouteDTO>> {
+  public async getRouteId( routeId: string): Promise<Result<IRouteDTO>> {
     try {
       const route = await this.routeRepo.findByRouteId(routeId);
 
@@ -50,7 +53,7 @@ export default class RouteService implements IRouteService {
     }
   }
 
-  public async updateRoute(routeDTO: IRouteDTO): Promise<Result<IRouteDTO>> {
+  public async updateRoute(routeId: IRouteDTO | string, routeDTO: IRouteDTO): Promise<Result<IRouteDTO>> {
     try {
       const route = await this.routeRepo.findByRouteId(routeDTO.routeId);
 
@@ -58,7 +61,11 @@ export default class RouteService implements IRouteService {
         return Result.fail<IRouteDTO>("Route not found");
       }
       else {
-        route.distance = routeDTO.distance;
+        routeDTO.distance = routeDTO.distance;
+        routeDTO.routeTime = routeDTO.routeTime;
+        routeDTO.batteryWaste = routeDTO.batteryWaste;
+        routeDTO.arrivalId = routeDTO.arrivalId;
+        routeDTO.departureId = routeDTO.departureId;
         await this.routeRepo.save(route);
 
         const routeDTOResult = RouteMap.toDTO( route ) as IRouteDTO;
