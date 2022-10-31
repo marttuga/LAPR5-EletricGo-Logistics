@@ -22,9 +22,9 @@ export default class RouteRepo implements IRouteRepo {
     }
   }
 
-  public async exists(routeId: RouteId): Promise<boolean> {
+  public async exists(route: Route): Promise<boolean> {
     
-    const idX = routeId instanceof RouteId ? (<RouteId>routeId).routeId : routeId;
+    const idX = route instanceof RouteId ? (<RouteId>route).routeId : route;
 
     const query = { domainId: idX}; 
     const routeDocument = await this.routeSchema.findOne( query as FilterQuery<IRoutePersistence & Document>);
@@ -55,7 +55,7 @@ export default class RouteRepo implements IRouteRepo {
     }
   }
 
-  public async findByRouteId (routeId: RouteId | number): Promise<Route> {
+  public async findByRouteId (routeId: RouteId | string): Promise<Route> {
     const query = { domainId: routeId};
     const routeRecord = await this.routeSchema.findOne( query as FilterQuery<IRoutePersistence & Document> );
 
