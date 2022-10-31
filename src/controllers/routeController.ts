@@ -11,12 +11,12 @@ import { Result } from "../core/logic/Result";
 @Service()
 export default class RouteController implements IRouteController /* TODO: extends ../core/infra/BaseController */ {
   constructor(
-      @Inject(config.services.route.name) private RouteServiceInstance : IRouteService
+      @Inject(config.services.route.name) private routeServiceInstance : IRouteService
   ) {}
 
   public async createRoute(req: Request, res: Response, next: NextFunction) {
     try {
-      const RouteOrError = await this.RouteServiceInstance.createRoute(req.body as IRouteDTO) as Result<IRouteDTO>;
+      const RouteOrError = await this.routeServiceInstance.createRoute(req.body as IRouteDTO) as Result<IRouteDTO>;
         
       if (RouteOrError.isFailure) {
         return res.status(402).send();
@@ -32,14 +32,14 @@ export default class RouteController implements IRouteController /* TODO: extend
 
   public async updateRoute(req: Request, res: Response, next: NextFunction) {
     try {
-      const RouteOrError = await this.RouteServiceInstance.updateRoute(req.body as IRouteDTO) as Result<IRouteDTO>;
+      const routeOrError = await this.routeServiceInstance.updateRoute(req.body as IRouteDTO) as Result<IRouteDTO>;
 
-      if (RouteOrError.isFailure) {
+      if (routeOrError.isFailure) {
         return res.status(404).send();
       }
 
-      const RouteDTO = RouteOrError.getValue();
-      return res.status(201).json( RouteDTO );
+      const routeDTO = routeOrError.getValue();
+      return res.json( routeDTO ).status(201);
     }
     catch (e) {
       return next(e);
@@ -48,14 +48,14 @@ export default class RouteController implements IRouteController /* TODO: extend
 
   public async getRouteId(req: Request, res: Response, next: NextFunction) {
     try {
-      const RouteOrError = await this.RouteServiceInstance.getRouteId(req.body as number) as Result<IRouteDTO>;
+      const RouteOrError = await this.routeServiceInstance.getRouteId(req.body as string) as Result<IRouteDTO>;
 
       if (RouteOrError.isFailure) {
         return res.status(404).send();
       }
 
-      const RouteDTO = RouteOrError.getValue();
-      return res.status(201).json( RouteDTO );
+      const routeDTO = RouteOrError.getValue();
+      return res.json( routeDTO ).status(201);
     }
     catch (e) {
       return next(e);
