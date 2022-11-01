@@ -1,9 +1,23 @@
 //import { UniqueEntityID } from "../core/domain/UniqueEntityID";
-import { ValueObject } from "../core/domain/ValueObject";
+/* import { ValueObject } from "../core/domain/ValueObject";
 import { Guard } from "../core/logic/Guard";
-import { Result } from "../core/logic/Result";
+import { Result } from "../core/logic/Result"; */
 
-interface TruckProps {
+import { Entity } from "../core/domain/Entity";
+import { UniqueEntityID } from "../core/domain/UniqueEntityID";
+
+export class TruckId extends Entity<any> {
+
+	get id (): UniqueEntityID {
+		return this._id;
+	}
+
+	private constructor (id?: UniqueEntityID) {
+		super(null, id)
+	}
+}
+
+/* interface TruckProps {
     licencePlate: string;
   }
 
@@ -26,4 +40,5 @@ public static create(id: string): Result<LicencePlate> {
     }
   }
     
-}
+} */
+
