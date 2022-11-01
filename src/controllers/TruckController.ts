@@ -17,7 +17,7 @@ export default class TruckController implements ITruckController /* TODO: extend
   
   public async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const truckOrError = await this.truckServiceInstance.getLicencePlate(req.body as string) as Result<ITruckDTO>;
+      const truckOrError = await this.truckServiceInstance.getTruckId(req.body as string) as Result<ITruckDTO>;
 
       if (truckOrError.isFailure) {
         return res.status(404).send();
@@ -61,9 +61,9 @@ export default class TruckController implements ITruckController /* TODO: extend
     }
   };
 
-  public async getLicencePlate(req: Request, res: Response, next: NextFunction) {
+  public async getTruckId(req: Request, res: Response, next: NextFunction) {
     try {
-      const truckOrError = await this.truckServiceInstance.getLicencePlate(req.body as string) as Result<ITruckDTO>;
+      const truckOrError = await this.truckServiceInstance.getTruckId(req.body as string) as Result<ITruckDTO>;
 
       if (truckOrError.isFailure) {
         return res.status(404).send();
