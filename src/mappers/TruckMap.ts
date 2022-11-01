@@ -14,6 +14,7 @@ export class TruckMap extends Mapper<Truck> {
   public static toDTO( Truck: Truck): ITruckDTO {
     return {
       //id: Truck.id.toString(),
+      licencePlate: Truck.licencePlate,
       tare: Truck.tare,
       capacity: Truck.capacity,
       maxBateryCapacity: Truck.maxBateryCapacity,
@@ -24,7 +25,7 @@ export class TruckMap extends Mapper<Truck> {
 
   public static async toDomain (raw: any): Promise<Truck> {
     const repo = Container.get(TruckRepo);
-    const licencePlate = await repo.findByLicencePlate(raw.licencePlate);
+    const licencePlate = await repo.findByTruckId(raw.licencePlate);
 
     const TruckOrError = Truck.create({
      licencePlate: raw.licencePlate,
@@ -43,6 +44,7 @@ export class TruckMap extends Mapper<Truck> {
   public static toPersistence (Truck: Truck): any {
     const a = {
       domainId: Truck.id.toString(),
+      licencePlate: Truck.licencePlate,
       tare: Truck.tare,
       capacity: Truck.capacity,
       maxBateryCapacity: Truck.maxBateryCapacity,

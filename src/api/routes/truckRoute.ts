@@ -40,6 +40,7 @@ export default (app: Router) => {
 truck.post('/createTruck',
 celebrate({
   body: Joi.object({
+    licencePlate: Joi.string().required(),
     tare: Joi.number().required(),
     capacity:Joi.number().required(),
     maxBateryCapacity:Joi.number().required(),
@@ -52,6 +53,7 @@ celebrate({
 truck.put('/updateTruck',
 celebrate({
   body: Joi.object({
+    licencePlate: Joi.string().required(),
     tare: Joi.number().required(),
     capacity:Joi.number().required(),
     maxBateryCapacity:Joi.number().required(),
@@ -62,6 +64,6 @@ celebrate({
 (req, res, next) => ctrl.updateTruck(req, res, next) );
    
 
-truck.get('getTruck',(req,res,next) => ctrl.getLicencePlate(req, res, next) );
+truck.get('getTruck',(req,res,next) => ctrl.getTruckId(req, res, next) );
 
 };
