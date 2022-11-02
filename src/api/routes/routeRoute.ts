@@ -37,6 +37,6 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.updateRoute(req, res, next) );
 
-    route.get('/getRouteId',
-    (req,res,next) => ctrl.getRouteId(req, res, next) );
-};
+    route.get('/getRoute',
+    (req,res,next) => ctrl.get(req, res, next) );
+}
