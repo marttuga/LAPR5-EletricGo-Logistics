@@ -40,9 +40,9 @@ export default class TruckService implements ITruckService {
     }
   }
 
-  public async getTruckId( truckId: string): Promise<Result<ITruckDTO>> {
+  public async getLicencePlate( licencePlate: string): Promise<Result<ITruckDTO>> {
     try {
-      const truck = await this.truckRepo.findByTruckId(truckId);
+      const truck = await this.truckRepo.findLicencePlate(licencePlate);
 
       if (truck === null) {
         return Result.fail<ITruckDTO>("Truck not found");
@@ -77,13 +77,12 @@ export default class TruckService implements ITruckService {
 
   public async updateTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
     try {
-      const truck = await this.truckRepo.findByTruckId(truckDTO.licencePlate);
+      const truck = await this.truckRepo.findLicencePlate(truckDTO.licencePlate);
 
       if (truck === null) {
         return Result.fail<ITruckDTO>("Truck not found");
       }
       else {
-        truck.licencePlate = truckDTO.licencePlate;
         truck.tare = truckDTO.tare;
         truck.capacity = truckDTO.capacity;
         truck.maxBateryCapacity = truckDTO.maxBateryCapacity;
