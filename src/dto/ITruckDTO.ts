@@ -5,5 +5,5 @@ export default interface ITruckDTO {
   capacity:number;
   maxBateryCapacity:number;
   autonomyFullChargeLoad:number;
-  timeCharging: number;
+  timeCharging: number
 }
