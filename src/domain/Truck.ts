@@ -16,6 +16,7 @@ interface TruckProps {
 }
 
 
+
 export class Truck extends AggregateRoot<TruckProps> {
 
   get id (): UniqueEntityID {

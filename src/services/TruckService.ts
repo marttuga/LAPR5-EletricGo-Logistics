@@ -15,6 +15,7 @@ export default class TruckService implements ITruckService {
     this.truckRepo=truckRepo;
   }
 
+  
   public async getTrucks(): Promise<Result<ITruckDTO>> {
     try {
       const truck = await this.truckRepo.getAll();
