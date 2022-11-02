@@ -57,7 +57,6 @@ export default class TruckService implements ITruckService {
 
   public async createTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
     try {
-
       const truckOrError = await Truck.create( truckDTO );
 
       if (truckOrError.isFailure) {

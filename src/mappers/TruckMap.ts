@@ -19,13 +19,13 @@ export class TruckMap extends Mapper<Truck> {
       capacity: Truck.capacity,
       maxBateryCapacity: Truck.maxBateryCapacity,
       autonomyFullChargeLoad: Truck.autonomyFullChargeLoad,
-      timeCharging: Truck.timeCharging
+      timeCharging: Truck.timeCharging,
     } as ITruckDTO;
   }
 
   public static async toDomain (raw: any): Promise<Truck> {
     const repo = Container.get(TruckRepo);
-    const licencePlate = await repo.findByTruckId(raw.licencePlate);
+    const truckId = await repo.findByTruckId(raw.truckId);
 
     const TruckOrError = Truck.create({
      licencePlate: raw.licencePlate,
@@ -34,7 +34,7 @@ export class TruckMap extends Mapper<Truck> {
       maxBateryCapacity: raw.maxBateryCapacity,
       autonomyFullChargeLoad: raw.autonomyFullChargeLoad,
       timeCharging: raw.timeCharging,
-    }, new UniqueEntityID(raw.domainId))
+    }, new UniqueEntityID(raw.truckId))
 
     TruckOrError.isFailure ? console.log(TruckOrError.error) : '';
     
