@@ -28,12 +28,14 @@ export class TruckMap extends Mapper<Truck> {
     const truckId = await repo.findByTruckId(raw.truckId);
 
     const TruckOrError = Truck.create({
-     licencePlate: raw.licencePlate,
+      truckId:raw.truckId,
+      licencePlate: raw.licencePlate,
       tare: raw.tare,
       capacity: raw.capacity,
       maxBateryCapacity: raw.maxBateryCapacity,
       autonomyFullChargeLoad: raw.autonomyFullChargeLoad,
-      timeCharging: raw.timeCharging,
+      timeCharging: raw.timeCharging
+      
     }, new UniqueEntityID(raw.truckId))
 
     TruckOrError.isFailure ? console.log(TruckOrError.error) : '';
