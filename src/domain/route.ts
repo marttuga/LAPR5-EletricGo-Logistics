@@ -70,7 +70,7 @@ export class Route extends AggregateRoot<RouteProps> {
     const departureId = RouteDTO.departureId;
 
 
-    if ( distance=== 0) {
+    if ( distance=== 0 || routeTime === 0 || batteryWaste === 0 || arrivalId === "" || departureId === "") {
       return Result.fail<Route>('Route must have a distance not null!')
     } else {
 
