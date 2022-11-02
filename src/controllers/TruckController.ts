@@ -11,7 +11,7 @@ import { Result } from "../core/logic/Result";
 @Service()
 export default class TruckController implements ITruckController /* TODO: extends ../core/infra/BaseController */ {
   constructor(
-      @Inject(config.services.role.name) private truckServiceInstance : ITruckService
+      @Inject(config.services.truck.name) private truckServiceInstance : ITruckService
   ) {}
 
   
@@ -61,9 +61,9 @@ export default class TruckController implements ITruckController /* TODO: extend
     }
   };
 
-  public async getTruckId(req: Request, res: Response, next: NextFunction) {
+  public async getLicencePlate(req: Request, res: Response, next: NextFunction) {
     try {
-      const truckOrError = await this.truckServiceInstance.getTruckId(req.body as string) as Result<ITruckDTO>;
+      const truckOrError = await this.truckServiceInstance.getLicencePlate(req.body as string) as Result<ITruckDTO>;
 
       if (truckOrError.isFailure) {
         return res.status(404).send();
