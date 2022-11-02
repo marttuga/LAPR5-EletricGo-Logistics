@@ -22,6 +22,17 @@ export default class RouteRepo implements IRouteRepo {
     }
   }
 
+  public async getAll(): Promise<Route[]> {
+    try {
+      return this.routeSchema.find({}) as any;
+    } catch (e) {
+      throw new Error(e);
+
+      
+    }
+  
+  }
+
   public async exists(route: Route): Promise<boolean> {
     
     const idX = route instanceof RouteId ? (<RouteId>route).routeId : route;
