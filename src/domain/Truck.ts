@@ -15,6 +15,7 @@ interface TruckProps {
   timeCharging: number;
 }
 
+
 export class Truck extends AggregateRoot<TruckProps> {
 
   get id (): UniqueEntityID {
