@@ -64,6 +64,6 @@ celebrate({
 (req, res, next) => ctrl.updateTruck(req, res, next) );
    
 
-truck.get('getTruck',(req,res,next) => ctrl.getTruckId(req, res, next) );
+truck.get('/getTruck',(req,res,next) => ctrl.getTruck(req, res, next) );
 
 };
