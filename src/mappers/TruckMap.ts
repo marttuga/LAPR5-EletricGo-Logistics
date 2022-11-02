@@ -25,10 +25,9 @@ export class TruckMap extends Mapper<Truck> {
 
   public static async toDomain (raw: any): Promise<Truck> {
     const repo = Container.get(TruckRepo);
-    const truckId = await repo.findByTruckId(raw.truckId);
+    const licencePlate = await repo.findLicencePlate(raw.licencePlate);
 
     const TruckOrError = Truck.create({
-      truckId:raw.truckId,
       licencePlate: raw.licencePlate,
       tare: raw.tare,
       capacity: raw.capacity,
@@ -36,7 +35,7 @@ export class TruckMap extends Mapper<Truck> {
       autonomyFullChargeLoad: raw.autonomyFullChargeLoad,
       timeCharging: raw.timeCharging
       
-    }, new UniqueEntityID(raw.truckId))
+    }, new UniqueEntityID(raw.licencePlate))
 
     TruckOrError.isFailure ? console.log(TruckOrError.error) : '';
     

@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 
 const Truck = new mongoose.Schema(
   {
-    truckId: { type: String, unique: true },
 
     licencePlate: { 
       type: String,
