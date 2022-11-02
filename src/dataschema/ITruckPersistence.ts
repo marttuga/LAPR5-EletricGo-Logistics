@@ -1,5 +1,8 @@
+import { LicencePlate } from "../domain/licencePlate";
+
 export interface ITruckPersistence {
-	licencePlate: string;
+	_id: string;
+	licencePlate:LicencePlate;
 	tare: number;
 	capacity:number;
 	maxBateryCapacity:number;

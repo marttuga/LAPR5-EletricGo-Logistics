@@ -1,7 +1,7 @@
+import { LicencePlate } from "../domain/licencePlate";
 
 export default interface ITruckDTO {
-  truckId: string;
-  licencePlate: string,
+  licencePlate: LicencePlate,
   tare: number,
   capacity:number,
   maxBateryCapacity:number,
