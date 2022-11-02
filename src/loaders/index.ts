@@ -5,7 +5,7 @@ import Logger from './logger';
 
 import config from '../../config';
 import RouteController from '../controllers/routeController';
-import TruckController from '../controllers/TruckController';
+import TruckController from '../controllers/truckController';
 import truckSchema from '../persistence/schemas/truckSchema';
 
 

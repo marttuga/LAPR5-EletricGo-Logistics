@@ -14,9 +14,6 @@ interface TruckProps {
   autonomyFullChargeLoad:number;
   timeCharging: number;
 }
-
-
-
 export class Truck extends AggregateRoot<TruckProps> {
 
   get id (): UniqueEntityID {
