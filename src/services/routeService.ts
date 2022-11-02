@@ -32,10 +32,32 @@ export default class RouteService implements IRouteService {
     }
   }
 
+  public async getRoutes(): Promise<Result<IRouteDTO>> {
+    try {
+      const route = await this.routeRepo.getAll();
+
+     
+
+      if (route === null) {
+        return Result.fail<IRouteDTO>("Route not found");
+      }
+      else { 
+
+        let routeDTOResult;
+        for (let i = 0; i < route.length; i++) {
+         routeDTOResult = RouteMap.toDTO(route[i]) as IRouteDTO;
+          
+        }
+        
+        return Result.ok<IRouteDTO>( routeDTOResult ); 
+        }
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 
   public async createRoute(routeDTO: IRouteDTO): Promise<Result<IRouteDTO>> {
     try {
-
       const routeOrError = await Route.create( routeDTO );
 
       if (routeOrError.isFailure) {
