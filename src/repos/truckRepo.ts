@@ -4,7 +4,7 @@ import { Document, FilterQuery, Model } from 'mongoose';
 import { ITruckPersistence } from '../dataschema/ITruckPersistence';
 
 import ITruckRepo from "../services/IRepos/ITruckRepo";
-import { Truck } from "../domain/Truck";
+import { Truck } from "../domain/truck";
 import { TruckId } from "../domain/truckId";
 import { TruckMap } from "../mappers/TruckMap";
 import { throws } from 'assert';

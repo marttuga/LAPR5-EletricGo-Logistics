@@ -1,5 +1,5 @@
 import { Repo } from "../../core/infra/Repo";
-import { Truck } from "../../domain/Truck";
+import { Truck } from "../../domain/truck";
 import { TruckId } from "../../domain/truckId";
 
 export default interface ITruckRepo extends Repo<Truck> {

@@ -4,7 +4,7 @@ import { Mapper } from "../core/infra/Mapper";
 
 import ITruckDTO from "../dto/ITruckDTO";
 
-import { Truck } from "../domain/Truck";
+import { Truck } from "../domain/truck";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import TruckRepo from '../repos/truckRepo';
 

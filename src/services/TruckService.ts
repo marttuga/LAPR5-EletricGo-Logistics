@@ -1,7 +1,7 @@
 import { Service, Inject } from 'typedi';
 import config from "../../config";
 import ITruckDTO from '../dto/ITruckDTO';
-import { Truck } from "../domain/Truck";
+import { Truck } from "../domain/truck";
 import ITruckRepo from './IRepos/ITruckRepo';
 import ITruckService from './IServices/ITruckService';
 import { Result } from "../core/logic/Result";
