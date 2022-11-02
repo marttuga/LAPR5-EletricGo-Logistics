@@ -2,12 +2,12 @@ import { AggregateRoot } from "../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 
 import { Result } from "../core/logic/Result";
-import { TruckId} from "./truckId";
+import { LicencePlate} from "./licencePlate";
 
 import ITruckDTO from "../dto/ITruckDTO";
 
 interface TruckProps {
-  licencePlate: string;
+  licencePlate: LicencePlate;
   tare: number;
   capacity:number;
   maxBateryCapacity:number;
@@ -22,16 +22,9 @@ export class Truck extends AggregateRoot<TruckProps> {
 
   }
   
-  get truckId (): TruckId {
-    return TruckId.caller(this.id)
+  get licencePlate (): LicencePlate {
+    return LicencePlate.caller(this.id)
   }
-  get licencePlate (): string {
-    return this.props.licencePlate;
-  }
-  set licencePlate ( value: string) {
-    this.props.licencePlate = value;
-  }
-
 
   get tare (): number {
     return this.props.tare;
@@ -80,11 +73,11 @@ export class Truck extends AggregateRoot<TruckProps> {
     const autonomyFullChargeLoad = TruckDTO.autonomyFullChargeLoad;
     const timeCharging = TruckDTO.timeCharging;
 
-    if ( licencePlate.length===0|| tare=== 0|| capacity=== 0|| maxBateryCapacity=== 0|| autonomyFullChargeLoad=== 0 || timeCharging ===0) {
+    if ( tare=== 0|| capacity=== 0|| maxBateryCapacity=== 0|| autonomyFullChargeLoad=== 0 || timeCharging ===0) {
       return Result.fail<Truck>('Truck must have a tare, load capacity, battery capacity, autonomy and time of charging non null')
     } else {
 
-      const truck = new Truck({ licencePlate:licencePlate, tare: tare, capacity: capacity, maxBateryCapacity:maxBateryCapacity,autonomyFullChargeLoad:autonomyFullChargeLoad,timeCharging:timeCharging}, id);
+      const truck = new Truck({ licencePlate:licencePlate , tare: tare, capacity: capacity, maxBateryCapacity:maxBateryCapacity,autonomyFullChargeLoad:autonomyFullChargeLoad,timeCharging:timeCharging}, id);
       return Result.ok<Truck>( truck )
     }
   }
