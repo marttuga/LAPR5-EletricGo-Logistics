@@ -38,5 +38,5 @@ export default (app: Router) => {
     (req, res, next) => ctrl.updateRoute(req, res, next) );
 
     route.get('/getRoute',
-    (req,res,next) => ctrl.get(req, res, next) );
+    (req,res,next) => ctrl.getRoute(req, res, next) );
 }
