@@ -59,7 +59,7 @@ export default class TruckService implements ITruckService {
 
   public async createTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
     try {
-        const truckOrError = await Truck.create({licencePlate:LicencePlate.create(truckDTO.licencePlate.licencePlate).getValue(), 
+         /* const truckOrError = await Truck.create({licencePlate:LicencePlate.create(truckDTO.licencePlate.licencePlate).getValue(), 
 
         tare:Tare.create(truckDTO.tare.value).getValue(), 
 
@@ -69,21 +69,24 @@ export default class TruckService implements ITruckService {
 
         autonomyFullChargeLoad:AutonomyFullChargeLoad.create(truckDTO.autonomyFullChargeLoad.value).getValue(),
 
-        timeCharging:TimeCharging.create(truckDTO.timeCharging.value).getValue() });  
-
+        timeCharging:TimeCharging.create(truckDTO.timeCharging.value).getValue() });   */
+ 
       
 
-          //const truckOrError = await Truck.create(truckDTO);
-
+          const truckOrError = await Truck.create(truckDTO);
+console.log("oi");      
       if (truckOrError.isFailure) {
         return Result.fail<ITruckDTO>(truckOrError.errorValue());
       }
+console.log("oi2");
 
       const truckResult = truckOrError.getValue();
+
 
       await this.truckRepo.save(truckResult);
 
       const truckDTOResult = TruckMap.toDTO( truckResult ) as ITruckDTO;
+      console.log(truckDTOResult);
       return Result.ok<ITruckDTO>( truckDTOResult )
     } catch (e) {
       throw e;
