@@ -6,6 +6,12 @@ import ITruckRepo from './IRepos/ITruckRepo';
 import ITruckService from './IServices/ITruckService';
 import { Result } from "../core/logic/Result";
 import { TruckMap } from "../mappers/TruckMap";
+import { LicencePlate } from '../domain/licencePlate';
+import { Tare } from '../domain/tare';
+import { Capacity } from '../domain/capacity';
+import { MaxBateryCapacity } from '../domain/maxBateryCapacity';
+import { AutonomyFullChargeLoad } from '../domain/autonomyFullChargeLoad';
+import { TimeCharging } from '../domain/timeCharging';
 
 @Service()
 export default class TruckService implements ITruckService {
@@ -58,7 +64,31 @@ export default class TruckService implements ITruckService {
 
   public async createTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
     try {
-      const truckOrError = await Truck.create( truckDTO );
+      /* const truckOrError = await Truck.create({licencePlate:(truckDTO.licencePlate.licencePlate).getValue(), 
+
+        tare:Tare.create(truckDTO.tare.value).getValue(), 
+
+        capacity:Capacity.create(truckDTO.capacity.value).getValue(),
+
+        maxBateryCapacity:MaxBateryCapacity.create(truckDTO.maxBateryCapacity.value).getValue(),
+
+        autonomyFullChargeLoad:AutonomyFullChargeLoad.create(truckDTO.autonomyFullChargeLoad.value).getValue(),
+
+        timeCharging:TimeCharging.create(truckDTO.timeCharging.value).getValue() }); */
+        
+       /*  const truckOrError = await Truck.create({licencePlate:(truckDTO.licencePlate), 
+
+          tare:(truckDTO.tare), 
+  
+          capacity:(truckDTO.capacity),
+  
+          maxBateryCapacity:(truckDTO.maxBateryCapacity),
+  
+          autonomyFullChargeLoad:(truckDTO.autonomyFullChargeLoad),
+  
+          timeCharging:(truckDTO.timeCharging) }); */
+
+          const truckOrError = await Truck.create(truckDTO);
 
       if (truckOrError.isFailure) {
         return Result.fail<ITruckDTO>(truckOrError.errorValue());

@@ -58,10 +58,10 @@ export default class TruckRepo implements ITruckRepo {
         return TruckMap.toDomain(truckCreated);
       } else {
         truckDocument.tare = truck.tare;
-        truckDocument.capacity = truck.tare;
-        truckDocument.maxBateryCapacity = truck.tare;
-        truckDocument.autonomyFullChargeLoad = truck.tare;
-        truckDocument.timeCharging = truck.tare;
+        truckDocument.capacity = truck.capacity;
+        truckDocument.maxBateryCapacity = truck.maxBateryCapacity;;
+        truckDocument.autonomyFullChargeLoad = truck.autonomyFullChargeLoad;
+        truckDocument.timeCharging = truck.timeCharging;
         await truckDocument.save();
 
         return truck;
@@ -72,7 +72,7 @@ export default class TruckRepo implements ITruckRepo {
   }
 
   public async findLicencePlate (licencePlate: LicencePlate | string): Promise<Truck> {
-    const query = { domainId: licencePlate};
+    const query = { licencePlate: licencePlate};
     const truckRecord = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document> );
 
     if( truckRecord != null) {
