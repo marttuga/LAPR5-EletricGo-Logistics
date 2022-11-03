@@ -13,8 +13,7 @@ interface CapacityProps {
     
     private constructor (props: CapacityProps) {
       super(props);
-    }
-  
+    }  
     public static create (capacity: number): Result<Capacity> {
       const guardResult = Guard.againstNullOrUndefined(capacity, 'capacity');
       if (!guardResult.succeeded) {
@@ -23,4 +22,5 @@ interface CapacityProps {
         return Result.ok<Capacity>(new Capacity({ value: capacity }))
       }
     }
+
   }

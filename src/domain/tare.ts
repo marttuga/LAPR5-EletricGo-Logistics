@@ -15,12 +15,14 @@ interface TareProps {
       super(props);
     }
   
-    public static create (tare: number): Result<Tare> {
+     public static create (tare: number): Result<Tare> {
       const guardResult = Guard.againstNullOrUndefined(tare, 'tare');
       if (!guardResult.succeeded) {
         return Result.fail<Tare>(guardResult.message);
       } else {
         return Result.ok<Tare>(new Tare({ value: tare }))
       }
-    }
+    } 
+      
+
   }

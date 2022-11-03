@@ -15,12 +15,13 @@ interface TimeChargingProps {
       super(props);
     }
   
-    public static create (timeCharging: number): Result<TimeCharging> {
+     public static create (timeCharging: number): Result<TimeCharging> {
       const guardResult = Guard.againstNullOrUndefined(timeCharging, 'timeCharging');
       if (!guardResult.succeeded) {
         return Result.fail<TimeCharging>(guardResult.message);
       } else {
         return Result.ok<TimeCharging>(new TimeCharging({ value: timeCharging }))
       }
-    }
+    } 
+
   }

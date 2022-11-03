@@ -15,20 +15,20 @@ import { Result } from "../core/logic/Result";
 	}
 } */
 
-interface TruckProps {
+interface LicencePlateProps {
     licencePlate: string;
   }
 
-export class LicencePlate extends ValueObject<TruckProps> {
+export class LicencePlate extends ValueObject<LicencePlateProps> {
 get licencePlate(): string {
     return this.props.licencePlate;
 }
 
-private constructor(props: TruckProps) {
+private constructor(props: LicencePlateProps) {
     super(props);
 }
 
-public static create(id: string): Result<LicencePlate> {
+ public static create(id: string): Result<LicencePlate> {
     const guardResult = Guard.againstNullOrUndefined(id, 'id');
 
     if (!guardResult.succeeded) {
@@ -38,5 +38,4 @@ public static create(id: string): Result<LicencePlate> {
     }
   }
     
-} 
-
+}  

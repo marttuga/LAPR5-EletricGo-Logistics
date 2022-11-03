@@ -15,12 +15,13 @@ interface MaxBateryCapacityProps {
       super(props);
     }
   
-    public static create (maxBateryCapacity: number): Result<MaxBateryCapacity> {
+     public static create (maxBateryCapacity: number): Result<MaxBateryCapacity> {
       const guardResult = Guard.againstNullOrUndefined(maxBateryCapacity, 'maxBateryCapacity');
       if (!guardResult.succeeded) {
         return Result.fail<MaxBateryCapacity>(guardResult.message);
       } else {
         return Result.ok<MaxBateryCapacity>(new MaxBateryCapacity({ value: maxBateryCapacity }))
       }
-    }
+    } 
+      
   }

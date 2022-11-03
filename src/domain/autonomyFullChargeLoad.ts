@@ -15,12 +15,12 @@ interface AutonomyFullChargeLoadProps {
       super(props);
     }
   
-    public static create (autonomyFullChargeLoad: number): Result<AutonomyFullChargeLoad> {
+     public static create (autonomyFullChargeLoad: number): Result<AutonomyFullChargeLoad> {
       const guardResult = Guard.againstNullOrUndefined(autonomyFullChargeLoad, 'autonomyFullChargeLoad');
       if (!guardResult.succeeded) {
         return Result.fail<AutonomyFullChargeLoad>(guardResult.message);
       } else {
         return Result.ok<AutonomyFullChargeLoad>(new AutonomyFullChargeLoad({ value: autonomyFullChargeLoad }))
       }
-    }
+    } 
   }
