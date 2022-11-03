@@ -33,7 +33,7 @@ export default class TruckRepo implements ITruckRepo {
     return !!routeDocument === true;
   }
   
-  public async getAll(): Promise<Truck[]> {
+  public async getAllTrucks(): Promise<Truck[]> {
     try {
       return this.truckSchema.find({}) as any;
     } catch (e) {

@@ -22,24 +22,19 @@ export default class TruckService implements ITruckService {
   }
 
   
-  public async getTrucks(): Promise<Result<ITruckDTO>> {
+  public async getTrucks(): Promise<Result<ITruckDTO[]>> {
     try {
-      const truck = await this.truckRepo.getAll();
+      const truckList = await this.truckRepo.getAllTrucks();
 
      
 
-      if (truck === null) {
-        return Result.fail<ITruckDTO>("Truck not found");
+      if (truckList === null) {
+        return Result.fail<ITruckDTO[]>("There are no trucks");
       }
       else { 
 
-        let truckDTOResult;
-        for (let i = 0; i < truck.length; i++) {
-         truckDTOResult = TruckMap.toDTO(truck[i]) as ITruckDTO;
-          
-        }
-        
-        return Result.ok<ITruckDTO>( truckDTOResult ); 
+        const truckDTOResult=truckList.map((lista:Truck) => TruckMap.toDTO(lista)as ITruckDTO);
+        return Result.ok<ITruckDTO[]>( truckDTOResult ); 
         }
     } catch (e) {
       throw new Error(e);
@@ -64,7 +59,7 @@ export default class TruckService implements ITruckService {
 
   public async createTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
     try {
-      /* const truckOrError = await Truck.create({licencePlate:(truckDTO.licencePlate.licencePlate).getValue(), 
+        const truckOrError = await Truck.create({licencePlate:LicencePlate.create(truckDTO.licencePlate.licencePlate).getValue(), 
 
         tare:Tare.create(truckDTO.tare.value).getValue(), 
 
@@ -74,21 +69,11 @@ export default class TruckService implements ITruckService {
 
         autonomyFullChargeLoad:AutonomyFullChargeLoad.create(truckDTO.autonomyFullChargeLoad.value).getValue(),
 
-        timeCharging:TimeCharging.create(truckDTO.timeCharging.value).getValue() }); */
-        
-       /*  const truckOrError = await Truck.create({licencePlate:(truckDTO.licencePlate), 
+        timeCharging:TimeCharging.create(truckDTO.timeCharging.value).getValue() });  
 
-          tare:(truckDTO.tare), 
-  
-          capacity:(truckDTO.capacity),
-  
-          maxBateryCapacity:(truckDTO.maxBateryCapacity),
-  
-          autonomyFullChargeLoad:(truckDTO.autonomyFullChargeLoad),
-  
-          timeCharging:(truckDTO.timeCharging) }); */
+      
 
-          const truckOrError = await Truck.create(truckDTO);
+          //const truckOrError = await Truck.create(truckDTO);
 
       if (truckOrError.isFailure) {
         return Result.fail<ITruckDTO>(truckOrError.errorValue());
