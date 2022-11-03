@@ -15,7 +15,7 @@ import { Result } from "../core/logic/Result";
 	}
 } */
 
- interface TruckProps {
+interface TruckProps {
     licencePlate: string;
   }
 
