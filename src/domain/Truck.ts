@@ -84,7 +84,7 @@ export class Truck extends AggregateRoot<TruckProps> {
       return Result.fail<Truck>('Truck must have a tare, load capacity, battery capacity, autonomy and time of charging non null')
     } else {
 
-     /*  const truck = new Truck(
+        const truck = new Truck(
         {
           licencePlate: LicencePlate.create(licencePlate.licencePlate).getValue(),
           tare: Tare.create( tare.value ).getValue(),
@@ -92,11 +92,14 @@ export class Truck extends AggregateRoot<TruckProps> {
           maxBateryCapacity: MaxBateryCapacity.create(maxBateryCapacity.value).getValue(),
           autonomyFullChargeLoad: AutonomyFullChargeLoad.create( autonomyFullChargeLoad.value ).getValue(),
           timeCharging: TimeCharging.create( timeCharging.value).getValue(),
-        }) */
-        
-        const truck = new Truck({ licencePlate:licencePlate, tare: tare, capacity: capacity, maxBateryCapacity: maxBateryCapacity, autonomyFullChargeLoad: autonomyFullChargeLoad, timeCharging:timeCharging}, id);
+        },id)  
+
+
+      
+        //const truck = new Truck({ licencePlate:licencePlate, tare: tare, capacity: capacity, maxBateryCapacity: maxBateryCapacity, autonomyFullChargeLoad: autonomyFullChargeLoad, timeCharging:timeCharging}, id);
 
       return Result.ok<Truck>( truck )
     }
-  }
+  } 
+
 }
