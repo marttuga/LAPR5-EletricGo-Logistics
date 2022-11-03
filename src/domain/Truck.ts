@@ -5,14 +5,20 @@ import { Result } from "../core/logic/Result";
 import { LicencePlate} from "./licencePlate";
 
 import ITruckDTO from "../dto/ITruckDTO";
+import { Tare } from "./tare";
+import { MaxBateryCapacity } from "./maxBateryCapacity";
+import { AutonomyFullChargeLoad } from "./autonomyFullChargeLoad";
+import { TimeCharging } from "./timeCharging";
+import { Capacity } from "./capacity";
+import { identity } from "lodash";
 
 interface TruckProps {
   licencePlate: LicencePlate;
-  tare: number;
-  capacity:number;
-  maxBateryCapacity:number;
-  autonomyFullChargeLoad:number;
-  timeCharging: number;
+  tare: Tare;
+  capacity:Capacity;
+  maxBateryCapacity:MaxBateryCapacity;
+  autonomyFullChargeLoad:AutonomyFullChargeLoad;
+  timeCharging: TimeCharging;
 }
 
 export class Truck extends AggregateRoot<TruckProps> {
@@ -26,38 +32,39 @@ export class Truck extends AggregateRoot<TruckProps> {
     return LicencePlate.caller(this.id)
   }
 
-  get tare (): number {
+  get tare (): Tare {
     return this.props.tare;
   }
-  set tare ( value: number) {
+
+  set tare ( value: Tare) {
     this.props.tare = value;
   }
 
-  get capacity (): number {
+  get capacity (): Capacity {
     return this.props.capacity;
   }
-  set capacity ( value: number) {
+  set capacity ( value: Capacity) {
     this.props.capacity = value;
   }
 
-  get maxBateryCapacity (): number {
+  get maxBateryCapacity (): MaxBateryCapacity {
     return this.props.maxBateryCapacity;
   }
-  set maxBateryCapacity ( value: number) {
+  set maxBateryCapacity ( value: MaxBateryCapacity) {
     this.props.maxBateryCapacity = value;
   }
 
-  get autonomyFullChargeLoad (): number {
+  get autonomyFullChargeLoad (): AutonomyFullChargeLoad {
     return this.props.autonomyFullChargeLoad;
   }
-  set autonomyFullChargeLoad ( value: number) {
+  set autonomyFullChargeLoad ( value: AutonomyFullChargeLoad) {
     this.props.autonomyFullChargeLoad = value;
   }
 
-  get timeCharging (): number {
+  get timeCharging (): TimeCharging {
     return this.props.timeCharging;
   }
-  set timeCharging ( value: number) {
+  set timeCharging ( value: TimeCharging) {
   this.props.timeCharging = value;
   }
 
@@ -73,11 +80,22 @@ export class Truck extends AggregateRoot<TruckProps> {
     const autonomyFullChargeLoad = TruckDTO.autonomyFullChargeLoad;
     const timeCharging = TruckDTO.timeCharging;
 
-    if ( tare=== 0|| capacity=== 0|| maxBateryCapacity=== 0|| autonomyFullChargeLoad=== 0 || timeCharging ===0) {
+    if ( tare.value=== 0|| capacity.value=== 0|| maxBateryCapacity.value=== 0|| autonomyFullChargeLoad.value=== 0 || timeCharging.value===0) {
       return Result.fail<Truck>('Truck must have a tare, load capacity, battery capacity, autonomy and time of charging non null')
     } else {
 
-      const truck = new Truck({ licencePlate:licencePlate , tare: tare, capacity: capacity, maxBateryCapacity:maxBateryCapacity,autonomyFullChargeLoad:autonomyFullChargeLoad,timeCharging:timeCharging}, id);
+     /*  const truck = new Truck(
+        {
+          licencePlate: LicencePlate.create(licencePlate.licencePlate).getValue(),
+          tare: Tare.create( tare.value ).getValue(),
+          capacity: Capacity.create( capacity.value ).getValue(),
+          maxBateryCapacity: MaxBateryCapacity.create(maxBateryCapacity.value).getValue(),
+          autonomyFullChargeLoad: AutonomyFullChargeLoad.create( autonomyFullChargeLoad.value ).getValue(),
+          timeCharging: TimeCharging.create( timeCharging.value).getValue(),
+        }) */
+        
+        const truck = new Truck({ licencePlate:licencePlate, tare: tare, capacity: capacity, maxBateryCapacity: maxBateryCapacity, autonomyFullChargeLoad: autonomyFullChargeLoad, timeCharging:timeCharging}, id);
+
       return Result.ok<Truck>( truck )
     }
   }
