@@ -17,13 +17,15 @@ export default class TruckController implements ITruckController /* TODO: extend
   
   public async getTrucks(req: Request, res: Response, next: NextFunction) {
     try {
+    
       const truckOrError = await this.truckServiceInstance.getTrucks() as Result<ITruckDTO[]>;
-
+      
       if (truckOrError.isFailure) {
         return res.status(402).send();
       }
 
       const truckDTO = truckOrError.getValue();
+
       return res.json( truckDTO ).status(200);    }
     catch (e) {
       return next(e);
@@ -67,17 +69,20 @@ export default class TruckController implements ITruckController /* TODO: extend
 
   public async getLicencePlate(req: Request, res: Response, next: NextFunction) {
     try {
-      const truckOrError = await this.truckServiceInstance.getLicencePlate(req.body as string) as Result<ITruckDTO>;
+   
+      const truckOrError = await this.truckServiceInstance.getLicencePlate(req.params.licencePlate as string, req.body as ITruckDTO) as Result<ITruckDTO>;
 
       if (truckOrError.isFailure) {
         return res.status(404).send();
       }
 
-      const truckDTO = truckOrError.getValue();
+      const truckDTO = truckOrError.getValue();     
+
       return res.json( truckDTO ).status(201);
     }
     catch (e) {
       return next(e);
     }
   };
+
 }
