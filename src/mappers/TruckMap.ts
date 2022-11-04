@@ -26,16 +26,16 @@ export class TruckMap extends Mapper<Truck> {
   public static async toDomain (raw: any): Promise<Truck> {
 
     const TruckOrError = Truck.create({
-      licencePlate:raw.props.licencePlate ,
-      tare:raw.props.tare,
-      capacity: raw.props.capacity,
-      maxBateryCapacity: raw.props.maxBateryCapacity,
-      autonomyFullChargeLoad: raw.props.autonomyFullChargeLoad,
-      timeCharging: raw.props.timeCharging,
+      licencePlate:raw.licencePlate ,
+      tare:raw.tare,
+      capacity: raw.capacity,
+      maxBateryCapacity: raw.maxBateryCapacity,
+      autonomyFullChargeLoad: raw.autonomyFullChargeLoad,
+      timeCharging: raw.timeCharging,
       
     }, new UniqueEntityID(raw.licencePlate))
 
-    TruckOrError.isFailure ? console.log(TruckOrError.error) : '';
+    TruckOrError.isFailure ? console.log(TruckOrError.error) : 'erro no toDomain';
     
     return TruckOrError.isSuccess ? TruckOrError.getValue() : null;
   }  
