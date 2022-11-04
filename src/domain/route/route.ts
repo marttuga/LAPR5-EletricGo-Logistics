@@ -1,10 +1,10 @@
-import { AggregateRoot } from '../core/domain/AggregateRoot';
-import { UniqueEntityID } from '../core/domain/UniqueEntityID';
+import { AggregateRoot } from '../../core/domain/AggregateRoot';
+import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
 
-import { Result } from '../core/logic/Result';
+import { Result } from '../../core/logic/Result';
 import { RouteId } from './routeId';
 
-import IRouteDTO from '../dto/IRouteDTO';
+import IRouteDTO from '../../dto/IRouteDTO';
 import { Distance } from './distance';
 import { RouteTime } from './routeTime';
 import { BatteryWaste } from './batteryWaste';
@@ -26,25 +26,25 @@ export class Route extends AggregateRoot<RouteProps> {
   }
 
   get routeId(): RouteId {
-    return RouteId.caller(this.id);
+    return this.props.routeId;
   }
 
   get routeTime(): RouteTime {
-    return RouteTime.caller(this.routeTime);
+    return this.props.routeTime;
   }
   set routeTime(routeTime: RouteTime) {
     this.props.routeTime = this.routeTime;
   }
 
   get distance(): Distance {
-    return Distance.caller(this.distance);
+    return this.props.distance;
   }
   set distance(distance: Distance) {
     this.props.distance = this.distance;
   }
 
   get batteryWaste(): BatteryWaste {
-    return BatteryWaste.caller(this.batteryWaste);
+    return this.props.batteryWaste;
   }
   set batteryWaste(batteryWaste: BatteryWaste) {
     this.props.batteryWaste = batteryWaste;
@@ -65,7 +65,7 @@ export class Route extends AggregateRoot<RouteProps> {
   }
 
   get extraTime(): ExtraTime {
-    return ExtraTime.caller(this.extraTime);
+    return this.props.extraTime;
   }
 
   set extraTime(extraTime: ExtraTime) {
@@ -99,13 +99,13 @@ export class Route extends AggregateRoot<RouteProps> {
     } else {
       const route = new Route(
         {
-          routeId: RouteId.create(routeId).getValue(),
-          distance: Distance.create(distance).getValue(),
-          routeTime: RouteTime.create(routeTime).getValue(),
-          batteryWaste: BatteryWaste.create(batteryWaste).getValue(),
+          routeId: RouteId.create({ routeId }).getValue(),
+          distance: Distance.create({ distance }).getValue(),
+          routeTime: RouteTime.create({ routeTime }).getValue(),
+          batteryWaste: BatteryWaste.create({ batteryWaste }).getValue(),
           arrivalId: arrivalId,
           departureId: departureId,
-          extraTime: ExtraTime.create(extraTime).getValue(),
+          extraTime: ExtraTime.create({ extraTime }).getValue(),
         },
         id,
       );
