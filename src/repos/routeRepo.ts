@@ -23,13 +23,18 @@ export default class RouteRepo implements IRouteRepo {
   }
 
   public async getAll(): Promise<Route[]> {
-    try {
-      return this.routeSchema.find({}) as any;
-    } catch (e) {
-      throw new Error(e);
+    console.log("REPO");
+    const route =await this.routeSchema.find();
+    console.log(route);
+    return route.map(item => RouteMap.toDomain(item));
+
+    // try {
+    //   return this.routeSchema.find({}) as any;
+    // } catch (e) {
+    //   throw new Error(e);
 
       
-    }
+    // }
   
   }
 
@@ -56,7 +61,7 @@ export default class RouteRepo implements IRouteRepo {
 
         return RouteMap.toDomain(routeCreated);
       } else {
-        routeDocument.routeId = route.routeId.routeId; 
+        routeDocument.routeId = route.routeId; 
         routeDocument.distance = route.distance;
         routeDocument.routeTime = route.routeTime;
         routeDocument.batteryWaste = route.batteryWaste;
