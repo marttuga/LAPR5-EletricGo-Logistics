@@ -4,12 +4,14 @@ import { Mapper } from "../core/infra/Mapper";
 
 import ITruckDTO from "../dto/ITruckDTO";
 
-import { Truck } from "../domain/truck";
+import { Truck } from "../domain/truck/truck";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
+import { ITruckPersistence } from '../dataschema/ITruckPersistence';
+import { Document, Model } from 'mongoose';
 
 
 export class TruckMap extends Mapper<Truck> {
- 
+
   public static toDTO( truck: Truck): ITruckDTO {
     return {
       //id: Truck.id.toString(),
@@ -21,9 +23,9 @@ export class TruckMap extends Mapper<Truck> {
       timeCharging: truck.props.timeCharging,
     } as ITruckDTO;
   } 
-
  
-  public static async toDomain (raw: any): Promise<Truck> {
+  public static toDomain(raw: any | Model<ITruckPersistence & Document>): Truck {
+    const routeOrError = Truck.create(raw, new UniqueEntityID(raw.domainId));
 
     const TruckOrError = Truck.create({
       licencePlate:raw.licencePlate ,
@@ -37,15 +39,8 @@ export class TruckMap extends Mapper<Truck> {
 
     TruckOrError.isFailure ? console.log(TruckOrError.error) : 'erro no toDomain';
     
-    return TruckOrError.isSuccess ? TruckOrError.getValue() : null;
-  }  
- 
-/*    public static toDomain (truck: any | Model<ITruckPersistence & Document> ): Truck {
-    const truckOrError = Truck.create(truck,new UniqueEntityID(truck.domainId));
-    truckOrError.isFailure ? console.log(truckOrError.error) : '';
-
-  return truckOrError.isSuccess ? truckOrError.getValue() : null;} 
- */
+    return routeOrError.isSuccess ? routeOrError.getValue() : null;
+  }
 
 
   public static toPersistence (truck: Truck): any {

@@ -43,7 +43,7 @@ truck.put('/getTruck',
 celebrate({
   body: Joi.object({}),
 }),
-(req, res, next) => ctrl.updateTruck(req, res, next) );
+(req, res, next) => ctrl.getTrucks(req, res, next) );
 
 
 };
