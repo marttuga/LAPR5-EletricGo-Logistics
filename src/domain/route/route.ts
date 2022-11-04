@@ -28,6 +28,9 @@ export class Route extends AggregateRoot<RouteProps> {
   get routeId(): RouteId {
     return this.props.routeId;
   }
+  set routeId(routeId: RouteId) {
+    this.props.routeId = this.routeId;
+  }
 
   get routeTime(): RouteTime {
     return this.props.routeTime;
@@ -94,7 +97,6 @@ export class Route extends AggregateRoot<RouteProps> {
       departureId === undefined ||
       extraTime === undefined
     ) {
-      console.log(routeId);
       return Result.fail<Route>('Error creating route!');
     } else {
       const route = new Route(
