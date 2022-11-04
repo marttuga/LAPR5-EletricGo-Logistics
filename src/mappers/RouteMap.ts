@@ -15,14 +15,14 @@ export class RouteMap extends Mapper<Route> {
   public static toDTO( route: Route): IRouteDTO {
     return {
       //id: Route.id.toString(),
-      routeId: route.routeId.routeId,
-      distance: route.distance,
-      routeTime: route.routeTime,
-      batteryWaste: route.batteryWaste,
+      routeId: (route.routeId.value),
+      distance: (route.distance.valueOf),
+      routeTime: (route.routeTime.valueOf),
+      batteryWaste: (route.batteryWaste.valueOf),
       arrivalId: route.arrivalId,
       departureId: route.departureId,
-      extraTime: route.extraTime
-    } as IRouteDTO;
+      extraTime: (route.extraTime.valueOf),
+    } as unknown as IRouteDTO;
   }
 
   public static async toDomain (raw: any): Promise<Route> {
@@ -47,13 +47,13 @@ export class RouteMap extends Mapper<Route> {
   public static toPersistence (Route: Route): any {
     const a = {
       domainId: Route.id.toString(),
-      routeId: Route.routeId.routeId,
-      distance: Route.distance,
-      routeTime: Route.routeTime,
-      batteryWaste: Route.batteryWaste,
+      routeId: Route.routeId.value,
+      distance: Route.distance.valueOf,
+      routeTime: Route.routeTime.valueOf,
+      batteryWaste: Route.batteryWaste.valueOf,
       arrivalId: Route.arrivalId,
       departureId: Route.departureId,
-      extraTime: Route.extraTime
+      extraTime: Route.extraTime.valueOf
     }
     return a;
   }
