@@ -44,8 +44,10 @@ export default class TruckRepo implements ITruckRepo {
 
 
   public async save(truck: Truck): Promise<Truck>{
-    const query = { licencePlate: truck.licencePlate.licencePlate };
+    const query = { licencePlate: truck.licencePlate.licencePlate };   console.log(query);
     const truckDocument = await this.truckSchema.findOne(query);
+    console.log(truckDocument);
+ 
     try {
       if (truckDocument === null) {
         const rawtruck: any = TruckMap.toPersistence(truck);
@@ -68,6 +70,7 @@ export default class TruckRepo implements ITruckRepo {
     }
   }
 
+  
 
   public async findLicencePlate (licencePlate: LicencePlate | string): Promise<Truck> {
       const query = { licencePlate: licencePlate };
