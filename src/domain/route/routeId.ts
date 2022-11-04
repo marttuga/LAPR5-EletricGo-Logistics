@@ -1,29 +1,27 @@
-import { ValueObject } from "../core/domain/ValueObject";
-import { Guard } from "../core/logic/Guard";
-import { Result } from "../core/logic/Result";
+import { ValueObject } from '../../core/domain/ValueObject';
+import { Guard } from '../../core/logic/Guard';
+import { Result } from '../../core/logic/Result';
 
 interface RouteProps {
-    routeId: string;
-  }
+  routeId: string;
+}
 
 export class RouteId extends ValueObject<RouteProps> {
-
-get routeId(): string {
+  get routeId(): string {
     return this.props.routeId;
-}
+  }
 
-private constructor(props: RouteProps) {
+  private constructor(props: RouteProps) {
     super(props);
-}
+  }
 
-public static create(routeId: string): Result<RouteId> {
-    const guardResult = Guard.againstNullOrUndefined(routeId, 'routeId');
+  public static create(props: RouteProps): Result<RouteId> {
+    const guardResult = Guard.againstNullOrUndefined(props, 'routeId');
 
     if (!guardResult.succeeded) {
       return Result.fail<RouteId>(guardResult.message);
     } else {
-      return Result.ok<RouteId>(new RouteId({ routeId: routeId }));
+      return Result.ok<RouteId>(new RouteId({ routeId: props.routeId }));
     }
   }
-    
 }
