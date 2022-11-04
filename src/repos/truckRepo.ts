@@ -4,10 +4,11 @@ import { Document, FilterQuery, Model } from 'mongoose';
 import { ITruckPersistence } from '../dataschema/ITruckPersistence';
 
 import ITruckRepo from "../services/IRepos/ITruckRepo";
-import { Truck } from "../domain/truck";
-import { LicencePlate } from "../domain/licencePlate";
+import { Truck } from "../domain/truck/truck";
+import { LicencePlate } from "../domain/truck/licencePlate";
 import { TruckMap } from "../mappers/TruckMap";
 import { throws } from 'assert';
+
 
 @Service()
 export default class TruckRepo implements ITruckRepo {
@@ -23,47 +24,43 @@ export default class TruckRepo implements ITruckRepo {
     }
   }
 
-  public async exists(truck: Truck): Promise<boolean> {
-    
-    const idX = truck instanceof LicencePlate ? (<LicencePlate>truck).licencePlate : truck;
+// @ts-ignore
+  public async exists(licencePlate: LicencePlate | string): Promise<boolean> {
+    const idX = licencePlate instanceof LicencePlate ? (<LicencePlate>licencePlate).licencePlate : licencePlate;
 
-    const query = { domainId: idX}; 
-    const routeDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document>);
+    const query = { domainId: idX };
+    const t = await this.truckSchema.findOne(query);
 
-    return !!routeDocument === true;
+    return !!t === true;
   }
+
   
   public async getAllTrucks(): Promise<Truck[]> {
-    try {
-      return this.truckSchema.find({}) as any;
-    } catch (e) {
-      throw new Error(e);
 
-      
-    }
-  
+    const t = await this.truckSchema.find();
+
+    return t.map(item => TruckMap.toDomain(item));
   }
 
-  public async save (truck: Truck): Promise<Truck> {
-    const query = { domainId: truck.id.toString()}; 
 
-    const truckDocument = await this.truckSchema.findOne( query );
-
+  public async save(truck: Truck): Promise<Truck>{
+    const query = { licencePlate: truck.licencePlate.licencePlate };
+    const truckDocument = await this.truckSchema.findOne(query);
     try {
-      if (truckDocument === null ) {
-        const rawTruck: any = TruckMap.toPersistence(truck);
-
-        const truckCreated = await this.truckSchema.create(rawTruck);
+      if (truckDocument === null) {
+        const rawtruck: any = TruckMap.toPersistence(truck);
+        const truckCreated = await this.truckSchema.create(rawtruck);
 
         return TruckMap.toDomain(truckCreated);
       } else {
-        truckDocument.tare = truck.tare;
-        truckDocument.capacity = truck.capacity;
-        truckDocument.maxBateryCapacity = truck.maxBateryCapacity;;
-        truckDocument.autonomyFullChargeLoad = truck.autonomyFullChargeLoad;
-        truckDocument.timeCharging = truck.timeCharging;
-        await truckDocument.save();
+        truckDocument.licencePlate = truck.props.licencePlate.props.licencePlate;
+        truckDocument.tare = truck.props.tare.value;
+        truckDocument.capacity = truck.props.capacity.value;;
+        truckDocument.maxBateryCapacity = truck.props.maxBateryCapacity.maxBateryCapacity;
+        truckDocument.autonomyFullChargeLoad = truck.props.autonomyFullChargeLoad.value;
+        truckDocument.timeCharging = truck.props.timeCharging.value;
 
+        await truckDocument.save();
         return truck;
       }
     } catch (err) {
@@ -71,28 +68,13 @@ export default class TruckRepo implements ITruckRepo {
     }
   }
 
+
   public async findLicencePlate (licencePlate: LicencePlate | string): Promise<Truck> {
-    const query = { licencePlate: licencePlate};
-    const truckRecord = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document> );
-
-    if( truckRecord != null) {
-      return TruckMap.toDomain(truckRecord);
+      const query = { licencePlate: licencePlate };
+      const t = await this.truckSchema.findOne(query as FilterQuery<ITruckPersistence & Document>);
+  
+      if (t != null) {
+        return TruckMap.toDomain(t);
+      } else return null;
     }
-    else
-      return null;
-  }
- 
-/*   public async findLicencePlate (licencePlate: LicencePlate | string): Promise<Truck> {
-
-    const idX = licencePlate instanceof LicencePlate ? (<LicencePlate>licencePlate).licencePlate.toValue() : licencePlate;
-
-    const query = { domainId: idX }; 
-    const truckRecord = await this.truckSchema.findOne( query );
-
-    if( truckRecord != null) {
-      return TruckMap.toDomain(truckRecord);
-    }
-    else
-      return null;
-  } */
 }

@@ -1,6 +1,6 @@
 import { Repo } from "../../core/infra/Repo";
-import { Truck } from "../../domain/truck";
-import { LicencePlate } from "../../domain/licencePlate";
+import { Truck } from "../../domain/truck/truck";
+import { LicencePlate } from "../../domain/truck/licencePlate";
 
 export default interface ITruckRepo extends Repo<Truck> {
 	getAllTrucks():Promise<Truck[]>;
