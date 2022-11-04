@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 const RouteSchema = new mongoose.Schema(
   {
-    routeId: { type: String, unique: true },
+    routeId: { type: String, unique: true , index: true},
     distance: {
         type: Number,
         required: [true, 'Please enter distance'],
