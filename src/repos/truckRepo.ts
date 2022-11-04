@@ -46,9 +46,13 @@ export default class TruckRepo implements ITruckRepo {
 
   public async save (truck: Truck): Promise<Truck> {
     const query = { domainId: truck.id.toString()}; 
+
 console.log(query);
+
     const truckDocument = await this.truckSchema.findOne( query );
+
 console.log(truckDocument);
+
     try {
       if (truckDocument === null ) {
         const rawTruck: any = TruckMap.toPersistence(truck);
