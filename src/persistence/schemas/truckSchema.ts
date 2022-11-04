@@ -1,12 +1,21 @@
 import { ITruckPersistence } from '../../dataschema/ITruckPersistence';
 import mongoose from 'mongoose';
+import { LicencePlate } from '../../domain/licencePlate';
+import { Tare } from '../../domain/tare';
+import { Capacity } from '../../domain/capacity';
+import { MaxBateryCapacity } from '../../domain/maxBateryCapacity';
+import { AutonomyFullChargeLoad } from '../../domain/autonomyFullChargeLoad';
+import { TimeCharging } from '../../domain/timeCharging';
+
 
 const Truck = new mongoose.Schema(
   {
 
     licencePlate: { 
       type: String,
-      unique: true
+      required: [true, 'Please enter licence plate'],
+      unique: true,
+      index:true
     },
 
     tare: {
@@ -17,21 +26,23 @@ const Truck = new mongoose.Schema(
 
     capacity: {
       type: Number,
-      required: [true, 'Please enter load capacity'],
+      required: [true, 'Please enter capacity'],
       index: true,
     },
+
 
     maxBateryCapacity: {
       type: Number,
       required: [true, 'Please enter battery capacity'],
       index: true,
     },
-
+    
     autonomyFullChargeLoad: {
       type: Number,
-      required: [true, 'Please enter the autonomy'],
+      required: [true, 'Please enter autonomy'],
       index: true,
     },
+
 
     timeCharging: {
       type: Number,

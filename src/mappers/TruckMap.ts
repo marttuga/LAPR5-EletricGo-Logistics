@@ -20,16 +20,27 @@ import TruckRepo from '../repos/truckRepo';
 
 export class TruckMap extends Mapper<Truck> {
  
-  public static toDTO( Truck: Truck): ITruckDTO {
+/*   public static toDTO( truck: Truck): ITruckDTO {
     return {
       //id: Truck.id.toString(),
-      licencePlate: LicencePlate.create(Truck.licencePlate.licencePlate).getValue(),
-      tare: Tare.create(Truck.tare.value).getValue(),
-      capacity: Capacity.create(Truck.capacity.value).getValue(),
-      maxBateryCapacity: MaxBateryCapacity.create(Truck.maxBateryCapacity.value).getValue(),
-      autonomyFullChargeLoad: AutonomyFullChargeLoad.create(Truck.autonomyFullChargeLoad.value).getValue(),
-      timeCharging: TimeCharging.create(Truck.timeCharging.value).getValue(),
+      licencePlate: LicencePlate.create(truck.licencePlate.licencePlate).getValue(),
+      tare: Tare.create(truck.tare.value).getValue(),
+      capacity: Capacity.create(truck.capacity.value).getValue(),
+      maxBateryCapacity: MaxBateryCapacity.create(truck.maxBateryCapacity.value).getValue(),
+      autonomyFullChargeLoad: AutonomyFullChargeLoad.create(truck.autonomyFullChargeLoad.value).getValue(),
+      timeCharging: TimeCharging.create(truck.timeCharging.value).getValue(),
     } as ITruckDTO;
+  }  */
+  public static toDTO( truck: Truck): ITruckDTO {
+    return {
+      //id: Truck.id.toString(),
+      licencePlate: (truck.licencePlate.licencePlate),
+      tare: (truck.tare.value),
+      capacity: (truck.capacity.value),
+      maxBateryCapacity: (truck.maxBateryCapacity.value),
+      autonomyFullChargeLoad: (truck.autonomyFullChargeLoad.value),
+      timeCharging: (truck.timeCharging.value),
+    } as unknown as ITruckDTO;
   } 
 
 /*  
