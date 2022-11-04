@@ -54,5 +54,5 @@ export default (app: Router) => {
     (req, res, next) => ctrl.getRouteId(req, res, next),
   );*/
 
-  route.get('', (req, res, next) => ctrl.getRouteId(req, res, next));
+  route.get('', (req, res, next) => ctrl.getRoute(req, res, next));
 };
