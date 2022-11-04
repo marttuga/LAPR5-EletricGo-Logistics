@@ -12,6 +12,7 @@ import { Capacity } from '../domain/capacity';
 import { MaxBateryCapacity } from '../domain/maxBateryCapacity';
 import { AutonomyFullChargeLoad } from '../domain/autonomyFullChargeLoad';
 import { TimeCharging } from '../domain/timeCharging';
+import { Console } from 'console';
 
 @Service()
 export default class TruckService implements ITruckService {
@@ -59,34 +60,17 @@ export default class TruckService implements ITruckService {
 
   public async createTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
     try {
-         /* const truckOrError = await Truck.create({licencePlate:LicencePlate.create(truckDTO.licencePlate.licencePlate).getValue(), 
-
-        tare:Tare.create(truckDTO.tare.value).getValue(), 
-
-        capacity:Capacity.create(truckDTO.capacity.value).getValue(),
-
-        maxBateryCapacity:MaxBateryCapacity.create(truckDTO.maxBateryCapacity.value).getValue(),
-
-        autonomyFullChargeLoad:AutonomyFullChargeLoad.create(truckDTO.autonomyFullChargeLoad.value).getValue(),
-
-        timeCharging:TimeCharging.create(truckDTO.timeCharging.value).getValue() });   */
- 
-      
 
           const truckOrError = await Truck.create(truckDTO);
-console.log("oi");      
       if (truckOrError.isFailure) {
         return Result.fail<ITruckDTO>(truckOrError.errorValue());
       }
-console.log("oi2");
 
       const truckResult = truckOrError.getValue();
 
-
       await this.truckRepo.save(truckResult);
-
       const truckDTOResult = TruckMap.toDTO( truckResult ) as ITruckDTO;
-      console.log(truckDTOResult);
+
       return Result.ok<ITruckDTO>( truckDTOResult )
     } catch (e) {
       throw e;
