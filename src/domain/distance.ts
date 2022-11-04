@@ -3,25 +3,25 @@ import { Guard } from "../core/logic/Guard";
 import { Result } from "../core/logic/Result";
 
 interface RouteProps {
-    value: number;
+    distance: string;
   }
 
 export class Distance extends ValueObject<RouteProps> {
-get value(): number {
-    return this.props.value;
+get distance(): string {
+    return this.props.distance;
 }
 
 private constructor(props: RouteProps) {
     super(props);
 }
 
-public static create(distance: number): Result<Distance> {
+public static create(distance: string): Result<Distance> {
     const guardResult = Guard.againstNullOrUndefined(distance, 'distance');
 
     if (!guardResult.succeeded) {
       return Result.fail<Distance>(guardResult.message);
     } else {
-      return Result.ok<Distance>(new Distance({ value: distance }));
+      return Result.ok<Distance>(new Distance({ distance: distance }));
     }
   }
     

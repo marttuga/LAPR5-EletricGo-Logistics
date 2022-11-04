@@ -16,7 +16,10 @@ export default class RouteController implements IRouteController /* TODO: extend
 
   public async getRoute(req: Request, res: Response, next: NextFunction) {
     try {
-      const routeOrError = await this.routeServiceInstance.getRoutes() as Result<IRouteDTO>;
+      console.log("CONTROLLER");
+      //const routeOrError = await this.routeServiceInstance.getRoutes() as Result<IRouteDTO>;
+      const routeOrError = await this.routeServiceInstance.getRoutes();
+
 
       if (routeOrError.isFailure) {
         return res.status(404).send();

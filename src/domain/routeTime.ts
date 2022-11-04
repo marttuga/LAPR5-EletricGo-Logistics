@@ -3,25 +3,25 @@ import { Guard } from "../core/logic/Guard";
 import { Result } from "../core/logic/Result";
 
 interface RouteProps {
-    value: number;
+  routeTime: string;
   }
 
 export class RouteTime extends ValueObject<RouteProps> {
-get value(): number {
-    return this.props.value;
+get routeTime(): string {
+    return this.props.routeTime;
 }
 
 private constructor(props: RouteProps) {
     super(props);
 }
 
-public static create(routeTime: number): Result<RouteTime> {
+public static create(routeTime: string): Result<RouteTime> {
     const guardResult = Guard.againstNullOrUndefined(routeTime, 'routeTime');
 
     if (!guardResult.succeeded) {
       return Result.fail<RouteTime>(guardResult.message);
     } else {
-      return Result.ok<RouteTime>(new RouteTime({ value: routeTime }));
+      return Result.ok<RouteTime>(new RouteTime({ routeTime: routeTime }));
     }
   }
     

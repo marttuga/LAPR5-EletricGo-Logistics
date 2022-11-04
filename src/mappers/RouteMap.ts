@@ -8,6 +8,9 @@ import { Route } from "../domain/route";
 import { RouteId } from "../domain/routeId";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import RouteRepo from "../repos/routeRepo";
+import { IRoutePersistence } from '../dataschema/IRoutePersistence';
+import { Document } from 'mongodb';
+import { Model } from 'mongoose';
 
 
 export class RouteMap extends Mapper<Route> {
@@ -15,39 +18,42 @@ export class RouteMap extends Mapper<Route> {
   public static toDTO( route: Route): IRouteDTO {
     return {
       //id: Route.id.toString(),
-      routeId: (route.routeId.value),
-      distance: (route.distance.valueOf),
-      routeTime: (route.routeTime.valueOf),
-      batteryWaste: (route.batteryWaste.valueOf),
+      routeId: route.routeId.routeId,
+      distance: route.distance.distance,
+      routeTime: route.routeTime.routeTime,
+      batteryWaste: route.batteryWaste.batteryWaste,
       arrivalId: route.arrivalId,
       departureId: route.departureId,
-      extraTime: (route.extraTime.valueOf),
-    } as unknown as IRouteDTO;
+      extraTime: route.extraTime.extraTime,
+    } as IRouteDTO;
   }
 
-  public static async toDomain (raw: any): Promise<Route> {
-    const repo = Container.get(RouteRepo);
-    const routeId = await repo.findByRouteId(raw.routeId);
+  public static toDomain (raw: any | Model < IRoutePersistence & Document >): Route{
+    const routeOrError = Route.create(raw, new UniqueEntityID(raw.domainId));
 
-    const RouteOrError = Route.create({
-      routeId: raw.routeId.routeId,
-      distance: raw.distance,
-      routeTime: raw.routeTime,
-      batteryWaste: raw.batteryWaste,
-      arrivalId: raw.arrivalId,
-      departureId: raw.departureId,
-      extraTime: raw.extraTime
-    }, new UniqueEntityID(raw.routeId))
-
-    RouteOrError.isFailure ? console.log(RouteOrError.error) : '';
     
-    return RouteOrError.isSuccess ? RouteOrError.getValue() : null;
+    // const repo = Container.get(RouteRepo);
+    // const routeId = await repo.findByRouteId(raw.routeId);
+
+    // const RouteOrError = Route.create({
+    //   routeId: raw.routeId.routeId,
+    //   distance: raw.distance,
+    //   routeTime: raw.routeTime,
+    //   batteryWaste: raw.batteryWaste,
+    //   arrivalId: raw.arrivalId,
+    //   departureId: raw.departureId,
+    //   extraTime: raw.extraTime
+    // }, new UniqueEntityID(raw.routeId))
+
+    routeOrError.isFailure ? console.log(routeOrError.error) : '';
+    
+    return routeOrError.isSuccess ? routeOrError.getValue() : null;
   }
 
   public static toPersistence (Route: Route): any {
     const a = {
       domainId: Route.id.toString(),
-      routeId: Route.routeId.value,
+      routeId: Route.routeId.routeId,
       distance: Route.distance.valueOf,
       routeTime: Route.routeTime.valueOf,
       batteryWaste: Route.batteryWaste.valueOf,

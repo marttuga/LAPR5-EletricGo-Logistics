@@ -5,12 +5,12 @@ import { RouteId } from "../domain/routeId";
 import { RouteTime } from "../domain/routeTime";
 
 export default interface IRouteDTO {
-    routeId: RouteId;
-    distance: Distance,
-    routeTime: RouteTime,
-    batteryWaste: BatteryWaste,
+    routeId: string;
+    distance: string,
+    routeTime: string,
+    batteryWaste: string,
     arrivalId: string,
     departureId: string,
-    extraTime: ExtraTime,
+    extraTime: string,
   }
   

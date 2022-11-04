@@ -5,15 +5,19 @@ import { Result } from "../core/logic/Result";
 import { RouteId} from "./routeId";
 
 import IRouteDTO from "../dto/IRouteDTO";
+import { Distance } from "./distance";
+import { RouteTime } from "./routeTime";
+import { BatteryWaste } from "./batteryWaste";
+import { ExtraTime } from "./extraTime";
 
 interface RouteProps {
-  routeId: string;
-  distance: number;
-  routeTime: number;
-  batteryWaste: number;
+  routeId: RouteId;
+  distance: Distance;
+  routeTime: RouteTime;
+  batteryWaste: BatteryWaste;
   arrivalId: string;
   departureId: string;
-  extraTime: number;
+  extraTime: ExtraTime;
 }
 
 export class Route extends AggregateRoot<RouteProps> {
@@ -25,47 +29,47 @@ export class Route extends AggregateRoot<RouteProps> {
     return RouteId.caller(this.id)
   }
 
-  get routeTime (): number {
-    return this.props.routeTime;
+  get routeTime (): RouteTime {
+    return RouteTime.caller(this.routeTime);
   }
-  set routeTime ( value: number) {
-    this.props.routeTime = value;
-  }
-
-  get distance (): number {
-    return this.props.distance;
-  }
-  set distance ( value: number) {
-    this.props.distance = value;
+  set routeTime ( routeTime: RouteTime) {
+    this.props.routeTime = this.routeTime;
   }
 
-  get batteryWaste (): number {
-    return this.props.batteryWaste;
+  get distance (): Distance  {
+    return Distance.caller(this.distance);
   }
-  set batteryWaste ( value: number) {
-    this.props.batteryWaste = value;
+  set distance ( distance: Distance) {
+    this.props.distance = this.distance;
+  }
+
+  get batteryWaste (): BatteryWaste {
+    return BatteryWaste.caller(this.batteryWaste);
+  }
+  set batteryWaste ( batteryWaste: BatteryWaste) {
+    this.props.batteryWaste = batteryWaste;
   }
 
   get arrivalId (): string {
     return this.props.arrivalId;
   }
-  set arrivalId ( value: string) {
-    this.props.arrivalId = value;
+  set arrivalId ( arrivalId: string) {
+    this.props.arrivalId = arrivalId;
   }
 
   get departureId (): string {
     return this.props.departureId;
   }
-  set departureId ( value: string) {
-    this.props.departureId = value;
+  set departureId ( arrivalId: string) {
+    this.props.departureId = arrivalId;
   }
 
-  get extraTime (): number {
-      return this.props.extraTime;
+  get extraTime (): ExtraTime {
+    return ExtraTime.caller(this.extraTime);
   }
 
-  set extraTime ( value: number) {
-    this.props.extraTime = value;
+  set extraTime ( extraTime: ExtraTime) {
+    this.props.extraTime = extraTime;
   }
 
   private constructor (props: RouteProps, id?: UniqueEntityID) {
@@ -82,7 +86,8 @@ export class Route extends AggregateRoot<RouteProps> {
     const extraTime = RouteDTO.extraTime;
 
 
-    if (routeId === "" || distance=== 0 || routeTime === 0 || batteryWaste === 0 || arrivalId === "" || departureId === "" || extraTime === 0) {
+    if (routeId === undefined || distance=== undefined || routeTime === undefined || batteryWaste === undefined || arrivalId === undefined || departureId === undefined || extraTime === undefined) {
+      console.log(routeId);
       return Result.fail<Route>('Error creating route!')
     } else {
 
