@@ -29,7 +29,6 @@ export default class RouteService implements IRouteService {
 
   public async getRoutes(): Promise<Result<IRouteDTO[]>> {
     try {
-      console.log('SERVICE');
       let route = await this.routeRepo.getAll();
 
       if (route == null) {
@@ -37,17 +36,7 @@ export default class RouteService implements IRouteService {
       }
 
       const routeDTORes = route.map(item => RouteMap.toDTO(item));
-      console.log(routeDTORes);
-      /*else {
 
-        let routeDTOResult;
-        for (let i = 0; i < route.length; i++) {
-         routeDTOResult = RouteMap.toDTO(route[i]) as IRouteDTO;
-
-        }
-
-        return Result.ok<IRouteDTO[]>( routeDTOResult );
-        }*/
       return Result.ok<IRouteDTO[]>(routeDTORes);
     } catch (e) {
       throw new Error(e);
@@ -71,19 +60,19 @@ export default class RouteService implements IRouteService {
     }
   }
 
-  public async updateRoute(routeDTO: IRouteDTO): Promise<Result<IRouteDTO>> {
+  public async updateRoute(routeId: string, routeDTO: IRouteDTO): Promise<Result<IRouteDTO>> {
     try {
       const route = await this.routeRepo.findByRouteId(routeDTO.routeId);
-
       if (route === null) {
         return Result.fail<IRouteDTO>('Route not found');
       } else {
-        route.distance = routeDTO.distance;
-        route.routeTime = routeDTO.routeTime;
-        route.batteryWaste = routeDTO.batteryWaste;
+        route.routeId.props.routeId = routeDTO.routeId;
+        route.distance.props.distance = routeDTO.distance;
+        route.routeTime.props.routeTime = routeDTO.routeTime;
+        route.batteryWaste.props.batteryWaste = routeDTO.batteryWaste;
         route.arrivalId = routeDTO.arrivalId;
         route.departureId = routeDTO.departureId;
-        route.extraTime = routeDTO.extraTime;
+        route.extraTime.props.extraTime = routeDTO.extraTime;
         await this.routeRepo.save(route);
 
         const routeDTOResult = RouteMap.toDTO(route) as IRouteDTO;
