@@ -33,10 +33,9 @@ export default class TruckService implements ITruckService {
     }
   }
 
-  public async getLicencePlate( licencePlate: string): Promise<Result<ITruckDTO>> {
+  public async getLicencePlate( licencePlate: string, truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
     try {
-      const truck = await this.truckRepo.findLicencePlate(licencePlate);
-
+      const truck = await this.truckRepo.findLicencePlate(truckDTO.licencePlate);
       if (truck === null) {
         return Result.fail<ITruckDTO>("Truck not found");
       }
@@ -48,6 +47,7 @@ export default class TruckService implements ITruckService {
       throw e;
     }
   }
+
 
   public async createTruck(licencePlate: string, truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
     try {
