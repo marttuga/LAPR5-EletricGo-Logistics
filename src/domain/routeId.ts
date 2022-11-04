@@ -3,13 +3,13 @@ import { Guard } from "../core/logic/Guard";
 import { Result } from "../core/logic/Result";
 
 interface RouteProps {
-    value: string;
+    routeId: string;
   }
 
 export class RouteId extends ValueObject<RouteProps> {
-routeId: any;
-get value(): string {
-    return this.props.value;
+
+get routeId(): string {
+    return this.props.routeId;
 }
 
 private constructor(props: RouteProps) {
@@ -22,7 +22,7 @@ public static create(routeId: string): Result<RouteId> {
     if (!guardResult.succeeded) {
       return Result.fail<RouteId>(guardResult.message);
     } else {
-      return Result.ok<RouteId>(new RouteId({ value: routeId }));
+      return Result.ok<RouteId>(new RouteId({ routeId: routeId }));
     }
   }
     

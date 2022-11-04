@@ -3,25 +3,25 @@ import { Guard } from "../core/logic/Guard";
 import { Result } from "../core/logic/Result";
 
 interface RouteProps {
-    value: number;
+    batteryWaste: string;
   }
 
 export class BatteryWaste extends ValueObject<RouteProps> {
-get value(): number {
-    return this.props.value;
+get batteryWaste(): string {
+    return this.props.batteryWaste;
 }
 
 private constructor(props: RouteProps) {
     super(props);
 }
 
-public static create(batteryWaste: number): Result<BatteryWaste> {
+public static create(batteryWaste: string): Result<BatteryWaste> {
     const guardResult = Guard.againstNullOrUndefined(batteryWaste, 'batteryWaste');
 
     if (!guardResult.succeeded) {
       return Result.fail<BatteryWaste>(guardResult.message);
     } else {
-      return Result.ok<BatteryWaste>(new BatteryWaste({ value: batteryWaste }));
+      return Result.ok<BatteryWaste>(new BatteryWaste({ batteryWaste: batteryWaste }));
     }
   }
     
