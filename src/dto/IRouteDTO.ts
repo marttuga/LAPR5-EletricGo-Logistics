@@ -1,16 +1,15 @@
-import { BatteryWaste } from "../domain/batteryWaste";
-import { Distance } from "../domain/distance";
-import { ExtraTime } from "../domain/extraTime";
-import { RouteId } from "../domain/routeId";
-import { RouteTime } from "../domain/routeTime";
+import { BatteryWaste } from '../domain/route/batteryWaste';
+import { Distance } from '../domain/route/distance';
+import { ExtraTime } from '../domain/route/extraTime';
+import { RouteId } from '../domain/route/routeId';
+import { RouteTime } from '../domain/route/routeTime';
 
 export default interface IRouteDTO {
-    routeId: string;
-    distance: string,
-    routeTime: string,
-    batteryWaste: string,
-    arrivalId: string,
-    departureId: string,
-    extraTime: string,
-  }
-  
+  routeId: string;
+  distance: string;
+  routeTime: string;
+  batteryWaste: string;
+  arrivalId: string;
+  departureId: string;
+  extraTime: string;
+}
