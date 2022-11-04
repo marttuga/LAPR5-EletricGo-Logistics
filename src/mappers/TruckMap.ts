@@ -6,81 +6,57 @@ import ITruckDTO from "../dto/ITruckDTO";
 
 import { Truck } from "../domain/truck";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
-import { LicencePlate } from '../domain/licencePlate';
-import { Tare } from '../domain/tare';
-import { TimeCharging } from '../domain/timeCharging';
-import { AutonomyFullChargeLoad } from '../domain/autonomyFullChargeLoad';
-import { Capacity } from '../domain/capacity';
-import { MaxBateryCapacity } from '../domain/maxBateryCapacity';
-import { Model } from 'mongoose';
-import { Document } from 'mongodb';
-import { ITruckPersistence } from '../dataschema/ITruckPersistence';
-import TruckRepo from '../repos/truckRepo';
 
 
 export class TruckMap extends Mapper<Truck> {
  
-/*   public static toDTO( truck: Truck): ITruckDTO {
-    return {
-      //id: Truck.id.toString(),
-      licencePlate: LicencePlate.create(truck.licencePlate.licencePlate).getValue(),
-      tare: Tare.create(truck.tare.value).getValue(),
-      capacity: Capacity.create(truck.capacity.value).getValue(),
-      maxBateryCapacity: MaxBateryCapacity.create(truck.maxBateryCapacity.value).getValue(),
-      autonomyFullChargeLoad: AutonomyFullChargeLoad.create(truck.autonomyFullChargeLoad.value).getValue(),
-      timeCharging: TimeCharging.create(truck.timeCharging.value).getValue(),
-    } as ITruckDTO;
-  }  */
   public static toDTO( truck: Truck): ITruckDTO {
     return {
       //id: Truck.id.toString(),
-      licencePlate: (truck.licencePlate.licencePlate),
-      tare: (truck.tare.value),
-      capacity: (truck.capacity.value),
-      maxBateryCapacity: (truck.maxBateryCapacity.value),
-      autonomyFullChargeLoad: (truck.autonomyFullChargeLoad.value),
-      timeCharging: (truck.timeCharging.value),
-    } as unknown as ITruckDTO;
+      licencePlate: truck.props.licencePlate,
+      tare: truck.props.tare,
+      capacity: truck.props.capacity,
+      maxBateryCapacity: truck.props.maxBateryCapacity,
+      autonomyFullChargeLoad: truck.props.autonomyFullChargeLoad,
+      timeCharging: truck.props.timeCharging,
+    } as ITruckDTO;
   } 
 
-/*  
+ 
   public static async toDomain (raw: any): Promise<Truck> {
-    const repo = Container.get(TruckRepo); 
-    const licencePlate = await repo.findLicencePlate(raw.licencePlate);
 
     const TruckOrError = Truck.create({
-      licencePlate:LicencePlate.create(raw.licencePlate.).getValue() ,
-      tare: Tare.create(raw.tare).getValue(),
-      capacity: Capacity.create(raw.capacity).getValue(),
-      maxBateryCapacity: MaxBateryCapacity.create(raw.maxBateryCapacity).getValue(),
-      autonomyFullChargeLoad: AutonomyFullChargeLoad.create(raw.autonomyFullChargeLoad).getValue(),
-      timeCharging: TimeCharging.create(raw.timeCharging).getValue(),
+      licencePlate:raw.props.licencePlate ,
+      tare:raw.props.tare,
+      capacity: raw.props.capacity,
+      maxBateryCapacity: raw.props.maxBateryCapacity,
+      autonomyFullChargeLoad: raw.props.autonomyFullChargeLoad,
+      timeCharging: raw.props.timeCharging,
       
     }, new UniqueEntityID(raw.licencePlate))
 
     TruckOrError.isFailure ? console.log(TruckOrError.error) : '';
     
     return TruckOrError.isSuccess ? TruckOrError.getValue() : null;
-  }  */
+  }  
  
-   public static toDomain (truck: any | Model<ITruckPersistence & Document> ): Truck {
+/*    public static toDomain (truck: any | Model<ITruckPersistence & Document> ): Truck {
     const truckOrError = Truck.create(truck,new UniqueEntityID(truck.domainId));
     truckOrError.isFailure ? console.log(truckOrError.error) : '';
 
   return truckOrError.isSuccess ? truckOrError.getValue() : null;} 
-
+ */
 
 
   public static toPersistence (truck: Truck): any {
-    const a = {
+    return  {
       domainId: truck.id.toString(),
-      licencePlate: truck.licencePlate.licencePlate,
-      tare: truck.tare.value,
-      capacity: truck.capacity.value,
-      maxBateryCapacity: truck.maxBateryCapacity.value,
-      autonomyFullChargeLoad: truck.autonomyFullChargeLoad.value,
-      timeCharging: truck.timeCharging.value
+      licencePlate: truck.props.licencePlate,
+      tare: truck.props.tare,
+      capacity: truck.props.capacity,
+      maxBateryCapacity: truck.props.maxBateryCapacity,
+      autonomyFullChargeLoad: truck.props.autonomyFullChargeLoad,
+      timeCharging: truck.props.timeCharging
     }
-    return a;
   }
 }

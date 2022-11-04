@@ -89,8 +89,7 @@ export class Truck extends AggregateRoot<TruckProps> {
       
 
         const truck = new Truck({ licencePlate:licencePlate, tare: tare, capacity: capacity, maxBateryCapacity: maxBateryCapacity, autonomyFullChargeLoad: autonomyFullChargeLoad, timeCharging:timeCharging}, id);
-        console.log(truck);
-        console.log("\n");
+   
       return Result.ok<Truck>( truck )
     }
   } 
