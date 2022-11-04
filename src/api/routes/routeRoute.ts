@@ -17,12 +17,12 @@ export default (app: Router) => {
     celebrate({
       body: Joi.object({
         routeId: Joi.string().required(),
-        distance: Joi.number().required(),
-        routeTime: Joi.number().required(),
-        batteryWaste: Joi.number().required(),
+        distance: Joi.string().required(),
+        routeTime: Joi.string().required(),
+        batteryWaste: Joi.string().required(),
         arrivalId: Joi.string().required(),
         departureId: Joi.string().required(),
-        extraTime: Joi.number().required(),
+        extraTime: Joi.string().required(),
       }),
     }),
     (req, res, next) => ctrl.createRoute(req, res, next),
@@ -33,12 +33,12 @@ export default (app: Router) => {
     celebrate({
       body: Joi.object({
         routeId: Joi.string().required(),
-        distance: Joi.number().required(),
-        routeTime: Joi.number().required(),
-        batteryWaste: Joi.number().required(),
+        distance: Joi.string().required(),
+        routeTime: Joi.string().required(),
+        batteryWaste: Joi.string().required(),
         arrivalId: Joi.string().required(),
         departureId: Joi.string().required(),
-        extraTime: Joi.number().required(),
+        extraTime: Joi.string().required(),
       }),
     }),
     (req, res, next) => ctrl.updateRoute(req, res, next),
