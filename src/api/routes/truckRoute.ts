@@ -39,7 +39,11 @@ celebrate({
 }),
 (req, res, next) => ctrl.updateTruck(req, res, next) );
    
+truck.put('/getTruck',
+celebrate({
+  body: Joi.object({}),
+}),
+(req, res, next) => ctrl.updateTruck(req, res, next) );
 
-truck.get('/getTruck',(req,res,next) => ctrl.getTrucks(req, res, next) );
 
 };
