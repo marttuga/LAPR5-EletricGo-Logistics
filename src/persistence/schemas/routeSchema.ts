@@ -29,6 +29,11 @@ const RouteSchema = new mongoose.Schema(
         required: [true, 'Please enter departure warehouse id'],
         index: true,
       },
+      extraTime: {
+        type: Number,
+        required: [true, 'Please enter the extra time'],
+        index: true,
+      },
   },
   {
     timestamps: true

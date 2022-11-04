@@ -16,11 +16,14 @@ export default (app: Router) => {
   route.post('/createRoute',
     celebrate({
       body: Joi.object({
+        routeId: Joi.string().required(),
         distance: Joi.number().required(),
         routeTime: Joi.number().required(),
         batteryWaste: Joi.number().required(),
         arrivalId: Joi.string().required(),
-        departureId: Joi.string().required()
+        departureId: Joi.string().required(),
+        extraTime : Joi.number().required()
+
       })
     }),
     (req, res, next) => ctrl.createRoute(req, res, next) );
@@ -28,11 +31,13 @@ export default (app: Router) => {
   route.put('/updateRoute',
     celebrate({
       body: Joi.object({
+        routeId: Joi.string().required(),
         distance: Joi.number().required(),
         routeTime: Joi.number().required(),
         batteryWaste: Joi.number().required(),
         arrivalId: Joi.string().required(),
-        departureId: Joi.string().required()
+        departureId: Joi.string().required(),
+        extraTime : Joi.number().required()
       }),
     }),
     (req, res, next) => ctrl.updateRoute(req, res, next) );

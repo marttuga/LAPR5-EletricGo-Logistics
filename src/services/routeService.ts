@@ -88,6 +88,7 @@ export default class RouteService implements IRouteService {
         route.batteryWaste = routeDTO.batteryWaste;
         route.arrivalId = routeDTO.arrivalId;
         route.departureId = routeDTO.departureId;
+        route.extraTime = routeDTO.extraTime;
         await this.routeRepo.save(route);
 
         const routeDTOResult = RouteMap.toDTO( route ) as IRouteDTO;

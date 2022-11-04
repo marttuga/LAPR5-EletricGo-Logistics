@@ -5,6 +5,7 @@ export default interface IRouteDTO {
     routeTime: number,
     batteryWaste: number,
     arrivalId: string,
-    departureId: string
+    departureId: string,
+    extraTime: number,
   }
   

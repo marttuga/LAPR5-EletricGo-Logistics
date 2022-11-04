@@ -44,7 +44,7 @@ export default class RouteRepo implements IRouteRepo {
   }
 
   public async save (route: Route): Promise<Route> {
-    const query = { domainId: route.id.toString()}; 
+    const query = { domainId: route.routeId}; 
 
     const routeDocument = await this.routeSchema.findOne( query );
 
@@ -56,7 +56,13 @@ export default class RouteRepo implements IRouteRepo {
 
         return RouteMap.toDomain(routeCreated);
       } else {
+        routeDocument.routeId = route.routeId.routeId; 
         routeDocument.distance = route.distance;
+        routeDocument.routeTime = route.routeTime;
+        routeDocument.batteryWaste = route.batteryWaste;
+        routeDocument.arrivalId = route.arrivalId;
+        routeDocument.departureId = route.departureId;
+        routeDocument.extraTime = route.extraTime;
         await routeDocument.save();
 
         return route;
