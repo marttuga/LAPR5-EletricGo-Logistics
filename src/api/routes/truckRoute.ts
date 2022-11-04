@@ -13,7 +13,7 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.truck.name) as ITruckController;
 
-truck.post('/createTruck',
+truck.post('',
 celebrate({
   body: Joi.object({
     licencePlate: Joi.string().required(),
@@ -26,7 +26,7 @@ celebrate({
 }),
 (req, res, next) => ctrl.createTruck(req, res, next) );
 
-truck.put('/updateTruck',
+truck.put('',
 celebrate({
   body: Joi.object({
     licencePlate: Joi.string().required(),
@@ -39,11 +39,19 @@ celebrate({
 }),
 (req, res, next) => ctrl.updateTruck(req, res, next) );
    
-truck.put('/getTruck',
-celebrate({
-  body: Joi.object({}),
-}),
-(req, res, next) => ctrl.getTrucks(req, res, next) );
+
+    truck.get(
+    '',
+    celebrate({
+      body: Joi.object({
+        licencePlate: Joi.string().required(),
+      }),
+    }),
+    (req, res, next) => ctrl.getLicencePlate(req, res, next),
+  );
+
+  //truck.get('', (req, res, next) => ctrl.getAllTrucks(req, res, next));
 
 
-};
+
+}
