@@ -1,21 +1,21 @@
-import { ValueObject } from "../core/domain/ValueObject";
-import { Guard } from "../core/logic/Guard";
-import { Result } from "../core/logic/Result";
+import { ValueObject } from '../core/domain/ValueObject';
+import { Guard } from '../core/logic/Guard';
+import { Result } from '../core/logic/Result';
 
 interface RouteProps {
-    extraTime: string;
-  }
+  extraTime: string;
+}
 
 export class ExtraTime extends ValueObject<RouteProps> {
-get extraTime(): string {
+  get extraTime(): string {
     return this.props.extraTime;
-}
+  }
 
-private constructor(props: RouteProps) {
+  private constructor(props: RouteProps) {
     super(props);
-}
+  }
 
-public static create(extraTime: string): Result<ExtraTime> {
+  public static create(extraTime: string): Result<ExtraTime> {
     const guardResult = Guard.againstNullOrUndefined(extraTime, 'extraTime');
 
     if (!guardResult.succeeded) {
@@ -24,5 +24,4 @@ public static create(extraTime: string): Result<ExtraTime> {
       return Result.ok<ExtraTime>(new ExtraTime({ extraTime: extraTime }));
     }
   }
-    
 }
