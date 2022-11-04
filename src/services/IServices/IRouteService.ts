@@ -5,5 +5,5 @@ export default interface IRouteService {
   createRoute(routeId: string, routeDTO: IRouteDTO): Promise<Result<IRouteDTO>>;
   updateRoute(routeId: string, routeDTO: IRouteDTO): Promise<Result<IRouteDTO>>;
   getRoutes(): Promise<Result<IRouteDTO[]>>;
-  getRouteId(routeId: string): Promise<Result<IRouteDTO>>;
+  getRouteId(routeId: string, routeDTO: IRouteDTO): Promise<Result<IRouteDTO>>;
 }

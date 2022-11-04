@@ -12,16 +12,15 @@ import { RouteId } from '../domain/route/routeId';
 export default class RouteService implements IRouteService {
   constructor(@Inject(config.repos.route.name) private routeRepo: IRouteRepo) {}
 
-  public async getRouteId(routeId: string): Promise<Result<IRouteDTO>> {
+  public async getRouteId(routeId: string, routeDTO: IRouteDTO): Promise<Result<IRouteDTO>> {
     try {
-      const route = await this.routeRepo.findByRouteId(routeId);
-
+      const route = await this.routeRepo.findByRouteId(routeDTO.routeId);
       if (route === null) {
         return Result.fail<IRouteDTO>('Route not found');
-      } else {
-        const routeDTOResult = RouteMap.toDTO(route) as IRouteDTO;
-        return Result.ok<IRouteDTO>(routeDTOResult);
       }
+
+      const routeDTOResult = RouteMap.toDTO(route) as IRouteDTO;
+      return Result.ok<IRouteDTO>(routeDTOResult);
     } catch (e) {
       throw e;
     }
