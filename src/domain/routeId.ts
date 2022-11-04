@@ -1,28 +1,28 @@
-//import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { ValueObject } from "../core/domain/ValueObject";
 import { Guard } from "../core/logic/Guard";
 import { Result } from "../core/logic/Result";
 
 interface RouteProps {
-    routeId: string;
+    value: string;
   }
 
 export class RouteId extends ValueObject<RouteProps> {
-get routeId(): string {
-    return this.props.routeId;
+routeId: any;
+get value(): string {
+    return this.props.value;
 }
 
 private constructor(props: RouteProps) {
     super(props);
 }
 
-public static create(id: string): Result<RouteId> {
-    const guardResult = Guard.againstNullOrUndefined(id, 'id');
+public static create(routeId: string): Result<RouteId> {
+    const guardResult = Guard.againstNullOrUndefined(routeId, 'routeId');
 
     if (!guardResult.succeeded) {
       return Result.fail<RouteId>(guardResult.message);
     } else {
-      return Result.ok<RouteId>(new RouteId({ routeId: id }));
+      return Result.ok<RouteId>(new RouteId({ value: routeId }));
     }
   }
     
