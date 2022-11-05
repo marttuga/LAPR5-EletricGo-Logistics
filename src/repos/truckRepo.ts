@@ -44,10 +44,11 @@ export default class TruckRepo implements ITruckRepo {
 
 
   public async save(truck: Truck): Promise<Truck>{
-    const query = { licencePlate: truck.licencePlate.licencePlate };   console.log(query);
-    const truckDocument = await this.truckSchema.findOne(query);
-    console.log(truckDocument);
+    const query = { licencePlate: truck.props.licencePlate.toString() };  
  
+    const truckDocument = await this.truckSchema.findOne(query);
+
+
     try {
       if (truckDocument === null) {
         const rawtruck: any = TruckMap.toPersistence(truck);
@@ -55,12 +56,13 @@ export default class TruckRepo implements ITruckRepo {
 
         return TruckMap.toDomain(truckCreated);
       } else {
-        truckDocument.licencePlate = truck.props.licencePlate.props.licencePlate;
-        truckDocument.tare = truck.props.tare.value;
-        truckDocument.capacity = truck.props.capacity.value;;
-        truckDocument.maxBateryCapacity = truck.props.maxBateryCapacity.maxBateryCapacity;
-        truckDocument.autonomyFullChargeLoad = truck.props.autonomyFullChargeLoad.value;
-        truckDocument.timeCharging = truck.props.timeCharging.value;
+        truckDocument.licencePlate = truck.props.licencePlate.toString();
+  
+        truckDocument.tare = parseInt(truck.props.tare.toString());
+        truckDocument.capacity = parseInt(truck.props.capacity.toString());
+        truckDocument.maxBateryCapacity = parseInt(truck.props.maxBateryCapacity.toString());
+        truckDocument.autonomyFullChargeLoad = parseInt(truck.props.autonomyFullChargeLoad.toString());
+        truckDocument.timeCharging = parseInt(truck.props.timeCharging.toString());
 
         await truckDocument.save();
         return truck;
@@ -70,7 +72,6 @@ export default class TruckRepo implements ITruckRepo {
     }
   }
 
-  
 
   public async findLicencePlate (licencePlate: LicencePlate | string): Promise<Truck> {
       const query = { licencePlate: licencePlate };
