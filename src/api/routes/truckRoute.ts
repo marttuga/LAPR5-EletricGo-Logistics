@@ -41,7 +41,7 @@ celebrate({
    
 
     truck.get(
-    '',
+    '/getTruck',
     celebrate({
       body: Joi.object({
         licencePlate: Joi.string().required(),
@@ -50,7 +50,7 @@ celebrate({
     (req, res, next) => ctrl.getLicencePlate(req, res, next),
   );
 
-  //truck.get('', (req, res, next) => ctrl.getAllTrucks(req, res, next));
+  truck.get('/getAll', (req, res, next) => ctrl.getTrucks(req, res, next));
 
 
 
