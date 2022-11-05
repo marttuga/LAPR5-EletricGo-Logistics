@@ -44,15 +44,15 @@ export default (app: Router) => {
     (req, res, next) => ctrl.updateRoute(req, res, next),
   );
 
-  /*  route.get(
-    '',
+  route.get(
+    '/getById',
     celebrate({
       body: Joi.object({
         routeId: Joi.string().required(),
       }),
     }),
     (req, res, next) => ctrl.getRouteId(req, res, next),
-  );*/
+  );
 
-  route.get('', (req, res, next) => ctrl.getRoute(req, res, next));
+  route.get('/getRoutes', (req, res, next) => ctrl.getRoute(req, res, next));
 };
