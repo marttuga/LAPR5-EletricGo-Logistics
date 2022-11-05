@@ -71,10 +71,12 @@ export default class TruckService implements ITruckService {
   public async updateTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
     try {
       const truck = await this.truckRepo.findLicencePlate(truckDTO.licencePlate);
+
       if (truck === null) {
         return Result.fail<ITruckDTO>("Truck not found");
       }
       else {
+        truck.props.licencePlate=truckDTO.licencePlate;
         truck.tare = truckDTO.tare;
         truck.capacity = truckDTO.capacity;
         truck.maxBateryCapacity = truckDTO.maxBateryCapacity;
@@ -89,6 +91,6 @@ export default class TruckService implements ITruckService {
     } catch (e) {
       throw e;
     }
-  }
+  
 
-}
+}}
