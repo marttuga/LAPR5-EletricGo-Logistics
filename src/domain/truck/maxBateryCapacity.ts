@@ -7,7 +7,7 @@ interface MaxBateryCapacityProps {
 }
 
 export class MaxBateryCapacity extends ValueObject<MaxBateryCapacityProps> {
-  get value (): number {
+  get value(): number {
     return this.props.value;
   }
   

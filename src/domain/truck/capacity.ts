@@ -9,7 +9,7 @@ interface CapacityProps {
 }
 
 export class Capacity extends ValueObject<CapacityProps> {
-  get value (): number {
+  get value(): number {
     return this.props.value;
   }
   

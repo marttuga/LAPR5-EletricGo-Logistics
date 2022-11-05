@@ -8,7 +8,7 @@ interface TimeChargingProps {
 }
 
 export class TimeCharging extends ValueObject<TimeChargingProps> {
-  get value (): number {
+  get value(): number {
     return this.props.value;
   }
   

@@ -7,7 +7,7 @@ interface AutonomyFullChargeLoadProps {
 }
 
 export class AutonomyFullChargeLoad extends ValueObject<AutonomyFullChargeLoadProps> {
-  get value (): number {
+  get value(): number {
     return this.props.value;
   }
   

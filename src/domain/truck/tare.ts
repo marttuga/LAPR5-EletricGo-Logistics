@@ -8,7 +8,7 @@ interface TareProps {
 }
 
 export class Tare extends ValueObject<TareProps> {
-  get value (): number {
+  get value(): number {
     return this.props.value;
   }
   
