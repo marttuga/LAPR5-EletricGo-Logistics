@@ -47,10 +47,7 @@ export default class RouteController implements IRouteController /* TODO: extend
 
   public async updateRoute(req: Request, res: Response, next: NextFunction) {
     try {
-      const routeOrError = (await this.routeServiceInstance.updateRoute(
-        req.params.routeId as string,
-        req.body as IRouteDTO,
-      )) as Result<IRouteDTO>;
+      const routeOrError = (await this.routeServiceInstance.updateRoute(req.body as IRouteDTO)) as Result<IRouteDTO>;
 
       if (routeOrError.isFailure) {
         return res.status(404).send();
