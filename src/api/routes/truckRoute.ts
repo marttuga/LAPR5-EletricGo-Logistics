@@ -16,7 +16,7 @@ export default (app: Router) => {
 truck.post('',
 celebrate({
   body: Joi.object({
-    licencePlate: Joi.string().required(),
+    licencePlate: Joi.string().regex(/([A-Z]{2}-[0-9]{2}-[A-Z]{2})/).required(),
     tare: Joi.number().required(),
     capacity:Joi.number().required(),
     maxBateryCapacity:Joi.number().required(),
@@ -29,7 +29,7 @@ celebrate({
 truck.put('',
 celebrate({
   body: Joi.object({
-    licencePlate: Joi.string().required(),
+    licencePlate:Joi.string().regex(/([A-Z]{2}-[0-9]{2}-[A-Z]{2})/).required(),
     tare: Joi.number().required(),
     capacity:Joi.number().required(),
     maxBateryCapacity:Joi.number().required(),
@@ -44,7 +44,7 @@ celebrate({
     '/getTruck',
     celebrate({
       body: Joi.object({
-        licencePlate: Joi.string().required(),
+        licencePlate: Joi.string().regex(/([A-Z]{2}-[0-9]{2}-[A-Z]{2})/).required(),
       }),
     }),
     (req, res, next) => ctrl.getLicencePlate(req, res, next),
