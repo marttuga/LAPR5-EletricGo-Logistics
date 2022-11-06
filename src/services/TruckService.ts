@@ -49,10 +49,15 @@ export default class TruckService implements ITruckService {
   }
 
 
-  public async createTruck(licencePlate: string, truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
+  public async createTruck( truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
     try {
+      const truck = await this.truckRepo.findLicencePlate(truckDTO.licencePlate);
 
-          const truckOrError = await Truck.create(truckDTO);
+      if (truck != null) {
+  
+        return Result.fail< ITruckDTO>("Truck already exists: " +truckDTO.licencePlate);
+      }
+      const truckOrError = await Truck.create(truckDTO);
       if (truckOrError.isFailure) {
         return Result.fail<ITruckDTO>(truckOrError.errorValue());
       }
