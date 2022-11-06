@@ -6,7 +6,6 @@ import IRouteRepo from '../services/IRepos/IRouteRepo';
 import IRouteService from './IServices/IRouteService';
 import { Result } from '../core/logic/Result';
 import { RouteMap } from '../mappers/RouteMap';
-import { RouteId } from '../domain/route/routeId';
 
 @Service()
 export default class RouteService implements IRouteService {
@@ -44,7 +43,14 @@ export default class RouteService implements IRouteService {
 
   public async createRoute(routeId: string, routeDTO: IRouteDTO): Promise<Result<IRouteDTO>> {
     try {
+      const route = await this.routeRepo.findByRouteId(routeDTO.routeId);
+
+      if (route != null) {
+        return Result.fail<IRouteDTO>('Route already exists: ' + routeDTO.routeId);
+      }
+
       const routeOrError = await Route.create(routeDTO);
+
       if (routeOrError.isFailure) {
         return Result.fail<IRouteDTO>(routeOrError.errorValue());
       }
