@@ -36,14 +36,13 @@ export default class TruckController implements ITruckController /* TODO: extend
     try {
      //   const RouteOrError = (await this.routeServiceInstance.createRoute(
       const truckOrError = (await this.truckServiceInstance.createTruck(
-        req.params.routeId as string,
         req.body as ITruckDTO,
       )) as Result<ITruckDTO>;
       if (truckOrError.isFailure) {
        return res.send().status(402);
 
       }
-      const roleDTO = truckOrError.getValue();
+      const roleDTO = (await truckOrError).getValue();
       
    return res.status(201).json(roleDTO);
     } catch (e) {
