@@ -6,6 +6,12 @@ import ITruckRepo from './IRepos/ITruckRepo';
 import ITruckService from './IServices/ITruckService';
 import { Result } from "../core/logic/Result";
 import { TruckMap } from "../mappers/TruckMap";
+import {LicencePlate} from "../domain/truck/licencePlate";
+import {Tare} from "../domain/truck/tare";
+import {Capacity} from "../domain/truck/capacity";
+import {MaxBateryCapacity} from "../domain/truck/maxBateryCapacity";
+import {AutonomyFullChargeLoad} from "../domain/truck/autonomyFullChargeLoad";
+import {TimeCharging} from "../domain/truck/timeCharging";
 
 
 @Service()
@@ -76,13 +82,15 @@ export default class TruckService implements ITruckService {
         return Result.fail<ITruckDTO>("Truck not found");
       }
       else {
-        truck.props.licencePlate=truckDTO.licencePlate;
-        truck.tare = truckDTO.tare;
-        truck.capacity = truckDTO.capacity;
-        truck.maxBateryCapacity = truckDTO.maxBateryCapacity;
-        truck.autonomyFullChargeLoad= truckDTO.autonomyFullChargeLoad;
-        truck.timeCharging= truckDTO.timeCharging; 
-                
+        console.log("AQUIIIIIIIIIIIIIIIIIIIIII")
+        truck.props.licencePlate=LicencePlate.create(truckDTO.licencePlate).getValue();
+
+        truck.tare = Tare.create(truckDTO.tare).getValue();
+        truck.capacity = Capacity.create(truckDTO.capacity).getValue();
+        truck.maxBateryCapacity = MaxBateryCapacity.create(truckDTO.maxBateryCapacity).getValue();
+        truck.autonomyFullChargeLoad= AutonomyFullChargeLoad.create(truckDTO.autonomyFullChargeLoad).getValue();
+        truck.timeCharging= TimeCharging.create(truckDTO.timeCharging).getValue();
+        console.log("AQUIIIIIIIIIIIIIIIIIIIIII1111")
         await this.truckRepo.save(truck);
 
         const truckDTOResult = TruckMap.toDTO( truck ) as ITruckDTO;

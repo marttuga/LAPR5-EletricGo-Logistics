@@ -62,6 +62,10 @@ export class Truck extends AggregateRoot<TruckProps> {
     this.props.autonomyFullChargeLoad = value;
   }
 
+  set licencePlate ( value: LicencePlate) {
+    this.props.licencePlate = value;
+  }
+
   get timeCharging (): TimeCharging {
     return this.props.timeCharging;
   }
@@ -75,12 +79,12 @@ export class Truck extends AggregateRoot<TruckProps> {
 
 
   public static create(TruckDTO: ITruckDTO, id?: UniqueEntityID): Result<Truck>  {
-    const licencePlate= TruckDTO.licencePlate;
-    const tare = TruckDTO.tare;
-    const capacity = TruckDTO.capacity;
-    const maxBateryCapacity = TruckDTO.maxBateryCapacity;
-    const autonomyFullChargeLoad = TruckDTO.autonomyFullChargeLoad;
-    const timeCharging = TruckDTO.timeCharging;
+    const licencePlate= LicencePlate.create(TruckDTO.licencePlate).getValue();
+    const tare = Tare.create(TruckDTO.tare).getValue();
+    const capacity = Capacity.create(TruckDTO.capacity).getValue();
+    const maxBateryCapacity = MaxBateryCapacity.create(TruckDTO.maxBateryCapacity).getValue();
+    const autonomyFullChargeLoad = AutonomyFullChargeLoad.create(TruckDTO.autonomyFullChargeLoad).getValue();
+    const timeCharging = TimeCharging.create(TruckDTO.timeCharging).getValue();
 
     if (
       licencePlate === undefined ||
