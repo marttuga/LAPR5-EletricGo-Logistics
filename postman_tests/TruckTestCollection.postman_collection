@@ -187,7 +187,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"licencePlate\": \"AA-00-AA\"\r\n  }",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -195,7 +195,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/truck/getTruck",
+					"raw": "http://localhost:3000/api/truck/getTruck/AA-00-AA",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -204,7 +204,8 @@
 					"path": [
 						"api",
 						"truck",
-						"getTruck"
+						"getTruck",
+						"AA-00-AA"
 					]
 				}
 			},
