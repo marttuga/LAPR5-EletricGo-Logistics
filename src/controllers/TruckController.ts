@@ -67,8 +67,8 @@ export default class TruckController implements ITruckController /* TODO: extend
 
   public async getLicencePlate(req: Request, res: Response, next: NextFunction) {
     try {
-   
-      const truckOrError = await this.truckServiceInstance.getLicencePlate(req.params.licencePlate as string, req.body as ITruckDTO) as Result<ITruckDTO>;
+      const truckOrError = await this.truckServiceInstance.getLicencePlate(req.params.licencePlate ) as Result<ITruckDTO>;
+     
 
       if (truckOrError.isFailure) {
         return res.status(404).send();

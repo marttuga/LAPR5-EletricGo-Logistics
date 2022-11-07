@@ -41,12 +41,8 @@ celebrate({
    
 
     truck.get(
-    '/getTruck',
-    celebrate({
-      body: Joi.object({
-        licencePlate: Joi.string().regex(/([A-Z]{2}-[0-9]{2}-[A-Z]{2})/).required(),
-      }),
-    }),
+    '/getTruck/:licencePlate',
+ 
     (req, res, next) => ctrl.getLicencePlate(req, res, next),
   );
 
