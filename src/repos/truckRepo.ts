@@ -44,14 +44,11 @@ export default class TruckRepo implements ITruckRepo {
 
 
   public async save(truck: Truck): Promise<Truck>{
-    console.log(truck)
 
-    const query = { licencePlate: truck.props.licencePlate };
-    console.log(query)
+    const query = { licencePlate: truck.props.licencePlate.licencePlate };
 
-    const truckDocument = await this.truckSchema.findOne(query.licencePlate);
-console.log("======================")
-    console.log(truckDocument)
+    const truckDocument = await this.truckSchema.findOne(query);
+
 
     try {
       if (truckDocument === null) {
@@ -68,8 +65,7 @@ console.log("======================")
         truckDocument.maxBateryCapacity = truck.props.maxBateryCapacity.props.value;
         truckDocument.autonomyFullChargeLoad =truck.props.autonomyFullChargeLoad.props.value;
         truckDocument.timeCharging = truck.props.timeCharging.props.value;
-        console.log("UPDATEEEEEEEEEEEE")
-        console.log(truckDocument)
+
 
         await truckDocument.save();
         return truck;

@@ -87,7 +87,6 @@ export default class TruckService implements ITruckService {
         return Result.fail<ITruckDTO>("Truck not found");
       }
       else {
-        console.log("AQUIIIIIIIIIIIIIIIIIIIIII")
         truck.props.licencePlate=LicencePlate.create(truckDTO.licencePlate).getValue();
 
         truck.tare = Tare.create(truckDTO.tare).getValue();
@@ -95,7 +94,6 @@ export default class TruckService implements ITruckService {
         truck.maxBateryCapacity = MaxBateryCapacity.create(truckDTO.maxBateryCapacity).getValue();
         truck.autonomyFullChargeLoad= AutonomyFullChargeLoad.create(truckDTO.autonomyFullChargeLoad).getValue();
         truck.timeCharging= TimeCharging.create(truckDTO.timeCharging).getValue();
-        console.log("AQUIIIIIIIIIIIIIIIIIIIIII1111")
         await this.truckRepo.save(truck);
 
         const truckDTOResult = TruckMap.toDTO( truck ) as ITruckDTO;

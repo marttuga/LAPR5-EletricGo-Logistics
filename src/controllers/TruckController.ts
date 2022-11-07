@@ -34,7 +34,6 @@ export default class TruckController implements ITruckController /* TODO: extend
 
   public async createTruck(req: Request, res: Response, next: NextFunction) {
     try {
-     //   const RouteOrError = (await this.routeServiceInstance.createRoute(
       const truckOrError = (await this.truckServiceInstance.createTruck(
         req.body as ITruckDTO,
       )) as Result<ITruckDTO>;
