@@ -2,52 +2,82 @@ import 'reflect-metadata';
 import * as sinon from 'sinon';
 import { Response, Request, NextFunction } from 'express';
 import config from '../config';
-import { Container } from 'typedi';
-import { Result } from '../src/core/logic/Result';
-
+import {Container} from 'typedi';
 import ITruckDTO from "../src/dto/ITruckDTO";
-import TruckController from "../src/controllers/truckController";
 import ITruckService from "../src/services/IServices/ITruckService";
+import ITruckController from "../src/controllers/IControllers/ITruckController";
+import {ITruckPersistence} from "../src/dataschema/ITruckPersistence";
+import ITruckRepo from "../src/services/IRepos/ITruckRepo";
 
-describe('Truck controller', function() {
-	beforeEach(() => {
-		let truckSchemaInstance = require("../../../src/persistence/schemas/truckSchema").default;
+describe('Truck controller', () => {
+
+	it('Truck controller Tests', async function() {
+		
+		let body ={licencePlate: "AA-88-AA", tare: 420, capacity: 1000, maxBateryCapacity: 1000, autonomyFullChargeLoad: 100,  timeCharging: 1250};
+
+		
+		let truckSchemaClass = require("../src/persistence/schemas/truckSchema").default;
+		let truckSchemaInstance:ITruckPersistence=Container.get(truckSchemaClass);
 		Container.set("TruckSchema", truckSchemaInstance);
+		
+		let truckRepoClass = require("../src/repos/truckRepo").default;
+		let truckRepoInstance:ITruckRepo=Container.get(truckRepoClass);
+		Container.set(config.repos.truck.name, truckRepoInstance);
 
-		let truckRepoInstance = require('../../../src/repos/truckRepo').default;
-		Container.set("TruckRepo", truckRepoInstance);
 
-		let truckServiceClass = require('../../../src/services/truckService').default;
-		let truckServiceInstance = Container.get(truckServiceClass);
-		Container.set("TruckService", truckServiceInstance);
+		let truckServiceClass= require("../src/services/truckService").default;
+		let truckServiceInstance:ITruckService= Container.get(truckServiceClass);
+		Container.set(config.services.truck.name, truckServiceInstance);
+		truckServiceInstance= Container.get(config.services.truck.name);
+	
+		let truckControllerClass= require("../src/controllers/TruckController").default;
+		let truckControllerInstance:ITruckController=Container.get(truckControllerClass);
+		Container.set(config.controllers.truck.name, truckControllerInstance);
+		truckControllerInstance = Container.get(config.controllers.truck.name);
+
+
+		let req: Partial<Request>= {};
+		req.body = body;
+
+	
+	beforeEach(() => {
+		
+		sinon.stub(truckServiceInstance, "createTruck").returns(( {
+			licencePlate: req.body.licencePlate,
+			tare: req.body.tare,
+			capacity: req.body.capacity,
+			maxBateryCapacity: req.body.maxBateryCapacity,
+			autonomyFullChargeLoad: req.body.autonomyFullChargeLoad,
+			timeCharging: req.body.timeCharging
+		}) as ITruckDTO);
+
 	});
 
-	afterEach(() => {
+	afterEach(function () {
 		sinon.restore();
 	});
 
-	it('Create a truck with some attributes', async function() {
-		let body ={licencePlate: "AA-88-AA", tare: 420, capacity: 1000, maxBateryCapacity: 1000, autonomyFullChargeLoad: 100,  timeCharging: 1250};
-		let req: Partial<Request> = {};
-		req.body = body;
+	it('Create a truck with some attributes', async ()=> {
+		
+		const jsonStub = sinon.stub()
+		const res = { status: status => ({ json: jsonStub, send: err => err }) };
+		const statusSpy = sinon.spy(res, 'status')
 
-		let res: Partial<Response> = {
-			json: sinon.spy(),
-		};
+	
 		let next: Partial<NextFunction> = () => {};
-
-		let truckServiceInstance = Container.get(config.services.truck.name);
-
-		const obj = sinon.stub(truckServiceInstance, 'createTruck').returns(
-			Result.ok<ITruckDTO>(req.body as ITruckDTO));
-
-		const ctrl = new TruckController(truckServiceInstance as ITruckService);
-		await ctrl.createTruck(<Request>req, <Response>res, <NextFunction>next);
-
-		sinon.assert.calledOnce(obj);
-		sinon.assert.calledWith(obj, sinon.match(body));
+		
+		await truckControllerInstance.createTruck(<Request>req, <Response>statusSpy, <NextFunction>next);
+	
+		sinon.assert.calledWith(statusSpy.status, 201);
+		sinon.assert.calledOnce(jsonStub);
+		sinon.assert.calledWith(jsonStub,{licencePlate: req.body.licencePlate,
+			tare: req.body.tare,
+			capacity: req.body.capacity,
+			maxBateryCapacity: req.body.maxBateryCapacity,
+			autonomyFullChargeLoad: req.body.autonomyFullChargeLoad,
+			timeCharging: req.body.timeCharging} );
 	}); 
-
+/*
 	it('Update Truck Value Objects', async function () {
 		let body = { licencePlate: "AA-88-AA", tare: 420, capacity: 1000, maxBateryCapacity: 1000, autonomyFullChargeLoad: 100,  timeCharging: 1250};
 		let req: Partial<Request> = {};
@@ -94,8 +124,7 @@ describe('Truck controller', function() {
 
 		sinon.assert.calledOnce(obj);
 		//sinon.assert.calledWith(obj, sinon.match(body as ITruckDTO[]));
-	});
-});
+	});*/
 
 /* import 'reflect-metadata';
 
@@ -206,5 +235,8 @@ describe('Test Handlers Controller' , function () {
       
       expect(res.text).toEqual("");
   });
+*/
+})
 
-}); */ */
+}); 
+
