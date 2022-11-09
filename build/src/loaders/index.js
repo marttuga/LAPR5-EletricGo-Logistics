@@ -21,37 +21,79 @@ exports.default = async ({ expressApp }) => {
         name: 'roleSchema',
         schema: '../persistence/schemas/roleSchema',
     };
+    const routeSchema = {
+        // compare with the approach followed in repos and services
+        name: 'routeSchema',
+        schema: '../persistence/schemas/routeSchema',
+    };
+    const truckSchema = {
+        // compare with the approach followed in repos and services
+        name: 'truckSchema',
+        schema: '../persistence/schemas/truckSchema',
+    };
     const roleController = {
         name: config_1.default.controllers.role.name,
         path: config_1.default.controllers.role.path
+    };
+    const routeController = {
+        name: config_1.default.controllers.route.name,
+        path: config_1.default.controllers.route.path
+    };
+    const truckController = {
+        name: config_1.default.controllers.truck.name,
+        path: config_1.default.controllers.truck.path
     };
     const roleRepo = {
         name: config_1.default.repos.role.name,
         path: config_1.default.repos.role.path
     };
+    const routeRepo = {
+        name: config_1.default.repos.route.name,
+        path: config_1.default.repos.route.path
+    };
     const userRepo = {
         name: config_1.default.repos.user.name,
         path: config_1.default.repos.user.path
+    };
+    const truckRepo = {
+        name: config_1.default.repos.truck.name,
+        path: config_1.default.repos.truck.path
     };
     const roleService = {
         name: config_1.default.services.role.name,
         path: config_1.default.services.role.path
     };
+    const routeService = {
+        name: config_1.default.services.route.name,
+        path: config_1.default.services.route.path
+    };
+    const truckService = {
+        name: config_1.default.services.truck.name,
+        path: config_1.default.services.truck.path
+    };
     await (0, dependencyInjector_1.default)({
         mongoConnection,
         schemas: [
             userSchema,
-            roleSchema
+            roleSchema,
+            routeSchema,
+            truckSchema
         ],
         controllers: [
-            roleController
+            roleController,
+            routeController,
+            truckController
         ],
         repos: [
             roleRepo,
-            userRepo
+            userRepo,
+            routeRepo,
+            truckRepo
         ],
         services: [
-            roleService
+            roleService,
+            routeService,
+            truckService
         ]
     });
     logger_1.default.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

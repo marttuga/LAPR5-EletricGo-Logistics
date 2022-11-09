@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import auth from './routes/userRoute';
-import user from './routes/userRoute';
+//import auth from './routes/userRoute';
+//import user from './routes/userRoute';
 import role from './routes/roleRoute';
 import route from './routes/routeRoute';
 import truck from './routes/truckRoute';
@@ -8,8 +8,7 @@ import truck from './routes/truckRoute';
 export default () => {
 	const app = Router();
 
-	auth(app);
-	user(app);
+	//user(app);
 	role(app);
 	truck(app);
 	route(app);

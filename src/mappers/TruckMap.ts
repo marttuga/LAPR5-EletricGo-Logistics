@@ -15,12 +15,12 @@ export class TruckMap extends Mapper<Truck> {
   public static toDTO( truck: Truck): ITruckDTO {
     return {
       //id: Truck.id.toString(),
-      licencePlate: truck.props.licencePlate,
-      tare: truck.props.tare,
-      capacity: truck.props.capacity,
-      maxBateryCapacity: truck.props.maxBateryCapacity,
-      autonomyFullChargeLoad: truck.props.autonomyFullChargeLoad,
-      timeCharging: truck.props.timeCharging,
+      licencePlate: truck.props.licencePlate.licencePlate,
+      tare: truck.props.tare.value,
+      capacity: truck.props.capacity.value,
+      maxBateryCapacity: truck.props.maxBateryCapacity.value,
+      autonomyFullChargeLoad: truck.props.autonomyFullChargeLoad.value,
+      timeCharging: truck.props.timeCharging.value,
     } as ITruckDTO;
   } 
  
@@ -46,12 +46,12 @@ export class TruckMap extends Mapper<Truck> {
   public static toPersistence (truck: Truck): any {
     return  {
       domainId: truck.id.toString(),
-      licencePlate: truck.props.licencePlate,
-      tare: truck.props.tare,
-      capacity: truck.props.capacity,
-      maxBateryCapacity: truck.props.maxBateryCapacity,
-      autonomyFullChargeLoad: truck.props.autonomyFullChargeLoad,
-      timeCharging: truck.props.timeCharging
+      licencePlate: truck.props.licencePlate.licencePlate,
+      tare: truck.props.tare.value,
+      capacity: truck.props.capacity.value,
+      maxBateryCapacity: truck.props.maxBateryCapacity.value,
+      autonomyFullChargeLoad: truck.props.autonomyFullChargeLoad.value,
+      timeCharging: truck.props.timeCharging.value
     }
   }
 }

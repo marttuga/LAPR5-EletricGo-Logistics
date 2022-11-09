@@ -19,7 +19,7 @@ exports.default = {
     /**
      * That long string from mlab
      */
-    databaseURL: process.env.MONGODB_URI || "mongodb://localhost:27017/test",
+    databaseURL: process.env.MONGODB_URI || "mongodb://mongoadmin:ccba717c4c8c12f171de91e3@vsgate-s1.dei.isep.ipp.pt:10960/admin",
     /**
      * Your secret sauce
      */
@@ -40,6 +40,14 @@ exports.default = {
         role: {
             name: "RoleController",
             path: "../controllers/roleController"
+        },
+        truck: {
+            name: "TruckController",
+            path: "../controllers/truckController"
+        },
+        route: {
+            name: "RouteController",
+            path: "../controllers/routeController"
         }
     },
     repos: {
@@ -50,12 +58,28 @@ exports.default = {
         user: {
             name: "UserRepo",
             path: "../repos/userRepo"
+        },
+        truck: {
+            name: "TruckRepo",
+            path: "../repos/truckRepo"
+        },
+        route: {
+            name: "RouteRepo",
+            path: "../repos/RouteRepo"
         }
     },
     services: {
         role: {
             name: "RoleService",
             path: "../services/roleService"
+        },
+        truck: {
+            name: "TruckService",
+            path: "../services/truckService"
+        },
+        route: {
+            name: "RouteService",
+            path: "../services/routeService"
         }
     },
 };

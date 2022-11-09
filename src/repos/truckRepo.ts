@@ -46,20 +46,21 @@ export default class TruckRepo implements ITruckRepo {
   public async save(truck: Truck): Promise<Truck>{
 
     const query = { licencePlate: truck.props.licencePlate.licencePlate };
-
     const truckDocument = await this.truckSchema.findOne(query);
 
 
     try {
       if (truckDocument === null) {
+
         const rawtruck: any = TruckMap.toPersistence(truck);
         const truckCreated = await this.truckSchema.create(rawtruck);
 
         return TruckMap.toDomain(truckCreated);
+      
       } else {
         
        // truckDocument.licencePlate = truck.props.licencePlate.props.licencePlate;
-  
+
         truckDocument.tare = truck.props.tare.props.value;
         truckDocument.capacity = truck.props.capacity.props.value;
         truckDocument.maxBateryCapacity = truck.props.maxBateryCapacity.props.value;

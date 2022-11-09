@@ -1,14 +1,11 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UniqueEntityID = void 0;
-const v4_1 = __importDefault(require("uuid/v4"));
+const uuid_1 = require("uuid");
 const Identifier_1 = require("./Identifier");
 class UniqueEntityID extends Identifier_1.Identifier {
     constructor(id) {
-        super(id ? id : (0, v4_1.default)());
+        super(id ? id : (0, uuid_1.v1)());
     }
 }
 exports.UniqueEntityID = UniqueEntityID;

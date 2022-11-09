@@ -79,29 +79,26 @@ export class Truck extends AggregateRoot<TruckProps> {
 
 
   public static create(TruckDTO: ITruckDTO, id?: UniqueEntityID): Result<Truck>  {
-    const licencePlate= LicencePlate.create(TruckDTO.licencePlate).getValue();
-    const tare = Tare.create(TruckDTO.tare).getValue();
-    const capacity = Capacity.create(TruckDTO.capacity).getValue();
-    const maxBateryCapacity = MaxBateryCapacity.create(TruckDTO.maxBateryCapacity).getValue();
-    const autonomyFullChargeLoad = AutonomyFullChargeLoad.create(TruckDTO.autonomyFullChargeLoad).getValue();
-    const timeCharging = TimeCharging.create(TruckDTO.timeCharging).getValue();
-
-    if (
-      licencePlate === undefined ||
-      tare === undefined ||
-      capacity === undefined ||
-      maxBateryCapacity === undefined ||
-      autonomyFullChargeLoad === undefined ||
-      timeCharging === undefined 
-
-    ) {
+    let licencePlate; let tare; let capacity; let maxBateryCapacity; let autonomyFullChargeLoad; let timeCharging;
+    try {
+     licencePlate= LicencePlate.create(TruckDTO.licencePlate).getValue();
+     tare = Tare.create(TruckDTO.tare).getValue();
+     capacity = Capacity.create(TruckDTO.capacity).getValue();
+     maxBateryCapacity = MaxBateryCapacity.create(TruckDTO.maxBateryCapacity).getValue();
+     autonomyFullChargeLoad = AutonomyFullChargeLoad.create(TruckDTO.autonomyFullChargeLoad).getValue();
+     timeCharging = TimeCharging.create(TruckDTO.timeCharging).getValue();
    
+     
+    if (licencePlate === undefined || tare === undefined || capacity === undefined || maxBateryCapacity === undefined || autonomyFullChargeLoad === undefined || timeCharging === undefined) {
       return Result.fail<Truck>('Error creating truck!');
+      
     } else {        
       const truck = new Truck({ licencePlate:licencePlate, tare: tare, capacity: capacity, maxBateryCapacity: maxBateryCapacity, autonomyFullChargeLoad: autonomyFullChargeLoad, timeCharging:timeCharging}, id);
-
     
       return Result.ok<Truck>(truck);
+    }
+    }catch (error){
+      return Result.fail<Truck>('Error creating truck!');
     }
   }
 

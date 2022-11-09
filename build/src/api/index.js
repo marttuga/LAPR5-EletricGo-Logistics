@@ -4,14 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const userRoute_1 = __importDefault(require("./routes/userRoute"));
-const userRoute_2 = __importDefault(require("./routes/userRoute"));
+//import auth from './routes/userRoute';
+//import user from './routes/userRoute';
 const roleRoute_1 = __importDefault(require("./routes/roleRoute"));
+const routeRoute_1 = __importDefault(require("./routes/routeRoute"));
+const truckRoute_1 = __importDefault(require("./routes/truckRoute"));
 exports.default = () => {
     const app = (0, express_1.Router)();
-    (0, userRoute_1.default)(app);
-    (0, userRoute_2.default)(app);
+    //user(app);
     (0, roleRoute_1.default)(app);
+    (0, truckRoute_1.default)(app);
+    (0, routeRoute_1.default)(app);
     return app;
 };
 //# sourceMappingURL=index.js.map

@@ -4,7 +4,7 @@ import ITruckDTO from '../../../src/dto/ITruckDTO';
 
 describe('Create a valid truck', () => {
   let truck = Truck.create({
-    licencePlate: "1",
+    licencePlate: "FG-82-SA",
     tare: 31,
     capacity: 74,
     maxBateryCapacity: 25,
@@ -14,22 +14,22 @@ describe('Create a valid truck', () => {
 );
 
   it('make sure the truck was created and get licence Plate', () => {
-    expect(truck.getValue().licencePlate.toString()).to.equal("1");
+    expect(truck.getValue().props.licencePlate.licencePlate.toString()).to.equal("FG-82-SA");
   });
   it('make sure the truck was created and get tare', () => {
-    expect(parseInt(truck.getValue().tare.toString())).to.equal(31);
+    expect(parseInt(truck.getValue().props.tare.value.toString())).to.equal(31);
   });
   it('make sure the truck was created and get max capacity', () => {
-    expect(parseInt(truck.getValue().capacity.toString())).to.equal(74);
+    expect(parseInt(truck.getValue().props.capacity.value.toString())).to.equal(74);
   });
   it('make sure the truck was created and get max capacity', () => {
-    expect(parseInt(truck.getValue().maxBateryCapacity.toString())).to.equal(25);
+    expect(parseInt(truck.getValue().props.maxBateryCapacity.value.toString())).to.equal(25);
   });
   it('make sure the truck was created and get autonomy', () => {
-    expect(parseInt(truck.getValue().autonomyFullChargeLoad.toString())).to.equal(2);
+    expect(parseInt(truck.getValue().props.autonomyFullChargeLoad.value.toString())).to.equal(2);
   });
   it('make sure the truck was created and get time charging', () => {
-    expect(parseInt(truck.getValue().timeCharging.toString())).to.equal(1);
+    expect(parseInt(truck.getValue().props.timeCharging.value.toString())).to.equal(1);
   });
 
 });
@@ -44,8 +44,9 @@ describe('invalid truck without licence plate', () => {
     timeCharging: 1
   } as unknown as ITruckDTO
 );
+
   it('make sure the truck was not created', () => {
-    expect(truck.error).to.equal(null);
+    expect(truck.error).to.equal('Error creating truck!');
   });
 });
 
@@ -60,7 +61,7 @@ describe('invalid truck without tare', () => {
   } as unknown as ITruckDTO
 );
   it('make sure the truck was not created', () => {
-    expect(truck.error).to.equal(null);
+    expect(truck.errorValue()).to.equal('Error creating truck!');
   });
 });
 
@@ -75,7 +76,7 @@ describe('invalid truck without capacity', () => {
   } as unknown as ITruckDTO
 );
   it('make sure the truck was not created', () => {
-    expect(truck.error).to.equal(null);
+    expect(truck.error).to.equal('Error creating truck!');
   });
 });
 
@@ -90,7 +91,7 @@ describe('invalid truck without maximum batery', () => {
   } as unknown as ITruckDTO
 );
   it('make sure the truck was not created', () => {
-    expect(truck.error).to.equal(null);
+    expect(truck.error).to.equal('Error creating truck!');
   });
 });
 describe('invalid truck without warehouse autonomyFullChargeLoad', () => {
@@ -104,7 +105,7 @@ describe('invalid truck without warehouse autonomyFullChargeLoad', () => {
   } as unknown as ITruckDTO
 );
   it('make sure the truck was not created', () => {
-    expect(truck.error).to.equal(null);
+    expect(truck.error).to.equal('Error creating truck!');
   });
 });
 
@@ -119,7 +120,7 @@ describe('invalid truck without warehouse timeCharging', () => {
   } as unknown as ITruckDTO
 );
   it('make sure the truck was not created', () => {
-    expect(truck.error).to.equal(null);
+    expect(truck.error).to.equal('Error creating truck!');
   });
 });
 
