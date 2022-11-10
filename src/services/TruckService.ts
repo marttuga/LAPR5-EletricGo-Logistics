@@ -1,4 +1,4 @@
-import { Service, Inject } from 'typedi';
+import { Service,Container, Inject, Token} from 'typedi';
 import config from "../../config";
 import ITruckDTO from '../dto/ITruckDTO';
 import { Truck } from "../domain/truck/truck";

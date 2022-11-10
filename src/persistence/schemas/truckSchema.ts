@@ -1,7 +1,6 @@
 import { ITruckPersistence } from '../../dataschema/ITruckPersistence';
 import mongoose from 'mongoose';
 
-
 const Truck = new mongoose.Schema(
   {
 

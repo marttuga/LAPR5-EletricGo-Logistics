@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Inject, Service } from 'typedi';
+import { Service,Container, Inject, Token} from 'typedi';
 import config from "../../config";
 
 import ITruckController from "./IControllers/ITruckController";

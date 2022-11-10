@@ -1,4 +1,4 @@
-import { Service, Inject } from 'typedi';
+import { Service,Container, Inject, Token} from 'typedi';
 
 import { Document, FilterQuery, Model } from 'mongoose';
 import { ITruckPersistence } from '../dataschema/ITruckPersistence';

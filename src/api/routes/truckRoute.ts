@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { celebrate, Joi } from 'celebrate';
 
-import { Container, Service } from 'typedi';
+import { Service,Container, Inject, Token} from 'typedi';
 import ITruckController from '../../controllers/IControllers/ITruckController'; 
 
 import config from "../../../config";
