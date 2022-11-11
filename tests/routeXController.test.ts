@@ -4,14 +4,28 @@ import * as sinon from 'sinon';
 import { Response, Request, NextFunction } from 'express';
 import { Container } from 'typedi';
 import { Result } from '../src/core/logic/Result';
+import config from '../config';
 import IRouteService from '../src/services/IServices/IRouteService';
 import RouteController from '../src/controllers/routeController';
 import IRouteDTO from '../src/dto/IRouteDTO';
 
 describe('route controller', function() {
-  beforeEach(function() {});
+  beforeEach(() => {
+    let routeSchemaInstance = require('../src/persistence/schemas/routeSchema').default;
+    Container.set('RouteSchema', routeSchemaInstance);
 
-  it('returns json with values when createRoute', async function() {
+    let routeRepoInstance = require('../src/repos/routeRepo').default;
+    Container.set('RouteRepo', routeRepoInstance);
+
+    let routeServiceClass = require('../src/services/routeService').default;
+    let routeServiceInstance = Container.get(routeServiceClass);
+    Container.set('RouteService', routeServiceInstance);
+  });
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it('Create a route with some attributes', async function() {
     let body = {
       routeId: '1',
       distance: '31',
@@ -29,46 +43,83 @@ describe('route controller', function() {
     };
     let next: Partial<NextFunction> = () => {};
 
-    let routeSchemaInstance = require('../src/persistence/schemas/routeSchema').default;
-    Container.set('routeSchema', routeSchemaInstance);
+    let routeServiceInstance = Container.get(config.services.route.name);
 
-    let routeRepoClass = require('../src/repos/routeRepo').default;
-    let routeRepoInstance = Container.get(routeRepoClass);
-    Container.set('RouteRepo', routeRepoInstance);
-
-    let routeServiceClass = require('../src/services/routeService').default;
-    let routeServiceInstance = Container.get(routeServiceClass);
-    Container.set('RouteService', routeServiceInstance);
-
-    routeServiceInstance = Container.get('RouteService');
-    sinon.stub(routeServiceInstance, 'createRoute').returns(
-      Result.ok<IRouteDTO>({
-        routeId: req.body.routeId,
-        distance: req.body.distance,
-        routeTime: req.body.routeTime,
-        batteryWaste: req.body.batteryWaste,
-        arrivalId: req.body.arrivalId,
-        departureId: req.body.departureId,
-        extraTime: req.body.extraTime,
-      }),
-    );
+    const obj = sinon.stub(routeServiceInstance, 'createRoute').returns(Result.ok<IRouteDTO>(req.body as IRouteDTO));
 
     const ctrl = new RouteController(routeServiceInstance as IRouteService);
-
     await ctrl.createRoute(<Request>req, <Response>res, <NextFunction>next);
+    sinon.assert.calledOnce(obj);
+    sinon.assert.calledWith(obj, sinon.match(body));
+  });
 
-    sinon.assert.calledOnce(res.json);
+  it('Update Route Value Objects', async function() {
+    let body = {
+      routeId: '1',
+      distance: '31',
+      routeTime: '74',
+      batteryWaste: '25',
+      arrivalId: 'ESPINHO',
+      departureId: 'MAIA',
+      extraTime: '0',
+    };
+    let req: Partial<Request> = {};
+    req.body = body;
+
+    let res: Partial<Response> = {
+      json: sinon.spy(),
+    };
+    let next: Partial<NextFunction> = () => {};
+
+    let routeServiceInstance = Container.get(config.services.route.name);
+
+    const obj = sinon.stub(routeServiceInstance, 'updateRoute').returns(Result.ok<IRouteDTO>(req.body as IRouteDTO));
+
+    const ctrl = new RouteController(routeServiceInstance as IRouteService);
+    await ctrl.updateRoute(<Request>req, <Response>res, <NextFunction>next);
+
+    sinon.assert.calledOnce(obj);
     sinon.assert.calledWith(
-      res.json,
+      obj,
       sinon.match({
-        routeId: req.body.routeId,
-        distance: req.body.distance,
-        routeTime: req.body.routeTime,
-        batteryWaste: req.body.batteryWaste,
-        arrivalId: req.body.arrivalId,
-        departureId: req.body.departureId,
-        extraTime: req.body.extraTime,
+        routeId: '1',
+        distance: '31',
+        routeTime: '74',
+        batteryWaste: '25',
+        arrivalId: 'ESPINHO',
+        departureId: 'MAIA',
+        extraTime: '0',
       }),
     );
+  });
+
+  it('List all routes', async function() {
+    let body = [
+      {
+        routeId: '1',
+        distance: '31',
+        routeTime: '74',
+        batteryWaste: '25',
+        arrivalId: 'ESPINHO',
+        departureId: 'MAIA',
+        extraTime: '0',
+      },
+    ];
+
+    let req: Partial<Request> = {};
+    let res: Partial<Response> = {
+      json: sinon.spy(),
+    };
+    let next: Partial<NextFunction> = () => {};
+
+    let routeServiceInstance = Container.get(config.services.route.name);
+
+    const obj = sinon.stub(routeServiceInstance, 'getRoutes').returns(Result.ok<IRouteDTO[]>(body as IRouteDTO[]));
+
+    const ctrl = new RouteController(routeServiceInstance as IRouteService);
+    await ctrl.getRoute(<Request>req, <Response>res, <NextFunction>next);
+
+    sinon.assert.calledOnce(obj);
+    //sinon.assert.calledWith(obj, sinon.match(body as ITruckDTO[]));
   });
 });
