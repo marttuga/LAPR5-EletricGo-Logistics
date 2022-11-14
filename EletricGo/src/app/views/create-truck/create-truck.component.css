@@ -19,41 +19,8 @@
     scroll-behavior: smooth;
     scroll-snap-type: y mandatory;
   }
-  
-  .navbar{
-    position: fixed;
-    top:0;
-    z-index: 1;
-    display: flex;
-    width: 100%;
-    height: 60px;
-    background: rgba(248,248,250,0.7);
-  }
-  
-  .navbar ul{
-    display: flex;
-    list-style: none;
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .navbar ul li{
-    margin: 0 1rem;
-    padding: 1rem;
-  }
-  
-  .navbar ul li a{
-    text-decoration: none;
-    text-transform: uppercase;
-  
-    color: #778DB3;
-    font-size: 1.5rem;
-  
-  }
-  
-  .navbar ul li a:hover{
-    color: skyblue;
-  }
+
+
   
   section{
     display: flex;
@@ -69,7 +36,7 @@
   .message{
   
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
   }
@@ -78,20 +45,51 @@
   section h1{
     color: #778DB3;
     font-family: Arial;
-    font-size: 3rem;
-    text-align: center;
-
-
-
+    font-size: 6rem;
   }
   
+  
+  
+
+
   
   .image{
       width: 45vw;
   }
   
   
+  
+  .textfield{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      margin: 10px 0px;
+  }
+  
+  .textfield > input{
+      width: 100%;
+      border: none;
+      border-radius: 30px;
+      padding: 15px;
+      background: #E4E4E4;
+      color: #556b92;
+      font-size: 12pt;
+      box-shadow: 0px 10px 40px #00000010;
+      outline: none;
+      box-sizing: border-box;
+  }
+  
+  
+  
+  .textfield > input::placeholder{
+      color: #778DB3;
+  }
+  
 
+
+  
   
   
   
