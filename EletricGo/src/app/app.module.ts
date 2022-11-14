@@ -10,6 +10,7 @@ import {FormsModule} from "@angular/forms";
 import { FleetManagerComponent } from './views/fleet-manager/fleet-manager.component';
 import { CreateTruckComponent } from './views/create-truck/create-truck.component';
 import { CreateDeliveryComponent } from './views/create-delivery/create-delivery.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -22,9 +23,10 @@ import { CreateDeliveryComponent } from './views/create-delivery/create-delivery
     CreateDeliveryComponent
   ],
     imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule
+      BrowserModule,
+      AppRoutingModule,
+      HttpClientModule,
+      FormsModule,
     ],
   providers: [],
   bootstrap: [AppComponent]
