@@ -6,6 +6,7 @@ import {LoginComponent} from "./views/login/login.component";
 import {NetworkComponent} from "./views/network/network.component";
 import {WarehouseManagerComponent} from "./views/warehouse-manager/warehouse-manager.component";
 import {CreateWarehouseComponent} from "./views/create-warehouse/create-warehouse.component";
+import {CreateDeliveryComponent} from "./views/create-delivery/create-delivery.component";
 
 const routes: Routes = [
   { path: '',redirectTo: '/views/login', pathMatch: 'full' },
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'views/warehouse-manager', component:WarehouseManagerComponent},
   { path: 'views/fleet-manager', component:FleetManagerComponent},
   { path: 'views/create-warehouse', component:CreateWarehouseComponent},
-  { path: 'views/create-truck', component:CreateTruckComponent}
+  { path: 'views/create-truck', component:CreateTruckComponent},
+  { path: 'views/create-delivery', component:CreateDeliveryComponent}
 ];
 
 @NgModule({
