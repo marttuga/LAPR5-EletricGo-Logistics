@@ -14,7 +14,6 @@ const routes: Routes = [
   { path: 'views/network', component:NetworkComponent},
   { path: 'views/warehouse-manager', component:WarehouseManagerComponent},
   { path: 'views/fleet-manager', component:FleetManagerComponent},
-  { path: 'views/create-warehouse', component:CreateWarehouseComponent},
   { path: 'views/create-truck', component:CreateTruckComponent},
   { path: 'views/create-delivery', component:CreateDeliveryComponent}
 ];
