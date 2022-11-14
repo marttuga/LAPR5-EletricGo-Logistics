@@ -8,7 +8,6 @@ import { NetworkComponent } from './views/network/network.component';
 import { WarehouseManagerComponent } from './views/warehouse-manager/warehouse-manager.component';
 import {FormsModule} from "@angular/forms";
 import { FleetManagerComponent } from './views/fleet-manager/fleet-manager.component';
-import { CreateWarehouseComponent } from './views/create-warehouse/create-warehouse.component';
 import { CreateTruckComponent } from './views/create-truck/create-truck.component';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { CreateTruckComponent } from './views/create-truck/create-truck.componen
     NetworkComponent,
     FleetManagerComponent,
     WarehouseManagerComponent,
-    CreateWarehouseComponent,
     CreateTruckComponent
   ],
     imports: [
