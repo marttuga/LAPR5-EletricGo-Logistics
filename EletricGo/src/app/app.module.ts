@@ -9,6 +9,7 @@ import { WarehouseManagerComponent } from './views/warehouse-manager/warehouse-m
 import {FormsModule} from "@angular/forms";
 import { FleetManagerComponent } from './views/fleet-manager/fleet-manager.component';
 import { CreateTruckComponent } from './views/create-truck/create-truck.component';
+import { CreateDeliveryComponent } from './views/create-delivery/create-delivery.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { CreateTruckComponent } from './views/create-truck/create-truck.componen
     NetworkComponent,
     FleetManagerComponent,
     WarehouseManagerComponent,
-    CreateTruckComponent
+    CreateTruckComponent,
+    CreateDeliveryComponent
   ],
     imports: [
         BrowserModule,
