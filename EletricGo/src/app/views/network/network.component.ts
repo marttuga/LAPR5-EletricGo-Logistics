@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Camera, Object3D, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import {WarehousesService} from "../../services/dotnet/warehouses.service";
 
 @Component({
   selector: 'app-network',
@@ -31,7 +32,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
 
-  constructor() { }
+  constructor(private route: ActivatedRoute,private  w:WarehousesService) { }
 
   ngOnInit(): void {
   }
@@ -70,13 +71,11 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     this.camera.add(this.focusLight);
 
     const loader = new GLTFLoader();
-    loader.load('/assets/network/Parrot.glb', (gltf) => {
-      gltf.scene.name = "Parrot";
-      gltf.scene.position.set(1.2,0,0);
-      gltf.scene.scale.set(0.02, 0.02, 0.02);
-
+    loader.load('/assets/network//Horse.glb', (gltf) => {
+      gltf.scene.name = "Horse";
+      gltf.scene.scale.set(0.007, 0.007, 0.007);
       this.scene.add(gltf.scene);
-      console.log(this.scene.getObjectByName("Parrot")?.position)
+     // console.log(this.scene.getObjectByName("Horse")?.position)
     }, undefined, function (error) {
 
       console.error(error);
