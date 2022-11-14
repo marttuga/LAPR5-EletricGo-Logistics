@@ -22,8 +22,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   @Input('nearClipping') public nearClippingPlane: number = 1;//* Proximidade do plano
   @Input('farClipping') public farClippingPlane: number = 2000;//* Afastamento do plano
 
-
-
   private renderer!: THREE.WebGLRenderer;
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
