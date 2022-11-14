@@ -10,7 +10,7 @@ import { NetworkComponent } from './views/network/network.component';
   declarations: [
     AppComponent,
     LoginComponent,
-    NetworkComponent
+    NetworkComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,9 +4,9 @@ import {LoginComponent} from "./views/login/login.component";
 import {NetworkComponent} from "./views/network/network.component";
 
 const routes: Routes = [
+  { path: '',redirectTo: '/views/login', pathMatch: 'full' },
   { path: 'views/login', component: LoginComponent},
-  {path:'views/network',component:NetworkComponent},
-  { path: '', redirectTo: '/views/network', pathMatch: 'full' },
+  { path: 'views/network', component:NetworkComponent},
 
 ];
 
