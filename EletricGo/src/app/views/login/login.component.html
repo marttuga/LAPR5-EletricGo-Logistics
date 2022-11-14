@@ -8,26 +8,32 @@
     <link rel="stylesheet" href="login.component.css">
     <title>Login</title>
 </head>
-<body>
-    <div class="main-login">
-        <div class="left-login">
-            <h1>Welcome to EletricGo!</h1>
-            <img src="truck.webp" class="image" alt="shipping">
-        </div>
-        <div class="right-login">
-            <div class="card-login">
-                <h1>LOGIN</h1>
-                <div class="textfield">
-                    <input type="text" name="username" placeholder="Username">
-                </div>
-                <div class="textfield">
 
-                    <input type="password" name="password" placeholder="Password">
-                </div>
-                <button class="btn-login" [routerLink]="['/views/network']">Login</button>
-            </div>
+<body>
+  <div class="container">
+    <nav class="navbar">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#login">Login</a></li>
+      </ul>
+    </nav>
+    <section class="message" id="home" >
+        <h1 >Welcome to<br /><span class="text-secondary">EletricGo!🔋</span> </h1>
+        <img src="truck.webp" class="image" alt="shipping">
+    </section>
+    <section id="login">
+      <div class="card-login">
+        <h1>LOGIN</h1>
+        <div class="textfield">
+          <input type="text" name="username" placeholder="Username">
         </div>
-    </div>
+        <div class="textfield">
+          <input type="password" name="password" placeholder="Password">
+        </div>
+        <button class="btn-login" [routerLink]="['/views/network']">Login</button>
+      </div>
+    </section>
+  </div>
     <app-root>
 
 
