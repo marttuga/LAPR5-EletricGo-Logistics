@@ -27,19 +27,26 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
 
-  //*Light
-  private focusLight = new THREE.SpotLight(0xffffff, 1);
+  private warehouses:any[]=[];
 
+  private warehouseBaseMesh:THREE.Mesh[]=[];
+  private warehouseBaseGeometry = new THREE.CylinderGeometry(2, 2, 0.1, 64);
+  private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0x000000 });
 
+  private  warehouseCubeGeometry = new THREE.BoxGeometry( 0.70, 0.90, 0.70 );
+  private  warehouseCubeMaterial = new THREE.MeshLambertMaterial( {color: 0xffffff} );
 
-  constructor(private route: ActivatedRoute,private  w:WarehousesService) { }
+  constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService) { }
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    this.createScene();
-    this.startRenderingLoop();
+    this.warehousesService.getWarehouses().subscribe(async data=>{
+      this.warehouses=data;
+      await this.createScene();
+      await this.startRenderingLoop();
+    })
   }
 
   private get canvas(): HTMLCanvasElement {
@@ -68,19 +75,58 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.farClippingPlane
     );
     this.camera.position.z = this.cameraZ;
-    this.camera.add(this.focusLight);
+
+
+    //for(let i=0;i<this.warehouses.length;i++) {
+    const baseMesh = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);
+    baseMesh.position.set(0, 0, 0);
 
     const loader = new GLTFLoader();
-    loader.load('/assets/network//Horse.glb', (gltf) => {
-      gltf.scene.name = "Horse";
-      gltf.scene.scale.set(0.007, 0.007, 0.007);
+    loader.load('/assets/network/warehouse.glb', (gltf) => {
+      gltf.scene.name = "Warehouse";
+      gltf.scene.position.set(baseMesh.position.x, baseMesh.position.y, baseMesh.position.z);
+      gltf.scene.scale.set(0.1, 0.2, 0.1);
       this.scene.add(gltf.scene);
-     // console.log(this.scene.getObjectByName("Horse")?.position)
     }, undefined, function (error) {
 
       console.error(error);
 
     });
+    //const  cube = new THREE.Mesh(this.warehouseCubeGeometry, this.warehouseCubeMaterial);
+    //cube.position.set(baseMesh.position.x,baseMesh.position.y+0.50,baseMesh.position.z);
+  //}
+
+    this.scene.add(baseMesh);
+
+
+    //* Camera
+    this.camera = new THREE.PerspectiveCamera(
+      this.fieldOfView,
+      NetworkComponent.getAspectRatio(),
+      this.nearClippingPlane,
+      this.farClippingPlane
+    );
+    this.camera.position.z = this.cameraZ;
+
+    //*Light
+      const light1 = new THREE.PointLight( 0xFFFFFF , 1, 10000 );
+      light1.position.set( -window.innerWidth, 0, 0 );
+      this.scene.add( light1 );
+      const light2 = new THREE.PointLight( 0xFFFFFF , 1, 10000 );
+      light2.position.set( window.innerWidth, 0, 0 );
+      this.scene.add( light2);
+      const light3 = new THREE.PointLight( 0xFFFFFF , 1, 10000 );
+      light3.position.set( 0, -window.innerHeight, 0 );
+      this.scene.add( light3 );
+      const light4 = new THREE.PointLight( 0xFFFFFF , 1, 10000 );
+      light4.position.set( 0, window.innerHeight, 0 );
+      this.scene.add( light4);
+      const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
+      this.scene.add(light_amb);
+
+    const focusLight = new THREE.SpotLight(0xffffff, 1);
+    this.camera.add(focusLight);
+    this.scene.add(this.camera);
 
   }
 
@@ -92,15 +138,14 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     //definir janela
     this.renderer.setSize(window.innerWidth,window.innerHeight);
-    //document.body.appendChild(this.renderer.domElement);
 
-
+    //Orbit Controls
     let controls = new OrbitControls(this.camera, this.renderer.domElement);
 
     controls.maxDistance = 900;
     controls.minDistance = 100;
-    controls.minAzimuthAngle = -Math.PI / 2;
-    controls.maxAzimuthAngle = Math.PI / 2;
+    controls.minAzimuthAngle = -Math.PI ;
+    controls.maxAzimuthAngle = Math.PI ;
 
     let component: NetworkComponent = this;
     (function render() {
