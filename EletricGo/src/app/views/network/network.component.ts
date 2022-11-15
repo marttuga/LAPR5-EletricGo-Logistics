@@ -29,11 +29,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private warehouses:any[]=[];
 
-  private warehouseBaseMesh:THREE.Mesh[]=[];
   private warehouseBaseGeometry = new THREE.CylinderGeometry(2, 2, 0.1, 64);
-  private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0x000000 });
+  private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
-  private  warehouseCubeGeometry = new THREE.BoxGeometry( 0.70, 0.90, 0.70 );
+  private  warehouseCubeGeometry = new THREE.BoxGeometry( 2, 0.1, 0.70 );
   private  warehouseCubeMaterial = new THREE.MeshLambertMaterial( {color: 0xffffff} );
 
   constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService) { }
@@ -76,27 +75,37 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     );
     this.camera.position.z = this.cameraZ;
 
+console.log(this.warehouses)
+    for(let i=0;i<1/*this.warehouses.length*/;i++) {
 
-    //for(let i=0;i<this.warehouses.length;i++) {
-    const baseMesh = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);
-    baseMesh.position.set(0, 0, 0);
+      const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
+      base.position.set(0, 0, 0);
+      base.name=this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
 
-    const loader = new GLTFLoader();
-    loader.load('/assets/network/warehouse.glb', (gltf) => {
-      gltf.scene.name = "Warehouse";
-      gltf.scene.position.set(baseMesh.position.x, baseMesh.position.y, baseMesh.position.z);
-      gltf.scene.scale.set(0.1, 0.2, 0.1);
-      this.scene.add(gltf.scene);
-    }, undefined, function (error) {
+      const road=new THREE.Mesh(this.warehouseCubeGeometry,this.warehouseCubeMaterial);
+      road.position.set(-2.98, 0, 0);
 
-      console.error(error);
 
-    });
-    //const  cube = new THREE.Mesh(this.warehouseCubeGeometry, this.warehouseCubeMaterial);
-    //cube.position.set(baseMesh.position.x,baseMesh.position.y+0.50,baseMesh.position.z);
-  //}
+      const loader = new GLTFLoader();
+      loader.load('/assets/network/warehouse.glb', (gltf) => {
+        gltf.scene.name = "Warehouse"+this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
+        gltf.scene.position.set(base.position.x, base.position.y, base.position.z);
+        gltf.scene.scale.set(0.1, 0.2, 0.1);
+        this.scene.add(gltf.scene);
+        }, undefined, function (error) {
 
-    this.scene.add(baseMesh);
+        console.error(error);
+      });
+
+      this.scene.add(base);
+      this.scene.add(road)
+
+      this.warehouseCubeMaterial.map = new THREE.TextureLoader().load('assets/network/road.jpg');
+      this.warehouseBaseMaterial.map = new THREE.TextureLoader().load('assets/network/rotunda.jpg');
+
+    }
+
+
 
 
     //* Camera
@@ -158,7 +167,12 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     }());
   }
 
-  onClick() {
+  private addWarehousesToScene(){
+
+  }
+
+
+onClick() {
 
   }
 
