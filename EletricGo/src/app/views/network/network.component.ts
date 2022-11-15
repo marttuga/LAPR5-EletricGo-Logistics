@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Camera, Object3D, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import {WarehousesService} from "../../services/dotnet/warehouses.service";
 
 @Component({
   selector: 'app-network',
@@ -14,7 +15,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 export class NetworkComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvas')
-  private canvasRef: ElementRef | undefined;
+  private canvasRef: ElementRef;
 
   //* Stage Properties;
   @Input() public cameraZ: number = 500; //* Aproximação da câmara || Coordenada Z
@@ -26,26 +27,29 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
 
-  //*Light
-  private focusLight = new THREE.SpotLight(0xffffff, 1);
+  private warehouses:any[]=[];
 
+  private warehouseBaseGeometry = new THREE.CylinderGeometry(2, 2, 0.1, 64);
+  private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
+  private  warehouseCubeGeometry = new THREE.BoxGeometry( 2, 0.1, 0.70 );
+  private  warehouseCubeMaterial = new THREE.MeshLambertMaterial( {color: 0xffffff} );
 
-  constructor() { }
+  constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService) { }
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    this.createScene();
-    this.startRenderingLoop();
+    this.warehousesService.getWarehouses().subscribe(async data=>{
+      this.warehouses=data;
+      await this.createScene();
+      await this.startRenderingLoop();
+    })
   }
 
   private get canvas(): HTMLCanvasElement {
-    if(this.canvasRef != undefined) {
       return this.canvasRef.nativeElement;
-    }
-    return new HTMLCanvasElement();
   }
 
   private static getAspectRatio() {
@@ -57,7 +61,14 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     //* Scene
     this.scene = new THREE.Scene();
 
-    //*Ambient Light
+    //* Camera
+    this.camera = new THREE.PerspectiveCamera(
+      this.fieldOfView,
+      NetworkComponent.getAspectRatio(),
+      this.nearClippingPlane,
+      this.farClippingPlane
+    );
+    this.camera.position.z = this.cameraZ;
 
     //* Camera
     this.camera = new THREE.PerspectiveCamera(
@@ -67,23 +78,33 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.farClippingPlane
     );
     this.camera.position.z = this.cameraZ;
-    this.camera.add(this.focusLight);
 
-    const loader = new GLTFLoader();
-    loader.load('/assets/network/Parrot.glb', (gltf) => {
-      gltf.scene.name = "Parrot";
-      gltf.scene.position.set(1.2,0,0);
-      gltf.scene.scale.set(0.02, 0.02, 0.02);
+    //*Light
+    const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light1.position.set(-window.innerWidth, 0, 0);
+    this.scene.add(light1);
+    const light2 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light2.position.set(window.innerWidth, 0, 0);
+    this.scene.add(light2);
+    const light3 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light3.position.set(0, -window.innerHeight, 0);
+    this.scene.add(light3);
+    const light4 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light4.position.set(0, window.innerHeight, 0);
+    this.scene.add(light4);
+    const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
+    this.scene.add(light_amb);
 
-      this.scene.add(gltf.scene);
-      console.log(this.scene.getObjectByName("Parrot")?.position)
-    }, undefined, function (error) {
+    const focusLight = new THREE.SpotLight(0xffffff, 1);
+    this.camera.add(focusLight);
+    this.scene.add(this.camera);
 
-      console.error(error);
 
-    });
+    this.addWarehousesToScene();
 
   }
+
+
 
   private startRenderingLoop() {
     //* Renderer
@@ -93,15 +114,14 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     //definir janela
     this.renderer.setSize(window.innerWidth,window.innerHeight);
-    //document.body.appendChild(this.renderer.domElement);
 
-
+    //Orbit Controls
     let controls = new OrbitControls(this.camera, this.renderer.domElement);
 
     controls.maxDistance = 900;
     controls.minDistance = 100;
-    controls.minAzimuthAngle = -Math.PI / 2;
-    controls.maxAzimuthAngle = Math.PI / 2;
+    controls.minAzimuthAngle = -Math.PI ;
+    controls.maxAzimuthAngle = Math.PI ;
 
     let component: NetworkComponent = this;
     (function render() {
@@ -114,6 +134,40 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     }());
   }
 
+  private addWarehousesToScene(){
+    console.log(this.warehouses)
+    for(let i=0;i<this.warehouses.length;i++) {
+
+      const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
+      base.position.set(i*5, 0, i*2);
+      base.name=this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
+
+
+
+      const loader = new GLTFLoader();
+      loader.load('/assets/network/warehouse.glb', (gltf) => {
+        gltf.scene.name = "Warehouse"+this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
+        gltf.scene.position.set(base.position.x, base.position.y, base.position.z);
+        gltf.scene.scale.set(0.1, 0.2, 0.1);
+        this.scene.add(gltf.scene);
+      }, undefined, function (error) {
+
+        console.error(error);
+      });
+
+      this.scene.add(base);
+      this.warehouseBaseMaterial.map = new THREE.TextureLoader().load('assets/network/rotunda.jpg');
+
+
+      const road=new THREE.Mesh(this.warehouseCubeGeometry,this.warehouseCubeMaterial);
+      road.position.set(-2.98+base.position.x, 0, base.position.z);
+      this.warehouseCubeMaterial.map = new THREE.TextureLoader().load('assets/network/road.jpg');
+      this.scene.add(road)
+
+    }
+  }
+
+
   onClick() {
 
   }
@@ -121,6 +175,5 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   onMouseMove(event: MouseEvent) {
 
   }
-
 
 }
