@@ -12,15 +12,15 @@
   <div class="container">
       <nav class="navbar">
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#login">Login</a></li>
+          <li><a (click)="scroll(home)">Home</a></li>
+          <li><a (click)="scroll(login)">Login</a></li>
         </ul>
       </nav>
-      <section class="message" id="home" >
+      <section class="message" #home >
           <h1 >Welcome to<br /><span class="text-secondary">EletricGo!🔋</span> </h1>
           <img src="/assets/truck.webp" class="image" alt="shipping">
       </section>
-      <section id="login">
+      <section #login>
         <div class="card-login">
           <h1>LOGIN</h1>
           <div class="textfield">

@@ -15,7 +15,7 @@ import {WarehousesService} from "../../services/dotnet/warehouses.service";
 export class NetworkComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvas')
-  private canvasRef: ElementRef | undefined;
+  private canvasRef: ElementRef;
 
   //* Stage Properties;
   @Input() public cameraZ: number = 500; //* Aproximação da câmara || Coordenada Z
@@ -49,10 +49,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   private get canvas(): HTMLCanvasElement {
-    if(this.canvasRef != undefined) {
       return this.canvasRef.nativeElement;
-    }
-    return new HTMLCanvasElement();
   }
 
   private static getAspectRatio() {
@@ -64,8 +61,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     //* Scene
     this.scene = new THREE.Scene();
 
-    //*Ambient Light
-
     //* Camera
     this.camera = new THREE.PerspectiveCamera(
       this.fieldOfView,
@@ -74,39 +69,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.farClippingPlane
     );
     this.camera.position.z = this.cameraZ;
-
-console.log(this.warehouses)
-    for(let i=0;i<1/*this.warehouses.length*/;i++) {
-
-      const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
-      base.position.set(0, 0, 0);
-      base.name=this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
-
-      const road=new THREE.Mesh(this.warehouseCubeGeometry,this.warehouseCubeMaterial);
-      road.position.set(-2.98, 0, 0);
-
-
-      const loader = new GLTFLoader();
-      loader.load('/assets/network/warehouse.glb', (gltf) => {
-        gltf.scene.name = "Warehouse"+this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
-        gltf.scene.position.set(base.position.x, base.position.y, base.position.z);
-        gltf.scene.scale.set(0.1, 0.2, 0.1);
-        this.scene.add(gltf.scene);
-        }, undefined, function (error) {
-
-        console.error(error);
-      });
-
-      this.scene.add(base);
-      this.scene.add(road)
-
-      this.warehouseCubeMaterial.map = new THREE.TextureLoader().load('assets/network/road.jpg');
-      this.warehouseBaseMaterial.map = new THREE.TextureLoader().load('assets/network/rotunda.jpg');
-
-    }
-
-
-
 
     //* Camera
     this.camera = new THREE.PerspectiveCamera(
@@ -118,26 +80,31 @@ console.log(this.warehouses)
     this.camera.position.z = this.cameraZ;
 
     //*Light
-      const light1 = new THREE.PointLight( 0xFFFFFF , 1, 10000 );
-      light1.position.set( -window.innerWidth, 0, 0 );
-      this.scene.add( light1 );
-      const light2 = new THREE.PointLight( 0xFFFFFF , 1, 10000 );
-      light2.position.set( window.innerWidth, 0, 0 );
-      this.scene.add( light2);
-      const light3 = new THREE.PointLight( 0xFFFFFF , 1, 10000 );
-      light3.position.set( 0, -window.innerHeight, 0 );
-      this.scene.add( light3 );
-      const light4 = new THREE.PointLight( 0xFFFFFF , 1, 10000 );
-      light4.position.set( 0, window.innerHeight, 0 );
-      this.scene.add( light4);
-      const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
-      this.scene.add(light_amb);
+    const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light1.position.set(-window.innerWidth, 0, 0);
+    this.scene.add(light1);
+    const light2 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light2.position.set(window.innerWidth, 0, 0);
+    this.scene.add(light2);
+    const light3 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light3.position.set(0, -window.innerHeight, 0);
+    this.scene.add(light3);
+    const light4 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light4.position.set(0, window.innerHeight, 0);
+    this.scene.add(light4);
+    const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
+    this.scene.add(light_amb);
 
     const focusLight = new THREE.SpotLight(0xffffff, 1);
     this.camera.add(focusLight);
     this.scene.add(this.camera);
 
+
+    this.addWarehousesToScene();
+
   }
+
+
 
   private startRenderingLoop() {
     //* Renderer
@@ -168,17 +135,45 @@ console.log(this.warehouses)
   }
 
   private addWarehousesToScene(){
+    console.log(this.warehouses)
+    for(let i=0;i<this.warehouses.length;i++) {
 
+      const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
+      base.position.set(i*5, 0, i*2);
+      base.name=this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
+
+
+
+      const loader = new GLTFLoader();
+      loader.load('/assets/network/warehouse.glb', (gltf) => {
+        gltf.scene.name = "Warehouse"+this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
+        gltf.scene.position.set(base.position.x, base.position.y, base.position.z);
+        gltf.scene.scale.set(0.1, 0.2, 0.1);
+        this.scene.add(gltf.scene);
+      }, undefined, function (error) {
+
+        console.error(error);
+      });
+
+      this.scene.add(base);
+      this.warehouseBaseMaterial.map = new THREE.TextureLoader().load('assets/network/rotunda.jpg');
+
+
+      const road=new THREE.Mesh(this.warehouseCubeGeometry,this.warehouseCubeMaterial);
+      road.position.set(-2.98+base.position.x, 0, base.position.z);
+      this.warehouseCubeMaterial.map = new THREE.TextureLoader().load('assets/network/road.jpg');
+      this.scene.add(road)
+
+    }
   }
 
 
-onClick() {
+  onClick() {
 
   }
 
   onMouseMove(event: MouseEvent) {
 
   }
-
 
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {RoutesService} from "../../services/node/routes.service";
 
 @Component({
   selector: 'app-login',
@@ -8,12 +9,20 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private routesService:RoutesService) { }
 
   ngOnInit(): void {
-    console.log("login1")
-    console.log("login2")
+  }
 
+/*  private test(){
+    this.routesService.getWarehouses().subscribe(data=>{
+      console.log(data)
+    })
+  }*/
+
+
+  scroll(el: HTMLElement) {
+    el.scrollIntoView({behavior: 'smooth'});
   }
 
 }
