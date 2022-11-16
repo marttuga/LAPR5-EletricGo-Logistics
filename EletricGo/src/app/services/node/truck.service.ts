@@ -1,0 +1,43 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TrucksService {
+  private Url = 'http://localhost:3000/api/truck/';
+
+  constructor(private httpClient: HttpClient) { }
+
+  getTrucks(): Observable<any> {
+    return this.httpClient.get(this.Url + '/getAll').pipe(
+      map(this.extractData));
+  }
+
+  getTruck(licencePlate: string): Observable<any> {
+    return this.httpClient.get(this.Url + '/getTruck/:licencePlate' +licencePlate).pipe(
+      map(this.extractData));
+  }
+
+  createTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number) {
+    const body={"LicencePlate":licencePlate, "Tare":tare, "Capacity":capacity, "MaxBateryCapacity":maxBateryCapacity, "AutonomyFullChargeLoad": autonomyFullChargeLoad, "TimeCharging":timeCharging};
+    console.log(body);
+    return this.httpClient.post(this.Url + '/createTruck',body)
+      .pipe(map(this.extractData)
+      );
+
+  }
+
+  updateTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number){
+    const body = {"LicencePlate":licencePlate, "Tare":tare, "Capacity":capacity, "MaxBateryCapacity":maxBateryCapacity, "AutonomyFullChargeLoad": autonomyFullChargeLoad, "TimeCharging":timeCharging};
+  console.log(body);
+    return this.httpClient.put(this.Url + '/updateTruck' +licencePlate,body)
+      .pipe(map(this.extractData)
+      );
+  }
+
+  public extractData(res: any) {
+    return res || { };
+  }
+}

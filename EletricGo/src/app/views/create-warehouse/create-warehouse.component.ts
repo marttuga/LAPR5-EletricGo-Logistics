@@ -10,6 +10,7 @@ import {Observable} from "rxjs";
 })
 export class CreateWarehouseComponent implements OnInit {
 
+  warehouse:Warehouse;
  warehouseIdentifier:string;
  designation:string;
  latitude:number;
@@ -32,8 +33,8 @@ export class CreateWarehouseComponent implements OnInit {
   }
 
   public createWarehouse():void{
-    this.warehouseService.createWarehouse(this.warehouseIdentifier,this.designation,this.latitude,this.longitude,this.street,this.doorNumber,this.city,this.zipcode,this.altitude).subscribe(data => {console.log(data)});
-
+    this.warehouseService.createWarehouse(this.warehouseIdentifier,this.designation,this.latitude,this.longitude,this.street,this.doorNumber,this.city,this.zipcode,this.altitude).subscribe(data => {console.log(data);
+    this.warehouse=data});
   }
 
 }
