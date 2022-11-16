@@ -11,12 +11,9 @@ import { FleetManagerComponent } from './views/fleet-manager/fleet-manager.compo
 import { CreateTruckComponent } from './views/create-truck/create-truck.component';
 import { CreateDeliveryComponent } from './views/create-delivery/create-delivery.component';
 import {HttpClientModule} from "@angular/common/http";
-<<<<<<< HEAD
 import { CreateRouteComponent } from './views/create-route/create-route.component';
 import { LogisticsManagerComponent } from './views/logistics-manager/logistics-manager.component';
-=======
 import {CreateWarehouseComponent} from "./views/create-warehouse/create-warehouse.component";
->>>>>>> 14cfbac0f455d50fad047471c94f0eaec8a6e9b3
 
 @NgModule({
   declarations: [
@@ -27,12 +24,9 @@ import {CreateWarehouseComponent} from "./views/create-warehouse/create-warehous
     WarehouseManagerComponent,
     CreateTruckComponent,
     CreateDeliveryComponent,
-<<<<<<< HEAD
     CreateRouteComponent,
-    LogisticsManagerComponent
-=======
+    LogisticsManagerComponent,
     CreateWarehouseComponent
->>>>>>> 14cfbac0f455d50fad047471c94f0eaec8a6e9b3
   ],
     imports: [
       BrowserModule,
