@@ -10,8 +10,41 @@ export class RoutesService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getWarehouses(): Observable<any> {
+  createRoute(routeId:string,distance:string,routeTime:string,batteryWaste:string,arrivalId:string,departureId:string,extraTime:string): Observable<any> {
+    const body={
+      "RouteId": {
+        "RouteId": routeId
+      },
+      "Distance": {
+        "Distance": distance
+      },
+      "RouteTime": {
+        "RouteTime": routeTime
+      },
+      "BatteryWaste": {
+        "BatteryWaste": batteryWaste
+      },
+      "ArrivalId": {
+        "ArrivalId": arrivalId
+      },
+      "DepartureId": {
+        "DepartureId": departureId
+      },
+      "ExtraTime": {
+        "ExtraTime": extraTime
+      }
+    }
+    ;
+    return this.httpClient.post(this.Url ,body).pipe(map(this.extractData));
+  }
+
+  public getRoutes(): Observable<any> {
     return this.httpClient.get(this.Url + 'getRoutes').pipe(
+      map(this.extractData));
+  }
+
+  getRoute(routeId: string): Observable<any> {
+    return this.httpClient.get(this.Url + '/getById/:routeId' +routeId).pipe(
       map(this.extractData));
   }
 
