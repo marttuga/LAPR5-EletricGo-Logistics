@@ -82,7 +82,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/truck",
+					"raw": "http://localhost:3000/api/truck/createTruck",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -90,7 +90,8 @@
 					"port": "3000",
 					"path": [
 						"api",
-						"truck"
+						"truck",
+						"createTruck"
 					]
 				}
 			},
@@ -116,7 +117,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"licencePlate\": \"AA-00-AA\",\r\n  \"tare\": 2,\r\n  \"capacity\": 2,\r\n  \"maxBateryCapacity\": 2,\r\n  \"autonomyFullChargeLoad\": 2,\r\n  \"timeCharging\": 2\r\n   \r\n}",
+					"raw": "{\r\n  \"licencePlate\": \"AA-00-AA\",\r\n  \"tare\": 4,\r\n  \"capacity\": 2,\r\n  \"maxBateryCapacity\": 2,\r\n  \"autonomyFullChargeLoad\": 2,\r\n  \"timeCharging\": 2\r\n   \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -124,7 +125,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/truck",
+					"raw": "http://localhost:3000/api/truck/updateTruck",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -132,7 +133,8 @@
 					"port": "3000",
 					"path": [
 						"api",
-						"truck"
+						"truck",
+						"updateTruck"
 					]
 				}
 			},

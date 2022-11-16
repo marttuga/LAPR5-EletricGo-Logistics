@@ -13,7 +13,7 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.truck.name) as ITruckController;
 
-truck.post('',
+truck.post('/createTruck',
 celebrate({
   body: Joi.object({
     licencePlate: Joi.string().regex(/([A-Z]{2}-[0-9]{2}-[A-Z]{2})/).required(),
@@ -26,7 +26,7 @@ celebrate({
 }),
 (req, res, next) => ctrl.createTruck(req, res, next) );
 
-truck.put('',
+truck.put('/updateTruck',
 celebrate({
   body: Joi.object({
     licencePlate:Joi.string().regex(/([A-Z]{2}-[0-9]{2}-[A-Z]{2})/).required(),
