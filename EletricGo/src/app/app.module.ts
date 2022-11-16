@@ -11,6 +11,8 @@ import { FleetManagerComponent } from './views/fleet-manager/fleet-manager.compo
 import { CreateTruckComponent } from './views/create-truck/create-truck.component';
 import { CreateDeliveryComponent } from './views/create-delivery/create-delivery.component';
 import {HttpClientModule} from "@angular/common/http";
+import { CreateRouteComponent } from './views/create-route/create-route.component';
+import { LogisticsManagerComponent } from './views/logistics-manager/logistics-manager.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import {HttpClientModule} from "@angular/common/http";
     FleetManagerComponent,
     WarehouseManagerComponent,
     CreateTruckComponent,
-    CreateDeliveryComponent
+    CreateDeliveryComponent,
+    CreateRouteComponent,
+    LogisticsManagerComponent
   ],
     imports: [
       BrowserModule,
