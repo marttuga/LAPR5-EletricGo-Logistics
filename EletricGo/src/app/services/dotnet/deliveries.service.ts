@@ -12,8 +12,8 @@ export class DeliveriesService {
 
   createDelivery(dIdentifier:string,date:number,mass:number,timeLoad:number,timeUnload:number): Observable<any> {
     const body={
-      "dIdentifier": {
-        "dIdentifier": dIdentifier
+      "DIdentifier": {
+        "DIdentifier": dIdentifier
       },
 
       "Date": date,
