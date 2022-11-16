@@ -9,7 +9,9 @@
     "src/main.ts",
     "src/polyfills.ts",
     "src/app/views/model/Warehouse.ts",
-    "src/app/views/model/Delivery.ts"
+    "src/app/views/model/Delivery.ts",
+    "src/app/views/model/Truck.ts"
+
   ],
   "include": [
     "src/**/*.d.ts"
