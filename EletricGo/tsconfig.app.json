@@ -8,7 +8,8 @@
   "files": [
     "src/main.ts",
     "src/polyfills.ts",
-    "src/app/views/model/Warehouse.ts"
+    "src/app/views/model/Warehouse.ts",
+    "src/app/views/model/Delivery.ts"
   ],
   "include": [
     "src/**/*.d.ts"
