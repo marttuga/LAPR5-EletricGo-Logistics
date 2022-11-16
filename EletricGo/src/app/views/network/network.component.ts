@@ -42,7 +42,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.warehousesService.getWarehouses().subscribe(async data=>{
       this.warehouses=data;
-      this.routesService.getWarehouses().subscribe(async data=>{
+      this.routesService.getRoutes().subscribe(async data=>{
         this.routes=data;
         await this.createScene();
         await this.startRenderingLoop();
