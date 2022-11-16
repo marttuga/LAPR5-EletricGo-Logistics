@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Route, ActivatedRoute } from '@angular/router';
-import { Router } from 'express';
-import { RoutesService } from 'src/app/services/node/routes.service';
+import {RoutesService} from "../../services/node/routes.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-route',
@@ -10,17 +9,17 @@ import { RoutesService } from 'src/app/services/node/routes.service';
 })
 export class CreateRouteComponent implements OnInit {
 
-route1:Route;
-routeId:string;
-distance:string;
-routeTime:string;
-batteryWaste:string;
-arrivalId:string;
-departureId:string;
-extraTime:string;
+routeId: string;
+distance: string;
+routeTime: string;;
+batteryWaste: string;;
+arrivalId: string;
+departureId: string;
+extraTime: string;
 
 
-  constructor(private routeService: RoutesService,
+
+  constructor( private routeService: RoutesService,
     private route: ActivatedRoute,
     private router: Router) {
 }
@@ -29,8 +28,8 @@ extraTime:string;
   }
 
   public createRoute():void{
-    this.routeService.createRoute(this.routeId,this.distance,this.routeTime,this.batteryWaste,this.arrivalId,this.departureId,this.extraTime).subscribe(data => {console.log(data);
-    this.route=data});
+    this.routeService.createRoute(this.routeId,this.distance,this.routeTime,this.batteryWaste,this.arrivalId,this.departureId,this.extraTime).subscribe(data => {console.log(data)});
+
   }
 
 }
