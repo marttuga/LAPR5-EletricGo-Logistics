@@ -9,7 +9,7 @@ import {TrucksService} from "../../services/node/truck.service";
   templateUrl: './create-truck.component.html',
   styleUrls: ['./create-truck.component.css']
 })
-export class FleetManagerComponent implements OnInit {
+export class CreateTruckComponent implements OnInit {
 
  licencePlate:string;
  tare:number;
