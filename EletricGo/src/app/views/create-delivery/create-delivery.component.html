@@ -13,16 +13,19 @@
         <div class="options">
           <h1>Create a new Delivery</h1>
           <div class="textfield">
-            <input type="text" name="date" placeholder="Date">
+            <input type="text" name="date" placeholder="Date" required [(ngModel)]="date">
           </div>
           <div class="textfield">
-            <input type="text" name="mass" placeholder="Mass">
+            <input type="text" name="mass" placeholder="Mass" required [(ngModel)]="mass">
           </div>
           <div class="textfield">
-            <input type="text" name="timeLoad" placeholder="TimeLoad">
+            <input type="text" name="timeLoad" placeholder="TimeLoad" required [(ngModel)]="timeLoad">
           </div>
           <div class="textfield">
-            <input type="text" name="timeUnload" placeholder="TimeUnload">
+            <input type="text" name="timeUnload" placeholder="TimeUnload" required [(ngModel)]="timeUnload">
+          </div>
+          <div class="button">
+            <input type="submit" value="Create" (click)="createDelivery()">
           </div>
         </div>
       </section>

@@ -18,8 +18,14 @@ const routes: Routes = [
   { path: 'views/logistics-manager', component:LogisticsManagerComponent},
   { path: 'views/fleet-manager', component:FleetManagerComponent},
   { path: 'views/create-truck', component:CreateTruckComponent},
+<<<<<<< HEAD
   { path: 'views/create-delivery', component:CreateDeliveryComponent},
   { path: 'views/create-route', component:CreateRouteComponent}
+=======
+  { path: 'views/create-warehouse', component:CreateWarehouseComponent},
+  { path: 'views/create-truck', component:CreateTruckComponent},
+  { path: 'views/create-delivery', component:CreateDeliveryComponent}
+>>>>>>> 14cfbac0f455d50fad047471c94f0eaec8a6e9b3
 ];
 
 @NgModule({
