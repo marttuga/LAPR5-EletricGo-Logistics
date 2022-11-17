@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="warehouse-manager.component.css">
+  <link rel="stylesheet" href="logistics-manager.component.css">
 
   <title>Document</title>
 </head>
@@ -16,15 +16,13 @@
     <nav class="navbar">
       <ul>
         <li><a href="#home">Home</a></li>
-        <li><a href="#createWarehouse">Create Warehouse</a></li>
-        <li><a href="#createDelivery">Create Delivery</a></li>
+        <li><a href="#createRoute">Create Route</a></li>
       </ul>
     </nav>
     <section class="message" id="home" >
-      <h1 >Welcome Maria!</h1>
+      <h1 >Welcome!</h1>
       <img src="assets/truck.webp" class="image" alt="shipping">
-      <button class="btn-create" [routerLink]="['/views/create-warehouse']">create</button>
-      <button class="btn-create" [routerLink]="['/views/create-delivery']">Create Delivery</button>
+      <button class="btn-create" [routerLink]="['/views/create-route']">create</button>
     </section>
 
   </div>

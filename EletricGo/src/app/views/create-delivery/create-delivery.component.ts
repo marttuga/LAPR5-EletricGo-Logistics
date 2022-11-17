@@ -8,8 +8,10 @@ import {Observable} from "rxjs";
   templateUrl: './create-delivery.component.html',
   styleUrls: ['./create-delivery.component.css']
 })
+
 export class CreateDeliveryComponent implements OnInit {
 
+ delivery:Delivery;
  dIdentifier:string;
  date:number;
  mass:number;
@@ -29,8 +31,8 @@ export class CreateDeliveryComponent implements OnInit {
   }
 
   public createDelivery():void{
-    this.deliveryService.createDelivery(this.dIdentifier,this.date,this.mass,this.timeLoad,this.timeUnload).subscribe(data => {console.log(data)});
-
+    this.deliveryService.createDelivery(this.dIdentifier,this.date,this.mass,this.timeLoad,this.timeUnload).subscribe(data => {console.log(data);
+    this.delivery=data});
   }
 
 }
