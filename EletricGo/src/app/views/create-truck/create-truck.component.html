@@ -42,7 +42,7 @@
     <div id="container">
 
         <div id="sideImg">
-            <img src="/assets/truckalone.png" class="image" alt="shipping">         
+            <img src="/assets/truck.webp" class="image" alt="shipping">         
         </div>
 
         <div id="contentSection">
@@ -52,27 +52,27 @@
 
             <div id="data">
                 <div class="textfield">
-                    <input type="text" name="LicencePlate" placeholder="Licence Plate"> 
+                    <input type="text" name="LicencePlate" placeholder="Licence Plate" required [(ngModel)]="licencePlate"> 
                 </div>
                 <div class="textfield">
-                    <input type="number" name="Tare" placeholder="Tare">
+                    <input type="number" name="Tare" placeholder="Tare" required [(ngModel)]="tare"> 
                 </div>
                 <div class="textfield">
-                    <input type="number" name="Capacity" placeholder="Capacity"> 
+                    <input type="number" name="Capacity" placeholder="Capacity" required [(ngModel)]="capacity">  
                 </div>
                 <div class="textfield">
-                    <input type="number" name="MaximumBatteryCapacity" placeholder="Maximum Battery Capacity">
+                    <input type="number" name="MaxBatteryCapacity" placeholder="Maximum Battery Capacity" required [(ngModel)]="maxBateryCapacity"> 
                 </div>
                 <div class="textfield">
-                    <input type="number" name="Autonomy" placeholder="Autonomy"> 
+                    <input type="number" name="Autonomy" placeholder="Autonomy" required [(ngModel)]="autonomyFullChargeLoad"> 
                 </div>
                 <div class="textfield">
-                    <input type="number" name="TimeCharging" placeholder="Time Charging">
+                    <input type="number" name="TimeCharging" placeholder="Time Charging" required [(ngModel)]="timeCharging"> 
                 </div>
             </div>
-            
-
-            <button> DONE </button>
+            <div class="button">
+                <input type="submit" value="DONE" (click)="createTruck()">
+              </div>
 
         </div>
         

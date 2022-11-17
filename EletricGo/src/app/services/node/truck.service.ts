@@ -6,7 +6,7 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TrucksService {
-  private Url = 'http://localhost:3000/api/truck/';
+  private Url = 'http://localhost:3000/api/truck';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -21,7 +21,7 @@ export class TrucksService {
   }
 
   createTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number) {
-    const body={"LicencePlate":licencePlate, "Tare":tare, "Capacity":capacity, "MaxBateryCapacity":maxBateryCapacity, "AutonomyFullChargeLoad": autonomyFullChargeLoad, "TimeCharging":timeCharging};
+    const body={"licencePlate":licencePlate, "tare":tare, "capacity":capacity, "maxBateryCapacity":maxBateryCapacity, "autonomyFullChargeLoad": autonomyFullChargeLoad, "timeCharging":timeCharging};
     console.log(body);
     return this.httpClient.post(this.Url + '/createTruck',body)
       .pipe(map(this.extractData)
@@ -30,7 +30,7 @@ export class TrucksService {
   }
 
   updateTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number){
-    const body = {"LicencePlate":licencePlate, "Tare":tare, "Capacity":capacity, "MaxBateryCapacity":maxBateryCapacity, "AutonomyFullChargeLoad": autonomyFullChargeLoad, "TimeCharging":timeCharging};
+    const body={"licencePlate":licencePlate, "tare":tare, "capacity":capacity, "maxBateryCapacity":maxBateryCapacity, "autonomyFullChargeLoad": autonomyFullChargeLoad, "timeCharging":timeCharging};
   console.log(body);
     return this.httpClient.put(this.Url + '/updateTruck' +licencePlate,body)
       .pipe(map(this.extractData)
