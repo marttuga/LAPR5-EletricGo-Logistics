@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import * as THREE from "three";
 import { ActivatedRoute, Router } from "@angular/router";
 //import TextSprite from "@seregpie/three.text-sprite";
-import { Camera, Object3D, PerspectiveCamera, Vector3 } from 'three';
+import {Camera, CatmullRomCurve3, Object3D, PerspectiveCamera, Vector3} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
@@ -34,9 +34,13 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private warehouseBaseGeometry = new THREE.CylinderGeometry(2, 2, 0.22, 64);
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
+
+
   constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService, private routesService:RoutesService) { }
 
   ngOnInit(): void {
+
+
   }
 
   ngAfterViewInit(): void {
@@ -81,27 +85,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     );
     this.camera.position.z = this.cameraZ;
 
-    //*Light
-    const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light1.position.set(-window.innerWidth, 0, 0);
-    this.scene.add(light1);
-    const light2 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light2.position.set(window.innerWidth, 0, 0);
-    this.scene.add(light2);
-    const light3 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light3.position.set(0, -window.innerHeight, 0);
-    this.scene.add(light3);
-    const light4 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light4.position.set(0, window.innerHeight, 0);
-    this.scene.add(light4);
-    const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
-    this.scene.add(light_amb);
 
-    const focusLight = new THREE.SpotLight(0xffffff, 1);
-    this.camera.add(focusLight);
     this.scene.add(this.camera);
 
-
+    this.addLights()
     this.addWarehousesToScene();
 
   }
@@ -122,8 +109,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     controls.maxDistance = 900;
     controls.minDistance = 100;
-    controls.minAzimuthAngle = -Math.PI ;
-    controls.maxAzimuthAngle = Math.PI ;
+    controls.minAzimuthAngle = -Math.PI/2 ;
+    controls.maxAzimuthAngle = Math.PI/2 ;
 
     let component: NetworkComponent = this;
     (function render() {
@@ -137,14 +124,22 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   private addWarehousesToScene(){
-    console.log(this.warehouses)
     for(let i=0;i<this.warehouses.length;i++) {
 
       const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
-      base.position.set(i*-5, 0, 0);
+      base.position.set(
+        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[0].toFixed(4),
+        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[1].toFixed(4),
+        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[2].toFixed(4)
+                        );
+      console.log(        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[0].toFixed(4),
+      )
+console.log(        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[1].toFixed(4),
+)
+      console.log(        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[2].toFixed(4)
+      )
+     // base.position.set(i*5,0,i*5);
       base.name=this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
-
-
 
       const loader = new GLTFLoader();
       loader.load('/assets/network/warehouse.glb', (gltf) => {
@@ -196,17 +191,48 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 */
 
         let warehouseCubeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-       // let warehouseCubeGeometry =new THREE.BoxGeometry( 2, 0.1, 0.70) ;
-       // warehouseCubeGeometry.setFromPoints(points);
-        let warehouseCubeGeometry =new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 4, 0.1, 28, false )
-        warehouseCubeMaterial.map = new THREE.TextureLoader().load('assets/network/road.jpg');
+        let warehouseCubeGeometry =new THREE.BoxGeometry( 2, 0.1, 0.70) ;
+        warehouseCubeGeometry.setFromPoints(new CatmullRomCurve3(points).getPoints());
+        //let warehouseCubeGeometry =new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 4, 0.1, 28, false )
+        warehouseCubeMaterial.map = new THREE.TextureLoader().load('assets/network/road1.jpg');
         let road=new THREE.Mesh(warehouseCubeGeometry,warehouseCubeMaterial);
         this.scene.add(road)
 
 
-      }console.log(this.warehouses)
+      }
     }
   }
+
+  private addLights(){
+    //*Light
+    const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light1.position.set(-window.innerWidth, 0, 0);
+    this.scene.add(light1);
+    const light2 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light2.position.set(window.innerWidth, 0, 0);
+    this.scene.add(light2);
+    const light3 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light3.position.set(0, -window.innerHeight, 0);
+    this.scene.add(light3);
+    const light4 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light4.position.set(0, window.innerHeight, 0);
+    this.scene.add(light4);
+    const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
+    this.scene.add(light_amb);
+
+    const focusLight = new THREE.SpotLight(0xffffff, 1);
+    this.camera.add(focusLight);
+  }
+
+
+  private static getCoordinates(lat:number, lon:number, alt: number):any {
+   let coordinatesArr: number[]=[];
+    coordinatesArr[0]=(((50-(-50))/(8.7613-8.2451))*(lon-8.2451)+(-50));
+    coordinatesArr[1]=(((50-(-50))/(42.1115-40.8387))*(lat-40.8387)+(-50));
+    coordinatesArr[2]=((50 / 800) * alt);
+    return coordinatesArr;
+  }
+
   onClick() {
 
   }

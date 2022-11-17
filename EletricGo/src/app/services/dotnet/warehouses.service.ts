@@ -6,7 +6,7 @@ import {map, Observable} from "rxjs";
   providedIn: 'root'
 })
 export class WarehousesService {
-  private Url = 'https://localhost:5001/api/warehouses';
+  private Url = 'https://localhost:5001/api/warehouse';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -36,7 +36,7 @@ export class WarehousesService {
     return this.httpClient.post(this.Url ,body).pipe(map(this.extractData));
   }
   getWarehouses(): Observable<any> {
-    return this.httpClient.get(this.Url + 'getAll').pipe(
+    return this.httpClient.get(this.Url + '/getAll').pipe(
       map(this.extractData));
   }
 
