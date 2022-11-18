@@ -22,8 +22,8 @@ min-height: 100vh;
   height: 500px;
   width: 500px;
    position: absolute;
-   top: -12%;
-   right: 14%;
+   top: -11%;
+   right: 15%;
    display: grid;
   place-items: center;
    cursor: pointer;
@@ -72,27 +72,36 @@ min-height: 100vh;
 
   #contentSection h2{
   font-family: sans-serif;
-  font-size: 95px;
+  font-size: 90px;
   color: #778DB3;
   font-weight: 900;
   text-align: center;
 
   }
 
+  #contentSection h3{
+    font-family: sans-serif;
+    font-size: 15px;
+    color: #313f57;
+    font-weight: 900;
+    text-align: center;
+    margin: 20px 15px;
+
+    }
+
   .textfield {
     height: 60px;
-    width: 30%;
+    width: 27%;
     display:inline-flex;
     flex-direction:row;
     align-items:center;
     justify-content: center;
-    margin: 20px 15px;
+    margin: 25px 33px;
   
   }
   
   .textfield > input{
     font-family: sans-serif;
-    width: 100%;
     border: none;
     border-radius: 30px;
     padding: 15px;
@@ -102,6 +111,7 @@ min-height: 100vh;
       box-shadow: 0px 10px 40px #00000010;
       outline: none;
       box-sizing: border-box;
+      width: 140%;
 
   }
 
@@ -111,8 +121,9 @@ min-height: 100vh;
      cursor: pointer;
    position: absolute;
    top: 85%;
-   right: -20%;
-  
+   right: -30%;
+   width: 140%;
+
  }
 
 
@@ -126,7 +137,7 @@ min-height: 100vh;
      font-size: 20px;
    position: absolute;
    top: 105%;
-   right: -61%;
+   right: -66%;
   
 
  }
