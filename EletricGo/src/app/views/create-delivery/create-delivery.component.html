@@ -12,7 +12,10 @@
       <section id="c">
         <div class="options">
           <h1>Create a new Delivery</h1>
-          <img src="/assets/delivery.jpeg" class="image"  alt="delivery" width="230" height="250"> 
+          <img src="/assets/delivery.jpeg" class="image"  alt="delivery" width="230" height="250">
+          <div class="textfield">
+            <input type="text" name="delId" placeholder="Delivery indentifier" required [(ngModel)]="dIdentifier">
+          </div>
           <div class="textfield">
             <input type="text" name="date" placeholder="Date" required [(ngModel)]="date">
           </div>

@@ -1,47 +1,57 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="create-warehouse.component.css">
   <title>Document</title>
 </head>
   <body>
     <div class="container">
-      <section id="c">
-        <div class="options">
-          <h1>Create a new Warehouse</h1>
-          <div class="textfield">
-            <input type="text" name="id" placeholder="Warehouse Identifier" required [(ngModel)]="warehouseIdentifier">
+      <section>
+          <div class="create-message">
+            <h1 class="create-message-title">New location?</h1>
+            <h2 class="create-message-subtitle">Let us know where!</h2>
           </div>
-          <div class="textfield">
-            <input type="text" name="designation" placeholder="Designation" required [(ngModel)]="designation">
+          <img class="warehouse-image" src="assets/ww.gif">
+      </section>
+      <section>
+        <div class="create-form">
+          <div class="create-form-left">
+            <div class="textfield">
+              <input type="text" name="id" placeholder="Warehouse Identifier" required [(ngModel)]="warehouseIdentifier">
+            </div>
+            <div class="textfield">
+              <input type="text" name="designation" placeholder="Designation" required [(ngModel)]="designation">
+            </div>
+            <div class="textfield">
+              <input type="text" name="latitude" placeholder="Latitude" required [(ngModel)]="latitude">
+            </div>
+            <div class="textfield">
+              <input type="text" name="longitude" placeholder="Longitude" required [(ngModel)]="longitude">
+            </div>
+            <div class="textfield">
+              <input type="text" name="street" placeholder="Street" required [(ngModel)]="street">
+            </div>
           </div>
-
-          <div class="textfield">
-            <input type="text" name="latitude" placeholder="Latitude" required [(ngModel)]="latitude">
-          </div>
-          <div class="textfield">
-            <input type="text" name="longitude" placeholder="Longitude" required [(ngModel)]="longitude">
-          </div>
-          <div class="textfield">
-            <input type="text" name="street" placeholder="Street" required [(ngModel)]="street">
-          </div>
-          <div class="textfield">
-            <input type="number" name="doorNumber"  placeholder="Door Number" required [(ngModel)]="doorNumber">
-          </div>
-          <div class="textfield">
-            <input type="text" name="city" placeholder="City" required [(ngModel)]="city">
-          </div>
-          <div class="textfield">
-            <input type="text" name="zipcode" placeholder="Zip Code" required [(ngModel)]="zipcode">
-          </div>
-          <div class="textfield">
-            <input type="text" name="altitude" placeholder="Altitude" required [(ngModel)]="altitude">
-          </div>
-          <div class="button">
-            <input type="submit" value="Create" (click)="createWarehouse()">
+          <div class="create-form-right">
+              <div class="textfield">
+                <input type="number" name="doorNumber"  placeholder="Door Number" required [(ngModel)]="doorNumber">
+              </div>
+              <div class="textfield">
+                <input type="text" name="city" placeholder="City" required [(ngModel)]="city">
+              </div>
+              <div class="textfield">
+                <input type="text" name="zipcode" placeholder="Zip Code" required [(ngModel)]="zipcode">
+              </div>
+              <div class="textfield">
+                <input type="text" name="altitude" placeholder="Altitude" required [(ngModel)]="altitude">
+              </div>
+              <div class="button">
+                <button class="button-create" type="submit" (click)="createWarehouse()">All done!</button>
+              </div>
           </div>
         </div>
       </section>

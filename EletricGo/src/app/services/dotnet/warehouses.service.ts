@@ -6,31 +6,21 @@ import {map, Observable} from "rxjs";
   providedIn: 'root'
 })
 export class WarehousesService {
-  private Url = 'https://localhost:5001/api/warehouse';
+  private Url = 'https://localhost:5001/api/warehouse/createWarehouse';
 
   constructor(private httpClient: HttpClient) { }
 
   createWarehouse(warehouseIdentifier:string,designation:string,latitude:number,longitude:number,street:string,doorNumber:number,city:string,zipcode:string,altitude:string): Observable<any> {
     const body={
-      "WarehouseIdentifier": {
-        "WarehouseIdentifier": warehouseIdentifier
-      },
-      "Designation": {
-        "Designation": designation
-      },
-      "Coordinates": {
+        "WarehouseIdentifier": warehouseIdentifier,
+        "Designation": designation,
         "Latitude":latitude,
-        "Longitude":longitude
-      },
-      "Address":  {
+        "Longitude":longitude,
         "Street":street,
         "DoorNumber": doorNumber,
         "City":city,
-        "zipCode":zipcode
-      },
-      "WarehouseAltitude": {
+        "zipCode":zipcode,
         "WarehouseAltitude": altitude
-      }
     }
     ;
     return this.httpClient.post(this.Url ,body).pipe(map(this.extractData));
