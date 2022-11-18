@@ -16,24 +16,29 @@
           <li><a (click)="scroll(login)">Login</a></li>
         </ul>
       </nav>
-      <section class="message" #home >
+      <section  #home >
+        <div class="message">
           <h1 >Welcome to<br /><span class="text-secondary">EletricGo!🔋</span> </h1>
-          <img src="/assets/truck.webp" class="image" alt="shipping">
+          <img src="/assets/truck2.png.webp" class="image" alt="shipping">
+        </div>
       </section>
+
       <section #login>
         <div class="card-login">
           <h1>LOGIN</h1>
           <div class="textfield">
             <input type="text" name="username" placeholder="Username">
-        <div class="textfield">
-                    <input type="password" name="password" placeholder="Password">
-        </div>
-            <button class="btn-login" >Login</button>
-            <button class="btn-login" [routerLink]="['/views/network']">Network</button>
-            <button class="btn-login" [routerLink]="['/views/warehouse-manager']">Warehouse Manager</button>
-            <button class="btn-login" [routerLink]="['/views/fleet-manager']">Fleet Manager</button>
-            <button class="btn-login" [routerLink]="['/views/logistics-manager']">Logistics Manager</button>
-              </div>
+          </div>
+          <div class="textfield">
+            <input type="password" name="password" placeholder="Password">
+          </div>
+          <div class="textfield">
+              <button class="btn-login" >Login</button>
+              <button class="btn-login" [routerLink]="['/views/network']">Network</button>
+              <button class="btn-login" [routerLink]="['/views/warehouse-manager']">Warehouse Manager</button>
+              <button class="btn-login" [routerLink]="['/views/fleet-manager']">Fleet Manager</button>
+              <button class="btn-login" [routerLink]="['/views/logistics-manager']">Logistics Manager</button>
+          </div>
         </div>
       </section>
     </div>
