@@ -26,7 +26,7 @@ export class WarehousesService {
     return this.httpClient.post(this.Url ,body).pipe(map(this.extractData));
   }
   getWarehouses(): Observable<any> {
-    return this.httpClient.get(this.Url + 'getAll').pipe(
+    return this.httpClient.get(this.Url + '/getAll').pipe(
       map(this.extractData));
   }
 

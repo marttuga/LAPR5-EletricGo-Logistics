@@ -11,6 +11,7 @@ import {TrucksService} from "../../services/node/truck.service";
 })
 export class CreateTruckComponent implements OnInit {
 
+ truck:Truck;
  licencePlate:string;
  tare:number;
  capacity:number;
@@ -28,9 +29,10 @@ export class CreateTruckComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public ():void{
-    this.truckService.createTruck(this.licencePlate,this.tare,this.capacity,this.maxBateryCapacity,this.autonomyFullChargeLoad,this.timeCharging).subscribe(data => {console.log(data)});
 
+  public createTruck():void{
+    this.truckService.createTruck(this.licencePlate,this.tare,this.capacity,this.maxBateryCapacity,this.autonomyFullChargeLoad,this.timeCharging).subscribe(data => {console.log(data);
+    this.truck=data});
   }
 
 }

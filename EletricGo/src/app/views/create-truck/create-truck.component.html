@@ -7,77 +7,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="create-truck.component.css">
 </head>
-<!-- <body>
-  <div class="container">
-    <section id="c">
-        <div class="options">
-          <h1>Define the truck data</h1>
-          <!-- <img src="/assets/buildTruck.png" class="image" alt="shipping"> 
-        
-            <div class="textfield">
-                <input type="text" name="LicencePlate" placeholder="Licence Plate"> 
-            </div>
-            <div class="textfield">
-                <input type="number" name="Tare" placeholder="Tare">
-            </div>
-            <div class="textfield">
-                <input type="number" name="Capacity" placeholder="Capacity"> 
-            </div>
-            <div class="textfield">
-                <input type="number" name="MaximumBatteryCapacity" placeholder="Maximum Battery Capacity">
-            </div>
-            <div class="textfield">
-                <input type="number" name="Autonomy" placeholder="Autonomy"> 
-            </div>
-            <div class="textfield">
-                <input type="number" name="TimeCharging" placeholder="Time Charging">
-            </div>
-        </div>
-    </section>
-    </div>
-</body>
- -->
 
- <body> 
+  <body> 
     <div id="container">
 
         <div id="sideImg">
-            <img src="/assets/truckalone.png" class="image" alt="shipping">         
+            <img src="/assets/truck.webp" class="image" alt="shipping">         
         </div>
 
         <div id="contentSection">
                  <h2>CREATE YOUR TRUCK</h2> 
 
 
-
             <div id="data">
+                
                 <div class="textfield">
-                    <input type="text" name="LicencePlate" placeholder="Licence Plate"> 
+                    <input type="text" name="LicencePlate" placeholder="Licence Plate" pattern="([A-Za-z]{2}-[0-9]{2}-[A-Za-z]{2})" title="Must be of format XX-00-XX" required [(ngModel)]="licencePlate"> 
                 </div>
-                <div class="textfield">
-                    <input type="number" name="Tare" placeholder="Tare">
+                <div class="textfield" >
+                    <input type="number" name="Tare" placeholder="Tare" min="3000" max="20000" title="Tare must be between 3000kg and 20000kg" required [(ngModel)]="tare"> 
                 </div>
-                <div class="textfield">
-                    <input type="number" name="Capacity" placeholder="Capacity"> 
+                <div class="textfield" >
+                    <input type="number" name="Capacity" placeholder="Capacity" min="2000" max="20000" title="Capacity must be between 2000kg and 20000kg" required [(ngModel)]="capacity">  
                 </div>
-                <div class="textfield">
-                    <input type="number" name="MaximumBatteryCapacity" placeholder="Maximum Battery Capacity">
+                <div class="textfield" >
+                    <input type="number" name="MaxBatteryCapacity" placeholder="Maximum Battery Capacity" min="80" max="200" title="Max batery capacity must be between 80kWh and 200kWh" required [(ngModel)]="maxBateryCapacity"> 
                 </div>
-                <div class="textfield">
-                    <input type="number" name="Autonomy" placeholder="Autonomy"> 
+                <div class="textfield" >
+                    <input type="number" name="Autonomy" placeholder="Autonomy" min="100" max="8000" title="Autonomy must be between 100km and 8000km" required [(ngModel)]="autonomyFullChargeLoad"> 
                 </div>
-                <div class="textfield">
-                    <input type="number" name="TimeCharging" placeholder="Time Charging">
+                <div class="textfield" >
+                    <input type="number" name="TimeCharging" placeholder="Time Charging" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="timeCharging"> 
                 </div>
             </div>
-            
 
-            <button> DONE </button>
+            <div class="button">
+                <input type="submit" value="DONE" (click)="createTruck()">
+            </div>
 
         </div>
-        
     </div>
 
 
  </body>
+
+
 
