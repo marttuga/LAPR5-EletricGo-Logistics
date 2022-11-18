@@ -175,6 +175,12 @@
 						"exec": [
 							"pm.test(\"Status code is 200, the route distance was updated\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Route Data updated succecfully!\", function() {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.distance).to.eql(\"33\");",
+							" ",
 							"});"
 						],
 						"type": "text/javascript"
@@ -261,6 +267,12 @@
 						"exec": [
 							"pm.test(\"Status code is 200, the route time was updated\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Route Data updated succecfully!\", function() {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.routeTime).to.eql(\"75\");",
+							" ",
 							"});"
 						],
 						"type": "text/javascript"
@@ -347,6 +359,12 @@
 						"exec": [
 							"pm.test(\"Status code is 200, the battery waste was updated\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Route Data updated succecfully!\", function() {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.batteryWaste).to.eql(\"26\");",
+							" ",
 							"});"
 						],
 						"type": "text/javascript"
@@ -433,6 +451,12 @@
 						"exec": [
 							"pm.test(\"Status code is 200, the warehouse arrivalId was updated\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Route Data updated succecfully!\", function() {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.arrivalId).to.eql(\"GONDOMAR\");",
+							" ",
 							"});"
 						],
 						"type": "text/javascript"
@@ -519,6 +543,12 @@
 						"exec": [
 							"pm.test(\"Status code is 200, the warehouse departureId was updated\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Route Data updated succecfully!\", function() {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.departureId).to.eql(\"MATOSINHOS\");",
+							" ",
 							"});"
 						],
 						"type": "text/javascript"
@@ -605,6 +635,12 @@
 						"exec": [
 							"pm.test(\"Status code is 200, the extra time was updated\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Route Data updated succecfully!\", function() {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.extraTime).to.eql(\"10\");",
+							" ",
 							"});"
 						],
 						"type": "text/javascript"
