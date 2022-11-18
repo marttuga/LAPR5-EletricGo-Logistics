@@ -13,20 +13,36 @@
 </head>
 <body>
   <div class="container">
-    <nav class="navbar">
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#createWarehouse">Create Warehouse</a></li>
-        <li><a href="#createDelivery">Create Delivery</a></li>
-      </ul>
-    </nav>
-    <section class="message" id="home" >
-      <h1 >Welcome Maria!</h1>
-      <img src="assets/truck.webp" class="image" alt="shipping">
-      <button class="btn-create" [routerLink]="['/views/create-warehouse']">create</button>
-      <button class="btn-create" [routerLink]="['/views/create-delivery']">Create Delivery</button>
+    <section>
+      <nav class="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a (click)="scroll(createWarehouse)">Create Warehouse</a></li>
+          <li><a (click)="scroll(createDelivery)">Create Delivery</a></li>
+        </ul>
+      </nav>
+      <div class="welcome-message">
+        <h1 >Welcome back!</h1>
+      </div>
     </section>
-
+    <section #createWarehouse>
+        <div class="war">
+          <div class="create-title">
+            <h2>Create a Warehouse!</h2>
+            <button class="btn-create" [routerLink]="['/views/create-warehouse']">Create</button>
+          </div>
+          <img class="image-warehouse1" src="assets/warehouse1.png">
+        </div>
+    </section>
+    <section #createDelivery>
+        <div class="del">
+          <img class="image-warehouse2" src="assets/warehouse2.png">
+          <div class="create-title">
+            <h3>Create a Delivery!</h3>
+            <button class="btn-create" [routerLink]="['/views/create-delivery']">Create</button>
+          </div>
+        </div>
+    </section>
   </div>
 </body>
 </html>
