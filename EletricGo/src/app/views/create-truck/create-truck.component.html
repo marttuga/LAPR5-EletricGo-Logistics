@@ -16,10 +16,11 @@
         </div>
 
         <div id="contentSection">
-                 <h2>CREATE YOUR TRUCK</h2> 
+                 <h2>NEED MORE TRUCKS?</h2> 
+                 <h3>CREATE ANOTHER ONE</h3>
+        
 
-
-            <div id="data">
+            <div id="data1">
                 
                 <div class="textfield">
                     <input type="text" name="LicencePlate" placeholder="Licence Plate" pattern="([A-Za-z]{2}-[0-9]{2}-[A-Za-z]{2})" title="Must be of format XX-00-XX" required [(ngModel)]="licencePlate"> 
@@ -30,6 +31,9 @@
                 <div class="textfield" >
                     <input type="number" name="Capacity" placeholder="Capacity" min="2000" max="20000" title="Capacity must be between 2000kg and 20000kg" required [(ngModel)]="capacity">  
                 </div>
+            </div>
+            <div id="data2">
+
                 <div class="textfield" >
                     <input type="number" name="MaxBatteryCapacity" placeholder="Maximum Battery Capacity" min="80" max="200" title="Max batery capacity must be between 80kWh and 200kWh" required [(ngModel)]="maxBateryCapacity"> 
                 </div>
@@ -40,9 +44,9 @@
                     <input type="number" name="TimeCharging" placeholder="Time Charging" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="timeCharging"> 
                 </div>
             </div>
-
+        
             <div class="button">
-                <input type="submit" value="DONE" (click)="createTruck()">
+                <input type="submit" value="DONE!" (click)="createTruck()">
             </div>
 
         </div>
