@@ -5,7 +5,7 @@ import {TrucksService} from "../../services/node/truck.service";
 
 
 @Component({
-  selector: 'app-fleet-manager',
+  selector: 'app-create-truck',
   templateUrl: './create-truck.component.html',
   styleUrls: ['./create-truck.component.css']
 })
