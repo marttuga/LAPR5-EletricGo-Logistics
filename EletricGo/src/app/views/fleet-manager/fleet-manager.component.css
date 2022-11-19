@@ -82,7 +82,7 @@
 }
   
 .text-box p{
-  color: #54a8d9;
+  color: #778DB3;
   font-family: Arial;
   font-size: 30px;
   font-weight:800;
@@ -97,7 +97,7 @@
   margin-left: -10px;
   font-weight:800;
   -webkit-text-stroke: 3px #778DB3;
-  background: url("/assets/lines.png");
+  background: url("/assets/back.png");
   -webkit-background-clip: text;
   background-position: 0 0;
   animation: back 35s linear infinite;
