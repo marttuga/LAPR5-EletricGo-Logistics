@@ -54,6 +54,7 @@
   .navbar ul li a:hover{
     color: skyblue;
   }
+
   
   section{
     display: flex;
@@ -74,13 +75,6 @@
     justify-content: center;
   }
   
-/*   
-  section h1{
-    color: #778DB3;
-    font-family: Arial;
-    font-size: 3rem;
-    text-align: center;
-  } */
   
 .text-box{
   color: #fff;
@@ -88,22 +82,30 @@
 }
   
 .text-box p{
-  color: #778DB3;
+  color: #54a8d9;
   font-family: Arial;
-  font-size: 50px;
-  font-weight:600;
+  font-size: 30px;
+  font-weight:800;
 
 }
   
 .text-box h1{
-  color: #778DB3;
+  color:  transparent;
     font-family: Arial;
-  font-size: 190px;
+  font-size: 130px;
   line-height: 160px;
   margin-left: -10px;
-
+  font-weight:800;
+  -webkit-text-stroke: 3px #778DB3;
+  background: url("/assets/lines.png");
+  -webkit-background-clip: text;
+  background-position: 0 0;
+  animation: back 35s linear infinite;
 }
 
-  
-  
+  @keyframes back{
+    100%{
+      background-position:2000px 0 ;
+    }
+  }
   
