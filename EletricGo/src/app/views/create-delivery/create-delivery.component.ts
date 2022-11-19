@@ -20,7 +20,6 @@ export class CreateDeliveryComponent implements OnInit {
 
 
 
-
   constructor( private deliveryService: DeliveriesService,
                private route: ActivatedRoute,
                private router: Router) {
