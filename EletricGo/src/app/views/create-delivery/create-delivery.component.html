@@ -11,8 +11,9 @@
     <div class="container">
       <section id="c">
         <div class="options">
-          <h1>Create a new Delivery</h1>
-          <img src="/assets/delivery.jpeg" class="image"  alt="delivery" width="230" height="250">
+          <h1 class="create-title">New Delivery</h1>
+          <img src="/assets/delivery1.gif" class="image"  alt="delivery" width="230" height="250">
+          <h2 class="create-message-subtitle">Enter all information here!</h2>
           <div class="textfield">
             <input type="text" name="delId" placeholder="Delivery indentifier" required [(ngModel)]="dIdentifier">
           </div>
@@ -29,7 +30,7 @@
             <input type="text" name="timeUnload" placeholder="TimeUnload" required [(ngModel)]="timeUnload">
           </div>
           <div class="button">
-            <input type="submit" value="Create Delivery" (click)="createDelivery()">
+            <button class="button" type="submit" (click)="createDelivery()">Create Delivery!</button>
           </div>
         </div>
       </section>
