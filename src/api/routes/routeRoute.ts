@@ -13,7 +13,7 @@ export default (app: Router) => {
   const ctrl = Container.get(config.controllers.route.name) as IRouteController;
 
   route.post(
-    '',
+    '/createRoute',
     celebrate({
       body: Joi.object({
         routeId: Joi.string().required(),
@@ -29,7 +29,7 @@ export default (app: Router) => {
   );
 
   route.put(
-    '',
+    '/updateRoute',
     celebrate({
       body: Joi.object({
         routeId: Joi.string().required(),
