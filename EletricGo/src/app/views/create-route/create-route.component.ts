@@ -9,10 +9,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class CreateRouteComponent implements OnInit {
 
+  route: Route;
 routeId: string;
 distance: string;
-routeTime: string;;
-batteryWaste: string;;
+routeTime: string;
+batteryWaste: string;
 arrivalId: string;
 departureId: string;
 extraTime: string;
@@ -20,7 +21,7 @@ extraTime: string;
 
 
   constructor( private routeService: RoutesService,
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private router: Router) {
 }
 
@@ -28,7 +29,8 @@ extraTime: string;
   }
 
   public createRoute():void{
-    this.routeService.createRoute(this.routeId,this.distance,this.routeTime,this.batteryWaste,this.arrivalId,this.departureId,this.extraTime).subscribe(data => {console.log(data)});
+    this.routeService.createRoute(this.routeId,this.distance,this.routeTime,this.batteryWaste,this.arrivalId,this.departureId,this.extraTime).subscribe(data => {console.log(data);
+    this.route=data});
 
   }
 

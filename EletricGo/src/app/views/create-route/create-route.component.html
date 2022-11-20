@@ -14,28 +14,30 @@
         <div class="options">
           <h1>Create a new Route</h1>
           <div class="textfield">
-            <input type="text" name="routeId" placeholder="Route Id">
+            <input type="text" name="routeId" placeholder="Route Id" required [(ngModel)]="routeId">
           </div>
           <div class="textfield">
-            <input type="text" name="distance" placeholder="Distance">
+            <input type="text" name="distance" placeholder="Distance" required [(ngModel)]="distance">
           </div>
           <div class="textfield">
-            <input type="text" name="routeTime" placeholder="Route Time">
+            <input type="text" name="routeTime" placeholder="Route Time" required [(ngModel)]="routeTime">
           </div>
           <div class="textfield">
-            <input type="text" name="batteryWaste" placeholder="Battery Waste">
+            <input type="text" name="batteryWaste" placeholder="Battery Waste" required [(ngModel)]="batteryWaste">
           </div>
           <div class="textfield">
-            <input type="text" name="arrivalId" placeholder="Warehouse Arrival Id">
+            <input type="text" name="arrivalId" placeholder="Warehouse Arrival Id" required [(ngModel)]="arrivalId">
           </div>
           <div class="textfield">
-            <input type="text" name="departureId" placeholder="Warehouse Departure Id">
+            <input type="text" name="departureId" placeholder="Warehouse Departure Id" required [(ngModel)]="departureId">
           </div>
           <div class="textfield">
-            <input type="text" name="extraTime" placeholder="Extra Time">
+            <input type="text" name="extraTime" placeholder="Extra Time" required [(ngModel)]="extraTime">
+          </div>
+          <div class="button">
+            <input class="button-create" type="submit" value="DONE!" (click)="createRoute()">
           </div>
         </div>
-        <button> CREATE </button>
       </section>
     </div>
   </body>
