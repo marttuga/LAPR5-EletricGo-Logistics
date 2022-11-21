@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<div class="container">
+  <table class="table table-bordered  table-striped">
+    <thead>
+      <tr>
+        <th>Warehouse Id</th>
+        <th>Designation</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Street</th>
+        <th>Door number</th>
+        <th>City</th>
+        <th>ZipCode</th>
+        <th>Altitude</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let warehouse of warehouses">
+        <td><span>{{warehouse.warehouseIdentifier}}</span></td>
+        <td><span>{{warehouse.designation}}</span></td>
+        <td><span>{{warehouse.latitude}}</span></td>
+        <td><span>{{warehouse.longitude}}</span></td>
+        <td><span>{{warehouse.street}}</span></td>
+        <td><span>{{warehouse.doorNumber}}</span></td>
+        <td><span>{{warehouse.city}}</span></td>
+        <td><span>{{warehouse.zipcode}}</span></td>
+        <td><span>{{warehouse.altitude}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+body{
+  font-family: Mukta, sans-serif;
+  height: 50vh;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  color: #778DB3;
+  font-size: 0.9rem;
+  background-color: #ffffff;
+}
+
+.container{
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px #ead3cd;
+  background-color: white;
+  text-align: left;
+  overflow: hidden;
+  text-align: center;
+  width: 100%;
+}
+ .container thead{
+   height: 70px;
+ }
+.thead{
+  box-shadow: 0 5px 10px #ead3cd;
+}
+
+.tr{
+  text-align: center;
+  height: 70px;
+}
+
+.th{
+  padding: 1rem 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.td{
+  padding: 1rem 2rem;
+}
+
