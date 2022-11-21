@@ -9,13 +9,9 @@ import {TrucksService} from "../../services/node/truck.service";
   styleUrls: ['./list-truck.component.css']
 })
 export class ListTruckComponent implements OnInit {
-  truck:Truck;
-  licencePlate:string;
-  tare:number;
-  capacity:number;
-  maxBateryCapacity:number;
-  autonomyFullChargeLoad:number;
-  timeCharging:number;
+  trucks: Truck[];
+
+
 
   constructor( private truckService: TrucksService,
     private route: ActivatedRoute,
@@ -24,12 +20,14 @@ export class ListTruckComponent implements OnInit {
 }
 
 ngOnInit(): void {
+  this.getTrucks();
 }
 
 
 public getTrucks():void{
 this.truckService.getTrucks().subscribe(data => {console.log(data);
-this.truck=data});
+this.trucks=data});
 }
 
 }
+

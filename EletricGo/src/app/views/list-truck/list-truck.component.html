@@ -7,3 +7,34 @@
     <link rel="stylesheet" href="list-truck.component.css">
 </head>
 
+<body>
+    <div id="contentSection">
+    <h2>ALL EXISTENT TRUCKS</h2> 
+    </div>
+
+    <div class="container">
+      <table class="table table-bordered  table-striped">
+        <thead>
+          <tr>
+            <th>Licence_Plate</th>
+            <th>Tare</th>
+            <th>Capacity</th>
+            <th>Batery_Capacity</th>
+            <th>Autonomy</th>
+            <th>Time_Charging</th>
+    
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let truck of trucks">
+            <td><span>{{truck.licencePlate}}</span></td>
+            <td><span>{{truck.tare}}</span></td>
+            <td><span>{{truck.capacity}}</span></td>
+            <td><span>{{truck.maxBateryCapacity}}</span></td>
+            <td><span>{{truck.autonomyFullChargeLoad}}</span></td>
+            <td><span>{{truck.timeCharging}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </body>
