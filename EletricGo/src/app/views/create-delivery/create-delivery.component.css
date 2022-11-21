@@ -8,7 +8,7 @@
 body{
   margin: 0;
   font-family: "Lato", sans-serif;
-  background: #F8F8F8;
+  background: #CFCBCB;
   line-height: 1.6;
   height: 100vh;
   overflow: hidden;
@@ -32,9 +32,9 @@ body{
   width: 100%;
   border: none;
   border-radius: 30px;
-  padding: 15px;
-  background: #eee5a1;
-  color: black;
+  padding: 12px;
+  background: #ffffff;
+  color: #778DB3;
   font-size: 12pt;
   outline: none;
   box-sizing: border-box;
@@ -45,7 +45,7 @@ body{
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   font-size: 90px;
-  color: #427de4;
+  color: #778DB3;
 }
 
  .options{
@@ -58,7 +58,7 @@ body{
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
   font-size: 26px;
-  color: #e8e069;
+  color: #17486d;
 }
 
 
@@ -69,6 +69,18 @@ body{
   text-align: left, justify;
 }
 
+
+.button{
+  width: 50%;
+  border: none;
+  border-radius: 30px;
+  padding: 12px;
+  background: #ffffff;
+  color: #778DB3;
+  font-size: 12pt;
+  outline: none;
+  box-sizing: border-box;
+}
 
 
 
