@@ -13,14 +13,12 @@ body{
 
 .container{
   border-collapse: collapse;
-  box-shadow: 0 5px 10px #ead3cd;
   background-color: f9f8fb;
-  text-align: left;
+  text-align: center;
   overflow: hidden;
   text-align: center;
   width: 100%;
   letter-spacing: 0.1rem;
-  word-spacing: 10rem;
 
 
 }
@@ -28,27 +26,26 @@ body{
    height: 40px;
    
  }
-.thead{
-  box-shadow: 0 5px 10px #ead3cd;
-}
 
-.tr{
+tr{
   text-align: center;
-  height: 70px;
+ 
 
 }
 
-.th{
+th{
   
-  padding: 1rem 2rem;
+ 
   text-transform: uppercase;
   letter-spacing: 0.1rem;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 900;
+  color: #4f648a;
+
 }
 
-.td{
-  padding: 1rem 2rem;
+td{
+  padding: 0.1rem 2.5rem;
 }
 
 
