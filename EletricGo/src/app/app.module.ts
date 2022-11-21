@@ -29,7 +29,8 @@ import { ListTruckComponent } from './views/list-truck/list-truck.component';
     CreateRouteComponent,
     LogisticsManagerComponent,
     CreateWarehouseComponent,
-    ListWarehousesComponent
+    ListWarehousesComponent,
+    ListTruckComponent
 
   ],
     imports: [

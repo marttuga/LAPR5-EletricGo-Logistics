@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'views/create-warehouse', component:CreateWarehouseComponent},
   { path: 'views/create-truck', component:CreateTruckComponent},
   { path: 'views/create-delivery', component:CreateDeliveryComponent},
-  {path: 'views/list-warehouses',  component:ListWarehousesComponent}
+  {path: 'views/list-warehouses',  component:ListWarehousesComponent},
   { path: 'views/create-delivery', component:CreateDeliveryComponent},
   { path: 'views/list-truck', component:ListTruckComponent}
 ];
