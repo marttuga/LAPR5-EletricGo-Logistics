@@ -9,6 +9,7 @@ import {LogisticsManagerComponent} from "./views/logistics-manager/logistics-man
 import {CreateWarehouseComponent} from "./views/create-warehouse/create-warehouse.component";
 import {CreateDeliveryComponent} from "./views/create-delivery/create-delivery.component";
 import {CreateRouteComponent} from "./views/create-route/create-route.component";
+import {ListTruckComponent} from "./views/list-truck/list-truck.component";
 
 const routes: Routes = [
   { path: '',redirectTo: '/views/login', pathMatch: 'full' },
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 'views/create-route', component:CreateRouteComponent},
   { path: 'views/create-warehouse', component:CreateWarehouseComponent},
   { path: 'views/create-truck', component:CreateTruckComponent},
-  { path: 'views/create-delivery', component:CreateDeliveryComponent}
+  { path: 'views/create-delivery', component:CreateDeliveryComponent},
+  { path: 'views/list-truck', component:ListTruckComponent}
 ];
 
 @NgModule({
