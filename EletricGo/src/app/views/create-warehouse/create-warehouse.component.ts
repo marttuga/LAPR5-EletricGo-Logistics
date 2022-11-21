@@ -23,6 +23,7 @@ export class CreateWarehouseComponent implements OnInit {
 
 
 
+
   constructor( private warehouseService: WarehousesService,
                private route: ActivatedRoute,
                private router: Router) {

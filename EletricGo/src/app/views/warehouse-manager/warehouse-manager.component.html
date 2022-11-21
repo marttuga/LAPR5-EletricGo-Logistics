@@ -17,7 +17,7 @@
       <nav class="navbar">
         <ul>
           <li><a href="#home">Home</a></li>
-          <li><a (click)="scroll(createWarehouse)">Create Warehouse</a></li>
+          <li><a (click)="scroll(createWarehouseComponent)">Create Warehouse</a></li>
           <li><a (click)="scroll(createDelivery)">Create Delivery</a></li>
         </ul>
       </nav>
@@ -43,6 +43,10 @@
           </div>
         </div>
     </section>
+    <section #createWarehouseComponent>
+      <app-create-warehouse></app-create-warehouse>
+    </section>
+
   </div>
 </body>
 </html>

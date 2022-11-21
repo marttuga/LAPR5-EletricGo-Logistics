@@ -13,7 +13,6 @@ body{
   font-size: 100%;
   background: #ffffff;
   height: 100vh;
-  overflow: hidden;
 }
 
 .container{
@@ -22,6 +21,7 @@ body{
   align-items: center;
   justify-content: space-evenly;
 }
+
 .create-message{
   display: flex;
   flex-direction: column;

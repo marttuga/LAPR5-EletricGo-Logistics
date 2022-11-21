@@ -49,6 +49,7 @@ section{
 .navbar ul li{
   margin: 0 1rem;
   padding: 1rem;
+  font-family: 'Secular One', sans-serif;
 }
 
 .navbar ul li a{
