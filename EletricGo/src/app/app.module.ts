@@ -15,6 +15,7 @@ import { CreateRouteComponent } from './views/create-route/create-route.componen
 import { LogisticsManagerComponent } from './views/logistics-manager/logistics-manager.component';
 import {CreateWarehouseComponent} from "./views/create-warehouse/create-warehouse.component";
 import { ListWarehousesComponent } from './views/list-warehouses/list-warehouses.component';
+import { ListTruckComponent } from './views/list-truck/list-truck.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ListWarehousesComponent } from './views/list-warehouses/list-warehouses
     LogisticsManagerComponent,
     CreateWarehouseComponent,
     ListWarehousesComponent
+
   ],
     imports: [
       BrowserModule,

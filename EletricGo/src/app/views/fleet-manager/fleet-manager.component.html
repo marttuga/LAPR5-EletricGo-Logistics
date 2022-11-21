@@ -12,6 +12,8 @@
         <ul>
           <li><a href="#home">Home</a></li>
           <li><a (click)="scroll(createTruckComponent)">Create Truck</a></li>
+          <li><a (click)="scroll(listTruckComponent)">List Trucks</a></li>
+
 
         </ul>
       </nav>
@@ -23,12 +25,17 @@
           <h1>FLEET MANAGER!</h1>
         </div>
        
-   </section>
-        <!-- <button class="btn-create" [routerLink]="['/views/create-truck']">create</button> -->
+        </section>
+
+        <!-- <button class="btn-create" [routerLink]="['/views/create-truck']">create</button> -->~
+
       <section #createTruckComponent>
         <app-create-truck></app-create-truck>
       </section>
      
+      <section #listTruckComponent>
+        <app-list-truck></app-list-truck>
+      </section>
     
 
     </div>
