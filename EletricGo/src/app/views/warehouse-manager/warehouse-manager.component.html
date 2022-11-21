@@ -18,7 +18,7 @@
         <ul>
           <li><a href="#home">Home</a></li>
           <li><a (click)="scroll(createWarehouseComponent)">Create Warehouse</a></li>
-          <li><a (click)="scroll(createDelivery)">Create Delivery</a></li>
+          <li><a (click)="scroll(createDeliveryComponent)">Create Delivery</a></li>
         </ul>
       </nav>
       <div class="welcome-message">
@@ -45,6 +45,9 @@
     </section>
     <section #createWarehouseComponent>
       <app-create-warehouse></app-create-warehouse>
+    </section>
+    <section #createDeliveryComponent>
+      <app-create-delivery></app-create-delivery>
     </section>
 
   </div>
