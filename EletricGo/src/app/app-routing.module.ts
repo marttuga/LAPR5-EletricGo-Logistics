@@ -11,6 +11,7 @@ import {CreateDeliveryComponent} from "./views/create-delivery/create-delivery.c
 import {CreateRouteComponent} from "./views/create-route/create-route.component";
 import {ListWarehousesComponent} from "./views/list-warehouses/list-warehouses.component";
 import {ListTruckComponent} from "./views/list-truck/list-truck.component";
+import {ListDeliveriesComponent} from "./views/list-deliveries/list-deliveries.component";
 
 const routes: Routes = [
   { path: '',redirectTo: '/views/login', pathMatch: 'full' },
@@ -27,7 +28,8 @@ const routes: Routes = [
   { path: 'views/create-delivery', component:CreateDeliveryComponent},
   {path: 'views/list-warehouses',  component:ListWarehousesComponent},
   { path: 'views/create-delivery', component:CreateDeliveryComponent},
-  { path: 'views/list-truck', component:ListTruckComponent}
+  { path: 'views/list-truck', component:ListTruckComponent},
+  { path: 'views/list-deliveries', component:ListDeliveriesComponent}
 ];
 
 @NgModule({

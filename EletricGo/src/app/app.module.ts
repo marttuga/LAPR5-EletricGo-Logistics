@@ -16,6 +16,7 @@ import { LogisticsManagerComponent } from './views/logistics-manager/logistics-m
 import {CreateWarehouseComponent} from "./views/create-warehouse/create-warehouse.component";
 import { ListWarehousesComponent } from './views/list-warehouses/list-warehouses.component';
 import { ListTruckComponent } from './views/list-truck/list-truck.component';
+import { ListDeliveriesComponent } from './views/list-deliveries/list-deliveries.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ListTruckComponent } from './views/list-truck/list-truck.component';
     LogisticsManagerComponent,
     CreateWarehouseComponent,
     ListWarehousesComponent,
-    ListTruckComponent
+    ListTruckComponent,
+    ListDeliveriesComponent
 
   ],
     imports: [
