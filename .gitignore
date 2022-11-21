@@ -22,7 +22,7 @@ dist/
 # Maven
 target/
 dist/
-build/
+cache/
 
 # JetBrains IDE
 .idea/
