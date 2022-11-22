@@ -10,8 +10,14 @@ body{
   font-family: "Lato", sans-serif;
   background: #CFCBCB;
   line-height: 1.6;
-  height: 100vh;
-  overflow: hidden;
+  height: 200vh;
+}
+
+.create-title{
+  font-family: 'Secular One', sans-serif;
+  font-weight: 200;
+  font-size: 60px;
+  color: #778DB3;
 }
 
 .container{
@@ -25,7 +31,7 @@ body{
 .textfield{
   width: 100%;
   justify-content: center;
-  margin: 6px 0px;
+  margin: 10px 0px;
 }
 
 .textfield > input{
@@ -41,45 +47,33 @@ body{
 }
 
 
- .create-title{
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  font-size: 90px;
-  color: #778DB3;
-}
-
  .options{
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
 }
 
  .create-message-subtitle{
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Secular One', sans-serif;
   font-weight: 400;
   font-size: 26px;
   color: #17486d;
 }
 
 
- section h1{
-  color: #08090a;
-  font-family: 'Montserrat',sans-serif;
-  font-size: 2.2rem;
-  text-align: left, justify;
-}
-
-
 .button{
-  width: 50%;
-  border: none;
-  border-radius: 30px;
+  font-family: 'Secular One', sans-serif;
+  width: 100%;
   padding: 12px;
-  background: #ffffff;
-  color: #778DB3;
-  font-size: 12pt;
+  margin: 10px 0px;
+  border: none;
+  border-radius: 15px;
   outline: none;
-  box-sizing: border-box;
+  letter-spacing: 3px;
+  color: #778DB3;
+  background: #f5f5f5;
+  cursor: pointer;
+  font-size: 12pt;
 }
 
 

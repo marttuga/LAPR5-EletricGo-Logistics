@@ -26,7 +26,7 @@ export class DeliveriesService {
   }
 
   getDeliveries(): Observable<any> {
-    return this.httpClient.get(this.Url + '/getAll').pipe(
+    return this.httpClient.get<any>(this.Url + '/getAll').pipe(
       map(this.extractData));
   }
 
