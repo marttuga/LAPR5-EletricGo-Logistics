@@ -4,6 +4,7 @@ class Delivery {
     mass:number;
     timeLoad:number;
     timeUnload:number;
+    deliveryWarehouse:string;
   }
   
  
