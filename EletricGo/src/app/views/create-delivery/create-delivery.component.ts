@@ -17,6 +17,7 @@ export class CreateDeliveryComponent implements OnInit {
  mass:number;
  timeLoad:number;
  timeUnload:number;
+ deliveryWarehouse:string;
 
 
 
@@ -30,7 +31,7 @@ export class CreateDeliveryComponent implements OnInit {
   }
 
   public createDelivery():void{
-    this.deliveryService.createDelivery(this.dIdentifier,this.date,this.mass,this.timeLoad,this.timeUnload).subscribe(data => {console.log(data);
+    this.deliveryService.createDelivery(this.dIdentifier,this.date,this.mass,this.timeLoad,this.timeUnload, this.deliveryWarehouse).subscribe(data => {console.log(data);
     this.delivery=data});
   }
 

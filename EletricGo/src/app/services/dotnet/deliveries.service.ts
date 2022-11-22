@@ -10,7 +10,7 @@ export class DeliveriesService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createDelivery(dIdentifier:string,date:number,mass:number,timeLoad:number,timeUnload:number): Observable<any> {
+  createDelivery(dIdentifier:string,date:number,mass:number,timeLoad:number,timeUnload:number,deliveryWarehouse:string): Observable<any> {
     const body={
 
       "DIdentifier":{
@@ -20,6 +20,7 @@ export class DeliveriesService {
       "Mass": mass,
       "TimeLoad": timeLoad,
       "TimeUnload": timeUnload,
+      "DeliveryWarehouse":deliveryWarehouse,
     }
     ;
     return this.httpClient.post(this.Url ,body).pipe(map(this.extractData));
