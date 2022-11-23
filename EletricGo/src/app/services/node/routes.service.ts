@@ -47,7 +47,7 @@ export class RoutesService {
   }
 
   public getRoutes(): Observable<any> {
-    return this.httpClient.get(this.Url + 'getRoutes').pipe(
+    return this.httpClient.get(this.Url + '/getRoutes').pipe(
       map(this.extractData));
   }
 

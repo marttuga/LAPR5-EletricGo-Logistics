@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as THREE from "three";
 import { ActivatedRoute, Router } from "@angular/router";
-//import TextSprite from "@seregpie/three.text-sprite";
+import TextSprite from "@seregpie/three.text-sprite";
 import {Camera, CatmullRomCurve3, Object3D, PerspectiveCamera, Vector3} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
 import {RoutesService} from "../../services/node/routes.service";
+
 
 @Component({
   selector: 'app-network',
@@ -20,7 +21,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   //* Stage Properties;
   @Input() public cameraZ: number = 500; //* Aproximação da câmara || Coordenada Z
-  @Input() public fieldOfView: number = 2;  //* Distância da câmara
+  @Input() public fieldOfView: number = 5;  //* Distância da câmara
   @Input('nearClipping') public nearClippingPlane: number = 1;//* Proximidade do plano
   @Input('farClipping') public farClippingPlane: number = 2000;//* Afastamento do plano
 
@@ -35,23 +36,27 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
 
-
   constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService, private routesService:RoutesService) { }
 
   ngOnInit(): void {
 
-
+console.log(NetworkComponent.getAspectRatio())
   }
 
   ngAfterViewInit(): void {
     this.warehousesService.getWarehouses().subscribe(async data=>{
       this.warehouses=data;
+      console.log(this.warehouses)
+
       this.routesService.getRoutes().subscribe(async data=>{
         this.routes=data;
+        console.log(this.routes)
         await this.createScene();
         await this.startRenderingLoop();
       })
     })
+
+
   }
 
   private get canvas(): HTMLCanvasElement {
@@ -76,20 +81,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     );
     this.camera.position.z = this.cameraZ;
 
-    //* Camera
-    this.camera = new THREE.PerspectiveCamera(
-      this.fieldOfView,
-      NetworkComponent.getAspectRatio(),
-      this.nearClippingPlane,
-      this.farClippingPlane
-    );
-    this.camera.position.z = this.cameraZ;
-
-
+//this.camera.lookAt(new Vector3(2,-2,0));
     this.scene.add(this.camera);
-
+    this.addWarehousesToScene()
     this.addLights()
-    this.addWarehousesToScene();
 
   }
 
@@ -107,9 +102,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     //Orbit Controls
     let controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-    controls.maxDistance = 900;
-    controls.minDistance = 100;
-    controls.minAzimuthAngle = -Math.PI/2 ;
+    controls.maxDistance = 1000;//900;
+    controls.minDistance = 50;//100;
+    controls.minAzimuthAngle = -Math.PI/2 ;//Rotação
     controls.maxAzimuthAngle = Math.PI/2 ;
 
     let component: NetworkComponent = this;
@@ -124,34 +119,38 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   private addWarehousesToScene(){
-    for(let i=0;i<this.warehouses.length;i++) {
+    for (let i = 0; i < this.warehouses.length; i++)
+    {
 
       const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
       base.position.set(
-        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[0].toFixed(4),
-        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[1].toFixed(4),
-        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[2].toFixed(4)
-                        );
-      console.log(        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[0].toFixed(4),
-      )
-console.log(        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[1].toFixed(4),
-)
-      console.log(        NetworkComponent.getCoordinates(this.warehouses[i].coordinates.latitude,this.warehouses[i].coordinates.longitude,this.warehouses[i].warehouseAltitude.warehouseAltitude)[2].toFixed(4)
-      )
-     // base.position.set(i*5,0,i*5);
-      base.name=this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
+        NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[0],
+        NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[1],
+        NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[2]);
+
+       base.name=this.warehouses[i].warehouseIdentifier;
+
+       let sprite=new TextSprite({ text: this.warehouses[i].designation,alignment: 'left',
+         color: '#000000',
+         fontFamily: '"Times New Roman", Times, serif',
+         fontStyle: 'italic', });
+      sprite.position.setX(base.position.x);
+      sprite.position.setY(base.position.y+2.3);
+      sprite.position.setZ(base.position.z);
+      this.scene.add(sprite)
+
 
       const loader = new GLTFLoader();
       loader.load('/assets/network/warehouse.glb', (gltf) => {
-        gltf.scene.name = this.warehouses[i].warehouseIdentifier.warehouseIdentifier;
+        gltf.scene.name = this.warehouses[i].designation;
         gltf.scene.position.set(base.position.x, base.position.y, base.position.z);
         gltf.scene.scale.set(0.1, 0.2, 0.1);
         this.scene.add(gltf.scene);
+
       }, undefined, function (error) {
 
         console.error(error);
       });
-
       this.scene.add(base);
       this.warehouseBaseMaterial.map = new THREE.TextureLoader().load('assets/network/rotunda.jpg');
     }
@@ -161,9 +160,11 @@ console.log(        NetworkComponent.getCoordinates(this.warehouses[i].coordinat
 
 
   private addRoads() {
+
     for (let i = 0; i < this.routes.length; i++) {
-      let ware1 = this.scene.getObjectByName(this.routes[i].arrivalId);
-      let ware2 = this.scene.getObjectByName(this.routes[i].departureId);
+      let ware1 = <Object3D>this.scene.getObjectByName((this.routes[i].arrivalId));
+      let ware2 = <Object3D>this.scene.getObjectByName((this.routes[i].departureId));
+
       if (ware1 != undefined && ware2 != undefined) {
         let points = [];
         points.push(new THREE.Vector3(ware1.position.x, ware1.position.y, ware1.position.z));
@@ -171,34 +172,12 @@ console.log(        NetworkComponent.getCoordinates(this.warehouses[i].coordinat
 
 
 
-        /*
-
-  private  warehouseCubeGeometry = new THREE.BoxGeometry( 2, 0.1, 0.70 );
-  private  warehouseCubeMaterial = new THREE.MeshLambertMaterial( {color: 0xffffff} );
-
-
-        const road=new THREE.Mesh(this.warehouseCubeGeometry,this.warehouseCubeMaterial);
-        road.position.set(-2.98+base.position.x, 0, base.position.z);
-        this.warehouseCubeMaterial.map = new THREE.TextureLoader().load('assets/network/road.jpg');
-        this.scene.add(road)*/
-
-/*
-
-        const path = new THREE.Path();
-        path.lineTo( 0, 0.8 );
-        path.quadraticCurveTo( 0, 1, 0.2, 1 );
-        path.lineTo( 1, 1 );
-*/
-
         let warehouseCubeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-        let warehouseCubeGeometry =new THREE.BoxGeometry( 2, 0.1, 0.70) ;
-        warehouseCubeGeometry.setFromPoints(new CatmullRomCurve3(points).getPoints());
-        //let warehouseCubeGeometry =new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 4, 0.1, 28, false )
+        let warehouseCubeGeometry =new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 4, 0.1, 28, false )
         warehouseCubeMaterial.map = new THREE.TextureLoader().load('assets/network/road1.jpg');
         let road=new THREE.Mesh(warehouseCubeGeometry,warehouseCubeMaterial);
+
         this.scene.add(road)
-
-
       }
     }
   }
@@ -228,8 +207,11 @@ console.log(        NetworkComponent.getCoordinates(this.warehouses[i].coordinat
   private static getCoordinates(lat:number, lon:number, alt: number):any {
    let coordinatesArr: number[]=[];
     coordinatesArr[0]=(((50-(-50))/(8.7613-8.2451))*(lon-8.2451)+(-50));
-    coordinatesArr[1]=(((50-(-50))/(42.1115-40.8387))*(lat-40.8387)+(-50));
-    coordinatesArr[2]=((50 / 800) * alt);
+    coordinatesArr[1]=((((50-(-50))/(42.1115-40.8387))*(lat-40.8387)+(-50)));
+    coordinatesArr[2]=((((50 / 800) * alt))/10);
+    parseInt( coordinatesArr[0].toFixed(4));
+    parseInt( coordinatesArr[1].toFixed(4));
+    parseInt( coordinatesArr[2].toFixed(4));
     return coordinatesArr;
   }
 
