@@ -20,7 +20,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private canvasRef: ElementRef;
 
   //* Stage Properties;
-  @Input() public cameraZ: number = 500; //* Aproximação da câmara || Coordenada Z
+  @Input() public cameraZ: number = 400; //* Aproximação da câmara || Coordenada Z
   @Input() public fieldOfView: number = 5;  //* Distância da câmara
   @Input('nearClipping') public nearClippingPlane: number = 1;//* Proximidade do plano
   @Input('farClipping') public farClippingPlane: number = 2000;//* Afastamento do plano
@@ -53,6 +53,7 @@ console.log(NetworkComponent.getAspectRatio())
         console.log(this.routes)
         await this.createScene();
         await this.startRenderingLoop();
+        await this.addTruck();
       })
     })
 
@@ -80,8 +81,7 @@ console.log(NetworkComponent.getAspectRatio())
       this.farClippingPlane
     );
     this.camera.position.z = this.cameraZ;
-
-//this.camera.lookAt(new Vector3(2,-2,0));
+  //  this.camera.lookAt(new Vector3(0,-26.359,0));
     this.scene.add(this.camera);
     this.addWarehousesToScene()
     this.addLights()
@@ -107,11 +107,73 @@ console.log(NetworkComponent.getAspectRatio())
     controls.minAzimuthAngle = -Math.PI/2 ;//Rotação
     controls.maxAzimuthAngle = Math.PI/2 ;
 
+
     let component: NetworkComponent = this;
     (function render() {
       requestAnimationFrame(render);
-      //render perspective camera/graph
-      component.renderer.setViewport(-200, 0, window.innerWidth, window.innerHeight);
+
+      let truck=component.scene.getObjectByName("TruckyBlue");
+    //Render Move truck
+      if(truck!=undefined) {
+        document.onkeydown = function (e) {
+          switch (e.key) {
+            case "a":
+              //rodar a camara para a esquerda
+              truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
+              break;
+
+            case "d":
+              //rodar a camara para a direita
+              truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
+              break;
+
+            case "w":
+              //avançar - incrementar a posição da camara no eixo dos zz
+              truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
+              break;
+
+            case "s":
+              //recuar - decrementar a posição da camara no eixo dos zz
+              truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
+              break;
+
+            case "p":
+              //subir - incrementar a posição da camara no eixo dos yy
+              truck?.position.set(truck?.position.x,truck?.position.y+ 0.1,truck?.position.z) ;
+              break;
+
+            case "l":
+              //descer - decrementar a posição da camara no eixo dos yy
+              truck?.position.set(truck?.position.x,truck?.position.y- 0.1,truck?.position.z) ;
+              break;
+
+            default:break;
+          }
+
+          switch (e.keyCode){
+            case 39://right key
+              truck?.rotateY(5 * Math.PI / 180);
+              break;
+
+            case 37://lef key
+              truck?.rotateY(-5 * Math.PI / 180);
+              break;
+
+            case 38://up key
+              truck?.rotateX(-5 * Math.PI / 180);
+              break;
+
+            case 40://down key
+              truck?.rotateX(5 * Math.PI / 180);
+              break;
+
+            default:break;
+          }
+        }
+      }
+
+            //render perspective camera/graph
+      component.renderer.setViewport(-200, 0, window.innerWidth+200, window.innerHeight);
       component.renderer.setClearColor(0xCADFED, 1);
       component.renderer.render(component.scene, component.camera);
 
@@ -121,6 +183,7 @@ console.log(NetworkComponent.getAspectRatio())
   private addWarehousesToScene(){
     for (let i = 0; i < this.warehouses.length; i++)
     {
+
 
       const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
       base.position.set(
@@ -158,7 +221,6 @@ console.log(NetworkComponent.getAspectRatio())
   }
 
 
-
   private addRoads() {
 
     for (let i = 0; i < this.routes.length; i++) {
@@ -180,6 +242,31 @@ console.log(NetworkComponent.getAspectRatio())
         this.scene.add(road)
       }
     }
+  }
+
+  private addTruck(){
+    const loader = new GLTFLoader();
+    loader.load('/assets/network/TruckR.glb', (gltf) => {
+      gltf.scene.name = "TruckyRed";
+      gltf.scene.position.set(-2, 0, 0);
+      gltf.scene.scale.set(1, 1, 1);
+      this.scene.add(gltf.scene);
+
+    }, undefined, function (error) {
+
+      console.error(error);
+    });
+    const loader1 = new GLTFLoader();
+    loader1.load('/assets/network/Truck.glb', (gltf) => {
+      gltf.scene.name = "TruckyBlue";
+      gltf.scene.position.set(2, 0, 0);
+       gltf.scene.scale.set(0.8, 0.8, 0.8);
+      this.scene.add(gltf.scene);
+
+    }, undefined, function (error) {
+
+      console.error(error);
+    });
   }
 
   private addLights(){
@@ -208,12 +295,15 @@ console.log(NetworkComponent.getAspectRatio())
    let coordinatesArr: number[]=[];
     coordinatesArr[0]=(((50-(-50))/(8.7613-8.2451))*(lon-8.2451)+(-50));
     coordinatesArr[1]=((((50-(-50))/(42.1115-40.8387))*(lat-40.8387)+(-50)));
-    coordinatesArr[2]=((((50 / 800) * alt))/10);
+    coordinatesArr[2]=((((50 / 800) * alt)));
     parseInt( coordinatesArr[0].toFixed(4));
     parseInt( coordinatesArr[1].toFixed(4));
     parseInt( coordinatesArr[2].toFixed(4));
     return coordinatesArr;
   }
+
+
+
 
   onClick() {
 
