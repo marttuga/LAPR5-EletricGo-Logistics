@@ -2,12 +2,11 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import * as THREE from "three";
 import { ActivatedRoute, Router } from "@angular/router";
 import TextSprite from "@seregpie/three.text-sprite";
-import {BoxGeometry, Camera, CatmullRomCurve3, Matrix4, Mesh, Object3D, PerspectiveCamera, Vector3} from 'three';
+import {BoxGeometry, Camera, CatmullRomCurve3, Clock, Matrix4, Mesh, Object3D, PerspectiveCamera, Vector3} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
 import {RoutesService} from "../../services/node/routes.service";
-import * as Console from "console";
 
 
 @Component({
@@ -31,19 +30,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private camera!: THREE.PerspectiveCamera;
 
   private warehouses:any[]=[];
-  private roundabouts:THREE.Mesh[]=[];
+  //private roundabouts:THREE.Mesh[]=[];
 
   private routes:any[]=[];
 
   private warehouseBaseGeometry = new THREE.CylinderGeometry(2, 2, 0.22, 64);
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
-  private truckCore:THREE.Mesh[] = [];
 
-  private truckGeometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-  private truckMaterial = new THREE.MeshBasicMaterial( {color: 0xffffff} );
   private activateMotion=0;
-  private chekDeparturePosition=0;
 
+  private curve:THREE.CatmullRomCurve3;
   constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService, private routesService:RoutesService) { }
 
   ngOnInit(): void {
@@ -61,7 +57,6 @@ console.log(NetworkComponent.getAspectRatio())
         console.log(this.routes)
         await this.createScene();
         await this.startRenderingLoop();
-        await this.addTruck();
       })
     })
 
@@ -143,7 +138,7 @@ console.log(NetworkComponent.getAspectRatio())
 
 
       const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
-      this.roundabouts[i]=base;
+      //this.roundabouts[i]=base;
 
       base.position.set(
         NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[0],
@@ -207,13 +202,13 @@ console.log(NetworkComponent.getAspectRatio())
     const loader = new GLTFLoader();
     loader.load('/assets/network/Truck.glb', (gltf) => {
       gltf.scene.name = "TruckyBlue";
-      gltf.scene.position.set(<number>this.scene.getObjectByName(this.routes[1].departureId)?.position.x, <number>this.scene.getObjectByName(this.routes[1].departureId)?.position.y, <number>this.scene.getObjectByName(this.routes[1].departureId)?.position.z);
+      gltf.scene.position.set(<number>this.scene.getObjectByName(this.routes[0].departureId)?.position.x, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.y, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.z);
       gltf.scene.scale.set(0.8, 0.8, 0.8);
 
 
-      this.truckCore[0] = new THREE.Mesh( this.truckGeometry, this.truckMaterial );
-      this.truckCore[0].name="TruckyBlueCore"
-      gltf.scene.add(this.truckCore[0]);
+ //     this.truckCore[0] = new THREE.Mesh( this.truckGeometry, this.truckMaterial );
+ //     this.truckCore[0].name="TruckyBlueCore"
+    //  gltf.scene.add(this.truckCore[0]);
       this.scene.add(gltf.scene);
 
     }, undefined, function (error) {
@@ -222,70 +217,43 @@ console.log(NetworkComponent.getAspectRatio())
     });
   }
 
-  private addLights(){
-    //*Light
-    const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light1.position.set(-window.innerWidth, 0, 0);
-    this.scene.add(light1);
-    const light2 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light2.position.set(window.innerWidth, 0, 0);
-    this.scene.add(light2);
-    const light3 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light3.position.set(0, -window.innerHeight, 0);
-    this.scene.add(light3);
-    const light4 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light4.position.set(0, window.innerHeight, 0);
-    this.scene.add(light4);
-    const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
-    this.scene.add(light_amb);
 
-    const focusLight = new THREE.SpotLight(0xffffff, 1);
-    this.camera.add(focusLight);
-  }
-
-  private automaticMovement(truck:any){
+ private automaticMovement(truck:any){
     //Automatic truck movement
 
     if(this.activateMotion==1) {
 
-      const truckPosition = truck?.position;
+      const departure = this.scene.getObjectByName(this.routes[0].departureId);
+      const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
 
-      const time = .0003 * performance.now();
-
-      const departure = this.scene.getObjectByName(this.routes[1].departureId);
-      const arrival = this.scene.getObjectByName(this.routes[1].arrivalId);
-      let arrivalWarehouse = "";
-
-      for (let i = 0; i < this.warehouses.length; i++) {
-        if (this.routes[1].arrivalId == this.warehouses[i].warehouseIdentifier) {
-          arrivalWarehouse = this.warehouses[i].designation;
-        }
-      }
-      console.log(arrivalWarehouse)
-
-      let curve = new CatmullRomCurve3([
-        new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
-        new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
-      ]);
+      /*   let curve = new CatmullRomCurve3([
+         new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
+         new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
+       ]);*/
 
 
-      const points = curve.getPoint(time);
+      const time = .0002 * performance.now();
+      const points = this.curve.getPoint(time);
+
+
       if(arrival?.position.x!=undefined && departure?.position.x!=undefined) {
-        truckPosition?.set(points.x, points.y, points.z);
-        //    component.chekDeparturePosition=1;
-        console.log("Departure  : "+departure?.position.x+" "+departure?.position.y+" "+departure?.position.z)
 
-        console.log(truckPosition?.x+" "+truckPosition?.y+" "+truckPosition?.z)
 
-        if ( arrival?.position.x-points.x <0.010) {
-          this.activateMotion=0;
-          truckPosition?.set(departure?.position.x, departure?.position.y, departure?.position.z);
-          //  component.chekDeparturePosition=0;
 
+          truck?.position?.set(points.x, points.y, points.z);
+
+      //  console.log("Departure  : " + departure?.position.x +" "+ departure?.position.y +" "+ departure?.position.z)
+
+      //  console.log(truckPosition?.x + " " + truckPosition?.y + " " + truckPosition?.z)
+
+       if (Math.abs(arrival?.position.x) - Math.abs(points.x) <0.010 && Math.abs(arrival?.position.y) - Math.abs(points.y) <0.010 && Math.abs(arrival?.position.z) - Math.abs(points.z) <0.010 ) {
+          this.activateMotion = 0;
+        this.scene.remove(truck);
         }
       }
     }
   }
+
   private manualMovement(truck:any){
     if(truck!=undefined) {
       document.onkeydown = function (e) {
@@ -347,6 +315,27 @@ console.log(NetworkComponent.getAspectRatio())
   }
 
 
+  private addLights(){
+    //*Light
+    const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light1.position.set(-window.innerWidth, 0, 0);
+    this.scene.add(light1);
+    const light2 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light2.position.set(window.innerWidth, 0, 0);
+    this.scene.add(light2);
+    const light3 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light3.position.set(0, -window.innerHeight, 0);
+    this.scene.add(light3);
+    const light4 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    light4.position.set(0, window.innerHeight, 0);
+    this.scene.add(light4);
+    const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
+    this.scene.add(light_amb);
+
+    const focusLight = new THREE.SpotLight(0xffffff, 1);
+    this.camera.add(focusLight);
+  }
+
   private static getCoordinates(lat:number, lon:number, alt: number):any {
    let coordinatesArr: number[]=[];
     coordinatesArr[0]=-(((50-(-50))/(8.7613-8.2451))*(lon-8.2451)+(-50));
@@ -358,19 +347,17 @@ console.log(NetworkComponent.getAspectRatio())
     return coordinatesArr;
   }
 
-  private static intersects(raycaster:THREE.Raycaster, scene:THREE.Scene, warehouseIdentifier:any, warehouseDesignation:any):number{
-
-      for(let i=0;i<raycaster.intersectObjects(scene.children).length;i++){
-        if(raycaster.intersectObjects(scene.children)[i].object.name==warehouseIdentifier||raycaster.intersectObjects(scene.children)[i].object.name==warehouseDesignation){
-          return 1;
-        }
-      }
-    return 0;
-
-  }
-
 
   onClick() {
+
+    const departure = this.scene.getObjectByName(this.routes[0].departureId);
+    const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
+     this.curve = new CatmullRomCurve3([
+      new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
+      new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
+    ]);
+    this.addTruck();
+
     this.activateMotion=1;
 
   }
