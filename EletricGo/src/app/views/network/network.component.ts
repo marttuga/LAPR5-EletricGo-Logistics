@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import * as THREE from "three";
 import { ActivatedRoute, Router } from "@angular/router";
 import TextSprite from "@seregpie/three.text-sprite";
-import {Camera, CatmullRomCurve3, Object3D, PerspectiveCamera, Vector3} from 'three';
+import {BoxGeometry, Camera, CatmullRomCurve3, Clock, Matrix4, Mesh, Object3D, PerspectiveCamera, Vector3} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
@@ -30,12 +30,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private camera!: THREE.PerspectiveCamera;
 
   private warehouses:any[]=[];
+  //private roundabouts:THREE.Mesh[]=[];
+
   private routes:any[]=[];
 
   private warehouseBaseGeometry = new THREE.CylinderGeometry(2, 2, 0.22, 64);
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
+  private activateMotion=0;
 
+  private curve:THREE.CatmullRomCurve3;
   constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService, private routesService:RoutesService) { }
 
   ngOnInit(): void {
@@ -53,7 +57,6 @@ console.log(NetworkComponent.getAspectRatio())
         console.log(this.routes)
         await this.createScene();
         await this.startRenderingLoop();
-        await this.addTruck();
       })
     })
 
@@ -83,7 +86,7 @@ console.log(NetworkComponent.getAspectRatio())
     this.camera.position.z = this.cameraZ;
   //  this.camera.lookAt(new Vector3(0,-26.359,0));
     this.scene.add(this.camera);
-    this.addWarehousesToScene()
+    this.addWarehouses()
     this.addLights()
 
   }
@@ -113,64 +116,13 @@ console.log(NetworkComponent.getAspectRatio())
       requestAnimationFrame(render);
 
       let truck=component.scene.getObjectByName("TruckyBlue");
-    //Render Move truck
-      if(truck!=undefined) {
-        document.onkeydown = function (e) {
-          switch (e.key) {
-            case "a":
-              //rodar a camara para a esquerda
-              truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
-              break;
 
-            case "d":
-              //rodar a camara para a direita
-              truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
-              break;
 
-            case "w":
-              //avançar - incrementar a posição da camara no eixo dos zz
-              truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
-              break;
+      //Render truck Movement animation
+      component.manualMovement(truck);
 
-            case "s":
-              //recuar - decrementar a posição da camara no eixo dos zz
-              truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
-              break;
+      component.automaticMovement(truck);
 
-            case "p":
-              //subir - incrementar a posição da camara no eixo dos yy
-              truck?.position.set(truck?.position.x,truck?.position.y+ 0.1,truck?.position.z) ;
-              break;
-
-            case "l":
-              //descer - decrementar a posição da camara no eixo dos yy
-              truck?.position.set(truck?.position.x,truck?.position.y- 0.1,truck?.position.z) ;
-              break;
-
-            default:break;
-          }
-
-          switch (e.keyCode){
-            case 39://right key
-              truck?.rotateY(5 * Math.PI / 180);
-              break;
-
-            case 37://lef key
-              truck?.rotateY(-5 * Math.PI / 180);
-              break;
-
-            case 38://up key
-              truck?.rotateX(-5 * Math.PI / 180);
-              break;
-
-            case 40://down key
-              truck?.rotateX(5 * Math.PI / 180);
-              break;
-
-            default:break;
-          }
-        }
-      }
 
             //render perspective camera/graph
       component.renderer.setViewport(-200, 0, window.innerWidth+200, window.innerHeight);
@@ -180,12 +132,14 @@ console.log(NetworkComponent.getAspectRatio())
     }());
   }
 
-  private addWarehousesToScene(){
+  private addWarehouses(){
     for (let i = 0; i < this.warehouses.length; i++)
     {
 
 
       const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
+      //this.roundabouts[i]=base;
+
       base.position.set(
         NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[0],
         NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[1],
@@ -201,7 +155,6 @@ console.log(NetworkComponent.getAspectRatio())
       sprite.position.setY(base.position.y+2.3);
       sprite.position.setZ(base.position.z);
       this.scene.add(sprite)
-
 
       const loader = new GLTFLoader();
       loader.load('/assets/network/warehouse.glb', (gltf) => {
@@ -245,22 +198,17 @@ console.log(NetworkComponent.getAspectRatio())
   }
 
   private addTruck(){
+
     const loader = new GLTFLoader();
-    loader.load('/assets/network/TruckR.glb', (gltf) => {
-      gltf.scene.name = "TruckyRed";
-      gltf.scene.position.set(-2, 0, 0);
-      gltf.scene.scale.set(1, 1, 1);
-      this.scene.add(gltf.scene);
-
-    }, undefined, function (error) {
-
-      console.error(error);
-    });
-    const loader1 = new GLTFLoader();
-    loader1.load('/assets/network/Truck.glb', (gltf) => {
+    loader.load('/assets/network/Truck.glb', (gltf) => {
       gltf.scene.name = "TruckyBlue";
-      gltf.scene.position.set(2, 0, 0);
-       gltf.scene.scale.set(0.8, 0.8, 0.8);
+      gltf.scene.position.set(<number>this.scene.getObjectByName(this.routes[0].departureId)?.position.x, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.y, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.z);
+      gltf.scene.scale.set(0.8, 0.8, 0.8);
+
+
+ //     this.truckCore[0] = new THREE.Mesh( this.truckGeometry, this.truckMaterial );
+ //     this.truckCore[0].name="TruckyBlueCore"
+    //  gltf.scene.add(this.truckCore[0]);
       this.scene.add(gltf.scene);
 
     }, undefined, function (error) {
@@ -268,6 +216,104 @@ console.log(NetworkComponent.getAspectRatio())
       console.error(error);
     });
   }
+
+
+ private automaticMovement(truck:any){
+    //Automatic truck movement
+
+    if(this.activateMotion==1) {
+
+      const departure = this.scene.getObjectByName(this.routes[0].departureId);
+      const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
+
+      /*   let curve = new CatmullRomCurve3([
+         new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
+         new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
+       ]);*/
+
+
+      const time = .0002 * performance.now();
+      const points = this.curve.getPoint(time);
+
+
+      if(arrival?.position.x!=undefined && departure?.position.x!=undefined) {
+
+
+
+          truck?.position?.set(points.x, points.y, points.z);
+
+      //  console.log("Departure  : " + departure?.position.x +" "+ departure?.position.y +" "+ departure?.position.z)
+
+      //  console.log(truckPosition?.x + " " + truckPosition?.y + " " + truckPosition?.z)
+
+       if (Math.abs(arrival?.position.x) - Math.abs(points.x) <0.010 && Math.abs(arrival?.position.y) - Math.abs(points.y) <0.010 && Math.abs(arrival?.position.z) - Math.abs(points.z) <0.010 ) {
+          this.activateMotion = 0;
+        this.scene.remove(truck);
+        }
+      }
+    }
+  }
+
+  private manualMovement(truck:any){
+    if(truck!=undefined) {
+      document.onkeydown = function (e) {
+        switch (e.key) {
+          case "a":
+            //rodar a camara para a esquerda
+            truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
+            break;
+
+          case "d":
+            //rodar a camara para a direita
+            truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
+            break;
+
+          case "w":
+            //avançar - incrementar a posição da camara no eixo dos zz
+            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
+            break;
+
+          case "s":
+            //recuar - decrementar a posição da camara no eixo dos zz
+            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
+            break;
+
+          case "p":
+            //subir - incrementar a posição da camara no eixo dos yy
+            truck?.position.set(truck?.position.x,truck?.position.y+ 0.1,truck?.position.z) ;
+            break;
+
+          case "l":
+            //descer - decrementar a posição da camara no eixo dos yy
+            truck?.position.set(truck?.position.x,truck?.position.y- 0.1,truck?.position.z) ;
+            break;
+
+          default:break;
+        }
+
+        switch (e.keyCode){
+          case 39://right key
+            truck?.rotateY(5 * Math.PI / 180);
+            break;
+
+          case 37://lef key
+            truck?.rotateY(-5 * Math.PI / 180);
+            break;
+
+          case 38://up key
+            truck?.rotateX(-5 * Math.PI / 180);
+            break;
+
+          case 40://down key
+            truck?.rotateX(5 * Math.PI / 180);
+            break;
+
+          default:break;
+        }
+      }
+    }
+  }
+
 
   private addLights(){
     //*Light
@@ -290,10 +336,9 @@ console.log(NetworkComponent.getAspectRatio())
     this.camera.add(focusLight);
   }
 
-
   private static getCoordinates(lat:number, lon:number, alt: number):any {
    let coordinatesArr: number[]=[];
-    coordinatesArr[0]=(((50-(-50))/(8.7613-8.2451))*(lon-8.2451)+(-50));
+    coordinatesArr[0]=-(((50-(-50))/(8.7613-8.2451))*(lon-8.2451)+(-50));
     coordinatesArr[1]=((((50-(-50))/(42.1115-40.8387))*(lat-40.8387)+(-50)));
     coordinatesArr[2]=((((50 / 800) * alt)));
     parseInt( coordinatesArr[0].toFixed(4));
@@ -303,9 +348,17 @@ console.log(NetworkComponent.getAspectRatio())
   }
 
 
-
-
   onClick() {
+
+    const departure = this.scene.getObjectByName(this.routes[0].departureId);
+    const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
+     this.curve = new CatmullRomCurve3([
+      new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
+      new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
+    ]);
+    this.addTruck();
+
+    this.activateMotion=1;
 
   }
 
