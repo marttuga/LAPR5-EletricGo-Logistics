@@ -142,7 +142,7 @@ align-items: center;
      cursor: pointer;
      font-size: 20px;
    position: absolute;
-   top: 245%;
+   top: 245%;  /*210 */
    right: -134%;
   
 
@@ -166,9 +166,3 @@ align-items: center;
     background: #778DB3;
     font-size: 12pt;
 }
-
-
-
-  
-  
-  
