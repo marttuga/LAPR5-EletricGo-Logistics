@@ -34,9 +34,5 @@ export class CreateTruckComponent implements OnInit {
     this.truckService.createTruck(this.licencePlate,this.tare,this.capacity,this.maxBateryCapacity,this.autonomyFullChargeLoad,this.timeCharging).subscribe(data => {console.log(data);
     this.truck=data});
   }
-  public updateTruck():void{
-    this.truckService.createTruck(this.licencePlate,this.tare,this.capacity,this.maxBateryCapacity,this.autonomyFullChargeLoad,this.timeCharging).subscribe(data => {console.log(data);
-    this.truck=data});
-  }
-
+ 
 }

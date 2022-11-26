@@ -30,12 +30,13 @@ export class TrucksService {
   }
 
   updateTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number){
-    const body={"licencePlate":licencePlate, "tare":tare, "capacity":capacity, "maxBateryCapacity":maxBateryCapacity, "autonomyFullChargeLoad": autonomyFullChargeLoad, "timeCharging":timeCharging};
+    const body={"tare":tare, "capacity":capacity, "maxBateryCapacity":maxBateryCapacity, "autonomyFullChargeLoad": autonomyFullChargeLoad, "timeCharging":timeCharging};
   console.log(body);
     return this.httpClient.put(this.Url + '/updateTruck' +licencePlate,body)
       .pipe(map(this.extractData)
       );
   }
+ 
 
   public extractData(res: any) {
     return res || { };

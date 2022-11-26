@@ -138,12 +138,12 @@ align-items: center;
   .button
  {
   font-family: sans-serif;
-    width: 120px;
+    width: 150px;
      cursor: pointer;
      font-size: 20px;
    position: absolute;
    top: 245%;  /*210 */
-   right: -110%;
+   right: -134%;
   
 
  }
@@ -166,39 +166,3 @@ align-items: center;
     background: #778DB3;
     font-size: 12pt;
 }
-
-.button2
-{
- font-family: sans-serif;
-   width: 120px;
-    cursor: pointer;
-    font-size: 20px;
-  position: absolute;
-  top: 245%; /*210 */
-  right: -160%;
- 
-
-}
-
-.button2:hover{
-   animation: animate 1s linear;
-   
-}
-
-.button2 > input{
- font-weight: 700;
-
- cursor: pointer;
- font-family: sans-serif;
- color: #ffffff;
- width: 100%;
- border: none;
- border-radius: 30px;
- padding: 15px;
-   background: #778DB3;
-   font-size: 12pt;
-}
-
-  
-  
-  
