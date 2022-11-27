@@ -1,6 +1,8 @@
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: "Lato", sans-serif;
   }
   
   body{
@@ -12,29 +14,142 @@
     overflow: hidden;
   }
   
-  .container{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-  }
+  #container
+ {
+  display: flex;
+justify-content: center;
+align-items: center;
+    height: 100vh;
+    width: 100%;
+    background:#f9f8fb;
+    position: relative;
+ }
+
+
+ .navbar{
+  position: fixed;
+  top:0;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  height: 60px;
+  background: rgba(239,238,244,0.7);
+  font-weight: 700;
+
+}
+
+.navbar ul{
+  display: flex;
+  list-style: none;
+  width: 100%;
+  justify-content: center;
+}
+
+.navbar ul li{
+  margin: 0 1rem;
+  padding: 1rem;
+  font-family: 'Secular One', sans-serif;
+
+}
+
+.navbar ul li a{
+  text-decoration: none;
+  text-transform: uppercase;
+
+  color: #778DB3;
+  font-size: 1.5rem;
+
+}
+
+.navbar ul li a:hover{
+  color: skyblue;
+}
   
-  
+ #header h1{
+  font-family: sans-serif;
+  font-size: 60px;
+  color: #778DB3;
+  right: -10%;
+  top: 20px;
+  position:relative;
+  font-weight: 900;
+} 
+
+.image{
+  position: relative;
+  width: 50vw;
+  right: 10%;
+  bottom: 75px;
+}
+
   .textfield{
     width: 100%;
     justify-content: center;
-    margin: 10px 0px;
+    margin: 15px 0px;
   }
   
   .textfield > input{
-    width: 100%;
+    font-family: sans-serif;
     border: none;
     border-radius: 30px;
     padding: 15px;
-    background: #f5f5f5;
-    color: black;
-    font-size: 12pt;
-    outline: none;
-    box-sizing: border-box;
+      background: #E4E4E4;
+      color: #313f57;
+      font-size: 12pt;
+      outline: none;
+      width: 260px;
   }
+
+
+  #options1
+  {
+    cursor: pointer;
+    right: 3%;
+    flex-direction:column;
+    position: relative;
+ 
+  }
+  #options2
+  {
+    cursor: pointer;
+    right: 1%;
+    flex-direction:column;
+    position: relative;
+  }
+  
+  .button:hover{
+    animation: animate 1s linear;
+    
+ }
+
+ .button{
+  width: 100%;
+  justify-content: center;
+  margin: 15px 0px;
+}
+
+ .button > input{
+  font-weight: 700;
+  cursor: pointer;
+  font-family: sans-serif;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 15px;
+  background: #778DB3;
+      color: #ffffff;
+      font-size: 12pt;
+      outline: none;
+      width: 260px;
+}
+
+h1{
+  font-family: sans-serif;
+  font-size: 50px;
+  color: #778DB3;
+  right: 20%;
+  bottom:150%;
+  position: relative;
+  font-weight: 900;
+}
   
