@@ -1,13 +1,18 @@
+import { HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import {TrucksService} from "../../services/node/truck.service";
 import { CreateTruckComponent } from './create-truck.component';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
 
 describe('CreateTruckComponent', () => {
+  let service: TrucksService;
   let component: CreateTruckComponent;
   let fixture: ComponentFixture<CreateTruckComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports:[HttpClientTestingModule,],
       declarations: [ CreateTruckComponent ]
     })
     .compileComponents();
