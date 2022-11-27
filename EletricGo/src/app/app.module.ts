@@ -18,6 +18,7 @@ import { ListWarehousesComponent } from './views/list-warehouses/list-warehouses
 import { ListTruckComponent } from './views/list-truck/list-truck.component';
 import { ListDeliveriesComponent } from './views/list-deliveries/list-deliveries.component';
 import { GetPlannedRouteComponent } from './views/get-planned-route/get-planned-route.component';
+import { ListRoutesComponent } from './views/list-routes/list-routes.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { GetPlannedRouteComponent } from './views/get-planned-route/get-planned-
     ListWarehousesComponent,
     ListTruckComponent,
     ListDeliveriesComponent,
-    GetPlannedRouteComponent
+    GetPlannedRouteComponent,
+    ListRoutesComponent
 
   ],
     imports: [
