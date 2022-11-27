@@ -17,13 +17,20 @@
       <ul>
         <li><a href="#home">Home</a></li>
         <li><a href="#createRoute" [routerLink]="['/views/create-route']">Create Route</a></li>
+        <li><a href="#getPlannedRoute" [routerLink]="['/views/get-planned-route']">Get Planned Route</a></li>
       </ul>
     </nav>
-    <section class="message" id="home" >
-      <h1 >Welcome!</h1>
-      <img src="assets/route.gif" class="image" alt="shipping">
-      <button class="btn-create" [routerLink]="['/views/create-route']">CREATE ROUTE</button>
-    </section>
+
+    <section class="message"  >
+
+      <div class="text-box">
+        <h1>Welcome back!</h1>
+        <img src="assets/route.gif" class="image" alt="shipping">
+        <!-- <button class="btn-create" [routerLink]="['/views/create-route']">CREATE ROUTE</button> -->
+      
+        </div>
+     
+      </section>
 
   </div>
 </body>
