@@ -1,14 +1,24 @@
-<div>
-<nav class="navbar">
+
+<nav class="navbar" id="navbar">
     <ul>
-      <li><a href="/views/login">Home</a></li>
+      <li >
+        <a href="/views/login">Home</a>
+      </li>
+      <li >
+          <a id="delivery" (click)="makeDelivery()">Make Delivery</a>
+      </li>
+
+       <li id="Option1" style="display: none"> <a (click)="manualDelivery()"  >Manual Delivery</a></li>
+      <li id="Option2" style="display: none"> <a (click)="automaticDelivery()">Automatic Delivery</a></li>
     </ul>
   </nav>
-</div>
 
-
-<div class="page">
-  <div class="center">
-    <canvas #canvas id="canvas"  (mousemove)="onMouseMove($event)" (click)="onClick()"></canvas>
+  <div class="page">
+    <div class="center" >
+      <app-list-truck id="deliveries"  style="display: none;margin-top: 2%"></app-list-truck>
+      <canvas #canvas id="canvas"  (mousemove)="onMouseMove($event)" (click)="onClick()"></canvas>
+    </div>
   </div>
-</div>
+
+
+

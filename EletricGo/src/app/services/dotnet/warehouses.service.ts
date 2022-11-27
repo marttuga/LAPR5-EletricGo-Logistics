@@ -29,6 +29,10 @@ export class WarehousesService {
     return this.httpClient.get<any>(this.Url + '/getAll').pipe(
       map(this.extractData));
   }
+  getWarehouseByIdentifier(identifier: string): Observable<any> {
+    return this.httpClient.get(this.Url + '/getByWI/' +identifier).pipe(
+      map(this.extractData));
+  }
 
   public extractData(res: any) {
     return res || { };
