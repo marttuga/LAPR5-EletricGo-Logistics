@@ -1,0 +1,42 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="list-routes.component.css">
+</head>
+
+<body>
+    <div id="contentSection">
+    <h2>ALL ROUTES AVAILABLE</h2> 
+    </div>
+
+    <div class="container">
+      <table class="table table-bordered  table-striped">
+        <thead>
+          <tr>
+            <th>Route_Id</th>
+            <th>Distance</th>
+            <th>Route_Time</th>
+            <th>Battery_Waste</th>
+            <th>Arrival_Id</th>
+            <th>Departure_Id</th>
+            <th>Extra_Time</th>
+    
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let route of routes">
+            <td><span>{{route.routeId}}</span></td>
+            <td><span>{{route.distance}}</span></td>
+            <td><span>{{route.routeTime}}</span></td>
+            <td><span>{{route.batteryWaste}}</span></td>
+            <td><span>{{route.arrivalId}}</span></td>
+            <td><span>{{route.departureId}}</span></td>
+            <td><span>{{route.extraTime}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </body>
