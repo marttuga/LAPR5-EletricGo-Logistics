@@ -10,33 +10,6 @@ export class RoutesService {
 
   constructor(private httpClient: HttpClient) { }
 
-  // createRoute(routeId:string,distance:string,routeTime:string,batteryWaste:string,arrivalId:string,departureId:string,extraTime:string): Observable<any> {
-  //   const body={
-  //     "RouteId": {
-  //       "RouteId": routeId
-  //     },
-  //     "Distance": {
-  //       "Distance": distance
-  //     },
-  //     "RouteTime": {
-  //       "RouteTime": routeTime
-  //     },
-  //     "BatteryWaste": {
-  //       "BatteryWaste": batteryWaste
-  //     },
-
-  //     "ArrivalId": arrivalId,
-
-  //     "DepartureId": departureId,
-
-  //     "ExtraTime": {
-  //       "ExtraTime": extraTime
-  //     }
-  //   }
-  //   ;
-  //   return this.httpClient.post(this.Url ,body).pipe(map(this.extractData));
-  // }
-
   createRoute(routeId: string,distance:string,routeTime:string,batteryWaste:string,arrivalId: string, departureId: string, extraTime:string) {
     const body={"routeId":routeId, "distance":distance, "routeTime":routeTime, "batteryWaste":batteryWaste, "arrivalId": arrivalId, "departureId":departureId,"extraTime":extraTime};
     console.log(body);
