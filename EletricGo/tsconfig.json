@@ -30,4 +30,9 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   }
+  ,
+    "exclude": [
+      "**/*.spec.ts"
+    ]
+  
 }

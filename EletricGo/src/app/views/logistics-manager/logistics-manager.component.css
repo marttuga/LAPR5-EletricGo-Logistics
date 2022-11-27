@@ -40,6 +40,7 @@
     width: 100%;
     height: 60px;
     background: #EBEBE7;
+    font-weight: 700;
   }
   
   .navbar ul{
@@ -52,11 +53,14 @@
   .navbar ul li{
     margin: 0 1rem;
     padding: 1rem;
+    font-family: 'Secular One', sans-serif;
+
   }
   
   .navbar ul li a{
     text-decoration: none;
     text-transform: uppercase;
+  
     color: #778DB3;
     font-size: 1.5rem;
   
@@ -65,6 +69,7 @@
   .navbar ul li a:hover{
     color: skyblue;
   }
+
   
   
   section{
@@ -82,9 +87,21 @@
     width: 40vw;
   }
   
-  h1{
-    margin-top: 100px;
-    font-size: 200%;
-    font-weight: bold;
-    color: #778DB3;
+  .text-box h1{
+    color:  #778DB3;
+    font-family: 'Secular One', sans-serif;
+  font-size: 50px;
+  line-height: 150px;
+  margin-left: -10px;
+  font-weight:800;
+  height: 150px;
+
+  }
+
+  .message{
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }

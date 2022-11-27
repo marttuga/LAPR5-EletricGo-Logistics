@@ -238,8 +238,8 @@ console.log(NetworkComponent.getAspectRatio())
 
     if(this.activateMotion==1) {
 
-      const departure = this.scene.getObjectByName(this.routes[0].departureId);
-      const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
+      const departure = this.scene.getObjectByName(this.routes[2].departureId);
+      const arrival = this.scene.getObjectByName(this.routes[2].arrivalId);
 
       /*   let curve = new CatmullRomCurve3([
          new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
@@ -247,7 +247,7 @@ console.log(NetworkComponent.getAspectRatio())
        ]);*/
 
 
-      const time = .0002 * performance.now();
+      const time = .00002 * performance.now();
       const points = this.curve.getPoint(time);
 
 
@@ -373,8 +373,8 @@ console.log(NetworkComponent.getAspectRatio())
 
   onClick() {
 
-    const departure = this.scene.getObjectByName(this.routes[0].departureId);
-    const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
+    const departure = this.scene.getObjectByName(this.routes[2].departureId);
+    const arrival = this.scene.getObjectByName(this.routes[2].arrivalId);
      this.curve = new CatmullRomCurve3([
       new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
       new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
@@ -387,6 +387,55 @@ console.log(NetworkComponent.getAspectRatio())
 
   onMouseMove(event: MouseEvent) {
 
+  }
+  public makeDelivery() {
+    let x1 = document.getElementById("Option1");
+    let x2 = document.getElementById("Option2");
+
+    let y=document.getElementById("navbar")
+    let z=document.getElementById("delivery");
+
+    if (x1!=null && x2!=null && y!=null&&z!=null) {
+      if (x1.style.display === "none" &&x2.style.display === "none") {
+        x1.style.display = "block";
+        x2.style.display = "block";
+     //   y.style.height ="80px";
+        z.style.display="none"
+      }
+    }
+  }
+
+  public automaticDelivery() {
+    let x1 = document.getElementById("Option1");
+    let x2 = document.getElementById("Option2");
+    let z=document.getElementById("delivery");
+    let deliveries=document.getElementById("deliveries");
+    let canvas=document.getElementById("canvas");
+
+    if (deliveries!=null && canvas!=null && x1!=null && x2!=null && z!=null) {
+
+      x1.style.display = "none";
+      x2.style.display = "none";
+      z.style.display = "block"
+      canvas.style.display="none";
+      deliveries.style.display="block";
+    }
+  }
+  public manualDelivery() {
+    let x1 = document.getElementById("Option1");
+    let x2 = document.getElementById("Option2");
+    let z=document.getElementById("delivery");
+    let deliveries=document.getElementById("deliveries");
+    let canvas=document.getElementById("canvas");
+
+    if (deliveries!=null && canvas!=null && x1!=null && x2!=null && z!=null) {
+
+      x1.style.display = "none";
+      x2.style.display = "none";
+      z.style.display = "block"
+      canvas.style.display="none";
+      deliveries.style.display="block";
+    }
   }
 
 }
