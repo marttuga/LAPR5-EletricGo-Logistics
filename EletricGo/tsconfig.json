@@ -30,9 +30,11 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   }
-  ,
-    "exclude": [
-      "**/*.spec.ts"
-    ]
+   ,
+    
+    //  "include": [
+    //    "src/**/*.d.ts",
+    //    "src/**/*.ts"
+    //  ]
   
 }
