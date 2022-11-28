@@ -102,6 +102,21 @@ console.log(NetworkComponent.getAspectRatio())
     //definir janela
     this.renderer.setSize(window.innerWidth,window.innerHeight);
 
+    //
+    this.renderer.shadowMap.enabled=true;
+    this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(2000, -100, 80, 80),
+      new THREE.MeshStandardMaterial({
+          color: 0x808080,
+        }));
+ ground.castShadow = false;
+ ground.receiveShadow = true;
+ ground.rotation.x = -Math.PI / 2;
+ this.scene.add (ground);
+ 
+
     //Orbit Controls
     let controls = new OrbitControls(this.camera, this.renderer.domElement);
 
@@ -319,16 +334,24 @@ console.log(NetworkComponent.getAspectRatio())
     //*Light
     const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
     light1.position.set(-window.innerWidth, 0, 0);
+    light1.castShadow=true;
     this.scene.add(light1);
+
     const light2 = new THREE.PointLight(0xFFFFFF, 1, 10000);
     light2.position.set(window.innerWidth, 0, 0);
+    light2.castShadow=true;
     this.scene.add(light2);
+
     const light3 = new THREE.PointLight(0xFFFFFF, 1, 10000);
     light3.position.set(0, -window.innerHeight, 0);
+    light3.castShadow=true;
     this.scene.add(light3);
+
     const light4 = new THREE.PointLight(0xFFFFFF, 1, 10000);
     light4.position.set(0, window.innerHeight, 0);
+    light4.castShadow=true;
     this.scene.add(light4);
+    
     const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
     this.scene.add(light_amb);
 

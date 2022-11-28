@@ -13,7 +13,8 @@
     "src/app/views/model/Truck.ts",
     "src/app/views/model/Route.ts"
   ],
-  "include": [
-    "src/**/*.d.ts"
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
   ]
 }
