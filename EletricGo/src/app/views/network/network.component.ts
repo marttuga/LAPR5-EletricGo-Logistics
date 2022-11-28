@@ -188,14 +188,34 @@ console.log(NetworkComponent.getAspectRatio())
     this.addRoads();
   }
 
-
   private addRoads() {
 
     for (let i = 0; i < this.routes.length; i++) {
+      let ware0 = <Object3D>this.scene.getObjectByName((this.routes[i].departureId));
       let ware1 = <Object3D>this.scene.getObjectByName((this.routes[i].arrivalId));
-      let ware2 = <Object3D>this.scene.getObjectByName((this.routes[i].departureId));
 
-      if (ware1 != undefined && ware2 != undefined) {
+      let teta0=Math.atan2(-(ware1.position.z-ware0.position.z),ware1.position.x-ware0.position.x);
+      let teta1=Math.PI+teta0;
+
+      let elemLigMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+      elemLigMaterial.map= new THREE.TextureLoader().load('assets/network/road1.jpg')
+      let elemLigGeometry =new THREE.BoxGeometry(2, 0.5, 1);
+
+      let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
+      elemLig0Mesh.position.set(2 * Math.cos(teta0),-0.01,-2*Math.sin(teta0));
+      elemLig0Mesh.rotateY(teta0)
+
+      ware0.add(elemLig0Mesh)
+
+      let elemLig1Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
+      elemLig1Mesh.position.set(2 * Math.cos(teta1),-0.01,-2*Math.sin(teta1));
+      elemLig1Mesh.rotateY(teta1)
+
+      ware1.add(elemLig1Mesh)
+
+    //  this.scene.add(elemLig0Mesh)
+
+      /*      if (ware1 != undefined && ware2 != undefined) {
         let points = [];
         points.push(new THREE.Vector3(ware1.position.x, ware1.position.y, ware1.position.z));
         points.push(new THREE.Vector3(ware2.position.x, ware2.position.y, ware2.position.z));
@@ -208,7 +228,7 @@ console.log(NetworkComponent.getAspectRatio())
         let road=new THREE.Mesh(warehouseCubeGeometry,warehouseCubeMaterial);
 
         this.scene.add(road)
-      }
+      }*/
     }
   }
 
