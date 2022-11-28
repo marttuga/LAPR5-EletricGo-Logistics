@@ -23,7 +23,8 @@ overflow: hidden;
   display: flex;
   width: 100%;
   height: 60px;
-  background: rgba(248,248,250,0.7);
+  background: #f9f8fb;
+  font-weight: 700;
 }
 
 .navbar ul{
@@ -35,7 +36,8 @@ overflow: hidden;
 
 .navbar ul li{
   margin: 0 1rem;
-  padding: 1rem;
+    padding: 1rem;
+    font-family: 'Secular One', sans-serif;
 }
 
 .navbar ul li a{
