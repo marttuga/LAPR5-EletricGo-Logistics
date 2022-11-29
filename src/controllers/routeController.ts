@@ -8,6 +8,7 @@ import IRouteDTO from '../dto/IRouteDTO';
 
 import { Result } from '../core/logic/Result';
 
+
 @Service()
 export default class RouteController implements IRouteController /* TODO: extends ../core/infra/BaseController */ {
   constructor(@Inject(config.services.route.name) private routeServiceInstance: IRouteService) {}
