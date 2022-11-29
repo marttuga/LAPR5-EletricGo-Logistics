@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
 import { NetworkComponent } from './network.component';
 
 describe('NetworkComponent', () => {
@@ -8,7 +8,8 @@ describe('NetworkComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NetworkComponent ]
+      declarations: [ NetworkComponent ],
+      imports:[FormsModule]
     })
     .compileComponents();
 

@@ -115,7 +115,7 @@ console.log(NetworkComponent.getAspectRatio())
  ground.receiveShadow = true;
  ground.rotation.x = -Math.PI / 2;
  this.scene.add (ground);
- 
+
 
     //Orbit Controls
     let controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -187,7 +187,7 @@ console.log(NetworkComponent.getAspectRatio())
     }
     this.addRoads();
   }
-
+  
   private addRoads() {
 
     for (let i = 0; i < this.routes.length; i++) {
@@ -198,22 +198,38 @@ console.log(NetworkComponent.getAspectRatio())
       let teta1=Math.PI+teta0;
 
       let elemLigMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-      elemLigMaterial.map= new THREE.TextureLoader().load('assets/network/road1.jpg')
-      let elemLigGeometry =new THREE.BoxGeometry(2, 0.5, 1);
+      elemLigMaterial.map= new THREE.TextureLoader().load('assets/network/road.jpg')
+      let elemLigGeometry =new THREE.BoxGeometry(2, 0.20, 1);
 
       let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
-      elemLig0Mesh.position.set(2 * Math.cos(teta0),-0.01,-2*Math.sin(teta0));
+      elemLig0Mesh.position.set(ware0.position.x+ Math.cos(teta0),ware0.position.y,ware0.position.z-Math.sin(teta0));
       elemLig0Mesh.rotateY(teta0)
+      this.scene.add(elemLig0Mesh)
 
-      ware0.add(elemLig0Mesh)
 
       let elemLig1Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
-      elemLig1Mesh.position.set(2 * Math.cos(teta1),-0.01,-2*Math.sin(teta1));
+      elemLig1Mesh.position.set(ware1.position.x+ Math.cos(teta1),ware1.position.y,ware1.position.z-Math.sin(teta1));
       elemLig1Mesh.rotateY(teta1)
+      this.scene.add(elemLig1Mesh)
 
-      ware1.add(elemLig1Mesh)
+      let roadMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+      roadMaterial.map= new THREE.TextureLoader().load('assets/network/road1.jpg')
+  
+      //formula da distancia entre dois pontos
+      let roadGeometry =new THREE.BoxGeometry(1, 0.20,  Math.sqrt(Math.pow(elemLig0Mesh.position.x-elemLig1Mesh.position.x,2)+Math.pow(elemLig0Mesh.position.y-elemLig1Mesh.position.y,2)+Math.pow(elemLig0Mesh.position.z-elemLig1Mesh.position.z,2)));      let roadMesh=new THREE.Mesh(roadGeometry,roadMaterial);
+      //posiçao conforme o ponto medio entre os elementos de ligaçao
+      roadMesh.position.set((elemLig0Mesh.position.x+elemLig1Mesh.position.x)/2,(elemLig0Mesh.position.y+elemLig1Mesh.position.y)/2,(elemLig0Mesh.position.z+elemLig1Mesh.position.z)/2);
+      
+      this.scene.add(roadMesh)
 
-    //  this.scene.add(elemLig0Mesh)
+
+      //let beta=Math.atan2(elemLig0Mesh.position.y- roadMesh.position.y,roadGeometry.parameters.depth)
+   let beta =Math.asin((elemLig0Mesh.position.y-roadMesh.position.y)/roadGeometry.parameters.depth)
+      roadMesh.rotateX(beta)
+      roadMesh.rotateY(Math.PI/2-beta)
+    
+
+      //  this.scene.add(elemLig0Mesh)
 
       /*      if (ware1 != undefined && ware2 != undefined) {
         let points = [];
@@ -232,18 +248,19 @@ console.log(NetworkComponent.getAspectRatio())
     }
   }
 
+
   private addTruck(){
 
     const loader = new GLTFLoader();
     loader.load('/assets/network/Truck.glb', (gltf) => {
       gltf.scene.name = "TruckyBlue";
       gltf.scene.position.set(<number>this.scene.getObjectByName(this.routes[0].departureId)?.position.x, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.y, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.z);
-      gltf.scene.scale.set(0.8, 0.8, 0.8);
+      gltf.scene.scale.set(0.2, 0.2, 0.2);
 
 
- //     this.truckCore[0] = new THREE.Mesh( this.truckGeometry, this.truckMaterial );
- //     this.truckCore[0].name="TruckyBlueCore"
-    //  gltf.scene.add(this.truckCore[0]);
+      //     this.truckCore[0] = new THREE.Mesh( this.truckGeometry, this.truckMaterial );
+      //     this.truckCore[0].name="TruckyBlueCore"
+      //  gltf.scene.add(this.truckCore[0]);
       this.scene.add(gltf.scene);
 
     }, undefined, function (error) {
@@ -253,7 +270,7 @@ console.log(NetworkComponent.getAspectRatio())
   }
 
 
- private automaticMovement(truck:any){
+  private automaticMovement(truck:any){
     //Automatic truck movement
 
     if(this.activateMotion==1) {
@@ -267,7 +284,7 @@ console.log(NetworkComponent.getAspectRatio())
        ]);*/
 
 
-      const time = .00002 * performance.now();
+      const time = .0002 * performance.now();
       const points = this.curve.getPoint(time);
 
 
@@ -275,15 +292,15 @@ console.log(NetworkComponent.getAspectRatio())
 
 
 
-          truck?.position?.set(points.x, points.y, points.z);
+        truck?.position?.set(points.x, points.y, points.z);
 
-      //  console.log("Departure  : " + departure?.position.x +" "+ departure?.position.y +" "+ departure?.position.z)
+        //  console.log("Departure  : " + departure?.position.x +" "+ departure?.position.y +" "+ departure?.position.z)
 
-      //  console.log(truckPosition?.x + " " + truckPosition?.y + " " + truckPosition?.z)
+        //  console.log(truckPosition?.x + " " + truckPosition?.y + " " + truckPosition?.z)
 
-       if (Math.abs(arrival?.position.x) - Math.abs(points.x) <0.010 && Math.abs(arrival?.position.y) - Math.abs(points.y) <0.010 && Math.abs(arrival?.position.z) - Math.abs(points.z) <0.010 ) {
+        if (Math.abs(arrival?.position.x) - Math.abs(points.x) <0.010 && Math.abs(arrival?.position.y) - Math.abs(points.y) <0.010 && Math.abs(arrival?.position.z) - Math.abs(points.z) <0.010 ) {
           this.activateMotion = 0;
-        this.scene.remove(truck);
+          this.scene.remove(truck);
         }
       }
     }
@@ -350,6 +367,7 @@ console.log(NetworkComponent.getAspectRatio())
   }
 
 
+
   private addLights(){
     //*Light
     const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
@@ -371,7 +389,7 @@ console.log(NetworkComponent.getAspectRatio())
     light4.position.set(0, window.innerHeight, 0);
     light4.castShadow=true;
     this.scene.add(light4);
-    
+
     const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
     this.scene.add(light_amb);
 
@@ -380,7 +398,7 @@ console.log(NetworkComponent.getAspectRatio())
   }
 
   private static getCoordinates(lat:number, lon:number, alt: number):any {
-   let coordinatesArr: number[]=[];
+    let coordinatesArr: number[]=[];
     coordinatesArr[0]=-(((50-(-50))/(8.7613-8.2451))*(lon-8.2451)+(-50));
     coordinatesArr[1]=((((50-(-50))/(42.1115-40.8387))*(lat-40.8387)+(-50)));
     coordinatesArr[2]=((((50 / 800) * alt)));
@@ -395,7 +413,7 @@ console.log(NetworkComponent.getAspectRatio())
 
     const departure = this.scene.getObjectByName(this.routes[2].departureId);
     const arrival = this.scene.getObjectByName(this.routes[2].arrivalId);
-     this.curve = new CatmullRomCurve3([
+    this.curve = new CatmullRomCurve3([
       new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
       new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
     ]);
@@ -419,7 +437,7 @@ console.log(NetworkComponent.getAspectRatio())
       if (x1.style.display === "none" &&x2.style.display === "none") {
         x1.style.display = "block";
         x2.style.display = "block";
-     //   y.style.height ="80px";
+        //   y.style.height ="80px";
         z.style.display="none"
       }
     }
@@ -441,6 +459,7 @@ console.log(NetworkComponent.getAspectRatio())
       deliveries.style.display="block";
     }
   }
+
   public manualDelivery() {
     let x1 = document.getElementById("Option1");
     let x2 = document.getElementById("Option2");
@@ -459,3 +478,6 @@ console.log(NetworkComponent.getAspectRatio())
   }
 
 }
+
+
+

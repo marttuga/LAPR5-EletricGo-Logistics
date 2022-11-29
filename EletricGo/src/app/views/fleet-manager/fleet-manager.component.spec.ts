@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { FormsModule } from '@angular/forms';
 import { FleetManagerComponent } from './fleet-manager.component';
 
 describe('FleetManagerComponent', () => {
@@ -8,7 +9,8 @@ describe('FleetManagerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FleetManagerComponent ]
+      declarations: [ FleetManagerComponent ],
+      imports: [FormsModule]
     })
     .compileComponents();
 

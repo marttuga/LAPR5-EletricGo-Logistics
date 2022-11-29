@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {TrucksService} from "../../services/node/truck.service";
 import { CreateTruckComponent } from './create-truck.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { FormsModule } from '@angular/forms';
 
 
 describe('CreateTruckComponent', () => {
@@ -12,7 +13,7 @@ describe('CreateTruckComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule,],
+      imports:[HttpClientTestingModule,FormsModule],
       declarations: [ CreateTruckComponent ]
     })
     .compileComponents();
