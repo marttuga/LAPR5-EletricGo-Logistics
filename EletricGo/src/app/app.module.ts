@@ -19,6 +19,7 @@ import { ListTruckComponent } from './views/list-truck/list-truck.component';
 import { ListDeliveriesComponent } from './views/list-deliveries/list-deliveries.component';
 import { GetPlannedRouteComponent } from './views/get-planned-route/get-planned-route.component';
 import { ListRoutesComponent } from './views/list-routes/list-routes.component';
+import { SharedModule } from './views/shared.module';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ListRoutesComponent } from './views/list-routes/list-routes.component';
       AppRoutingModule,
       HttpClientModule,
       FormsModule,
+      SharedModule
     ],
   providers: [],
   bootstrap: [AppComponent]
