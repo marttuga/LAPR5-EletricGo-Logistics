@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {FormsModule} from "@angular/forms";
 
 import { CreateWarehouseComponent } from './create-warehouse.component';
 
@@ -8,7 +9,8 @@ describe('CreateWarehouseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateWarehouseComponent ]
+      declarations: [ CreateWarehouseComponent ],
+      imports: [FormsModule]
     })
     .compileComponents();
 

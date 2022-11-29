@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
 import { GetPlannedRouteComponent } from './get-planned-route.component';
 
 describe('GetPlannedRouteComponent', () => {
@@ -8,7 +8,8 @@ describe('GetPlannedRouteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GetPlannedRouteComponent ]
+      declarations: [ GetPlannedRouteComponent ],
+      imports:[FormsModule]
     })
     .compileComponents();
 

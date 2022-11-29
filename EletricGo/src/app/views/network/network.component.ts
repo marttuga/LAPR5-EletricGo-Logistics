@@ -198,20 +198,36 @@ console.log(NetworkComponent.getAspectRatio())
       let teta1=Math.PI+teta0;
 
       let elemLigMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-      elemLigMaterial.map= new THREE.TextureLoader().load('assets/network/road1.jpg')
-      let elemLigGeometry =new THREE.BoxGeometry(2, 0.5, 1);
+      elemLigMaterial.map= new THREE.TextureLoader().load('assets/network/road.jpg')
+      let elemLigGeometry =new THREE.BoxGeometry(2, 0.20, 1);
 
       let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
-      elemLig0Mesh.position.set(2 * Math.cos(teta0),-0.01,-2*Math.sin(teta0));
+      elemLig0Mesh.position.set(ware0.position.x+ Math.cos(teta0),ware0.position.y,ware0.position.z-Math.sin(teta0));
       elemLig0Mesh.rotateY(teta0)
+      this.scene.add(elemLig0Mesh)
 
-      ware0.add(elemLig0Mesh)
 
       let elemLig1Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
-      elemLig1Mesh.position.set(2 * Math.cos(teta1),-0.01,-2*Math.sin(teta1));
+      elemLig1Mesh.position.set(ware1.position.x+ Math.cos(teta1),ware1.position.y,ware1.position.z-Math.sin(teta1));
       elemLig1Mesh.rotateY(teta1)
+      this.scene.add(elemLig1Mesh)
 
-      ware1.add(elemLig1Mesh)
+      let roadMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+      roadMaterial.map= new THREE.TextureLoader().load('assets/network/road1.jpg')
+  
+      //formula da distancia entre dois pontos
+      let roadGeometry =new THREE.BoxGeometry(1, 0.20,  Math.sqrt(Math.pow(elemLig0Mesh.position.x-elemLig1Mesh.position.x,2)+Math.pow(elemLig0Mesh.position.y-elemLig1Mesh.position.y,2)+Math.pow(elemLig0Mesh.position.z-elemLig1Mesh.position.z,2)));      let roadMesh=new THREE.Mesh(roadGeometry,roadMaterial);
+      //posiçao conforme o ponto medio entre os elementos de ligaçao
+      roadMesh.position.set((elemLig0Mesh.position.x+elemLig1Mesh.position.x)/2,(elemLig0Mesh.position.y+elemLig1Mesh.position.y)/2,(elemLig0Mesh.position.z+elemLig1Mesh.position.z)/2);
+      
+      this.scene.add(roadMesh)
+
+
+      //let beta=Math.atan2(elemLig0Mesh.position.y- roadMesh.position.y,roadGeometry.parameters.depth)
+   let beta =Math.asin((elemLig0Mesh.position.y-roadMesh.position.y)/roadGeometry.parameters.depth)
+      roadMesh.rotateX(beta)
+      roadMesh.rotateY(Math.PI/2-beta)
+    
 
       //  this.scene.add(elemLig0Mesh)
 
