@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
     "@seregpie/three.text-sprite": "^3.2.0",
-    "forms-angular": "^0.9.0",
+    "forms-angular": "^0.12.0-beta.193",
     "rxjs": "~7.5.0",
     "three": "^0.146.0",
     "tslib": "^2.3.0",
