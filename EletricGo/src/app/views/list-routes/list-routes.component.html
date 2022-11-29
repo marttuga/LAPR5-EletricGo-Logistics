@@ -1,3 +1,5 @@
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +10,12 @@
 </head>
 
 <body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
+    </ul>
+  </nav>
     <div id="contentSection">
     <h2>ALL ROUTES AVAILABLE</h2> 
     </div>
@@ -40,3 +48,4 @@
       </table>
     </div>
     </body>
+</html>
