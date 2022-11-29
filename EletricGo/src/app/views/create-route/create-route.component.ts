@@ -33,5 +33,7 @@ extraTime: string;
     this.route=data});
 
   }
-
+  scroll(el: HTMLElement) {
+    el.scrollIntoView({behavior: 'smooth'});
+  }
 }
