@@ -17,6 +17,8 @@ export class ListRoutesComponent implements OnInit {
   arrivalId: string;
   departureId: string;
   extraTime: string;
+  searchArrivalID: string;
+  searchDepartureID: string;
 
   constructor( private routeService: RoutesService,
     private activedRoute: ActivatedRoute,
@@ -32,6 +34,11 @@ ngOnInit(): void {
 public getRoutes():void{
 this.routeService.getRoutes().subscribe(data => {console.log(data);
 this.routes=data});
+}
+
+public getRoute():void{
+  this.routeService.getRoute(this.routeId).subscribe(data => {console.log(data);
+  this.route=data});
 }
 
 }
