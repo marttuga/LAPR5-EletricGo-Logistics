@@ -34,8 +34,15 @@
           </div>
           </div>
           <div id="options2">
-            <div class="textfield">
-              <input type="text" name="arrivalId" placeholder="Warehouse Arrival Id" required [(ngModel)]="arrivalId">
+            <div class="dropDownArrival">
+              <select type="text" name="arrival_Id" id="arrivalId" placeholder="Warehouse Arrival Id" required [(ngModel)]="arrivalId">
+                <option value="W01">W01</option>
+                <option value="W02">W02</option>
+                <option value="W03">W03</option>
+                <option value="W04">W04</option>
+                <option value="W05">W04</option>
+              </select>
+              <!-- <input type="" name="arrivalId" placeholder="Warehouse Arrival Id" required [(ngModel)]="arrivalId"> -->
             </div>
             <div class="textfield">
               <input type="text" name="departureId" placeholder="Warehouse Departure Id" required [(ngModel)]="departureId">
