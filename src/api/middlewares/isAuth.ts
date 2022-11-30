@@ -16,14 +16,15 @@ const getTokenFromHeader = req => {
    * So I believe that this should handle more 'edge' cases ;)
    */
   if (
-      (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') ||
-      (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')
+    (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') ||
+    (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')
   ) {
     return req.headers.authorization.split(' ')[1];
   }
   return null;
 };
 
+// @ts-ignore
 const isAuth = jwt({
   secret: config.jwtSecret, // The _secret_ to sign the JWTs
   userProperty: 'token', // Use req.token to store the JWT
