@@ -28,14 +28,15 @@
             <th>Distance</th>
             <th>Route_Time</th>
             <th>Battery_Waste</th>
-            <th>Arrival_Id</th>
-            <th>Departure_Id</th>
+            <th><input type="text" class="search-input" placeholder="ARRIVAL_ID" required [(ngModel)]="searchArrivalID">
+            <th><input type="text" class="search-input" placeholder="DEPARTURE_ID" required [(ngModel)]="searchDepartureID">
             <th>Extra_Time</th>
+            <th class="text-right"></th>
     
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let route of routes">
+          <tr *ngFor="let route of routes | filter : 'arrivalId': searchArrivalID | filter : 'departureId': searchDepartureID ; let i = index">
             <td><span>{{route.routeId}}</span></td>
             <td><span>{{route.distance}}</span></td>
             <td><span>{{route.routeTime}}</span></td>

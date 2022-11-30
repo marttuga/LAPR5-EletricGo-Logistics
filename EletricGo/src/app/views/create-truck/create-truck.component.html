@@ -46,8 +46,18 @@
             </div>
         
             <div class="button">
-                <input type="submit" value="DONE!" (click)="createTruck()">
+                <input type="submit" value="DONE!" (click)="createValidTruck()">
             </div>
+
+            <div *ngIf="warningService.warnings.length">
+
+                <h4>Warnings</h4>
+                <button type="button"
+                        class="clear"
+                        (click)="warningService.clear()">OK</button>
+                <div class="messa" *ngFor='let warning of warningService.warnings'> {{warning}} </div>
+              
+              </div>
 
         </div>
     </div>

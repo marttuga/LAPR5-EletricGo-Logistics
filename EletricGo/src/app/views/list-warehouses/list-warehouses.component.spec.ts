@@ -1,5 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FilterPipe } from '../model/filterPipe';
 import { ListWarehousesComponent } from './list-warehouses.component';
 
 describe('ListWarehousesComponent', () => {
@@ -8,7 +11,8 @@ describe('ListWarehousesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListWarehousesComponent ]
+      declarations: [ FilterPipe,ListWarehousesComponent ],
+      imports:[HttpClientTestingModule,FormsModule,RouterTestingModule],
     })
     .compileComponents();
 
