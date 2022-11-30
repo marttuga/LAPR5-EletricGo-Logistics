@@ -9,7 +9,7 @@
 
 <body>
     <div id="contentSection">
-    <h2>ALL EXISTENT TRUCKS</h2> 
+    <h2>ALL EXISTENT TRUCKS</h2>
     </div>
 
     <!-- <div class="container">
@@ -23,7 +23,7 @@
             <th>Batery_Capacity</th>
             <th>Autonomy</th>
             <th>Time_Charging</th>
-    
+
           </tr>
         </thead>
         <tbody>
@@ -59,7 +59,7 @@
           </div>
         </div>
       </form>
-      
+
       <table class="table">
         <tr>
           <th><input type="text" class="search-input" placeholder="Licence_Plate" pattern="([A-Za-z]{2}-[0-9]{2}-[A-Za-z]{2})" title="Must be of format XX-00-XX" required [(ngModel)]="searchString">
@@ -80,10 +80,11 @@
           <td><span>{{truck.maxBateryCapacity}}</span></td>
           <td><span>{{truck.autonomyFullChargeLoad}}</span></td>
           <td><span>{{truck.timeCharging}}</span></td>
+          <td><span><button class="button-21" role="button" id="chooseTruck" style="display: none">Choose</button></span></td>
         </tr>
-        
-       
+
+
       </table>
 
-  
+
     </body>
