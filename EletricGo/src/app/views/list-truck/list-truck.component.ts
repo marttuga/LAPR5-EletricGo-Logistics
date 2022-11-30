@@ -31,10 +31,22 @@ this.trucks=data});
 
 public getTruck():void{
   this.truckService.getTruck(this.licencePlate).subscribe(data => {console.log(data);
-
   this.truck=data});
-  
 }
+
+public static turnOff(){
+  let x1 = document.getElementById("chooseTruck");
+  if(x1!=null){
+    x1.style.display="none";
+  }
+}
+
+  public static turnOn(){
+    let x1 = document.getElementById("chooseTruck");
+    if(x1!=null){
+      x1.style.display="block";
+    }
+  }
 
 }
 
