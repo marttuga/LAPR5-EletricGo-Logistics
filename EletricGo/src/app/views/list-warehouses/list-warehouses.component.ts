@@ -1,25 +1,21 @@
-import { Component, OnInit} from '@angular/core';
+import {Component, NgModule, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
 import {ActivatedRoute, Router} from "@angular/router";
+
+
 
 @Component({
   selector: 'app-list-warehouses',
   templateUrl: './list-warehouses.component.html',
-  styleUrls: ['./list-warehouses.component.css']
+  styleUrls: ['./list-warehouses.component.css'],
+
 })
 export class ListWarehousesComponent implements OnInit {
 
   warehouses: Warehouse[];
-  warehouse:Warehouse;
-  warehouseIdentifier:string;
-  designation:string;
-  latitude:number;
-  longitude:number;
-  street:string;
-  doorNumber:number;
-  city:string;
-  zipcode:string;
-  altitude:string;
+  warehouseIdentifier : string;
+  searchString: string;
+
   constructor(private warehouseService: WarehousesService,
               private route: ActivatedRoute,
               private router: Router) { }
@@ -31,6 +27,7 @@ export class ListWarehousesComponent implements OnInit {
   public listWarehouses():void{
     this.warehouseService.getWarehouses().subscribe(data => {console.log(data);
       this.warehouses=data});
+
   }
 
 }

@@ -8,12 +8,30 @@
   <title>Document</title>
 </head>
 <body>
-  <div id="contentSection">
-    <h2>ALL EXISTENT WAREHOUSES</h2> 
-    </div>
+  <!--<div id="contentSection">
+    <h2>ALL EXISTENT WAREHOUSES</h2>
+    </div>-->
+
 <div class="container">
+  <form>
+    <div class="form-group">
+      <div>
+        <i class="glyphicon glyphicon-search"></i>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="searchString"
+        placeholder="Type to search..."
+        [(ngModel)]="searchString"
+      />
+    </div>
+
+  </form>
+
   <table class="table table-bordered  table-striped">
     <thead>
+
       <tr>
         <th>Warehouse Id</th>
         <th>Designation</th>
@@ -27,7 +45,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let warehouse of warehouses">
+      <tr *ngFor="let warehouse of warehouses | filter : 'warehouseIdentifier' : searchString; let i = index">
         <td><span>{{warehouse.warehouseIdentifier}}</span></td>
         <td><span>{{warehouse.designation}}</span></td>
         <td><span>{{warehouse.latitude}}</span></td>
@@ -39,6 +57,7 @@
         <td><span>{{warehouse.altitude}}</span></td>
       </tr>
     </tbody>
+
   </table>
 </div>
 </body>
