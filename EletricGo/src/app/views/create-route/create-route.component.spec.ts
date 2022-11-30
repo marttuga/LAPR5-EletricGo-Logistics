@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {FormsModule} from "@angular/forms";
 
 import { CreateRouteComponent } from './create-route.component';
 
@@ -8,7 +9,8 @@ describe('CreateRouteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateRouteComponent ]
+      declarations: [ CreateRouteComponent ],
+      imports: [FormsModule]
     })
     .compileComponents();
 

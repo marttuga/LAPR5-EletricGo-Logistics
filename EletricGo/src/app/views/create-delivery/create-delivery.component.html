@@ -13,12 +13,14 @@
       <section>
         <div class="options">
           <h1 class="create-title">New Delivery?</h1>
-          <img src="/assets/delivery1.gif" class="image"  alt="delivery" width="300" height="310">
+          <img src="/assets/delivery1.gif" class="image"  alt="delivery" width="230" height="240">
           <h2 class="create-message-subtitle">Enter all information here!</h2>
         </div>
-     
-          <div class="textfield">
-            <input type="text" name="delId" placeholder="Delivery indentifier" required [(ngModel)]="dIdentifier">
+        <section #delivery>
+          <div class="create-form">
+            <div class="create-form-left">
+            <div class="textfield">
+            <input type="text" name="delId" placeholder="DeliveryIndentifier" required [(ngModel)]="dIdentifier">
           </div>
           <div class="textfield">
             <input type="text" name="date" placeholder="Date" required [(ngModel)]="date">
@@ -26,9 +28,12 @@
           <div class="textfield">
             <input type="text" name="mass" placeholder="Mass" required [(ngModel)]="mass">
           </div>
+        </div>
+        <div class="create-form-right">
           <div class="textfield">
             <input type="text" name="timeLoad" placeholder="TimeLoad" required [(ngModel)]="timeLoad">
           </div>
+    
           <div class="textfield">
             <input type="text" name="timeUnload" placeholder="TimeUnload" required [(ngModel)]="timeUnload">
           </div>
@@ -38,7 +43,10 @@
           <div class="button">
             <button class="button" type="submit" (click)="createDelivery()">Create Delivery!</button>
           </div>
+          </div>
+          </div>
         </section>
+      </section>
     </div>
 
     <section>

@@ -6,7 +6,7 @@
 }
 
 body{
-  margin: 0;
+  margin-top: 50px;
   font-family: "Lato", sans-serif;
   background: #CFCBCB;
   line-height: 1.6;
@@ -15,7 +15,7 @@ body{
 
 .create-title{
   font-family: 'Secular One', sans-serif;
-  font-weight: 200;
+  font-weight: 180;
   font-size: 60px;
   color: #778DB3;
 }
@@ -31,19 +31,19 @@ body{
 .textfield{
   width: 100%;
   justify-content: center;
-  margin: 10px 0px;
+  margin: 15px 0px;
 }
 
 .textfield > input{
-  width: 100%;
+  font-family: sans-serif;
   border: none;
-  border-radius: 30px;
-  padding: 12px;
-  background: #ffffff;
-  color: #778DB3;
-  font-size: 12pt;
-  outline: none;
-  box-sizing: border-box;
+  border-radius: 40px;
+  padding: 15px;
+    background: #E4E4E4;
+    color: #313f57;
+    font-size: 12pt;
+    outline: none;
+    width: 220px;
 }
 
 
@@ -61,18 +61,36 @@ body{
 }
 
 
+.create-form{
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.create-form-left{
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.create-form-right{
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
 .button{
-  font-family: 'Secular One', sans-serif;
   width: 100%;
-  padding: 12px;
+  padding: 3px;
   margin: 10px 0px;
   border: none;
-  border-radius: 15px;
+  border-radius: 30px;
   outline: none;
   letter-spacing: 3px;
   color: #778DB3;
   background: #f5f5f5;
   cursor: pointer;
+  font-family:"Secular One", sans-serif;
   font-size: 12pt;
 }
 
