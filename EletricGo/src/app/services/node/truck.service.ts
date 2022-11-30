@@ -8,7 +8,7 @@ import {WarningService} from "../../services/warning.service";
   providedIn: 'root'
 })
 export class TrucksService {
-  private Url = 'http://localhost:3000/api/truck';
+   Url = 'http://localhost:3000/api/truck';
 
   constructor(private httpClient: HttpClient, private warningService: WarningService) { }
 
