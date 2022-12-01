@@ -82,6 +82,19 @@ body{
   box-sizing: border-box;
 }
 
+input.ng-invalid.ng-touched {
+  border: red 1px solid;
+}
+
+small{
+  font-family: 'Secular One', sans-serif;
+  font-size: 8pt;
+  color: #e3242b;
+}
+.created-message {
+  color: darkcyan;
+}
+
 .button-create{
   width: 100%;
   padding: 15px;
