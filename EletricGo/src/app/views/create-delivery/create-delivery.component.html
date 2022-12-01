@@ -19,9 +19,12 @@
         <section #delivery>
           <div class="create-form">
             <div class="create-form-left">
-            <div class="textfield">
-            <input type="text" name="delId" placeholder="DeliveryIndentifier" required [(ngModel)]="dIdentifier">
-          </div>
+              <div class="textfield">
+                <input type="text" required #delId="ngModel" [class.is-invalid]="delId.invalid && delId.touched"  name="delId" placeholder="DeliveryIndentifier" [(ngModel)]="dIdentifier">
+                <div *ngIf="delId.touched">
+                  <small *ngIf="delId.errors?.['required']">Delivery Identifier is required!</small>
+                </div>
+              </div>
           <div class="textfield">
             <input type="text" name="date" placeholder="Date" required [(ngModel)]="date">
           </div>
@@ -33,7 +36,6 @@
           <div class="textfield">
             <input type="number" name="timeLoad" placeholder="TimeLoad" required [(ngModel)]="timeLoad">
           </div>
-    
           <div class="textfield">
             <input type="number" name="timeUnload" placeholder="TimeUnload" required [(ngModel)]="timeUnload">
           </div>
