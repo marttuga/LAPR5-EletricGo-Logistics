@@ -68,18 +68,18 @@
           <th>Capacity</th>
             <th>Batery_Capacity</th>
             <th>Autonomy</th>
-            <th>Time_Charging </th>
+            <th><input type="number" class="search-input" placeholder="Time Charging" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th>
           <th class="text-right"></th>
         </tr>
         <tr
-          *ngFor="let truck of trucks | filter : 'licencePlate': searchString ; let i = index"
+          *ngFor="let truck of trucks | filter : 'licencePlate, timeCharging': searchString ; let i = index"
         >
           <td class="text-left">{{truck.licencePlate}}</td>
           <td><span>{{truck.tare}}</span></td>
           <td><span>{{truck.capacity}}</span></td>
           <td><span>{{truck.maxBateryCapacity}}</span></td>
           <td><span>{{truck.autonomyFullChargeLoad}}</span></td>
-          <td><span>{{truck.timeCharging}}</span></td>
+          <td class="text-left">{{truck.timeCharging}}</td> 
           <td><span><button class="button-21" role="button" id="chooseTruck" style="display: none">Choose</button></span></td>
         </tr>
 
