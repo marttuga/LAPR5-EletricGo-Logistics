@@ -7,6 +7,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
 import {RoutesService} from "../../services/node/routes.service";
+import {ListTruckComponent} from "../list-truck/list-truck.component";
+import {TrucksService} from "../../services/node/truck.service";
 
 
 @Component({
@@ -29,25 +31,21 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
 
-  private warehouses:any[]=[];
   //private roundabouts:THREE.Mesh[]=[];
-
-  private routes:any[]=[];
+  private warehouses:any[]=[];
+  private routes:Route[]=[];
+  private trucks:Truck[]=[];
 
   private warehouseBaseGeometry = new THREE.CylinderGeometry(2, 2, 0.22, 64);
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
   private activateMotion=0;
 
-  private curve:THREE.CatmullRomCurve3;
-  constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService, private routesService:RoutesService) { }
+  //private curve:THREE.CatmullRomCurve3;
+  constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService, private routesService:RoutesService,private trucksService:TrucksService) { }
 
   ngOnInit(): void {
 
-console.log(NetworkComponent.getAspectRatio())
-  }
-
-  ngAfterViewInit(): void {
     this.warehousesService.getWarehouses().subscribe(async data=>{
       this.warehouses=data;
       console.log(this.warehouses)
@@ -55,11 +53,18 @@ console.log(NetworkComponent.getAspectRatio())
       this.routesService.getRoutes().subscribe(async data=>{
         this.routes=data;
         console.log(this.routes)
-        await this.createScene();
-        await this.startRenderingLoop();
+
+        this.trucksService.getTrucks().subscribe(async data=>{
+          this.trucks=data;
+          console.log(this.trucks)
+          await this.createScene();
+          await this.startRenderingLoop();
+        })
       })
     })
+  }
 
+  ngAfterViewInit(): void {
 
   }
 
@@ -86,9 +91,9 @@ console.log(NetworkComponent.getAspectRatio())
     this.camera.position.z = this.cameraZ;
   //  this.camera.lookAt(new Vector3(0,-26.359,0));
     this.scene.add(this.camera);
+
     this.addWarehouses()
     this.addLights()
-
   }
 
 
@@ -102,7 +107,7 @@ console.log(NetworkComponent.getAspectRatio())
     //definir janela
     this.renderer.setSize(window.innerWidth,window.innerHeight);
 
-    //
+    /*
     this.renderer.shadowMap.enabled=true;
     this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 
@@ -111,10 +116,10 @@ console.log(NetworkComponent.getAspectRatio())
       new THREE.MeshStandardMaterial({
           color: 0x808080,
         }));
- ground.castShadow = false;
- ground.receiveShadow = true;
- ground.rotation.x = -Math.PI / 2;
- this.scene.add (ground);
+    ground.castShadow = false;
+    ground.receiveShadow = true;
+    ground.rotation.x = -Math.PI / 2;
+    this.scene.add (ground);*/
 
 
     //Orbit Controls
@@ -187,76 +192,63 @@ console.log(NetworkComponent.getAspectRatio())
     }
     this.addRoads();
   }
-  
+
   private addRoads() {
 
     for (let i = 0; i < this.routes.length; i++) {
       let ware0 = <Object3D>this.scene.getObjectByName((this.routes[i].departureId));
       let ware1 = <Object3D>this.scene.getObjectByName((this.routes[i].arrivalId));
 
-      let teta0=Math.atan2(-(ware1.position.z-ware0.position.z),ware1.position.x-ware0.position.x);
-      let teta1=Math.PI+teta0;
+      if(ware0!=null&&ware1!=null){
+        let teta0=Math.atan2(-(ware1.position.z-ware0.position.z),ware1.position.x-ware0.position.x);
+        let teta1=Math.PI+teta0;
 
-      let elemLigMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-      elemLigMaterial.map= new THREE.TextureLoader().load('assets/network/road.jpg')
-      let elemLigGeometry =new THREE.BoxGeometry(2, 0.20, 1);
+        let elemLigMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+        elemLigMaterial.map= new THREE.TextureLoader().load('assets/network/road.jpg')
+        let elemLigGeometry =new THREE.BoxGeometry(0.3, 0.20, 2);
 
-      let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
-      elemLig0Mesh.position.set(ware0.position.x+ Math.cos(teta0),ware0.position.y,ware0.position.z-Math.sin(teta0));
-      elemLig0Mesh.rotateY(teta0)
-      this.scene.add(elemLig0Mesh)
-
-
-      let elemLig1Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
-      elemLig1Mesh.position.set(ware1.position.x+ Math.cos(teta1),ware1.position.y,ware1.position.z-Math.sin(teta1));
-      elemLig1Mesh.rotateY(teta1)
-      this.scene.add(elemLig1Mesh)
-
-      let roadMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-      roadMaterial.map= new THREE.TextureLoader().load('assets/network/road1.jpg')
-  
-      //formula da distancia entre dois pontos
-      let roadGeometry =new THREE.BoxGeometry(1, 0.20,  Math.sqrt(Math.pow(elemLig0Mesh.position.x-elemLig1Mesh.position.x,2)+Math.pow(elemLig0Mesh.position.y-elemLig1Mesh.position.y,2)+Math.pow(elemLig0Mesh.position.z-elemLig1Mesh.position.z,2)));      let roadMesh=new THREE.Mesh(roadGeometry,roadMaterial);
-      //posiçao conforme o ponto medio entre os elementos de ligaçao
-      roadMesh.position.set((elemLig0Mesh.position.x+elemLig1Mesh.position.x)/2,(elemLig0Mesh.position.y+elemLig1Mesh.position.y)/2,(elemLig0Mesh.position.z+elemLig1Mesh.position.z)/2);
-      
-      this.scene.add(roadMesh)
+        let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
+        elemLig0Mesh.position.set(ware0.position.x+ 2*Math.cos(teta0),ware0.position.y,ware0.position.z-2*Math.sin(teta0));
+        elemLig0Mesh.rotateY(teta0)
+        this.scene.add(elemLig0Mesh)
 
 
-      //let beta=Math.atan2(elemLig0Mesh.position.y- roadMesh.position.y,roadGeometry.parameters.depth)
-   let beta =Math.asin((elemLig0Mesh.position.y-roadMesh.position.y)/roadGeometry.parameters.depth)
-      roadMesh.rotateX(beta)
-      roadMesh.rotateY(Math.PI/2-beta)
-    
+        let elemLig1Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
+        elemLig1Mesh.position.set(ware1.position.x+ 2*Math.cos(teta1),ware1.position.y,ware1.position.z-2*Math.sin(teta1));
+        elemLig1Mesh.rotateY(teta1)
+        this.scene.add(elemLig1Mesh)
 
-      //  this.scene.add(elemLig0Mesh)
+        let roadMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+        roadMaterial.map= new THREE.TextureLoader().load('assets/network/road1.jpg')
 
-      /*      if (ware1 != undefined && ware2 != undefined) {
-        let points = [];
-        points.push(new THREE.Vector3(ware1.position.x, ware1.position.y, ware1.position.z));
-        points.push(new THREE.Vector3(ware2.position.x, ware2.position.y, ware2.position.z));
+        //formula da distancia entre dois pontos
+        let roadGeometry =new THREE.BoxGeometry(2, 0.20,  Math.sqrt(Math.pow(elemLig0Mesh.position.x-elemLig1Mesh.position.x,2)+Math.pow(elemLig0Mesh.position.y-elemLig1Mesh.position.y,2)+Math.pow(elemLig0Mesh.position.z-elemLig1Mesh.position.z,2)));      let roadMesh=new THREE.Mesh(roadGeometry,roadMaterial);
+        //posiçao conforme o ponto medio entre os elementos de ligaçao
+        roadMesh.position.set((elemLig0Mesh.position.x+elemLig1Mesh.position.x)/2,(elemLig0Mesh.position.y+elemLig1Mesh.position.y)/2,(elemLig0Mesh.position.z+elemLig1Mesh.position.z)/2);
+
+        this.scene.add(roadMesh)
 
 
-
-        let warehouseCubeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-        let warehouseCubeGeometry =new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 4, 0.1, 28, false )
-        warehouseCubeMaterial.map = new THREE.TextureLoader().load('assets/network/road1.jpg');
-        let road=new THREE.Mesh(warehouseCubeGeometry,warehouseCubeMaterial);
-
-        this.scene.add(road)
-      }*/
+        let beta =Math.asin((elemLig0Mesh.position.y-elemLig1Mesh.position.y)/roadGeometry.parameters.depth);
+        roadMesh.rotation.set(beta,teta0+Math.PI/2,0, "ZYX")
+      }
     }
   }
 
 
   private addTruck(){
-
+    const ware0 = this.scene.getObjectByName(this.routes[0].departureId);
+    const ware1 = this.scene.getObjectByName(this.routes[0].arrivalId);
+    let teta0=0;
+    if(ware0!=null&&ware1!=null) {
+      teta0 = Math.atan2(-(ware1.position.z - ware0.position.z), ware1.position.x - ware0.position.x);
+    }
     const loader = new GLTFLoader();
     loader.load('/assets/network/Truck.glb', (gltf) => {
       gltf.scene.name = "TruckyBlue";
       gltf.scene.position.set(<number>this.scene.getObjectByName(this.routes[0].departureId)?.position.x, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.y, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.z);
-      gltf.scene.scale.set(0.2, 0.2, 0.2);
-
+      gltf.scene.scale.set(0.4, 0.4, 0.4);
+      gltf.scene.rotateY(Math.PI/2+teta0)
 
       //     this.truckCore[0] = new THREE.Mesh( this.truckGeometry, this.truckMaterial );
       //     this.truckCore[0].name="TruckyBlueCore"
@@ -275,23 +267,24 @@ console.log(NetworkComponent.getAspectRatio())
 
     if(this.activateMotion==1) {
 
-      const departure = this.scene.getObjectByName(this.routes[2].departureId);
-      const arrival = this.scene.getObjectByName(this.routes[2].arrivalId);
+      const departure = this.scene.getObjectByName(this.routes[0].departureId);
+      const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
 
-      /*   let curve = new CatmullRomCurve3([
+        let path = new CatmullRomCurve3([
          new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
          new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
-       ]);*/
+       ]);
 
 
       const time = .0002 * performance.now();
-      const points = this.curve.getPoint(time);
+      const points = path.getPoint(time);
+
 
 
       if(arrival?.position.x!=undefined && departure?.position.x!=undefined) {
+        if(Math.abs(departure?.position.x) - Math.abs(points.x) <0.010 && Math.abs(departure?.position.y) - Math.abs(points.y) <0.010 && Math.abs(departure?.position.z) - Math.abs(points.z) <0.010){
 
-
-
+        }
         truck?.position?.set(points.x, points.y, points.z);
 
         //  console.log("Departure  : " + departure?.position.x +" "+ departure?.position.y +" "+ departure?.position.z)
@@ -411,12 +404,13 @@ console.log(NetworkComponent.getAspectRatio())
 
   onClick() {
 
-    const departure = this.scene.getObjectByName(this.routes[2].departureId);
-    const arrival = this.scene.getObjectByName(this.routes[2].arrivalId);
+   /* const departure = this.scene.getObjectByName(this.routes[0].departureId);
+    const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
     this.curve = new CatmullRomCurve3([
       new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
       new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
-    ]);
+    ]);*/
+
     this.addTruck();
 
     this.activateMotion=1;
@@ -444,6 +438,7 @@ console.log(NetworkComponent.getAspectRatio())
   }
 
   public automaticDelivery() {
+
     let x1 = document.getElementById("Option1");
     let x2 = document.getElementById("Option2");
     let z=document.getElementById("delivery");
@@ -451,32 +446,34 @@ console.log(NetworkComponent.getAspectRatio())
     let canvas=document.getElementById("canvas");
 
     if (deliveries!=null && canvas!=null && x1!=null && x2!=null && z!=null) {
-
+     for(let i=0;i<this.trucks.length;i++) {
+       ListTruckComponent.turnOn();
+     }
       x1.style.display = "none";
       x2.style.display = "none";
       z.style.display = "block"
       canvas.style.display="none";
       deliveries.style.display="block";
+
     }
   }
 
   public manualDelivery() {
     let x1 = document.getElementById("Option1");
     let x2 = document.getElementById("Option2");
-    let z=document.getElementById("delivery");
-    let deliveries=document.getElementById("deliveries");
-    let canvas=document.getElementById("canvas");
+    let z = document.getElementById("delivery");
+    let deliveries = document.getElementById("deliveries");
+    let canvas = document.getElementById("canvas");
 
-    if (deliveries!=null && canvas!=null && x1!=null && x2!=null && z!=null) {
+    if (deliveries != null && canvas != null && x1 != null && x2 != null && z != null) {
 
       x1.style.display = "none";
       x2.style.display = "none";
       z.style.display = "block"
-      canvas.style.display="none";
-      deliveries.style.display="block";
+      canvas.style.display = "none";
+      deliveries.style.display = "block";
     }
   }
-
 }
 
 

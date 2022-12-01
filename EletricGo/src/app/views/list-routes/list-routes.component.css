@@ -22,10 +22,10 @@ body{
   
   
   }
-   .container thead{
-     height: 40px;
-     
-   }
+  .container thead{
+    height: 40px;
+    
+  }
 
 
    .navbar{
@@ -66,26 +66,37 @@ body{
   .navbar ul li a:hover{
     color: skyblue;
   }
-  tr{
-    text-align: center;
-   
   
-  }
-  
-  th{
-    
-   
-    text-transform: uppercase;
-    letter-spacing: 0.1rem;
-    font-size: 0.8rem;
-    font-weight: 900;
-    color: #4f648a;
-  
-  }
-  
-  td{
-    padding: 0.1rem 2.5rem;
-  }
+tr{
+  text-align: center;
+ 
+}
+
+th >input{
+  text-align: center;
+  border: none;
+  border-radius: 30px;
+  padding: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: #4f648a;
+}
+
+th {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: #4f648a;
+
+}
+
+td{
+  padding: 0.1rem 2.5rem;
+}
   
   
   #contentSection h2{
