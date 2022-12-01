@@ -67,6 +67,10 @@
     "uuid": "^9.0.0",
     "winston": "^3.2.1"
   },
+  "engines": {
+    "node": "16.17.0"
+}
+,
   "devDependencies": {
     "@types/agenda": "^4.1.0",
     "@types/express": "^4.16.0",
@@ -92,4 +96,5 @@
     "url": "https://github.com/santiq/bulletproof-nodejs/issues"
   },
   "homepage": "https://github.com/santiq/bulletproof-nodejs#readme"
+  
 }
