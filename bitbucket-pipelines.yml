@@ -27,9 +27,10 @@ pipelines:
               - npm test
               - apt update && apt install zip
               # Exclude files to be ignored
-              - zip -r app.zip . -x *.git* bitbucket-pipelines.yml
+                # Web
+              - git archive --format=tar.gz master -o application.tar.gz
             artifacts:
-              - "*.zip"
+              - application.tar.gz
       - step:
                   name: Deploy to heroku
                   deployment: Production
@@ -42,5 +43,5 @@ pipelines:
                         variables:
                             HEROKU_API_KEY: $HEROKU_API_KEY
                             HEROKU_APP_NAME: $HEROKU_APP_NAME
-                            ZIP_FILE: "app.zip"
+                            ZIP_FILE: "application.tar.gz"
                             WAIT: 'true'
