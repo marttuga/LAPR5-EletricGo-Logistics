@@ -8,6 +8,7 @@ import { map, Observable } from 'rxjs';
 })
 export class TrucksService {
    Url = 'http://localhost:3000/api/truck';
+   //https://lapr5-nodejs.herokuapp.com/
 
   constructor(private httpClient: HttpClient) { }
 

@@ -6,7 +6,8 @@ import {map, Observable} from "rxjs";
   providedIn: 'root'
 })
 export class DeliveriesService {
-  private Url = 'https://localhost:5001/api/Deliveries';
+  //  Url = 'https://localhost:5001/api/Deliveries';
+   Url = 'https://lapr5-dotnet.herokuapp.com/api/Deliveries';
 
   constructor(private httpClient: HttpClient) { }
 
