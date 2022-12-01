@@ -18,48 +18,78 @@
           <img class="warehouse-image" src="assets/ww.gif">
       </section>
       <section #warehouse>
-        <div class="create-form">
+        <form class="create-form" #createForm="ngForm">
           <div class="create-form-left">
             <div class="textfield">
-              <input type="text" name="id" placeholder="Warehouse Identifier" required [(ngModel)]="warehouseIdentifier">
+              <input type="text" required #id="ngModel" pattern="^.{3}" [class.is-invalid]="id.invalid && id.touched"  name="id" placeholder="Warehouse Identifier"  [(ngModel)]="warehouseIdentifier">
+              <div *ngIf="id.touched">
+                <small *ngIf="id.errors?.['required']">Warehouse Identifier is required!</small>
+                <small *ngIf="id.errors?.['pattern']">Warehouse Identifier must have 3 characters!</small>
+              </div>
             </div>
             <div class="textfield">
-              <input type="text" name="designation" placeholder="Designation" required [(ngModel)]="designation">
+              <input type="text" required maxlength="50"  #wDesignation="ngModel" [class.is-invalid]="wDesignation.invalid && wDesignation.touched"  name="designation" placeholder="Designation" [(ngModel)]="designation">
+              <div *ngIf="wDesignation.touched">
+                <small *ngIf="wDesignation.errors?.['required']">Desigantion is required!</small>
+              </div>
             </div>
             <div class="textfield">
-              <input type="text" name="latitude" placeholder="Latitude" required [(ngModel)]="latitude">
+              <input type="number" required #lat="ngModel" [class.is-invalid]="lat.invalid && lat.touched" name="latitude" placeholder="Latitude"  [(ngModel)]="latitude">
+              <div *ngIf="lat.touched">
+                <small *ngIf="lat.errors?.['required']">Latitude must be a number and is required!</small>
+              </div>
             </div>
             <div class="textfield">
-              <input type="text" name="longitude" placeholder="Longitude" required [(ngModel)]="longitude">
+              <input type="number" required #lon="ngModel" [class.is-invalid]="lon.invalid && lon.touched" name="longitude" placeholder="Longitude"  [(ngModel)]="longitude">
+              <div *ngIf="lon.touched">
+                <small *ngIf="lon.errors?.['required']">Longitude must be a number and is required!</small>
+              </div>
             </div>
             <div class="textfield">
-              <input type="text" name="street" placeholder="Street" required [(ngModel)]="street">
+              <input type="text" required #str="ngModel" [class.is-invalid]="str.invalid && str.touched" name="street" placeholder="Street" [(ngModel)]="street">
+              <div *ngIf="str.touched">
+                <small *ngIf="str.errors?.['required']">Street is required!</small>
+              </div>
             </div>
           </div>
           <div class="create-form-right">
               <div class="textfield">
-                <input type="number" name="doorNumber"  placeholder="Door Number" required [(ngModel)]="doorNumber">
+                <input type="number" required #door="ngModel" name="doorNumber"  placeholder="Door Number"  [(ngModel)]="doorNumber">
+                <div *ngIf="door.touched">
+                  <small *ngIf="door.errors?.['required']">Door number must be a number and is required!</small>
+                </div>
               </div>
               <div class="textfield">
-                <input type="text" name="city" placeholder="City" required [(ngModel)]="city">
+                <input type="text"  required #cit="ngModel" name="city" placeholder="City" [(ngModel)]="city">
+                <div *ngIf="cit.touched">
+                  <small *ngIf="cit.errors?.['required']">City is required!</small>
+                </div>
               </div>
               <div class="textfield">
-                <input type="text" name="zipcode" placeholder="Zip Code" required [(ngModel)]="zipcode">
+                <input type="text" required #zipCode="ngModel" pattern="^\d{4}-\d{3}$" [class.is-invalid]="zipCode.invalid && zipCode.touched" name="zipcode" placeholder="Zip Code" [(ngModel)]="zipcode">
+                <div *ngIf="zipCode.touched">
+                  <small *ngIf="zipCode.errors?.['required']">ZipCode is required!</small>
+                  <small *ngIf="zipCode.errors?.['pattern']">ZipCode must have this format: XXXX-XXX!</small>
+                </div>
               </div>
               <div class="textfield">
-                <input type="text" name="altitude" placeholder="Altitude" required [(ngModel)]="altitude">
+                <input type="text" required #alt="ngModel" name="altitude" placeholder="Altitude" [(ngModel)]="altitude">
+                <div *ngIf="alt.touched">
+                  <small *ngIf="alt.errors?.['required']">Altitude is required!</small>
+                </div>
               </div>
               <div class="button">
-                <button class="button-create" type="submit" (click)="createWarehouse()">All done!</button>
+                <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit" (click)="createWarehouse()" >All done!</button>
+                <div *ngIf="submit">
+                  <small class="created-message">Warehouse created!</small>
+                </div>
               </div>
           </div>
-        </div>
+        </form>
       </section>
 
     </div>
-    <section>
-      <app-list-warehouses></app-list-warehouses>
-    </section>
+
 
   </body>
 </html>

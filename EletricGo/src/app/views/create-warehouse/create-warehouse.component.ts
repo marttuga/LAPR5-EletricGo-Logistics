@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
+import {WarningService} from "../../services/warning.service";
 
 @Component({
   selector: 'app-create-warehouse',
@@ -21,10 +22,7 @@ export class CreateWarehouseComponent implements OnInit {
  zipcode:string;
  altitude:string;
 
-
-
-
-  constructor( private warehouseService: WarehousesService,
+  constructor( private warehouseService: WarehousesService,public warningService: WarningService,
                private route: ActivatedRoute,
                private router: Router) {
 
@@ -33,9 +31,13 @@ export class CreateWarehouseComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  submit = false;
+
   public createWarehouse():void{
     this.warehouseService.createWarehouse(this.warehouseIdentifier,this.designation,this.latitude,this.longitude,this.street,this.doorNumber,this.city,this.zipcode,this.altitude).subscribe(data => {console.log(data);
     this.warehouse=data});
+    this.submit = !this.submit;
   }
+
 
 }
