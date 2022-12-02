@@ -26,7 +26,8 @@
     "javascript",
     "typescript",
     "node",
-    "express"
+    "express",
+    "heroku"
   ],
   "author": "Santiago Quinteros",
   "license": "ISC",
