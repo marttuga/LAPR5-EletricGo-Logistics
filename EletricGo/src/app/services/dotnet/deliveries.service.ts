@@ -35,5 +35,18 @@ export class DeliveriesService {
   public extractData(res: any) {
     return res || { };
   }
+
+  updateDelivery(dIdentifier:string,date:number,mass:number,timeLoad:number,timeUnload:number,deliveryWarehouse:string){
+    const body={ 
+    "Date": date,
+    "Mass": mass,
+    "TimeLoad": timeLoad,
+    "TimeUnload": timeUnload,
+    "DeliveryWarehouse":deliveryWarehouse,};
+  console.log(body);
+    return this.httpClient.put(this.Url + '/Update' + dIdentifier,body)
+      .pipe(map(this.extractData)
+      );
+  }
 }
 
