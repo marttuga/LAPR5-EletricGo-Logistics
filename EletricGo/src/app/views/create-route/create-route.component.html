@@ -21,17 +21,29 @@
       </div>
         <div id="options1">
           <div class="textfield">
-            <input type="text" name="routeId" placeholder="Route Id" required [(ngModel)]="routeId">
+            <input type="text" #RouteId="ngModel" [class.is-invalid]="RouteId.invalid && RouteId.touched" name="routeId" placeholder="RouteID" title="RouteID can not be empty" required [(ngModel)]="routeId">
+            <div *ngIf="RouteId.touched">
+              <small *ngIf="RouteId.errors?.['required']">RouteID can not be empty.</small>
+          </div>
           </div>
           <div class="textfield">
-            <input type="text" name="distance" placeholder="Distance" required [(ngModel)]="distance">
+            <input type="text" #Distance="ngModel" [class.is-invalid]="Distance.invalid && Distance.touched" name="distance" placeholder="Distance" title="Distance can not be empty" required [(ngModel)]="distance">
+            <div *ngIf="Distance.touched">
+              <small *ngIf="Distance.errors?.['required']">Distance can not be empty.</small>
+            </div>
           </div>
           <div class="textfield">
-            <input type="text" name="routeTime" placeholder="Route Time" required [(ngModel)]="routeTime">
+            <input type="text" #RouteTime="ngModel" [class.is-invalid]="RouteTime.invalid && RouteTime.touched" name="routeTime" placeholder="Route Time" title="Route Time can not be empty" required [(ngModel)]="routeTime">
+            <div *ngIf="RouteTime.touched">
+              <small *ngIf="RouteTime.errors?.['required']">Route Time can not be empty.</small>
+            </div>
           </div>
           <div class="textfield">
-            <input type="text" name="batteryWaste" placeholder="Battery Waste" required [(ngModel)]="batteryWaste">
-          </div>
+            <input type="text" #BatteryWaste="ngModel" [class.is-invalid]="BatteryWaste.invalid && BatteryWaste.touched" name="batteryWaste" placeholder="Battery Waste" title="Batter Waste can not be empty" required [(ngModel)]="batteryWaste">
+            <div *ngIf="BatteryWaste.touched">
+              <small *ngIf="BatteryWaste.errors?.['required']">Battery Waste can not be empty.</small>
+            </div>
+            </div>
           </div>
           <div id="options2">
             <div class="dropDownArrival">
@@ -85,7 +97,10 @@
               <!-- <input type="" name="departureId" placeholder="Warehouse Departure Id" required [(ngModel)]="departureId"> -->
             </div>
             <div class="textfield">
-              <input type="text" name="extraTime" placeholder="Extra Time" required [(ngModel)]="extraTime">
+              <input type="text" #ExtraTime="ngModel" [class.is-invalid]="ExtraTime.invalid && ExtraTime.touched" name="extraTime" placeholder="Extra Time" title="Extra Time can not be empty" required [(ngModel)]="extraTime">
+              <div *ngIf="ExtraTime.touched">
+                <small *ngIf="ExtraTime.errors?.['required']">Extra Time can not be empty.</small>
+              </div>            
             </div>
             <div class="button">
               <form class="create-form" #createForm="ngForm">
