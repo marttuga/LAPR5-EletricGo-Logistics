@@ -13,7 +13,13 @@
   <table class="table table-bordered  table-striped">
     <thead>
       <tr>
-        <th>DeliveryId</th>
+        <th><input
+          type="text"
+          class="form-control"
+          name="searchString"
+          placeholder="DeliveryId"
+          [(ngModel)]="searchString"
+        /></th>
         <th>Date</th>
         <th>Mass</th>
         <th>TimeLoad</th>
@@ -22,8 +28,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let delivery of deliveries">
-        <td><span>{{delivery.dIdentifier}}</span></td>
+      <tr *ngFor="let delivery of deliveries | filter : 'dIdentifier' : searchString; let i = index">
+        <td class="text-left">{{delivery.dIdentifier}}</td>
         <td><span>{{delivery.date}}</span></td>
         <td><span>{{delivery.mass}}</span></td>
         <td><span>{{delivery.timeLoad}}</span></td>

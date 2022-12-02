@@ -21,7 +21,18 @@ describe('CreateDeliveryComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('component should create', () => {
+    const fixture = TestBed.createComponent(CreateDeliveryComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
   });
+
+
+  it('should render Enter all information here! in h2', () => {
+    const fixture = TestBed.createComponent(CreateDeliveryComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h2')?.textContent).toContain('Enter all information here!');
+  });
+
 });

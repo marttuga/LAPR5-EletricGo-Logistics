@@ -7,8 +7,10 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './list-deliveries.component.html',
   styleUrls: ['./list-deliveries.component.css']
 })
+
 export class ListDeliveriesComponent implements OnInit {
 
+  searchString: string;
   deliveries: Delivery[];
   delivery:Delivery;
   dIdentifier:string;
