@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Noto+Sans&family=Righteous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Noto+Sans&family=Righteous&family=Secular+One&display=swap');
+
 *{
     margin: 0;
     padding: 0;
@@ -83,7 +86,7 @@ align-items: center;
   .textfield{
     width: 100%;
     justify-content: center;
-    margin: 15px 0px;
+    margin: 35px 0px;
   }
   
   .textfield > input{
@@ -110,22 +113,20 @@ align-items: center;
   {
     cursor: pointer;
     right: 1%;
+    bottom: 2%;
     flex-direction:column;
     position: relative;
   }
   
-  .button:hover{
+  .button-create:hover{
     animation: animate 1s linear;
     
  }
 
- .button{
+ .button-create{
   width: 100%;
   justify-content: center;
-  margin: 15px 0px;
-}
-
- .button > input{
+  margin: 35px 0px;
   font-weight: 700;
   cursor: pointer;
   font-family: sans-serif;
@@ -140,6 +141,26 @@ align-items: center;
       width: 260px;
 }
 
+.create-message{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.create-message-title{
+  font-family: 'Secular One', sans-serif;
+  font-weight: 400;
+  font-size: 80px;
+  color: #778DB3;
+}
+
+.create-message-subtitle{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 36px;
+  color: #313f57;
+}
+
 h1{
   font-family: sans-serif;
   font-size: 50px;
@@ -149,4 +170,52 @@ h1{
   position: relative;
   font-weight: 900;
 }
-  
+
+select{
+  -webkit-apearence:none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  appearance: none;
+  box-shadow: none;
+  border: 0!important;
+  background: #E4E4E4;
+}
+
+
+.select{
+  width: 100%;
+  justify-content: center;
+  margin: 15px 0px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: sans-serif;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 15px;
+  background: #E4E4E4;
+}
+
+select{
+  cursor:pointer;
+}
+
+.dropDownArrival > select{
+  width: 100%;
+  justify-content: center;
+  margin: 15px 0px;
+  height: 50px;
+  border-radius: 30px;
+  font-family: sans-serif;
+  border: none;
+  padding: 15px;
+}
+
+.dropDownDeparture > select{
+  width: 100%;
+  justify-content: center;
+  margin: 15px 0px;
+  height: 50px;
+  border-radius: 30px;
+}
