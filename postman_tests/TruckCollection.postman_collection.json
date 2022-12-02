@@ -74,7 +74,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"licencePlate\": \"AA-00-AA\",\r\n  \"tare\": 1,\r\n  \"capacity\": 1,\r\n  \"maxBateryCapacity\": 1,\r\n  \"autonomyFullChargeLoad\": 1,\r\n  \"timeCharging\": 1\r\n   \r\n}",
+					"raw": "{\r\n  \"licencePlate\": \"AA-00-AA\",\r\n  \"tare\": 3467,\r\n  \"capacity\": 4689,\r\n  \"maxBateryCapacity\": 124,\r\n  \"autonomyFullChargeLoad\": 189,\r\n  \"timeCharging\": 1\r\n   \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -117,7 +117,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"licencePlate\": \"AA-00-AA\",\r\n  \"tare\": 4,\r\n  \"capacity\": 2,\r\n  \"maxBateryCapacity\": 2,\r\n  \"autonomyFullChargeLoad\": 2,\r\n  \"timeCharging\": 2\r\n   \r\n}",
+					"raw": "{\r\n  \"licencePlate\": \"AA-00-AA\",\r\n  \"tare\": 3007,\r\n  \"capacity\": 3452,\r\n  \"maxBateryCapacity\": 122,\r\n  \"autonomyFullChargeLoad\": 122,\r\n  \"timeCharging\": 2\r\n   \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
