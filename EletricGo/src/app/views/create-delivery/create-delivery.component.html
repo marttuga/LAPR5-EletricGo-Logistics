@@ -43,7 +43,12 @@
             <input type="text" name="deliveryWarehouse" placeholder="DeliveryWarehouse" required [(ngModel)]="deliveryWarehouse">
           </div>
           <div class="button">
-            <button class="button" type="submit" (click)="createDelivery()">Create Delivery!</button>
+            <form class="create-form" #createForm="ngForm">
+            <button [disabled]="!createForm.valid"  class="button" [ngClass]="{valid: createForm.valid}" type="submit" (click)="createDelivery()" >Create Delivery!</button>
+                <div *ngIf="submit">
+                  <small class="created-message">Delivery created!</small>
+                </div>
+              </form> 
           </div>
           </div>
           </div>

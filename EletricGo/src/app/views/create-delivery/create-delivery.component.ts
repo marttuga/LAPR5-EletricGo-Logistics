@@ -30,6 +30,8 @@ export class CreateDeliveryComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  submit = false;
+
   public createDelivery():void{
     this.deliveryService.createDelivery(this.dIdentifier,this.date,this.mass,this.timeLoad,this.timeUnload, this.deliveryWarehouse).subscribe(data => {console.log(data);
     this.delivery=data});
