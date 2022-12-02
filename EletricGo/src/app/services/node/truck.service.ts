@@ -13,7 +13,7 @@ export class TrucksService {
   constructor(private httpClient: HttpClient) { }
 
   getTrucks(): Observable<any> {
-    return this.httpClient.get(this.Url + '/getAll').pipe(
+    return this.httpClient.get<any>(this.Url + '/getAll').pipe(
       map(this.extractData));
   }
 
@@ -38,7 +38,7 @@ export class TrucksService {
       .pipe(map(this.extractData)
       );
   }
- 
+
 
   public extractData(res: any) {
     return res || { };
