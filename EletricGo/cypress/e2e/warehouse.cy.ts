@@ -77,6 +77,23 @@ describe('Truck Test', () => {
 
   })
 
+  it('creating warehouse success', () => {
+    cy.get('[class="textfield"]').should('have.length',9)
+    cy.get('[type="text"]').eq(0).type('W99')
+    cy.get('[type="text"]').eq(1).type('Baltar')
+    cy.get('[type="number"]').eq(0).type('45.99')
+    cy.get('[type="number"]').eq(1).type('51.27')
+    cy.get('[type="text"]').eq(2).type('Avenida Carlos Alberto')
+    cy.get('[type="number"]').eq(2).type('230')
+    cy.get('[type="text"]').eq(3).type('Paredes')
+    cy.get('[type="text"]').eq(4).type('4580-354')
+    cy.get('[type="text"]').eq(5).type('150')
+
+    cy.get('[type="submit"]').should('be.enabled')
+    cy.get('[type="submit"]').click()
+    cy.get('[class="created-message"]').should('be.visible').contains("Warehouse created!")
+  })
+
  /* it('creating warehouse fails', () => {
     cy.get('[class="textfield"]').should('have.length',3)
     cy.get('[type="text"]').type('wtv')
