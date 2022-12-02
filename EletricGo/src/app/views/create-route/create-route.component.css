@@ -19,8 +19,8 @@
   #container
  {
   display: flex;
-justify-content: center;
-align-items: center;
+  justify-content: center;
+  align-items: center;
     height: 100vh;
     width: 100%;
     background:#f9f8fb;
@@ -88,7 +88,6 @@ align-items: center;
     justify-content: center;
     margin: 35px 0px;
   }
-  
   .textfield > input{
     font-family: sans-serif;
     border: none;
@@ -112,15 +111,14 @@ align-items: center;
   #options2
   {
     cursor: pointer;
-    right: 1%;
-    bottom: 2%;
+    right:0.5%;
+    top: 4.5%;
     flex-direction:column;
     position: relative;
   }
   
   .button-create:hover{
     animation: animate 1s linear;
-    
  }
 
  .button-create{
@@ -138,8 +136,8 @@ align-items: center;
       color: #ffffff;
       font-size: 12pt;
       outline: none;
-      width: 260px;
 }
+
 
 .create-message{
   display: flex;
@@ -176,10 +174,12 @@ select{
   -moz-appearance: none;
   -ms-appearance: none;
   appearance: none;
-  appearance: none;
   box-shadow: none;
   border: 0!important;
   background: #E4E4E4;
+  color: #313f57;
+  font-size: 12pt;
+  outline: none;
 }
 
 
@@ -194,11 +194,16 @@ select{
   border: none;
   border-radius: 30px;
   padding: 15px;
-  background: #E4E4E4;
+  background:#E4E4E4;
 }
 
 select{
   cursor:pointer;
+}
+
+#dropDowns{
+  padding: 15px;
+  bottom: 100px;
 }
 
 .dropDownArrival > select{
@@ -218,4 +223,7 @@ select{
   margin: 15px 0px;
   height: 50px;
   border-radius: 30px;
+  font-family: sans-serif;
+  border: none;
+  padding: 15px;
 }
