@@ -36,6 +36,47 @@ describe('Truck Test', () => {
     cy.visit('/views/create-warehouse')
   })
 
+  it('creating warehouse fails', () => {
+    cy.get('[class="textfield"]').should('have.length',9)
+    cy.get('[type="text"]').eq(0).type('ff')
+    cy.get('[type="text"]').eq(1).type('wtv')
+    cy.get('[class="wrongID"]').should('be.visible').contains("Warehouse Identifier must have 3 characters!")
+    cy.get('[type="number"]').eq(0).type('2')
+    cy.get('[type="number"]').eq(1).type('2')
+    cy.get('[type="text"]').eq(2).type('wtv')
+    cy.get('[type="number"]').eq(2).type('0')
+    cy.get('[type="text"]').eq(3).type('wtv')
+    cy.get('[class="wrongNumber"]').should('be.visible').contains("Door number cannot be zero or negative!")
+    cy.get('[type="text"]').eq(4).type('35')
+    cy.get('[type="text"]').eq(5).type('35')
+    cy.get('[class="wrongPattern"]').should('be.visible').contains("ZipCode must have this format: XXXX-XXX!")
+
+
+    cy.get('[type="submit"]').should('be.disabled')
+
+
+
+     cy.get('[type="text"]').eq(0).clear()
+     cy.get('[class="requiredError"]').should('be.visible')
+     cy.get('[type="text"]').eq(1).clear()
+     cy.get('[class="requiredError"]').should('be.visible')
+     cy.get('[type="number"]').eq(0).clear()
+     cy.get('[class="requiredError"]').should('be.visible')
+     cy.get('[type="number"]').eq(1).clear()
+     cy.get('[class="requiredError"]').should('be.visible')
+     cy.get('[type="text"]').eq(2).clear()
+     cy.get('[class="requiredError"]').should('be.visible')
+     cy.get('[type="number"]').eq(2).clear()
+     cy.get('[class="requiredError"]').should('be.visible')
+     cy.get('[type="text"]').eq(3).clear()
+     cy.get('[class="requiredError"]').should('be.visible')
+     cy.get('[type="text"]').eq(4).clear()
+     cy.get('[class="requiredError"]').should('be.visible')
+     cy.get('[type="text"]').eq(5).clear()
+     cy.get('[class="requiredError"]').should('be.visible')
+
+  })
+
  /* it('creating warehouse fails', () => {
     cy.get('[class="textfield"]').should('have.length',3)
     cy.get('[type="text"]').type('wtv')
