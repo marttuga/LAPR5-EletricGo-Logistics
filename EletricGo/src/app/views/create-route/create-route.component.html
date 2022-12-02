@@ -35,7 +35,8 @@
           </div>
           <div id="options2">
             <div class="dropDownArrival">
-              <select type="text" name="arrival_Id" id="arrivalId" placeholder="Warehouse Arrival Id" required [(ngModel)]="arrivalId">
+              <select type="text" name="arrival_Id" id="arrivalId"  required [(ngModel)]="arrivalId">
+                <option selected disabled>Warehouse Arrival ID</option>
                 <option value="W01">W01</option>
                 <option value="W02">W02</option>
                 <option value="W03">W03</option>
@@ -60,6 +61,7 @@
             </div>
             <div class="dropDownDeparture">
               <select type="text" name="departure_Id" id="departureId" placeholder="Warehouse Departure Id" required [(ngModel)]="departureId">
+                <option selected disabled>Warehouse Departure ID</option>
                 <option value="W01">W01</option>
                 <option value="W02">W02</option>
                 <option value="W03">W03</option>
@@ -86,7 +88,12 @@
               <input type="text" name="extraTime" placeholder="Extra Time" required [(ngModel)]="extraTime">
             </div>
             <div class="button">
-              <input class="button-create" type="submit" value="SUBMIT!" (click)="createRoute()">
+              <form class="create-form" #createForm="ngForm">
+              <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit" (click)="createRoute()" >Submit!</button>
+              <div *ngIf="submit">
+                <small class="created-message">Your route has been created!</small>
+              </div>
+            </form>  
             </div>
           </div>
     </div>

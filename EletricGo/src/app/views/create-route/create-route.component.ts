@@ -28,10 +28,12 @@ extraTime: string;
   ngOnInit(): void {
   }
 
+  submit = false;
+
   public createRoute():void{
     this.routeService.createRoute(this.routeId,this.distance,this.routeTime,this.batteryWaste,this.arrivalId,this.departureId,this.extraTime).subscribe(data => {console.log(data);
     this.route=data});
-
+    this.submit = !this.submit;
   }
   scroll(el: HTMLElement) {
     el.scrollIntoView({behavior: 'smooth'});
