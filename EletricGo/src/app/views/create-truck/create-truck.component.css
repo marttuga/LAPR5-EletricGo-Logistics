@@ -82,8 +82,8 @@ align-items: center;
     color: #465a7c;
     font-weight: 700;
     margin: 30px 15px;
-    right: 120%;  /*123 */
-    bottom:60%; /*130 */
+    right: 120%;  /* */
+    bottom:60%; /* */
     position: relative;
     }
 
@@ -138,8 +138,8 @@ align-items: center;
      cursor: pointer;
      font-size: 20px;
    position: absolute;
-   top: 310%;  /*210 */
-   right: -134%;
+   top: 300%;  /*310 */
+   right: -114%; /*-134 */
   
 
  }
