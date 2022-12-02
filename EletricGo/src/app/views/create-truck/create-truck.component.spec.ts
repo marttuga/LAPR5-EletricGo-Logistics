@@ -6,6 +6,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from "@angular/router/testing";
 
+
 describe('CreateTruckComponent', () => {
   let service: TrucksService;
   let component: CreateTruckComponent;
@@ -23,16 +24,21 @@ describe('CreateTruckComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-  it('should render title in h2', () => {
+  it('component should be created',() => {
+    const fixture = TestBed.createComponent(CreateTruckComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+    });
+
+
+  it('should render NEED MORE TRUCKS? in h2', () => {
     const fixture = TestBed.createComponent(CreateTruckComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h2')?.textContent).toContain('NEED MORE TRUCKS?');
   });
-  it('should render title in h3', () => {
+
+  it('should render CREATE ANOTHER ONE in h3', () => {
     const fixture = TestBed.createComponent(CreateTruckComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
@@ -40,4 +46,13 @@ describe('CreateTruckComponent', () => {
   });
 
 
+
+
+    
+/*   it('should render Warnings in h4', () => {
+    const fixture = TestBed.createComponent(CreateTruckComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h4')?.textContent).toContain('Warnings');
+  }); */
 });

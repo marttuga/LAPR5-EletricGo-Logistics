@@ -21,7 +21,21 @@ describe('ListDeliveriesComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should test ngOninit', () => {
+    spyOn(component, 'listDeliveries').and.callFake(() => null);
+    component.ngOnInit();
+    expect(component.listDeliveries).toHaveBeenCalled();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render All Deliveries in h2', () => {
+    const fixture = TestBed.createComponent(ListDeliveriesComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h2')?.textContent).toContain('All Deliveries');
+  });
+
 });

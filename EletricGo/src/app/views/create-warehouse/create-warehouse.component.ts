@@ -21,10 +21,7 @@ export class CreateWarehouseComponent implements OnInit {
  zipcode:string;
  altitude:string;
 
-
-
-
-  constructor( private warehouseService: WarehousesService,
+  constructor( private warehouseService: WarehousesService,  
                private route: ActivatedRoute,
                private router: Router) {
 
@@ -33,9 +30,13 @@ export class CreateWarehouseComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  submit = false;
+
   public createWarehouse():void{
     this.warehouseService.createWarehouse(this.warehouseIdentifier,this.designation,this.latitude,this.longitude,this.street,this.doorNumber,this.city,this.zipcode,this.altitude).subscribe(data => {console.log(data);
     this.warehouse=data});
+    this.submit = !this.submit;
   }
+
 
 }

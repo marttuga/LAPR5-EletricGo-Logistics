@@ -6,7 +6,8 @@ import {map, Observable} from "rxjs";
   providedIn: 'root'
 })
 export class WarehousesService {
-  private Url = 'https://localhost:5001/api/warehouse';
+   //   Url = 'https://localhost:5001/api/warehouse';
+ Url = 'https://lapr5-dotnet.herokuapp.com/api/warehouse';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -21,10 +22,10 @@ export class WarehousesService {
         "City":city,
         "zipCode":zipcode,
         "WarehouseAltitude": altitude
-    }
-    ;
+    };
     return this.httpClient.post(this.Url + '/createWarehouse' ,body).pipe(map(this.extractData));
   }
+
   getWarehouses(): Observable<any> {
     return this.httpClient.get<any>(this.Url + '/getAll').pipe(
       map(this.extractData));
@@ -33,6 +34,9 @@ export class WarehousesService {
     return this.httpClient.get(this.Url + '/getByWI/' +identifier).pipe(
       map(this.extractData));
   }
+
+
+
 
   public extractData(res: any) {
     return res || { };

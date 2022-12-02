@@ -2,7 +2,6 @@ import {TrucksService} from "../../services/node/truck.service";
   import { Component, OnInit } from '@angular/core';
   import {ActivatedRoute, Router} from "@angular/router";
   import {Observable} from "rxjs";
-  import {WarningService} from "../../services//warning.service";
 
 
 @Component({
@@ -21,7 +20,7 @@ export class CreateTruckComponent implements OnInit {
  timeCharging:number;
 
 
-  constructor( private truckService: TrucksService, public warningService: WarningService,
+  constructor( private truckService: TrucksService,
                private route: ActivatedRoute,
                private router: Router) {
 
@@ -30,20 +29,13 @@ export class CreateTruckComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  submit = false;
+
 
   public createTruck():void{
     this.truckService.createTruck(this.licencePlate,this.tare,this.capacity,this.maxBateryCapacity,this.autonomyFullChargeLoad,this.timeCharging).subscribe(data => {console.log(data);
     this.truck=data});
-  }
- 
-  
-  public createValidTruck():void{
-
-    // @ts-ignore
-    this.truckService.createValidateTruck(this.licencePlate,this.tare,this.capacity,this.maxBateryCapacity,this.autonomyFullChargeLoad,this.timeCharging).subscribe(data => {console.log(data);
-    this.truck=data});
-    
-    //setTimeout(window.location.reload.bind(window.location),200);
+    this.submit = !this.submit;
   }
   
  

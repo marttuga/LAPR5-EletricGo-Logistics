@@ -18,13 +18,13 @@
       <div>
         <i class="glyphicon glyphicon-search"></i>
       </div>
-      <input
+      <!--<input
         type="text"
         class="form-control"
         name="searchString"
         placeholder="Type to search..."
         [(ngModel)]="searchString"
-      />
+      />-->
     </div>
 
   </form>
@@ -33,7 +33,13 @@
     <thead>
 
       <tr>
-        <th>Warehouse Id</th>
+        <th><input
+          type="text"
+          class="form-control"
+          name="searchString"
+          placeholder="Warehouse ID"
+          [(ngModel)]="searchString"
+        /></th>
         <th>Designation</th>
         <th>Latitude</th>
         <th>Longitude</th>
@@ -46,7 +52,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let warehouse of warehouses | filter : 'warehouseIdentifier' : searchString; let i = index">
-        <td><span>{{warehouse.warehouseIdentifier}}</span></td>
+        <td class="text-left">{{warehouse.warehouseIdentifier}}</td>
         <td><span>{{warehouse.designation}}</span></td>
         <td><span>{{warehouse.latitude}}</span></td>
         <td><span>{{warehouse.longitude}}</span></td>
