@@ -78,4 +78,21 @@ export default class RouteController implements IRouteController /* TODO: extend
       return next(e);
     }
   }
+
+  public async postSGRAIRoutes(req: Request, res: Response, next: NextFunction) {
+    try {
+      const RouteOrError = (await this.routeServiceInstance.postSGRAIRoutes(
+      )) as Result<string>;
+
+      if (RouteOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const routeDTO = RouteOrError.getValue();
+      return res.json(routeDTO).status(201);
+    } catch (e) {
+      return next(e);
+    }
+  }
+  
 }

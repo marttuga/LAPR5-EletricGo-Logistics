@@ -7,6 +7,7 @@ import IRouteController from '../../controllers/IControllers/IRouteController';
 import config from '../../../config';
 
 const route = Router();
+
 export default (app: Router) => {
   app.use('/routes', route);
 
@@ -55,4 +56,10 @@ export default (app: Router) => {
   );
 
   route.get('/getRoutes', (req, res, next) => ctrl.getRoute(req, res, next));
+
+  route.post(
+      '/SGRAI',
+      (req, res, next) => ctrl.postSGRAIRoutes(req, res, next),
+  );
+
 };
