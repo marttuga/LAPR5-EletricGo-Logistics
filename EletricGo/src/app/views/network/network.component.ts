@@ -36,7 +36,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private routes:Route[]=[];
   private trucks:Truck[]=[];
 
-  private warehouseBaseGeometry = new THREE.CylinderGeometry(2, 2, 0.22, 64);
+  private warehouseBaseGeometry = new THREE.CylinderGeometry(5, 5, 0.22, 64);
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
   private activateMotion=0;
@@ -180,7 +180,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       loader.load('/assets/network/warehouse.glb', (gltf) => {
         gltf.scene.name = this.warehouses[i].designation;
         gltf.scene.position.set(base.position.x, base.position.y, base.position.z);
-        gltf.scene.scale.set(0.1, 0.2, 0.1);
+        gltf.scene.scale.set(0.28, 0.28, 0.28);
         this.scene.add(gltf.scene);
 
       }, undefined, function (error) {
@@ -208,13 +208,13 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         let elemLigGeometry =new THREE.BoxGeometry(0.3, 0.20, 2);
 
         let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
-        elemLig0Mesh.position.set(ware0.position.x+ 2*Math.cos(teta0),ware0.position.y,ware0.position.z-2*Math.sin(teta0));
+        elemLig0Mesh.position.set(ware0.position.x+ this.warehouseBaseGeometry.parameters.radiusTop*Math.cos(teta0),ware0.position.y,ware0.position.z-this.warehouseBaseGeometry.parameters.radiusTop*Math.sin(teta0));
         elemLig0Mesh.rotateY(teta0)
         this.scene.add(elemLig0Mesh)
 
 
         let elemLig1Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
-        elemLig1Mesh.position.set(ware1.position.x+ 2*Math.cos(teta1),ware1.position.y,ware1.position.z-2*Math.sin(teta1));
+        elemLig1Mesh.position.set(ware1.position.x+ this.warehouseBaseGeometry.parameters.radiusTop*Math.cos(teta1),ware1.position.y,ware1.position.z-this.warehouseBaseGeometry.parameters.radiusTop*Math.sin(teta1));
         elemLig1Mesh.rotateY(teta1)
         this.scene.add(elemLig1Mesh)
 
