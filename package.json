@@ -2,7 +2,7 @@
   "name": "bulletproof-nodejs",
   "version": "1.0.0",
   "description": "Bulletproof node.js",
-  "main": "src/app.ts", "type": "module",
+  "main": "src/app.ts",
   "scripts": {
     "build": "tsc",
     "heroku-postbuild": "npm run build",
