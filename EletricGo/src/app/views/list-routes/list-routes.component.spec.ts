@@ -21,7 +21,20 @@ describe('ListRoutesComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should test ngOninit', () => {
+    spyOn(component, 'getRoutes').and.callFake(() => null);
+    component.ngOnInit();
+    expect(component.getRoutes).toHaveBeenCalled();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render ALL ROUTES AVAILABLE in h2', () => {
+    const fixture = TestBed.createComponent(ListRoutesComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h2')?.textContent).toContain('ALL ROUTES AVAILABLE');
   });
 });
