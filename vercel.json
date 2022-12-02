@@ -2,7 +2,7 @@
     "version": 2,
     "name": "bulletproof-nodejs",
     "builds": [
-       { "src": "app.ts", "use": "@vercel/node" }
+       { "src": "src/app.ts", "use": "@vercel/node" }
     ],
     "routes": [
        { "src": "/(.*)", "dest": "/app.ts" }
