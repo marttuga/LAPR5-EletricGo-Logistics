@@ -19,7 +19,6 @@ departureId: string;
 extraTime: string;
 
 
-
   constructor( private routeService: RoutesService,
     private activatedRoute: ActivatedRoute,
     private router: Router) {
