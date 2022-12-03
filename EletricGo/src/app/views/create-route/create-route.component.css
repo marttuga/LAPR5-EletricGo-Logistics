@@ -112,11 +112,10 @@
   {
     cursor: pointer;
     right:0.5%;
-    top: 4.5%;
+
     flex-direction:column;
     position: relative;
   }
-  
   .button-create:hover{
     animation: animate 1s linear;
  }
@@ -183,27 +182,8 @@ select{
 }
 
 
-.select{
-  width: 100%;
-  justify-content: center;
-  margin: 15px 0px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: sans-serif;
-  color: #ffffff;
-  border: none;
-  border-radius: 30px;
-  padding: 15px;
-  background:#E4E4E4;
-}
-
 select{
   cursor:pointer;
-}
-
-#dropDowns{
-  padding: 15px;
-  bottom: 100px;
 }
 
 .dropDownArrival > select{
@@ -215,6 +195,9 @@ select{
   font-family: sans-serif;
   border: none;
   padding: 15px;
+  background:#E4E4E4;
+  color: #313f57;
+  outline: none;
 }
 
 .dropDownDeparture > select{
@@ -226,4 +209,7 @@ select{
   font-family: sans-serif;
   border: none;
   padding: 15px;
+  background:#E4E4E4;
+  color: #313f57;
+  outline: none;
 }
