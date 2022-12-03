@@ -7,17 +7,40 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="get-planned-route.component.css">
 </head>
-  <body>
-    <div id="container">
-      <nav class="navbar">
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
-        </ul>
-      </nav> 
-      <div id="header">
-        <h1> PAGE UNDER CONSTRUCTION !</h1>
-      </div>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
+    </ul>
+  </nav>
+    <div id="contentSection">
+    <h2>PLANNED ROUTE</h2> 
     </div>
-  </body>
+
+    <div class="container">
+      <table class="table table-bordered  table-striped">
+        <thead>
+          <tr>
+            <th>Truck_ID</th>
+            <th>Arrival_ID</th>
+            <th>Departure_ID</th>
+            <th>Date</th>
+            <th>Total_Time</th>
+            <th class="text-right"></th>
+    
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let plannedRoute of plannedRoutes | filter : 'date': searchDate ; let i = index">
+            <td><span>{{plannedRoute.truckId}}</span></td>
+            <td><span>{{plannedRoute.arrivalId}}</span></td>
+            <td><span>{{plannedRoute.departureId}}</span></td>
+            <td><span>{{plannedRoute.date}}</span></td>
+            <td><span>{{plannedRoute.totalTime}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </body>
 </html>

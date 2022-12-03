@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from 'express';
 
 @Component({
   selector: 'app-get-planned-route',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GetPlannedRouteComponent implements OnInit {
 
-  constructor() { }
+  plannedRoutes: PlannedRoute[];
+  truckId: Truck;
+  arrivalId: string;
+  departureId: string;
+  date: string;
+  totalTime: string;
+  searchDate: string;
+
+  constructor() {
+
+}
 
   ngOnInit(): void {
+    //this.getPlannedRoutes();
   }
 
+  // public getPlannedRoutes():void{
+  //   //this.routeService.getRoutes().subscribe(data => {console.log(data);
+  //   this.plannedRoutes=data});
+  //   }
 }
