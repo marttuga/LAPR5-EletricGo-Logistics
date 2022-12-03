@@ -35,6 +35,7 @@ export class CreateDeliveryComponent implements OnInit {
   public createDelivery():void{
     this.deliveryService.createDelivery(this.dIdentifier,this.date,this.mass,this.timeLoad,this.timeUnload, this.deliveryWarehouse).subscribe(data => {console.log(data);
     this.delivery=data});
+    this.submit = !this.submit;
   }
 
 }
