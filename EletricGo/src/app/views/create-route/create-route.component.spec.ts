@@ -21,7 +21,21 @@ describe('CreateRouteComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+
+  it('component should be created',() => {
+    const fixture = TestBed.createComponent(CreateRouteComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+    });
+
+
+  it('should render Create a new route! in h1', () => {
+    const fixture = TestBed.createComponent(CreateRouteComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('Create a new route!');
   });
+
+
+
 });

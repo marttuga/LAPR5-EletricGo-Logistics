@@ -36,6 +36,11 @@ export class DeliveriesService {
     return res || { };
   }
 
+  getDeliveryByIdentifier(dIdentifier: string): Observable<any> {
+    return this.httpClient.get(this.Url + '/ById/' + dIdentifier).pipe(
+      map(this.extractData));
+  }
+
   updateDelivery(dIdentifier:string,date:number,mass:number,timeLoad:number,timeUnload:number,deliveryWarehouse:string){
     const body={ 
     "Date": date,

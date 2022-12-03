@@ -21,37 +21,94 @@
       </div>
         <div id="options1">
           <div class="textfield">
-            <input type="text" name="routeId" placeholder="Route Id" required [(ngModel)]="routeId">
+            <input type="text" #RouteId="ngModel" [class.is-invalid]="RouteId.invalid && RouteId.touched" name="routeId" placeholder="RouteID" title="RouteID can not be empty" required [(ngModel)]="routeId">
+            <div *ngIf="RouteId.touched">
+              <small *ngIf="RouteId.errors?.['required']">RouteID can not be empty.</small>
+          </div>
           </div>
           <div class="textfield">
-            <input type="text" name="distance" placeholder="Distance" required [(ngModel)]="distance">
+            <input type="text" #Distance="ngModel" [class.is-invalid]="Distance.invalid && Distance.touched" name="distance" placeholder="Distance" title="Distance can not be empty" required [(ngModel)]="distance">
+            <div *ngIf="Distance.touched">
+              <small *ngIf="Distance.errors?.['required']">Distance can not be empty.</small>
+            </div>
           </div>
           <div class="textfield">
-            <input type="text" name="routeTime" placeholder="Route Time" required [(ngModel)]="routeTime">
+            <input type="text" #RouteTime="ngModel" [class.is-invalid]="RouteTime.invalid && RouteTime.touched" name="routeTime" placeholder="Route Time" title="Route Time can not be empty" required [(ngModel)]="routeTime">
+            <div *ngIf="RouteTime.touched">
+              <small *ngIf="RouteTime.errors?.['required']">Route Time can not be empty.</small>
+            </div>
           </div>
           <div class="textfield">
-            <input type="text" name="batteryWaste" placeholder="Battery Waste" required [(ngModel)]="batteryWaste">
-          </div>
+            <input type="text" #BatteryWaste="ngModel" [class.is-invalid]="BatteryWaste.invalid && BatteryWaste.touched" name="batteryWaste" placeholder="Battery Waste" title="Batter Waste can not be empty" required [(ngModel)]="batteryWaste">
+            <div *ngIf="BatteryWaste.touched">
+              <small *ngIf="BatteryWaste.errors?.['required']">Battery Waste can not be empty.</small>
+            </div>
+            </div>
           </div>
           <div id="options2">
             <div class="dropDownArrival">
-              <select type="text" name="arrival_Id" id="arrivalId" placeholder="Warehouse Arrival Id" required [(ngModel)]="arrivalId">
+              <select type="text" name="arrival_Id" id="arrivalId"  required [(ngModel)]="arrivalId">
+                <option selected disabled>Warehouse Arrival ID</option>
                 <option value="W01">W01</option>
                 <option value="W02">W02</option>
                 <option value="W03">W03</option>
                 <option value="W04">W04</option>
-                <option value="W05">W04</option>
+                <option value="W05">W05</option>
+                <option value="W06">W06</option>
+                <option value="W07">W07</option>
+                <option value="W08">W08</option>
+                <option value="W09">W09</option>
+                <option value="W10">W10</option>
+                <option value="W11">W11</option>
+                <option value="W12">W12</option>
+                <option value="W13">W13</option>
+                <option value="W14">W14</option>
+                <option value="W15">W15</option>
+                <option value="W16">W16</option>
+                <option value="W17">W17</option>
+                <option value="W18">W18</option>
+                <option value="W19">W19</option>
               </select>
               <!-- <input type="" name="arrivalId" placeholder="Warehouse Arrival Id" required [(ngModel)]="arrivalId"> -->
             </div>
-            <div class="textfield">
-              <input type="text" name="departureId" placeholder="Warehouse Departure Id" required [(ngModel)]="departureId">
+            <div class="dropDownDeparture">
+              <select type="text" name="departure_Id" id="departureId" placeholder="Warehouse Departure Id" required [(ngModel)]="departureId">
+                <option selected disabled>Warehouse Departure ID</option>
+                <option value="W01">W01</option>
+                <option value="W02">W02</option>
+                <option value="W03">W03</option>
+                <option value="W04">W04</option>
+                <option value="W05">W05</option>
+                <option value="W06">W06</option>
+                <option value="W07">W07</option>
+                <option value="W08">W08</option>
+                <option value="W09">W09</option>
+                <option value="W10">W10</option>
+                <option value="W11">W11</option>
+                <option value="W12">W12</option>
+                <option value="W13">W13</option>
+                <option value="W14">W14</option>
+                <option value="W15">W15</option>
+                <option value="W16">W16</option>
+                <option value="W17">W17</option>
+                <option value="W18">W18</option>
+                <option value="W19">W19</option>
+              </select>
+              <!-- <input type="" name="departureId" placeholder="Warehouse Departure Id" required [(ngModel)]="departureId"> -->
             </div>
             <div class="textfield">
-              <input type="text" name="extraTime" placeholder="Extra Time" required [(ngModel)]="extraTime">
+              <input type="text" #ExtraTime="ngModel" [class.is-invalid]="ExtraTime.invalid && ExtraTime.touched" name="extraTime" placeholder="Extra Time" title="Extra Time can not be empty" required [(ngModel)]="extraTime">
+              <div *ngIf="ExtraTime.touched">
+                <small *ngIf="ExtraTime.errors?.['required']">Extra Time can not be empty.</small>
+              </div>            
             </div>
             <div class="button">
-              <input class="button-create" type="submit" value="SUBMIT!" (click)="createRoute()">
+              <form class="create-form" #createForm="ngForm">
+              <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit" (click)="createRoute()" >Submit!</button>
+              <div *ngIf="submit">
+                <small class="created-message">Your route has been created!</small>
+              </div>
+            </form>  
             </div>
           </div>
     </div>

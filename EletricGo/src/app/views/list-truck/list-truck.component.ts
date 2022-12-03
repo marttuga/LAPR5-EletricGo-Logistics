@@ -10,7 +10,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'; 
 export class ListTruckComponent implements OnInit {
   trucks: Truck[];
   truck:Truck;
-licencePlate:string;
+licencePlate: string;
 searchString: string;
 searchNumber:number;
 
