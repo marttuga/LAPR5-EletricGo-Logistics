@@ -1,6 +1,9 @@
+import { PathLocationStrategy } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from 'express';
+import {PlannedRouteService} from "../../services/node/plannedRoute.service";
+
 
 @Component({
   selector: 'app-get-planned-route',
@@ -17,7 +20,9 @@ export class GetPlannedRouteComponent implements OnInit {
   totalTime: string;
   searchDate: string;
 
-  constructor() {
+  constructor( private plannedRouteService: PlannedRouteService,
+    private route: ActivatedRoute,
+    private router: Router) {
 
 }
 
@@ -29,4 +34,5 @@ export class GetPlannedRouteComponent implements OnInit {
   //   //this.routeService.getRoutes().subscribe(data => {console.log(data);
   //   this.plannedRoutes=data});
   //   }
+
 }
