@@ -94,39 +94,14 @@ describe('Truck Test', () => {
     cy.get('[class="created-message"]').should('be.visible').contains("Warehouse created!")
   })
 
- /* it('creating warehouse fails', () => {
-    cy.get('[class="textfield"]').should('have.length',3)
-    cy.get('[type="text"]').type('wtv')
-    cy.get('[type="number"]').eq(0).type('f')
-    cy.get('[type="number"]').eq(1).type('f')
-    cy.get('[type="text"]').eq(2).type('wtv')
-    cy.get('[type="number"]').eq(3).type('f')
-    cy.get('[type="text"]').eq(4).type('f')
-    cy.get('[type="text"]').eq(5).type('2')
-    cy.get('[type="text"]').eq(6).type('2')
-
-    cy.get('[type="submit"]').click()
-
-    cy.get('[type="button"]').click()
-
-    cy.get('[type="text"]').clear()
-    cy.get('[type="number"]').eq(0).clear()
-    cy.get('[type="number"]').eq(1).clear()
-    cy.get('[type="number"]').eq(2).clear()
-    cy.get('[type="number"]').eq(3).clear()
-    cy.get('[type="number"]').eq(4).clear()
-
-
-  })*/
-
   it('Visits the list warehouse page', () => {
     cy.visit('/views/list-warehouses')
   })
 
-  /*it('Searches Truck', () => {
-    cy.get('[class="table"]').should('have.length',6)
-    cy.get('[type="text"]').type('FF-12-Ff')
-    cy.get('[class="table"]').contains('FF-12-Ff')
-  })*/
+  it('Searches warehouse', () => {
+    cy.get('th').should('have.length',9)
+    cy.get('[type="text"]').type('W99')
+    cy.get('[class="table"]').contains('W99')
+  })
 
 })
