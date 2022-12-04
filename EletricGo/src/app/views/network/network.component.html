@@ -8,15 +8,25 @@
           <a id="delivery" (click)="makeDelivery()">Make Delivery</a>
       </li>
 
-       <li id="Option1" style="display: none"> <a (click)="manualDelivery()"  >Manual Delivery</a></li>
-      <li id="Option2" style="display: none"> <a (click)="automaticDelivery()">Automatic Delivery</a></li>
+       <li id="Option1" style="display: none"> <a (click)="scrollManualDelivery(listTrucksSection)"  >Manual Delivery</a></li>
+      <li id="Option2" style="display: none"> <a (click)="scrollAutomaticDelivery(listTrucksSection)">Automatic Delivery</a></li>
     </ul>
   </nav>
 
   <div class="page">
     <div class="center">
-      <app-list-truck  id="deliveries"  style="display: none;margin-top: 2%"></app-list-truck>
-      <canvas #canvas id="canvas"  (mousemove)="onMouseMove($event)" (click)="onClick()"></canvas>
+
+      <div #canvasSection>
+        <canvas #canvas id="canvas"  (mousemove)="onMouseMove($event)" (click)="onClick()"></canvas>
+      </div>
+
+      <div #listTrucksSection>
+        <app-list-truck  ></app-list-truck>
+      </div>
+
+      <div #listDeliveries>
+        <app-list-deliveries></app-list-deliveries>
+      </div>
     </div>
   </div>
 

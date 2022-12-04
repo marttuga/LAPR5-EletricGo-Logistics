@@ -31,6 +31,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
 
+
+
   //private roundabouts:THREE.Mesh[]=[];
   private warehouses:any[]=[];
   private routes:Route[]=[];
@@ -40,8 +42,15 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
   private activateMotion=0;
+  private truckChek=0;
+  private roadsData = new Map<string, number[]>([]);
+  private static TETA_0=0;private static TETA_1=1;
+  private static EL0_X=2;private static EL0_Y=3;private static EL0_Z=4;
+  private static EL1_X=5;private static EL1_Y=6;private static EL1_Z=7;
+  private static ROAD_X=8;private static ROAD_Y=9;private static ROAD_Z=10;
+  private static BETA=11;private static INCLINATION=12;
 
-  //private curve:THREE.CatmullRomCurve3;
+
   constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService, private routesService:RoutesService,private trucksService:TrucksService) { }
 
   ngOnInit(): void {
@@ -172,7 +181,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
          fontFamily: '"Times New Roman", Times, serif',
          fontStyle: 'italic', });
       sprite.position.setX(base.position.x);
-      sprite.position.setY(base.position.y+2.3);
+      sprite.position.setY(base.position.y+3.2);
       sprite.position.setZ(base.position.z);
       this.scene.add(sprite)
 
@@ -230,7 +239,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
         let beta =Math.asin((elemLig0Mesh.position.y-elemLig1Mesh.position.y)/roadGeometry.parameters.depth);
-        roadMesh.rotation.set(beta,teta0+Math.PI/2,0, "ZYX")
+        let inclination=teta0+Math.PI/2;
+        roadMesh.rotation.set(beta,inclination,0, "ZYX")
+
+        this.roadsData.set(<string>this.getRouteByWarehouses(ware0, ware1)?.routeId.toString(),[teta0,teta1,elemLig0Mesh.position.x,elemLig0Mesh.position.y,elemLig0Mesh.position.z,elemLig1Mesh.position.x,elemLig1Mesh.position.y,elemLig1Mesh.position.z,roadMesh.position.x,roadMesh.position.y,roadMesh.position.z,beta,(teta0+Math.PI/2)])
       }
     }
   }
@@ -239,22 +251,18 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private addTruck(){
     const ware0 = this.scene.getObjectByName(this.routes[0].departureId);
     const ware1 = this.scene.getObjectByName(this.routes[0].arrivalId);
-    let teta0=0;
-    if(ware0!=null&&ware1!=null) {
-      teta0 = Math.atan2(-(ware1.position.z - ware0.position.z), ware1.position.x - ware0.position.x);
-    }
+
     const loader = new GLTFLoader();
     loader.load('/assets/network/Truck.glb', (gltf) => {
       gltf.scene.name = "TruckyBlue";
       gltf.scene.position.set(<number>this.scene.getObjectByName(this.routes[0].departureId)?.position.x, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.y, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.z);
       gltf.scene.scale.set(0.4, 0.4, 0.4);
-      gltf.scene.rotateY(Math.PI/2+teta0)
-
-      //     this.truckCore[0] = new THREE.Mesh( this.truckGeometry, this.truckMaterial );
-      //     this.truckCore[0].name="TruckyBlueCore"
-      //  gltf.scene.add(this.truckCore[0]);
-      this.scene.add(gltf.scene);
-
+      let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0, ware1)?.routeId);
+      if(roadData!=null) {
+        gltf.scene.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.INCLINATION] , 0, "ZYX")
+        this.scene.add(gltf.scene);
+        this.truckChek = 1;
+      }
     }, undefined, function (error) {
 
       console.error(error);
@@ -262,43 +270,49 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
 
-  private automaticMovement(truck:any){
+  private automaticMovement(truck:any) {
     //Automatic truck movement
 
-    if(this.activateMotion==1) {
+    if (this.activateMotion == 1 && this.truckChek == 1) {
 
       const departure = this.scene.getObjectByName(this.routes[0].departureId);
       const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
-
+      let roadData = this.roadsData.get(<string>this.getRouteByWarehouses(departure, arrival)?.routeId);
+      if (roadData!=null) {
         let path = new CatmullRomCurve3([
-         new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
-         new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
-       ]);
+          new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),//inicio
+          new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),//EL0
+          new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),//PM
+          new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),//EL1
+          new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),//fim
+        ]);
 
 
-      const time = .0002 * performance.now();
-      const points = path.getPoint(time);
+        const time = .0002 * performance.now();
+        const points = path.getPoint(time);
 
 
+        if (arrival?.position.x != undefined && departure?.position.x != undefined) {
+          /* if(Math.abs(departure?.position.x) - Math.abs(points.x) <0.010 && Math.abs(departure?.position.y) - Math.abs(points.y) <0.010 && Math.abs(departure?.position.z) - Math.abs(points.z) <0.010){
 
-      if(arrival?.position.x!=undefined && departure?.position.x!=undefined) {
-        if(Math.abs(departure?.position.x) - Math.abs(points.x) <0.010 && Math.abs(departure?.position.y) - Math.abs(points.y) <0.010 && Math.abs(departure?.position.z) - Math.abs(points.z) <0.010){
+           }*/
+          truck?.position?.set(points.x, points.y, points.z);
 
-        }
-        truck?.position?.set(points.x, points.y, points.z);
+          console.log("Departure  : " + departure?.position.x + " " + departure?.position.y + " " + departure?.position.z)
+          console.log("Arrival  : " + arrival?.position.x + " " + arrival?.position.y + " " + arrival?.position.z)
+          console.log("=========================")
+          console.log("Truck :" + truck.position.x + " " + truck.position.y + " " + truck.position.z)
+          console.log("\n")
 
-        //  console.log("Departure  : " + departure?.position.x +" "+ departure?.position.y +" "+ departure?.position.z)
-
-        //  console.log(truckPosition?.x + " " + truckPosition?.y + " " + truckPosition?.z)
-
-        if (Math.abs(arrival?.position.x) - Math.abs(points.x) <0.010 && Math.abs(arrival?.position.y) - Math.abs(points.y) <0.010 && Math.abs(arrival?.position.z) - Math.abs(points.z) <0.010 ) {
-          this.activateMotion = 0;
-          this.scene.remove(truck);
+          if (parseInt(Math.abs(arrival?.position.x).toFixed(2)) == parseInt(Math.abs(truck?.position.x).toFixed(2)) && parseInt(Math.abs(arrival?.position.y).toFixed(2)) == parseInt(Math.abs(truck?.position.y).toFixed(2)) && parseInt(Math.abs(arrival?.position.z).toFixed(2)) == parseInt(Math.abs(truck?.position.z).toFixed(2))) {
+            this.activateMotion = 0;
+            this.truckChek = 0;
+            this.scene.remove(truck);
+          }
         }
       }
     }
   }
-
   private manualMovement(truck:any){
     if(truck!=undefined) {
       document.onkeydown = function (e) {
@@ -403,14 +417,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
   onClick() {
-
-   /* const departure = this.scene.getObjectByName(this.routes[0].departureId);
-    const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
-    this.curve = new CatmullRomCurve3([
-      new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),
-      new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),
-    ]);*/
-
     this.addTruck();
 
     this.activateMotion=1;
@@ -420,6 +426,18 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   onMouseMove(event: MouseEvent) {
 
   }
+
+
+  public getRouteByWarehouses(ware1:any,ware2:any):Route | null{
+    for(let i=0;i<this.routes.length;i++){
+      if(ware1.warehouseIdentifier==this.routes[i].arrivalId && ware2.warehouseIdentifier==this.routes[i].departureId||ware1.warehouseIdentifier==this.routes[i].departureId && ware2.warehouseIdentifier==this.routes[i].arrivalId){
+        return this.routes[i];
+      }
+    }
+    return null;
+  }
+
+
   public makeDelivery() {
     let x1 = document.getElementById("Option1");
     let x2 = document.getElementById("Option2");
@@ -437,42 +455,18 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public automaticDelivery() {
 
-    let x1 = document.getElementById("Option1");
-    let x2 = document.getElementById("Option2");
-    let z=document.getElementById("delivery");
-    let deliveries=document.getElementById("deliveries");
-    let canvas=document.getElementById("canvas");
+  public scrollAutomaticDelivery(el: HTMLElement) {
 
-    if (deliveries!=null && canvas!=null && x1!=null && x2!=null && z!=null) {
-     for(let i=0;i<this.trucks.length;i++) {
-       ListTruckComponent.turnOn();
-     }
-      x1.style.display = "none";
-      x2.style.display = "none";
-      z.style.display = "block"
-      canvas.style.display="none";
-      deliveries.style.display="block";
 
-    }
+    el.scrollIntoView({behavior: 'smooth'});
+
   }
 
-  public manualDelivery() {
-    let x1 = document.getElementById("Option1");
-    let x2 = document.getElementById("Option2");
-    let z = document.getElementById("delivery");
-    let deliveries = document.getElementById("deliveries");
-    let canvas = document.getElementById("canvas");
+  public scrollManualDelivery(el: HTMLElement) {
 
-    if (deliveries != null && canvas != null && x1 != null && x2 != null && z != null) {
+    el.scrollIntoView({behavior: 'smooth'});
 
-      x1.style.display = "none";
-      x2.style.display = "none";
-      z.style.display = "block"
-      canvas.style.display = "none";
-      deliveries.style.display = "block";
-    }
   }
 }
 
