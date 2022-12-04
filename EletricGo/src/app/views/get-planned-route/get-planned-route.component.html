@@ -15,10 +15,21 @@
     </ul>
   </nav>
     <div id="contentSection">
-    <h2>PLANNED ROUTE</h2> 
+    <h2>PLANNED ROUTE</h2>
     </div>
 
     <div class="container">
+      <section class="options">
+        <div class="textfield">
+          <input type="text" name="day" id="day" placeholder="Date of delivery" [(ngModel)]="date">
+        </div>
+        <div class="textfield">
+        <button class="btn-getAllRoutes"  (click)="getPlannedRoutes(date)">Ge All possible routes</button>
+        </div>
+
+
+
+      </section>
       <table class="table table-bordered  table-striped">
         <thead>
           <tr>
@@ -28,7 +39,7 @@
             <th>Date</th>
             <th>Total_Time</th>
             <th class="text-right"></th>
-    
+
           </tr>
         </thead>
         <tbody>
