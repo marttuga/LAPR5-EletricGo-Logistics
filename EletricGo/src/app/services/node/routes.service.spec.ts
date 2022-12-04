@@ -16,6 +16,9 @@ describe('RoutesService', () => {
     httpClientSpy=TestBed.inject(HttpTestingController);
 
   });
+  afterEach(() => {
+    httpClientSpy.verify();
+});
 
   it('should be created', () => {
     expect(service).toBeTruthy();
