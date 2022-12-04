@@ -1,4 +1,4 @@
-import {Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
@@ -9,11 +9,11 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports:[HttpClientTestingModule,FormsModule,RouterTestingModule],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ],
 
       declarations: [
         AppComponent
       ],
-      //schemas:[NO_ERRORS_SCHEMA]
     }).compileComponents();
   });
 
