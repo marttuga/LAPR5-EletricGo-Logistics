@@ -1,4 +1,4 @@
-import { AggregateRoot } from "../../core/domain/AggregateRoot";
+/* import { AggregateRoot } from "../../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../../core/domain/UniqueEntityID";
 
 import { Result } from "../../core/logic/Result";
@@ -85,3 +85,4 @@ export class FleetPlaning extends AggregateRoot<FleetPlaningProps> {
 
 }
 
+ */
