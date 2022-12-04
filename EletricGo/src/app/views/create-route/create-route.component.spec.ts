@@ -4,6 +4,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { CreateRouteComponent } from './create-route.component';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('CreateRouteComponent', () => {
   let component: CreateRouteComponent;
@@ -13,6 +14,7 @@ describe('CreateRouteComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ CreateRouteComponent ],
       imports:[HttpClientTestingModule,FormsModule,RouterTestingModule],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ],
     })
     .compileComponents();
 

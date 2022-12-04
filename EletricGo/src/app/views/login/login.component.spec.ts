@@ -1,4 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -12,6 +13,7 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ LoginComponent ],
       imports:[HttpClientTestingModule,FormsModule,RouterTestingModule],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ],
     })
     .compileComponents();
 
@@ -53,10 +55,10 @@ describe('LoginComponent', () => {
     expect(compiled.querySelector('[type="password"]')?.textContent).toBeNull;
   });
 
-  it('should render null in password', () => {
+  it('number of', () => {
     const fixture = TestBed.createComponent(LoginComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('[class="btn-login"]')?.textContent).toBeNull;
+    expect(compiled.querySelector('[class="btn-login"]')?.textContent?.length).toEqual(5);
   });
 });

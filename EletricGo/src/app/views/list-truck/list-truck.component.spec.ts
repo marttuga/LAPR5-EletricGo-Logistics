@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ListTruckComponent } from './list-truck.component';
 import { FilterPipe } from "../model/filterPipe";
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('ListTruckComponent', () => {
   let component: ListTruckComponent;
@@ -13,6 +14,7 @@ describe('ListTruckComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [FilterPipe, ListTruckComponent ],
       imports:[HttpClientTestingModule,FormsModule,RouterTestingModule],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ],
     })
     .compileComponents();
 
