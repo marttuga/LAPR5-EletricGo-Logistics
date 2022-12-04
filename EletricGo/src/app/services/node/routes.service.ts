@@ -25,7 +25,7 @@ export class RoutesService {
   }
 
   getRoute(routeId: string): Observable<any> {
-    return this.httpClient.get(this.Url + '/getById/:routeId' +routeId).pipe(
+    return this.httpClient.get(this.Url + '/getById/' +routeId).pipe(
       map(this.extractData));
   }
 
