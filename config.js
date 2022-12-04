@@ -83,6 +83,7 @@ export default {
   },
 
   services: {
+    
     role: {
       name: "RoleService",
       path: "../services/roleService"
