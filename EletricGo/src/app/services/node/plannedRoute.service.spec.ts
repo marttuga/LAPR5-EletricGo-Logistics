@@ -4,16 +4,16 @@ import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { PrologPathsService } from './plannedRoute.service';
+import { PlannedRouteService } from './plannedRoute.service';
 
-describe('PrologPathsService', () => {
-  let service: PrologPathsService;
+describe('PlannedRouteS', () => {
+  let service: PlannedRouteService;
   let httpClientSpy:HttpTestingController
 
   beforeEach(() => {
     TestBed.configureTestingModule({        imports:[HttpClientTestingModule,FormsModule,RouterTestingModule],
     });
-    service = TestBed.inject(PrologPathsService);
+    service = TestBed.inject(PlannedRouteService);
   });
 
   it('should be created', () => {

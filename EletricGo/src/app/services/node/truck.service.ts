@@ -18,7 +18,7 @@ export class TrucksService {
   }
 
   getTruck(licencePlate: string): Observable<any> {
-    return this.httpClient.get(this.Url + '/getTruck/:licencePlate' +licencePlate).pipe(
+    return this.httpClient.get(this.Url + '/getTruck/' +licencePlate).pipe(
       map(this.extractData));
   }
 
@@ -31,14 +31,14 @@ export class TrucksService {
 
   }
 
-  updateTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number){
+/*   updateTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number){
     const body={"tare":tare, "capacity":capacity, "maxBateryCapacity":maxBateryCapacity, "autonomyFullChargeLoad": autonomyFullChargeLoad, "timeCharging":timeCharging};
   console.log(body);
     return this.httpClient.put(this.Url + '/updateTruck' +licencePlate,body)
       .pipe(map(this.extractData)
       );
   }
-
+ */
 
   public extractData(res: any) {
     return res || { };

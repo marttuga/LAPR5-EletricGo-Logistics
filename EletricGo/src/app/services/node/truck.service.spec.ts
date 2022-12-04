@@ -3,6 +3,7 @@ import { HttpClientTestingModule,HttpTestingController } from '@angular/common/h
 import { TrucksService } from './truck.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
+import { first } from 'rxjs';
 
 describe('TrucksService', () => {
   let service: TrucksService;
@@ -12,50 +13,69 @@ describe('TrucksService', () => {
     TestBed.configureTestingModule({        imports:[HttpClientTestingModule,FormsModule,RouterTestingModule],
     });
     service = TestBed.inject(TrucksService);
+    httpClientSpy=TestBed.inject(HttpTestingController);
   });
+
+  afterEach(() => {
+    httpClientSpy.verify();
+});
+
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-/*   it("should return the all Trucks", () =>{
-    const body=[{"licencePlate":"DF-12-DF", "tare":"12345", "capacity":"12345", "maxBateryCapacity":"123", "autonomyFullChargeLoad": "123", "timeCharging":"2"}];
-    service.getTrucks().subscribe(data=>{
-      expect(data).toBe(body);
-    });
-    const request=httpClientSpy.expectOne(service.Url+"/getAll");
-    expect(request.request.method).toBe('GET');
-    request.flush(body);
 
+  it('get Truck', () => {
+    const expectedResult: Truck= {
+        licencePlate: 'HH-00-HH',
+        tare: 10000,
+        capacity:10000,
+        maxBateryCapacity:100,
+        autonomyFullChargeLoad:100,
+        timeCharging:2,
+    };
+
+    const service : TrucksService = TestBed.get(TrucksService);
+    service.getTruck('HH-00-HH')
+    .pipe(
+        first(),
+    )
+    .subscribe((data) => {
+        expect(data).toBe(expectedResult);
+    });
+
+    const req = httpClientSpy.expectOne('http://localhost:3000/api/truck/getTruck/HH-00-HH');
+    expect(req.request.method).toBe('GET');
+    req.flush(expectedResult);
+});
+ 
+
+it('should create', () => {
+  const expectedResult: Truck= {
+      licencePlate: 'HH-00-kk',
+      tare: 10000,
+      capacity:10000,
+      maxBateryCapacity:100,
+      autonomyFullChargeLoad:100,
+      timeCharging:2,
+  };
+
+  const service : TrucksService = TestBed.get(TrucksService);
+  service.createTruck('HH-00-kk',10000,10000,100,100,2)
+  .pipe(
+      first(),
+  )
+  .subscribe((data) => {
+      expect(data).toBe(expectedResult);
   });
 
-  it("should return the truck with licence plate Test", () =>{
-    service.getTruck("DF-12-DF").subscribe(data=>{
-      expect(data.licencePlate).toBe("DF-12-DF");
-      request.flush(data);
-    });
-    const request=httpClientSpy.expectOne(service.Url+"/DF-12-DF");
-    expect(request.request.method).toBe('GET');
-  });
+  const req = httpClientSpy.expectOne('http://localhost:3000/api/truck/createTruck');
+  expect(req.request.method).toBe('POST');
+  req.flush(expectedResult);
+});
 
 
-  it("should return the truck with update Test", () =>{
-    service.updateTruck("DF-12-DF", 12000,12345, 123, 123, 2).subscribe(data=>{
-      expect(data.tare).toBe(12000);
-      request.flush(data);
-    });
-    const request=httpClientSpy.expectOne(service.Url+"/updateTruck");
-    expect(request.request.method).toBe('PUT');
-  });
-
-  it("should create a new Truck", () =>{
-    service.createTruck( "DF-12-DF", 12345,12345,123, 123, 2).subscribe(data=>{
-    expect(data.licencePlate).toBe("DF-12-DF");
-      request.flush(data);
-    });
-    const request=httpClientSpy.expectOne(service.Url+"/createTruck");
-    expect(request.request.method).toBe('POST');
-  });
- */
 
 });
+

@@ -50,10 +50,6 @@ describe('CreateTruckComponent', () => {
     expect(compiled.querySelector('h3')?.textContent).toContain('CREATE ANOTHER ONE');
   });
 
-  expect( 'createTruck()' ).toHaveBeenCalledWith({
- 
-  });
-
 
 
 
