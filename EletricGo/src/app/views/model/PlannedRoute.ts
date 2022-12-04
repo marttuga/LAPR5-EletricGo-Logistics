@@ -1,7 +1,7 @@
 class PlannedRoute {
-    truckId:string;
-    arrivalId:string;
-    departureId:string;
-    date:string;
-    totalTime:string;
+/*   fleetPlaningId:string;
+truckId:string;
+date:string;
+totalTime:string;  */
+routes: string[]
   }

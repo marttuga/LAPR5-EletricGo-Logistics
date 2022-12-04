@@ -1,6 +1,13 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lato", sans-serif;
+}
+
 body{
   font-family: Mukta, sans-serif;
-  height: 80vh;
+  height: 100vh;
   display: grid;
   justify-content: center;
   align-items: center;
@@ -11,17 +18,17 @@ body{
 
 }
 
-.container{
-  border-collapse: collapse;
-  background-color: f9f8fb;
-  text-align: center;
-  overflow: hidden;
-  text-align: center;
-  width: 100%;
-  letter-spacing: 0.1rem;
+  #container
+ {
+  display: flex;
+justify-content: center;
+align-items: center;
+    height: 100vh;
+    width: 100%;
+    background:#f9f8fb;
+    position: relative;
+ }
 
-
-}
 .container thead{
   height: 40px;
 
@@ -67,43 +74,51 @@ body{
   color: skyblue;
 }
 
+.table{
+  margin-bottom: 15%;
+
+
+}
 tr{
-text-align: center;
+  text-align: center;
+
 
 }
 
 th >input{
-text-align: center;
-border: none;
-border-radius: 30px;
-padding: 5px;
-text-transform: uppercase;
-letter-spacing: 0.1rem;
-font-size: 0.8rem;
-font-weight: 900;
-color: #4f648a;
+  text-align: center;
+  border: none;
+ border-radius: 30px;
+ padding: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: #4f648a;
+width: 80%;
 }
 
+
 th {
-text-align: center;
-text-transform: uppercase;
-letter-spacing: 0.1rem;
-font-size: 0.8rem;
-font-weight: 900;
-color: #4f648a;
+  text-align: center;
+
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: #4f648a;
 
 }
 
 td{
-padding: 0.1rem 2.5rem;
+  padding: 0.1rem 2.5rem;
 }
-
 
 #contentSection h2{
   font-family: sans-serif;
 font-size: 40px;
 color: #778DB3;
-margin-bottom:-10%;
+margin-top:2%;
 position: relative;
 font-weight: 900;
 text-align: center;
@@ -112,19 +127,87 @@ text-align: center;
 
 
 .textfield{
-  width: 100%;
+  justify-content: space-around;
+  margin-top:2%;
+  width: 70%;
   justify-content: center;
-  margin: 10px 0px;
 }
 
 .textfield > input{
+ 
   width: 100%;
   border: none;
   border-radius: 30px;
   padding: 15px;
-  background: #f5f5f5;
+  background: #d8d6d6;
   color: black;
   font-size: 12pt;
   outline: none;
   box-sizing: border-box;
+  
+}
+
+#data1
+{ height: 10%;
+  margin-top:-12%;
+  align-items: center;
+    cursor: pointer;
+  width: 30%;
+right: -35% ;
+  display:flex;
+  
+  flex-direction:row;
+  position: relative;
+text-align: center;
+}
+
+.button
+{
+
+  display:flex;
+  flex-direction:row;
+ font-family: sans-serif;
+   width:100%;
+   height: 50px;
+    cursor: pointer;
+
+ 
+
+}
+
+.button:hover{
+   animation: animate 1s linear;
+   
+}
+
+.button-create{
+ font-weight: 600;
+ cursor: pointer;
+ font-family: sans-serif;
+ color: #ffffff;
+ width: 100%;
+ border: none;
+ border-radius: 30px;
+text-align: center;
+ padding: 15px;
+   background: #97a8c7;
+   font-size: 10pt;
+}
+
+input.ng-invalid.ng-touched {
+ border: red 1px solid;
+}
+
+small{
+ font-family: 'Secular One', sans-serif;
+ font-size: 8pt;
+ font-weight: 700;
+
+ color: #e3242b;
+}
+.created-message {
+ font-family: 'Secular One', sans-serif;
+ font-size: 10pt;
+ font-weight: 700;
+ color: #222d41;
 }

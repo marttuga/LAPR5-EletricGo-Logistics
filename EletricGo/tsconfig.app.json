@@ -11,7 +11,8 @@
     "src/app/views/model/Warehouse.ts",
     "src/app/views/model/Delivery.ts",
     "src/app/views/model/Truck.ts",
-    "src/app/views/model/Route.ts"
+    "src/app/views/model/Route.ts",
+    "src/app/views/model/PlannedRoute.ts"
   ],
   "exclude": [
     "test.ts",

@@ -13,24 +13,51 @@ import {PlannedRouteService} from "../../services/node/plannedRoute.service";
 export class GetPlannedRouteComponent implements OnInit {
 
   plannedRoutes: PlannedRoute[];
-  truckId: Truck;
-  arrivalId: string;
-  departureId: string;
+  fleetPlaningId:string;
+truckId:string;
   date: string;
   totalTime: string;
   searchDate: string;
+  routes: string[];
+  plannedRoute:any;
 
-  constructor() {
+  constructor(private  plannedRouteService:PlannedRouteService) {
 
 }
 
   ngOnInit(): void {
     //this.getPlannedRoutes();
   }
+  submit = false;
 
-  // public getPlannedRoutes():void{
-  //   //this.routeService.getRoutes().subscribe(data => {console.log(data);
-  //   this.plannedRoutes=data});
-  //   }
+  public getAllRoutesOnDate():void{
+    this.plannedRouteService.getAllRoutesOnDate(this.date).subscribe(data => {console.log(data);
+      this.plannedRoutes=data});
+      this.submit = !this.submit;
+  }
+
+  public getBestRoute():void{
+    this.plannedRouteService.getBestRoute(this.date,this.truckId).subscribe(data => {console.log(data);
+      this.plannedRoute=data});
+      this.submit = !this.submit;
+  }
+  public getNearestWarehouse():void{
+    this.plannedRouteService.getNearestWarehouse(this.date,this.truckId).subscribe(data => {console.log(data);
+      this.plannedRoute=data});
+      this.submit = !this.submit;
+  }
+
+  public getRouteGreaterMass():void{
+    this.plannedRouteService.getRouteGreaterMass(this.date,this.truckId).subscribe(data => {console.log(data);
+      this.plannedRoute=data});
+      this.submit = !this.submit;
+  }
+
+  public getRouteBestRelation():void{
+    this.plannedRouteService.getRouteBestRelation(this.date,this.truckId).subscribe(data => {console.log(data);
+      this.plannedRoute=data});
+      this.submit = !this.submit;
+  }
+
 
 }

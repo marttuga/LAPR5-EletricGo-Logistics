@@ -13,27 +13,27 @@ export class PlannedRouteService {
   constructor(private httpClient: HttpClient) { }
 
   getAllRoutesOnDate(date:string){
-    return this.httpClient.get(this.Url + 'getAllRoutesOnDate?orig='+date).pipe(
+    return this.httpClient.get(this.Url + 'getAllRoutesOnDate?date='+date).pipe(
       map(this.extractData));
   }
 
   getBestRoute(date:string,truck:string){
-    return this.httpClient.get(this.Url + 'getBestRoute?orig='+date+"&dest="+truck).pipe(
+    return this.httpClient.get(this.Url + 'getBestRoute?date='+date+"&truck="+truck).pipe(
       map(this.extractData));
   }
 
   getNearestWarehouse(date:string,truck:string){
-    return this.httpClient.get(this.Url + 'getNearestWarehouse?orig='+date+"&dest="+truck).pipe(
+    return this.httpClient.get(this.Url + 'getNearestWarehouse?date='+date+"&truck="+truck).pipe(
       map(this.extractData));
   }
   
   getRouteGreaterMass(date:string,truck:string){
-    return this.httpClient.get(this.Url + 'getRouteGreaterMass?orig='+date+"&dest="+truck).pipe(
+    return this.httpClient.get(this.Url + 'getRouteGreaterMass?date='+date+"&truck="+truck).pipe(
       map(this.extractData));
   }
 
   getRouteBestRelation(date:string,truck:string){
-    return this.httpClient.get(this.Url + 'getRouteBestRelation?orig='+date+"&dest="+truck).pipe(
+    return this.httpClient.get(this.Url + 'getRouteBestRelation?date='+date+"&truck="+truck).pipe(
       map(this.extractData));
   }
 

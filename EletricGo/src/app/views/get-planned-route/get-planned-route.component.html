@@ -14,44 +14,79 @@
       <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
     </ul>
   </nav>
+
     <div id="contentSection">
     <h2>PLANNED ROUTE</h2>
     </div>
 
-    <div class="container">
-      <section class="options">
-        <div class="textfield">
-          <input type="text" name="day" id="day" placeholder="Date of delivery" [(ngModel)]="date">
+    <div id="contentSection">
+      <form class="create-form" #createForm="ngForm">
+        <div id="data1">
+            
+            <div class="textfield">
+                <input type="text" required maxlength="8" #Date="ngModel" [class.is-invalid]="Date.invalid && Date.touched" name="Date" placeholder="Date"  required [(ngModel)]="date"> 
+                <div *ngIf="Date.touched">
+                    <small class="requiredError" *ngIf="Date.errors?.['required']">Date is required!</small>
+                  </div>
+            </div>
+
+            <div class="textfield" >
+                <input type="text" required  #TruckId="ngModel" [class.is-invalid]="TruckId.invalid && TruckId.touched" name="TruckId" placeholder="Truck_Id"  title="TruckId must be of format eTruck00" required [(ngModel)]="truckId"> 
+                <div *ngIf="TruckId.touched">
+          
+                    <small class="requiredError"*ngIf="TruckId.errors?.['required']">TruckId is required!</small>
+                </div>
+            </div>
         </div>
-        <div class="textfield">
-        <button class="btn-getAllRoutes"  (click)="getPlannedRoutes(date)">Ge All possible routes</button>
-        </div>
+      
+
+        <div class="button">
+            <button   class="button-create"  type="submit"  (click)="getAllRoutesOnDate()" >Get All possible routes!</button>
+            <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getBestRoute()" >Get Best Route!</button>
+            <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getNearestWarehouse()" >Get Nearest Warehouse!</button>
+            <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getRouteGreaterMass()" >Get Delivery With Greater Mass!</button>
+            <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getRouteBestRelation()" >Get Fastest Route With Greater Mass!</button>
+           
+            
+            <div *ngIf="submit">
+              <small class="created-message"></small>
+            </div>
+          </div>
+
+  </form>
+    </div> 
 
 
-
-      </section>
-      <table class="table table-bordered  table-striped">
-        <thead>
-          <tr>
-            <th>Truck_ID</th>
-            <th>Arrival_ID</th>
-            <th>Departure_ID</th>
-            <th>Date</th>
-            <th>Total_Time</th>
-            <th class="text-right"></th>
-
-          </tr>
-        </thead>
-        <tbody>
+      <table class="table">
+    <tr>${{date}}</tr>
+    <tr>${{truckId}}</tr>
+  
+--<!-- >
           <tr *ngFor="let plannedRoute of plannedRoutes | filter : 'date': searchDate ; let i = index">
-            <td><span>{{plannedRoute.truckId}}</span></td>
-            <td><span>{{plannedRoute.arrivalId}}</span></td>
-            <td><span>{{plannedRoute.departureId}}</span></td>
-            <td><span>{{plannedRoute.date}}</span></td>
-            <td><span>{{plannedRoute.totalTime}}</span></td>
-          </tr>
-        </tbody>
+            <td><span>{{date}}</span></td>
+            <td><span>{{truckId}}</span></td>
+            <td><span>{{routes}}</span></td>
+       
+          </tr> --> 
+         
+
       </table>
-    </div>
+
+<!--       <table class="table">
+    
+
+        <tr *ngFor="let plannedRoute of plannedRoutes">
+          <td>{{plannedRoute.routes[0]}}</td>
+          <td>{{plannedRoute.routes[1]}}</td>
+          <td>{{plannedRoute.routes[2]}}</td>
+          <td>{{plannedRoute.routes[3]}}</td>
+          <td>{{plannedRoute.routes[4]}}</td>
+           
+        </tr>
+  
+    </table> -->
+
+ 
+   
     </body>
 </html>
