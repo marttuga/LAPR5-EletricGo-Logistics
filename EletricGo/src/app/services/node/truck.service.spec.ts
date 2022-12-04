@@ -51,7 +51,7 @@ describe('TrucksService', () => {
 });
  
 
-it('should create', () => {
+it('should create truck', () => {
   const expectedResult: Truck= {
       licencePlate: 'HH-00-kk',
       tare: 10000,
