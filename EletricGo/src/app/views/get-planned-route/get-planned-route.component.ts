@@ -20,9 +20,7 @@ export class GetPlannedRouteComponent implements OnInit {
   totalTime: string;
   searchDate: string;
 
-  constructor( private plannedRouteService: PlannedRouteService,
-    private route: ActivatedRoute,
-    private router: Router) {
+  constructor() {
 
 }
 
