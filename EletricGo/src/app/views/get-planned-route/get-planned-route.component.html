@@ -22,23 +22,23 @@
     <div id="contentSection">
       <form class="create-form" #createForm="ngForm">
         <div id="data1">
-            
+
             <div class="textfield">
-                <input type="text" required maxlength="8" #Date="ngModel" [class.is-invalid]="Date.invalid && Date.touched" name="Date" placeholder="Date"  required [(ngModel)]="date"> 
+                <input type="text" required maxlength="8" #Date="ngModel" [class.is-invalid]="Date.invalid && Date.touched" name="Date" placeholder="Date"  required [(ngModel)]="date">
                 <div *ngIf="Date.touched">
                     <small class="requiredError" *ngIf="Date.errors?.['required']">Date is required!</small>
                   </div>
             </div>
 
             <div class="textfield" >
-                <input type="text" required  #TruckId="ngModel" [class.is-invalid]="TruckId.invalid && TruckId.touched" name="TruckId" placeholder="Truck_Id"  title="TruckId must be of format eTruck00" required [(ngModel)]="truckId"> 
+                <input type="text" required  #TruckId="ngModel" [class.is-invalid]="TruckId.invalid && TruckId.touched" name="TruckId" placeholder="Truck_Id"  title="TruckId must be of format eTruck00" required [(ngModel)]="truckId">
                 <div *ngIf="TruckId.touched">
-          
+
                     <small class="requiredError"*ngIf="TruckId.errors?.['required']">TruckId is required!</small>
                 </div>
             </div>
         </div>
-      
+
 
         <div class="button">
             <button   class="button-create"  type="submit"  (click)="getAllRoutesOnDate()" >Get All possible routes!</button>
@@ -46,34 +46,31 @@
             <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getNearestWarehouse()" >Get Nearest Warehouse!</button>
             <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getRouteGreaterMass()" >Get Delivery With Greater Mass!</button>
             <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getRouteBestRelation()" >Get Fastest Route With Greater Mass!</button>
-           
-            
+
+
             <div *ngIf="submit">
               <small class="created-message"></small>
             </div>
           </div>
 
   </form>
-    </div> 
-
+    </div>
 
       <table class="table">
     <tr>${{date}}</tr>
     <tr>${{truckId}}</tr>
-  
---<!-- >
+
+        <tr><span>[{{plannedRoute}}]</span></tr>
+
           <tr *ngFor="let plannedRoute of plannedRoutes | filter : 'date': searchDate ; let i = index">
-            <td><span>{{date}}</span></td>
-            <td><span>{{truckId}}</span></td>
-            <td><span>{{routes}}</span></td>
-       
-          </tr> --> 
-         
+            <td><span>{{plannedRoute}}</span></td>
+          </tr>
+
 
       </table>
 
 <!--       <table class="table">
-    
+
 
         <tr *ngFor="let plannedRoute of plannedRoutes">
           <td>{{plannedRoute.routes[0]}}</td>
@@ -81,12 +78,12 @@
           <td>{{plannedRoute.routes[2]}}</td>
           <td>{{plannedRoute.routes[3]}}</td>
           <td>{{plannedRoute.routes[4]}}</td>
-           
+
         </tr>
-  
+
     </table> -->
 
- 
-   
+
+
     </body>
 </html>

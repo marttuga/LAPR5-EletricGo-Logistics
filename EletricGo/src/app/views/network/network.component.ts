@@ -425,9 +425,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
   onClick() {
-    this.addTruck();
+    /*this.addTruck();
 
     this.activateMotion=1;
+    */
 
   }
 
