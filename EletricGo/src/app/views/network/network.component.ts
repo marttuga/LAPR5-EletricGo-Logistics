@@ -10,14 +10,6 @@ import {RoutesService} from "../../services/node/routes.service";
 import {ListTruckComponent} from "../list-truck/list-truck.component";
 import {TrucksService} from "../../services/node/truck.service";
 
-//fator de escala para as altitudes
-//rotacao nao deixar ver por baixo (rotacao na vertical, nao deixar baixar para debaixo do chao)
-//textura das estradas, fazer um mosaico e depois ativar o wrap na textura, mapear consoante as unidades de 
-//distancia, Ex: 50 unidades de distância - 50 tiles
-//textsprite mudar para sprite
-//carregas um GLTF no inicio e depois em vez de adicionar à cena, guardar num objeto
-//fazer o clone da imagem para fazer sempre ao iniciar
-
 @Component({
   selector: 'app-network',
   templateUrl: './network.component.html',
