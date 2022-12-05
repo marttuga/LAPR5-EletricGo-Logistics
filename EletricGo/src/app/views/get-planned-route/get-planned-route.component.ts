@@ -14,7 +14,7 @@ export class GetPlannedRouteComponent implements OnInit {
 
   plannedRoutes: PlannedRoute[];
   fleetPlaningId:string;
-truckId:string;
+  truckId:string;
   date: string;
   totalTime: string;
   searchDate: string;
@@ -31,32 +31,40 @@ truckId:string;
   submit = false;
 
   public getAllRoutesOnDate():void{
-    this.plannedRouteService.getAllRoutesOnDate(this.date).subscribe(data => {console.log(data);
-      this.plannedRoutes=data});
+    this.plannedRouteService.getAllRoutesOnDate(this.date).subscribe(data => {console.log(data.final_route);
+      this.plannedRoutes=data.final_route});
       this.submit = !this.submit;
   }
 
   public getBestRoute():void{
-    this.plannedRouteService.getBestRoute(this.date,this.truckId).subscribe(data => {console.log(data);
-      this.plannedRoute=data});
+    this.plannedRouteService.getBestRoute(this.date,this.truckId).subscribe(data => {
+      this.plannedRoute=data.best_route;
+      this.plannedRoutes=[];
+      console.log(this.plannedRoute)
+
+
+    });
       this.submit = !this.submit;
   }
   public getNearestWarehouse():void{
     this.plannedRouteService.getNearestWarehouse(this.date,this.truckId).subscribe(data => {console.log(data);
-      this.plannedRoute=data});
-      this.submit = !this.submit;
+      this.plannedRoute=data.route_nearest_warehouse});
+    this.plannedRoutes=[];
+    this.submit = !this.submit;
   }
 
   public getRouteGreaterMass():void{
     this.plannedRouteService.getRouteGreaterMass(this.date,this.truckId).subscribe(data => {console.log(data);
-      this.plannedRoute=data});
-      this.submit = !this.submit;
+      this.plannedRoute=data.route_plus_mass});
+    this.plannedRoutes=[];
+    this.submit = !this.submit;
   }
 
   public getRouteBestRelation():void{
     this.plannedRouteService.getRouteBestRelation(this.date,this.truckId).subscribe(data => {console.log(data);
-      this.plannedRoute=data});
-      this.submit = !this.submit;
+      this.plannedRoute=data.route_best_relation});
+    this.plannedRoutes=[];
+    this.submit = !this.submit;
   }
 
 

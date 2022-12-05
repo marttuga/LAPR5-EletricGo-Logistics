@@ -11,6 +11,7 @@ import {ListTruckComponent} from "../list-truck/list-truck.component";
 import {TrucksService} from "../../services/node/truck.service";
 
 
+
 @Component({
   selector: 'app-network',
   templateUrl: './network.component.html',
@@ -239,8 +240,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
         let beta =Math.asin((elemLig0Mesh.position.y-elemLig1Mesh.position.y)/roadGeometry.parameters.depth);
-        let inclination=teta0+Math.PI/2;
-        roadMesh.rotation.set(beta,inclination,0, "ZYX")
+
+        let omega=teta0+Math.PI/2;
+        roadMesh.rotation.set(beta,omega,0, "ZYX")
 
         this.roadsData.set(<string>this.getRouteByWarehouses(ware0, ware1)?.routeId.toString(),[teta0,teta1,elemLig0Mesh.position.x,elemLig0Mesh.position.y,elemLig0Mesh.position.z,elemLig1Mesh.position.x,elemLig1Mesh.position.y,elemLig1Mesh.position.z,roadMesh.position.x,roadMesh.position.y,roadMesh.position.z,beta,(teta0+Math.PI/2)])
       }
@@ -417,9 +419,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
   onClick() {
-    this.addTruck();
+    /*this.addTruck();
 
     this.activateMotion=1;
+    */
 
   }
 
