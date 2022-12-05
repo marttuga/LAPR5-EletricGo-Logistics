@@ -10,6 +10,13 @@ import {RoutesService} from "../../services/node/routes.service";
 import {ListTruckComponent} from "../list-truck/list-truck.component";
 import {TrucksService} from "../../services/node/truck.service";
 
+//fator de escala para as altitudes
+//rotacao nao deixar ver por baixo (rotacao na vertical, nao deixar baixar para debaixo do chao)
+//textura das estradas, fazer um mosaico e depois ativar o wrap na textura, mapear consoante as unidades de 
+//distancia, Ex: 50 unidades de distância - 50 tiles
+//textsprite mudar para sprite
+//carregas um GLTF no inicio e depois em vez de adicionar à cena, guardar num objeto
+//fazer o clone da imagem para fazer sempre ao iniciar
 
 @Component({
   selector: 'app-network',
@@ -19,6 +26,7 @@ import {TrucksService} from "../../services/node/truck.service";
 export class NetworkComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvas')
+  //tipo do canvas
   private canvasRef: ElementRef;
 
   //* Stage Properties;
@@ -42,7 +50,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
   private activateMotion=0;
-  private truckChek=0;
+  private truckChek=0;                    
   private roadsData = new Map<string, number[]>([]);
   private static TETA_0=0;private static TETA_1=1;
   private static EL0_X=2;private static EL0_Y=3;private static EL0_Z=4;
@@ -77,10 +85,12 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   }
 
+  //ligação ao HTML 
   private get canvas(): HTMLCanvasElement {
       return this.canvasRef.nativeElement;
   }
 
+  //tamanho da janela
   private static getAspectRatio() {
     return window.innerWidth/ window.innerHeight;
   }
@@ -94,6 +104,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     this.camera = new THREE.PerspectiveCamera(
       this.fieldOfView,
       NetworkComponent.getAspectRatio(),
+      //afastamento e proximidade da camara
       this.nearClippingPlane,
       this.farClippingPlane
     );
@@ -133,7 +144,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     //Orbit Controls
     let controls = new OrbitControls(this.camera, this.renderer.domElement);
-
+    //zoom e zoom out
     controls.maxDistance = 1000;//900;
     controls.minDistance = 50;//100;
     controls.minAzimuthAngle = -Math.PI/2 ;//Rotação
@@ -153,7 +164,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       component.automaticMovement(truck);
 
 
-            //render perspective camera/graph
+      //render perspective camera/graph
+      //janela de visualização
       component.renderer.setViewport(-200, 0, window.innerWidth+200, window.innerHeight);
       component.renderer.setClearColor(0xCADFED, 1);
       component.renderer.render(component.scene, component.camera);
@@ -176,6 +188,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
        base.name=this.warehouses[i].warehouseIdentifier;
 
+       //nome das cidades que aparece em cima das warehouses
        let sprite=new TextSprite({ text: this.warehouses[i].designation,alignment: 'left',
          color: '#000000',
          fontFamily: '"Times New Roman", Times, serif',
@@ -185,6 +198,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       sprite.position.setZ(base.position.z);
       this.scene.add(sprite)
 
+      //load á figura 3D
       const loader = new GLTFLoader();
       loader.load('/assets/network/warehouse.glb', (gltf) => {
         gltf.scene.name = this.warehouses[i].designation;
@@ -216,6 +230,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         elemLigMaterial.map= new THREE.TextureLoader().load('assets/network/road.jpg')
         let elemLigGeometry =new THREE.BoxGeometry(0.3, 0.20, 2);
 
+        //roda ate ao teta 
         let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
         elemLig0Mesh.position.set(ware0.position.x+ this.warehouseBaseGeometry.parameters.radiusTop*Math.cos(teta0),ware0.position.y,ware0.position.z-this.warehouseBaseGeometry.parameters.radiusTop*Math.sin(teta0));
         elemLig0Mesh.rotateY(teta0)
@@ -237,10 +252,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
         this.scene.add(roadMesh)
 
-
+        //rotação 
         let beta =Math.asin((elemLig0Mesh.position.y-elemLig1Mesh.position.y)/roadGeometry.parameters.depth);
-        let inclination=teta0+Math.PI/2;
-        roadMesh.rotation.set(beta,inclination,0, "ZYX")
+        let omega=teta0+Math.PI/2;
+        roadMesh.rotation.set(beta,omega,0, "ZYX")
 
         this.roadsData.set(<string>this.getRouteByWarehouses(ware0, ware1)?.routeId.toString(),[teta0,teta1,elemLig0Mesh.position.x,elemLig0Mesh.position.y,elemLig0Mesh.position.z,elemLig1Mesh.position.x,elemLig1Mesh.position.y,elemLig1Mesh.position.z,roadMesh.position.x,roadMesh.position.y,roadMesh.position.z,beta,(teta0+Math.PI/2)])
       }
@@ -252,6 +267,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     const ware0 = this.scene.getObjectByName(this.routes[0].departureId);
     const ware1 = this.scene.getObjectByName(this.routes[0].arrivalId);
 
+    //carregar a figura 3D
     const loader = new GLTFLoader();
     loader.load('/assets/network/Truck.glb', (gltf) => {
       gltf.scene.name = "TruckyBlue";
