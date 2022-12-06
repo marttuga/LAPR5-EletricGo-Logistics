@@ -2,13 +2,13 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import * as THREE from "three";
 import { ActivatedRoute, Router } from "@angular/router";
 import TextSprite from "@seregpie/three.text-sprite";
-import {BoxGeometry, Camera, CatmullRomCurve3, Clock, Matrix4, Mesh, Object3D, PerspectiveCamera, Vector3} from 'three';
+import {CatmullRomCurve3, Group, Object3D, Vector3} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
 import {RoutesService} from "../../services/node/routes.service";
-import {ListTruckComponent} from "../list-truck/list-truck.component";
 import {TrucksService} from "../../services/node/truck.service";
+import {ListTruckComponent} from "../list-truck/list-truck.component";
 
 @Component({
   selector: 'app-network',
@@ -17,8 +17,11 @@ import {TrucksService} from "../../services/node/truck.service";
 })
 export class NetworkComponent implements OnInit, AfterViewInit {
 
+  public choiceTruck:string;
+  public checker:number=1
+
+   //tipo do canvas
   @ViewChild('canvas')
-  //tipo do canvas
   private canvasRef: ElementRef;
 
   //* Stage Properties;
@@ -27,33 +30,36 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   @Input('nearClipping') public nearClippingPlane: number = 1;//* Proximidade do plano
   @Input('farClipping') public farClippingPlane: number = 2000;//* Afastamento do plano
 
+
   private renderer!: THREE.WebGLRenderer;
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
 
-
-
-  //private roundabouts:THREE.Mesh[]=[];
   private warehouses:any[]=[];
   private routes:Route[]=[];
   private trucks:Truck[]=[];
 
   private warehouseBaseGeometry = new THREE.CylinderGeometry(5, 5, 0.22, 64);
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
+  private warehouse3D: Group;
+  private roundaboutTexture: THREE.Texture ;
+  private elemLigTexture: THREE.Texture ;
+  private roadTexture:THREE.Texture;
+  private truck3D:Group;
 
   private activateMotion=0;
-  private truckChek=0;                    
+
   private roadsData = new Map<string, number[]>([]);
   private static TETA_0=0;private static TETA_1=1;
   private static EL0_X=2;private static EL0_Y=3;private static EL0_Z=4;
   private static EL1_X=5;private static EL1_Y=6;private static EL1_Z=7;
   private static ROAD_X=8;private static ROAD_Y=9;private static ROAD_Z=10;
-  private static BETA=11;private static INCLINATION=12;
-
+  private static BETA=11;private static OMEGA=12;
 
   constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService, private routesService:RoutesService,private trucksService:TrucksService) { }
 
   ngOnInit(): void {
+    this.importLoaders();
 
     this.warehousesService.getWarehouses().subscribe(async data=>{
       this.warehouses=data;
@@ -74,12 +80,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
   }
 
-  //ligação ao HTML 
   private get canvas(): HTMLCanvasElement {
-      return this.canvasRef.nativeElement;
+    return this.canvasRef.nativeElement;
   }
 
   //tamanho da janela
@@ -96,12 +100,11 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     this.camera = new THREE.PerspectiveCamera(
       this.fieldOfView,
       NetworkComponent.getAspectRatio(),
-      //afastamento e proximidade da camara
       this.nearClippingPlane,
       this.farClippingPlane
     );
     this.camera.position.z = this.cameraZ;
-  //  this.camera.lookAt(new Vector3(0,-26.359,0));
+    //  this.camera.lookAt(new Vector3(0,-26.359,0));
     this.scene.add(this.camera);
 
     this.addWarehouses()
@@ -136,12 +139,12 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     //Orbit Controls
     let controls = new OrbitControls(this.camera, this.renderer.domElement);
-    //zoom e zoom out
-    controls.maxDistance = 1000;//900;
-    controls.minDistance = 50;//100;
-    controls.minAzimuthAngle = -Math.PI/2 ;//Rotação
-    controls.maxAzimuthAngle = Math.PI/2 ;
 
+    controls.maxDistance = 1000;//900 zoom out
+    controls.minDistance = 50;//100 zoom in
+    controls.minAzimuthAngle = -Math.PI/2 ;//Rotação D 90º
+    controls.maxAzimuthAngle = Math.PI/2 ;//Rotação E 90º
+    controls.maxPolarAngle=Math.PI/2 //Rotação Eixo Y 90º
 
     let component: NetworkComponent = this;
     (function render() {
@@ -156,8 +159,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       component.automaticMovement(truck);
 
 
-      //render perspective camera/graph
-      //janela de visualização
+      //janelade visualização
       component.renderer.setViewport(-200, 0, window.innerWidth+200, window.innerHeight);
       component.renderer.setClearColor(0xCADFED, 1);
       component.renderer.render(component.scene, component.camera);
@@ -178,32 +180,23 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[1],
         NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[2]);
 
-       base.name=this.warehouses[i].warehouseIdentifier;
+      base.name=this.warehouses[i].warehouseIdentifier;
 
-       //nome das cidades que aparece em cima das warehouses
-       let sprite=new TextSprite({ text: this.warehouses[i].designation,alignment: 'left',
-         color: '#000000',
-         fontFamily: '"Times New Roman", Times, serif',
-         fontStyle: 'italic', });
-      sprite.position.setX(base.position.x);
-      sprite.position.setY(base.position.y+3.2);
-      sprite.position.setZ(base.position.z);
+      //Nomes cidades
+      let sprite=new TextSprite({ text: this.warehouses[i].designation,alignment: 'left',
+        color: '#000000',
+        fontFamily: '"Arial", Times, serif',
+        fontStyle: 'italic',});
+      sprite.position.set(base.position.x,base.position.y+3.2,base.position.z);
       this.scene.add(sprite)
 
-      //load á figura 3D
-      const loader = new GLTFLoader();
-      loader.load('/assets/network/warehouse.glb', (gltf) => {
-        gltf.scene.name = this.warehouses[i].designation;
-        gltf.scene.position.set(base.position.x, base.position.y, base.position.z);
-        gltf.scene.scale.set(0.28, 0.28, 0.28);
-        this.scene.add(gltf.scene);
+      let warehouse3D=this.warehouse3D.clone();
+      warehouse3D.name = this.warehouses[i].designation;
+      warehouse3D.position.set(base.position.x, base.position.y, base.position.z);
+      this.scene.add(warehouse3D);
 
-      }, undefined, function (error) {
-
-        console.error(error);
-      });
       this.scene.add(base);
-      this.warehouseBaseMaterial.map = new THREE.TextureLoader().load('assets/network/rotunda.jpg');
+      this.warehouseBaseMaterial.map = this.roundaboutTexture;
     }
     this.addRoads();
   }
@@ -219,10 +212,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         let teta1=Math.PI+teta0;
 
         let elemLigMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-        elemLigMaterial.map= new THREE.TextureLoader().load('assets/network/road.jpg')
+        elemLigMaterial.map= this.elemLigTexture;
         let elemLigGeometry =new THREE.BoxGeometry(0.3, 0.20, 2);
 
-        //roda ate ao teta 
         let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
         elemLig0Mesh.position.set(ware0.position.x+ this.warehouseBaseGeometry.parameters.radiusTop*Math.cos(teta0),ware0.position.y,ware0.position.z-this.warehouseBaseGeometry.parameters.radiusTop*Math.sin(teta0));
         elemLig0Mesh.rotateY(teta0)
@@ -235,7 +227,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         this.scene.add(elemLig1Mesh)
 
         let roadMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-        roadMaterial.map= new THREE.TextureLoader().load('assets/network/road1.jpg')
+        roadMaterial.map= this.roadTexture;
 
         //formula da distancia entre dois pontos
         let roadGeometry =new THREE.BoxGeometry(2, 0.20,  Math.sqrt(Math.pow(elemLig0Mesh.position.x-elemLig1Mesh.position.x,2)+Math.pow(elemLig0Mesh.position.y-elemLig1Mesh.position.y,2)+Math.pow(elemLig0Mesh.position.z-elemLig1Mesh.position.z,2)));      let roadMesh=new THREE.Mesh(roadGeometry,roadMaterial);
@@ -244,78 +236,78 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
         this.scene.add(roadMesh)
 
-        //rotação 
+
         let beta =Math.asin((elemLig0Mesh.position.y-elemLig1Mesh.position.y)/roadGeometry.parameters.depth);
+
         let omega=teta0+Math.PI/2;
         roadMesh.rotation.set(beta,omega,0, "ZYX")
 
-        this.roadsData.set(<string>this.getRouteByWarehouses(ware0, ware1)?.routeId.toString(),[teta0,teta1,elemLig0Mesh.position.x,elemLig0Mesh.position.y,elemLig0Mesh.position.z,elemLig1Mesh.position.x,elemLig1Mesh.position.y,elemLig1Mesh.position.z,roadMesh.position.x,roadMesh.position.y,roadMesh.position.z,beta,(teta0+Math.PI/2)])
+        this.roadsData.set(this.routes[i].routeId,[teta0,teta1,elemLig0Mesh.position.x,elemLig0Mesh.position.y,elemLig0Mesh.position.z,elemLig1Mesh.position.x,elemLig1Mesh.position.y,elemLig1Mesh.position.z,roadMesh.position.x,roadMesh.position.y,roadMesh.position.z,beta,(teta0+Math.PI/2)])
       }
     }
   }
 
 
   private addTruck(){
+
     const ware0 = this.scene.getObjectByName(this.routes[0].departureId);
     const ware1 = this.scene.getObjectByName(this.routes[0].arrivalId);
 
-    //carregar a figura 3D
-    const loader = new GLTFLoader();
-    loader.load('/assets/network/Truck.glb', (gltf) => {
-      gltf.scene.name = "TruckyBlue";
-      gltf.scene.position.set(<number>this.scene.getObjectByName(this.routes[0].departureId)?.position.x, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.y, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.z);
-      gltf.scene.scale.set(0.4, 0.4, 0.4);
-      let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0, ware1)?.routeId);
-      if(roadData!=null) {
-        gltf.scene.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.INCLINATION] , 0, "ZYX")
-        this.scene.add(gltf.scene);
-        this.truckChek = 1;
-      }
-    }, undefined, function (error) {
+    if(ware0!=null&&ware1!=null){
+      const truck3D = this.truck3D.clone();
+      truck3D.name = "TruckyBlue";
+      truck3D.position.set(ware0?.position.x+0.3, ware0.position.y, ware0.position.z);
 
-      console.error(error);
-    });
+      let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0.name, ware1.name)?.routeId);
+      if(roadData!=null) {
+        console.log("Aquiiiiiiiiiii "+ roadData[NetworkComponent.BETA])
+        truck3D.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.OMEGA] , 0, "ZYX")
+        this.scene.add(truck3D);
+      }
+    }
   }
 
 
   private automaticMovement(truck:any) {
     //Automatic truck movement
-
-    if (this.activateMotion == 1 && this.truckChek == 1) {
+    if (this.activateMotion == 1 && truck!=undefined ) {
 
       const departure = this.scene.getObjectByName(this.routes[0].departureId);
       const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
-      let roadData = this.roadsData.get(<string>this.getRouteByWarehouses(departure, arrival)?.routeId);
-      if (roadData!=null) {
-        let path = new CatmullRomCurve3([
-          new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),//inicio
-          new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),//EL0
-          new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),//PM
-          new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),//EL1
-          new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),//fim
-        ]);
+
+      if(departure!=null&&arrival!=null){
+        let roadData = this.roadsData.get(this.routes[0].routeId);
+        if (roadData!=null) {
+          let path = new CatmullRomCurve3(
+            [
+              new Vector3(departure?.position.x, departure?.position.y+0.1, departure?.position.z),//inicio
+              new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y]+0.1,roadData[NetworkComponent.EL0_Z]),//EL0
+              new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y]+0.1,roadData[NetworkComponent.ROAD_Z]),//PM
+              new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y]+0.1,roadData[NetworkComponent.EL1_Z]),//EL1
+              new Vector3(arrival?.position.x, arrival?.position.y+0.1, arrival?.position.z),//fim
+            ]);
 
 
-        const time = .0002 * performance.now();
-        const points = path.getPoint(time);
+          const time = .0002 * performance.now();
+          const points = path.getPoint(time);
 
 
-        if (arrival?.position.x != undefined && departure?.position.x != undefined) {
-          /* if(Math.abs(departure?.position.x) - Math.abs(points.x) <0.010 && Math.abs(departure?.position.y) - Math.abs(points.y) <0.010 && Math.abs(departure?.position.z) - Math.abs(points.z) <0.010){
+          if (arrival?.position.x != undefined && departure?.position.x != undefined) {
+            /* if(Math.abs(departure?.position.x) - Math.abs(points.x) <0.010 && Math.abs(departure?.position.y) - Math.abs(points.y) <0.010 && Math.abs(departure?.position.z) - Math.abs(points.z) <0.010){
 
-           }*/
-          truck?.position?.set(points.x, points.y, points.z);
+             }*/
+            truck?.position?.set(points.x, points.y, points.z);
 
-          console.log("Departure  : " + departure?.position.x + " " + departure?.position.y + " " + departure?.position.z)
-          console.log("Arrival  : " + arrival?.position.x + " " + arrival?.position.y + " " + arrival?.position.z)
-          console.log("=========================")
-          console.log("Truck :" + truck.position.x + " " + truck.position.y + " " + truck.position.z)
-          console.log("\n")
+            console.log("Departure  : " + departure?.position.x + " " + departure?.position.y + " " + departure?.position.z)
+            console.log("Arrival  : " + arrival?.position.x + " " + arrival?.position.y + " " + arrival?.position.z)
+            console.log("=========================")
+            console.log("Truck :" + truck.position.x + " " + truck.position.y + " " + truck.position.z)
+            console.log("\n")
 
-          if (parseInt(Math.abs(arrival?.position.x).toFixed(2)) == parseInt(Math.abs(truck?.position.x).toFixed(2)) && parseInt(Math.abs(arrival?.position.y).toFixed(2)) == parseInt(Math.abs(truck?.position.y).toFixed(2)) && parseInt(Math.abs(arrival?.position.z).toFixed(2)) == parseInt(Math.abs(truck?.position.z).toFixed(2))) {
-            this.activateMotion = 0;
-            this.truckChek = 0;
-            this.scene.remove(truck);
+            if (parseInt(Math.abs(arrival?.position.x).toFixed(2)) == parseInt(Math.abs(truck?.position.x).toFixed(2)) && parseInt(Math.abs(arrival?.position.y).toFixed(2)) == parseInt(Math.abs(truck?.position.y).toFixed(2)) && parseInt(Math.abs(arrival?.position.z).toFixed(2)) == parseInt(Math.abs(truck?.position.z).toFixed(2))) {
+              this.activateMotion = 0;
+              this.scene.remove(truck);
+            }
           }
         }
       }
@@ -425,25 +417,15 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
   onClick() {
-    /*this.addTruck();
+    this.addTruck();
 
     this.activateMotion=1;
-    */
+
 
   }
 
   onMouseMove(event: MouseEvent) {
 
-  }
-
-
-  public getRouteByWarehouses(ware1:any,ware2:any):Route | null{
-    for(let i=0;i<this.routes.length;i++){
-      if(ware1.warehouseIdentifier==this.routes[i].arrivalId && ware2.warehouseIdentifier==this.routes[i].departureId||ware1.warehouseIdentifier==this.routes[i].departureId && ware2.warehouseIdentifier==this.routes[i].arrivalId){
-        return this.routes[i];
-      }
-    }
-    return null;
   }
 
 
@@ -464,6 +446,54 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     }
   }
 
+  //Auxiliar Methods
+  public importLoaders(){
+    const loaderWare = new GLTFLoader();
+    loaderWare.load('/assets/network/warehouse.glb', (gltf) => {
+      gltf.scene.scale.set(0.25, 0.25, 0.25);
+      this.warehouse3D=gltf.scene;
+    }, undefined, function (error) {
+
+      console.error(error);
+    });
+    const loaderTruck = new GLTFLoader();
+    loaderTruck.load('/assets/network/Truck.glb', (gltf) => {
+      gltf.scene.scale.set(0.4, 0.4, 0.4);
+      this.truck3D=gltf.scene;
+    }, undefined, function (error) {
+
+      console.error(error);
+    });
+    this.roundaboutTexture=new THREE.TextureLoader().load('assets/network/rotunda.jpg')
+
+    this.elemLigTexture=new THREE.TextureLoader().load('assets/network/road.jpg')
+    this.elemLigTexture.anisotropy = 16;
+    this.elemLigTexture.wrapS = this.elemLigTexture.wrapT = THREE.MirroredRepeatWrapping;
+    this.elemLigTexture.minFilter = THREE.LinearFilter;
+    this.elemLigTexture.magFilter = THREE.LinearFilter;
+    this.elemLigTexture.generateMipmaps = false;
+    this.elemLigTexture.needsUpdate = true;
+
+    this.roadTexture=new THREE.TextureLoader().load('assets/network/road1.jpg')
+    this.roadTexture.anisotropy = 16;
+    this.roadTexture.wrapS = this.roadTexture.wrapT = THREE.MirroredRepeatWrapping;
+    this.roadTexture.minFilter = THREE.LinearFilter;
+    this.roadTexture.magFilter = THREE.LinearFilter;
+    this.roadTexture.generateMipmaps = false;
+    this.roadTexture.needsUpdate = true;
+  }
+
+
+  public getRouteByWarehouses(ware1Identifier:any,ware2Identifier:any):Route | null{
+    for(let i=0;i<this.routes.length;i++){
+      if(ware1Identifier==this.routes[i].arrivalId  && ware2Identifier==this.routes[i].departureId){
+        return this.routes[i];
+      }else if(ware1Identifier==this.routes[i].departureId && ware2Identifier==this.routes[i].arrivalId){
+        return this.routes[i];
+      }
+    }
+    return null;
+  }
 
   public scrollAutomaticDelivery(el: HTMLElement) {
 
