@@ -2,7 +2,15 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import * as THREE from "three";
 import { ActivatedRoute, Router } from "@angular/router";
 import TextSprite from "@seregpie/three.text-sprite";
-import {CatmullRomCurve3, Group, Object3D, Vector3} from 'three';
+import {
+  CatmullRomCurve3,
+  Group,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
+  Object3D,
+  TextureLoader,
+  Vector3
+} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
@@ -28,7 +36,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   @Input() public cameraZ: number = 400; //* Aproximação da câmara || Coordenada Z
   @Input() public fieldOfView: number = 5;  //* Distância da câmara
   @Input('nearClipping') public nearClippingPlane: number = 1;//* Proximidade do plano
-  @Input('farClipping') public farClippingPlane: number = 2000;//* Afastamento do plano
+  @Input('farClipping') public farClippingPlane: number = 30000;//* Afastamento do plano
 
 
   private renderer!: THREE.WebGLRenderer;
@@ -38,6 +46,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private warehouses:any[]=[];
   private routes:Route[]=[];
   private trucks:Truck[]=[];
+
+  private skyBoxTexture:THREE.Texture;
 
   private warehouseBaseGeometry = new THREE.CylinderGeometry(5, 5, 0.22, 64);
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
@@ -103,14 +113,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.nearClippingPlane,
       this.farClippingPlane
     );
+    //fog
+   // this.scene.fog = new THREE.Fog(0xFFFFFF, 10,5000);
+
     this.camera.position.z = this.cameraZ;
-    //  this.camera.lookAt(new Vector3(0,-26.359,0));
     this.scene.add(this.camera);
 
+    //this.addSkybox();
     this.addWarehouses()
     this.addLights()
   }
-
 
 
   private startRenderingLoop() {
@@ -122,20 +134,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     //definir janela
     this.renderer.setSize(window.innerWidth,window.innerHeight);
 
-    /*
-    this.renderer.shadowMap.enabled=true;
-    this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-
-    const ground = new THREE.Mesh(
-      new THREE.PlaneGeometry(2000, -100, 80, 80),
-      new THREE.MeshStandardMaterial({
-          color: 0x808080,
-        }));
-    ground.castShadow = false;
-    ground.receiveShadow = true;
-    ground.rotation.x = -Math.PI / 2;
-    this.scene.add (ground);*/
-
+    //ShadowMap para permitir Sombras
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     //Orbit Controls
     let controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -150,7 +151,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     (function render() {
       requestAnimationFrame(render);
 
-      let truck=component.scene.getObjectByName("TruckyBlue");
+      let truck=component.scene.getObjectByName(component.choiceTruck);
 
 
       //Render truck Movement animation
@@ -181,7 +182,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[2]);
 
       base.name=this.warehouses[i].warehouseIdentifier;
-
+      base.castShadow=true;
+      base.receiveShadow=true;
       //Nomes cidades
       let sprite=new TextSprite({ text: this.warehouses[i].designation,alignment: 'left',
         color: '#000000',
@@ -218,12 +220,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
         elemLig0Mesh.position.set(ware0.position.x+ this.warehouseBaseGeometry.parameters.radiusTop*Math.cos(teta0),ware0.position.y,ware0.position.z-this.warehouseBaseGeometry.parameters.radiusTop*Math.sin(teta0));
         elemLig0Mesh.rotateY(teta0)
+        elemLig0Mesh.castShadow=true;
+        elemLig0Mesh.receiveShadow=true;
         this.scene.add(elemLig0Mesh)
 
 
         let elemLig1Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
         elemLig1Mesh.position.set(ware1.position.x+ this.warehouseBaseGeometry.parameters.radiusTop*Math.cos(teta1),ware1.position.y,ware1.position.z-this.warehouseBaseGeometry.parameters.radiusTop*Math.sin(teta1));
         elemLig1Mesh.rotateY(teta1)
+        elemLig1Mesh.castShadow=true;
+        elemLig1Mesh.receiveShadow=true;
         this.scene.add(elemLig1Mesh)
 
         let roadMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
@@ -233,9 +239,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         let roadGeometry =new THREE.BoxGeometry(2, 0.20,  Math.sqrt(Math.pow(elemLig0Mesh.position.x-elemLig1Mesh.position.x,2)+Math.pow(elemLig0Mesh.position.y-elemLig1Mesh.position.y,2)+Math.pow(elemLig0Mesh.position.z-elemLig1Mesh.position.z,2)));      let roadMesh=new THREE.Mesh(roadGeometry,roadMaterial);
         //posiçao conforme o ponto medio entre os elementos de ligaçao
         roadMesh.position.set((elemLig0Mesh.position.x+elemLig1Mesh.position.x)/2,(elemLig0Mesh.position.y+elemLig1Mesh.position.y)/2,(elemLig0Mesh.position.z+elemLig1Mesh.position.z)/2);
-
+        roadMesh.castShadow=true;
+        roadMesh.receiveShadow=true;
         this.scene.add(roadMesh)
-
 
         let beta =Math.asin((elemLig0Mesh.position.y-elemLig1Mesh.position.y)/roadGeometry.parameters.depth);
 
@@ -255,12 +261,11 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     if(ware0!=null&&ware1!=null){
       const truck3D = this.truck3D.clone();
-      truck3D.name = "TruckyBlue";
+      truck3D.name = this.choiceTruck;
       truck3D.position.set(ware0?.position.x+0.3, ware0.position.y, ware0.position.z);
 
       let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0.name, ware1.name)?.routeId);
       if(roadData!=null) {
-        console.log("Aquiiiiiiiiiii "+ roadData[NetworkComponent.BETA])
         truck3D.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.OMEGA] , 0, "ZYX")
         this.scene.add(truck3D);
       }
@@ -293,9 +298,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
           if (arrival?.position.x != undefined && departure?.position.x != undefined) {
-            /* if(Math.abs(departure?.position.x) - Math.abs(points.x) <0.010 && Math.abs(departure?.position.y) - Math.abs(points.y) <0.010 && Math.abs(departure?.position.z) - Math.abs(points.z) <0.010){
 
-             }*/
             truck?.position?.set(points.x, points.y, points.z);
 
             console.log("Departure  : " + departure?.position.x + " " + departure?.position.y + " " + departure?.position.z)
@@ -377,7 +380,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private addLights(){
     //*Light
-    const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
+    /*const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
     light1.position.set(-window.innerWidth, 0, 0);
     light1.castShadow=true;
     this.scene.add(light1);
@@ -395,13 +398,13 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     const light4 = new THREE.PointLight(0xFFFFFF, 1, 10000);
     light4.position.set(0, window.innerHeight, 0);
     light4.castShadow=true;
-    this.scene.add(light4);
+    this.scene.add(light4);*/
 
-    const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
+    const light_amb = new THREE.AmbientLight(0xffffff, 1);
     this.scene.add(light_amb);
 
-    const focusLight = new THREE.SpotLight(0xffffff, 1);
-    this.camera.add(focusLight);
+    /*const focusLight = new THREE.SpotLight(0xffffff, 1);
+    this.camera.add(focusLight);*/
   }
 
   private static getCoordinates(lat:number, lon:number, alt: number):any {
@@ -448,9 +451,13 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   //Auxiliar Methods
   public importLoaders(){
+    this.skyBoxTexture=new THREE.TextureLoader().load('assets/network/sky.jpg');
+
     const loaderWare = new GLTFLoader();
     loaderWare.load('/assets/network/warehouse.glb', (gltf) => {
       gltf.scene.scale.set(0.25, 0.25, 0.25);
+      gltf.scene.castShadow=true;
+      gltf.scene.receiveShadow=true;
       this.warehouse3D=gltf.scene;
     }, undefined, function (error) {
 
@@ -459,6 +466,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     const loaderTruck = new GLTFLoader();
     loaderTruck.load('/assets/network/Truck.glb', (gltf) => {
       gltf.scene.scale.set(0.4, 0.4, 0.4);
+      gltf.scene.castShadow=true;
+      gltf.scene.receiveShadow=true;
       this.truck3D=gltf.scene;
     }, undefined, function (error) {
 
