@@ -21,7 +21,7 @@
       </div>
 
       <div #listTrucksSection>
-        <app-list-truck (getTruckLicencePlateEvent)="choiceTruck=$event" ></app-list-truck>
+        <app-list-truck  (getTruckLicencePlateEvent)="choiceTruck=$event" [networkChecker]="checkerTruck" ></app-list-truck>
       </div>
 
       <div #listDeliveries>

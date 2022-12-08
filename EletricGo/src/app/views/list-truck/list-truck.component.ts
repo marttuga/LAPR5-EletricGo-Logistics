@@ -9,6 +9,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'; 
 })
 export class ListTruckComponent implements OnInit {
   @Output() getTruckLicencePlateEvent = new EventEmitter<string>();
+  @Input() networkChecker=0;
 
   trucks: Truck[];
   truck:Truck;
@@ -16,14 +17,21 @@ export class ListTruckComponent implements OnInit {
   searchString: string;
   chosenTruck:string;
 
-
   constructor( private truckService: TrucksService) {
 
 }
 
 ngOnInit(): void {
   this.getTrucks();
+  console.log(this.networkChecker+"AQUIIII")
+
+}
+
+  ngAfterViewInit(): void {
+   this.turnOn();
+
   }
+
 
   public getTruckLicencePlate(value: string) {
     this.chosenTruck=value;
@@ -32,13 +40,36 @@ ngOnInit(): void {
 
   public getTrucks():void{
     this.truckService.getTrucks().subscribe(data => {console.log(data);
-      this.trucks=data});
+      this.trucks=data
+
+    });
   }
 
 public getTruck():void{
   this.truckService.getTruck(this.licencePlate).subscribe(data => {console.log(data);
     this.truck=data});
 }
+  public turnOn() {
+    let element1 = document.getElementById("ARQSI");
+    let element2 = document.getElementById("SGRAI");
+    console.log(this.networkChecker+"AQUIIII")
+    if (element1 != null&&element2!=null) {
+      if (this.networkChecker == 1) {
+        element1.style.display = "none"
+        element2.style.display = "block"
+        console.log("OP1")
+
+      } else {
+        element1.style.display = "block"
+        element2.style.display = "none"
+        console.log("OP2")
+
+      }
+    }else {
+      console.log("errouuu")
+    }
+  }
+
 
 
 }
