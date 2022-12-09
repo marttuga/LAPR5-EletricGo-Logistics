@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as THREE from "three";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import TextSprite from "@seregpie/three.text-sprite";
 import {CatmullRomCurve3, Group, MeshBasicMaterial, Object3D, Vector3} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -50,6 +50,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private truck3D:Group;
 
   private activateMotion=0;
+  private isAutomaticMovement=0;
 
   private roadsData = new Map<string, number[]>([]);//Experimentar com array bidimensional
   private static TETA_0=0;private static TETA_1=1;
@@ -111,7 +112,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     this.camera.position.z = this.cameraZ;
     this.scene.add(this.camera);
 
-   // this.addSkybox();
+    //this.addSkybox();
     this.addBackgroundSound();
     this.addWarehouses()
     this.addLights()
@@ -275,11 +276,25 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       if(roadData!=null) {
         truck3D.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.OMEGA] , 0, "ZYX")
         this.scene.add(truck3D);
-        this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
+        if(this.isAutomaticMovement==1){
+          this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
+          this.isAutomaticMovement=0;
+        }
       }
     }
   }
 
+  public startAutomaticMovement(){
+    let x3=document.getElementById("Option3");
+    let z=document.getElementById("delivery");
+    if (x3!=null && z!=null) {
+      if (x3.style.display === "block" &&z.style.display === "none") {
+        z.style.display = "block";
+        x3.style.display = "none";
+        this.activateMotion=1;
+      }
+    }
+  }
 
   private automaticMovement() {
     //Automatic truck movement
@@ -303,13 +318,13 @@ export class NetworkComponent implements OnInit, AfterViewInit {
               new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),//PM
               new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2),//PM(EL1-PM)
               new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),//EL1
-              new Vector3(wareArrival?.position.x, wareArrival?.position.y+0.1, wareArrival?.position.z),//fim
+              new Vector3(wareArrival?.position.x, wareArrival?.position.y, wareArrival?.position.z),//fim
             ]);
 
             pathsData.set(this.activeTrucks[i].name,path)
 
-
             //verificar chegada a ElemLig0 e dar a inclinacao
+
 
 
             //verificar chegada a ElemLig1 e dar a inclinacao
@@ -445,10 +460,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
   onClick() {
-    this.addTruck();
-
-    this.activateMotion=1;
-
 
   }
 
@@ -456,23 +467,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   }
 
-
-  public makeDelivery() {
-    let x1 = document.getElementById("Option1");
-    let x2 = document.getElementById("Option2");
-
-    let y=document.getElementById("navbar")
-    let z=document.getElementById("delivery");
-
-    if (x1!=null && x2!=null && y!=null&&z!=null) {
-      if (x1.style.display === "none" &&x2.style.display === "none") {
-        x1.style.display = "block";
-        x2.style.display = "block";
-        //   y.style.height ="80px";
-        z.style.display="none"
-      }
-    }
-  }
 
   //Auxiliar Methods
   public importLoaders(){
@@ -529,9 +523,24 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     return null;
   }
 
+  public makeDelivery() {
+    let x1 = document.getElementById("Option1");
+    let x2 = document.getElementById("Option2");
+
+    let z=document.getElementById("delivery");
+
+    if (x1!=null && x2!=null&&z!=null) {
+      if (x1.style.display === "none" &&x2.style.display === "none") {
+        x1.style.display = "block";
+        x2.style.display = "block";
+        //   y.style.height ="80px";
+        z.style.display="none"
+      }
+    }
+  }
+
   public scrollAutomaticDelivery(el: HTMLElement) {
-
-
+    this.isAutomaticMovement=1;
     el.scrollIntoView({behavior: 'smooth'});
 
   }
@@ -541,7 +550,26 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     el.scrollIntoView({behavior: 'smooth'});
 
   }
+  public scrollCanvas(el: HTMLElement) {
+    let x1 = document.getElementById("Option1");
+    let x2 = document.getElementById("Option2");
+    let x3 = document.getElementById("Option3");
+
+    if (x1!=null && x2!=null&&x3!=null) {
+      if (x1.style.display === "block" &&x2.style.display === "block") {
+        x1.style.display = "none";
+        x2.style.display = "none";
+        x3.style.display="block"
+        this.addTruck();
+      }
+    }
+    el.scrollIntoView({behavior: 'smooth'});
+
+  }
+
+
 }
+
 
 
 

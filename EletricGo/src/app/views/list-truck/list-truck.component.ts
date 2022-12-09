@@ -1,6 +1,5 @@
 import {TrucksService} from "../../services/node/truck.service";
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';  import {ActivatedRoute, Router} from "@angular/router";
-  import {Observable} from "rxjs";
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-list-truck',
@@ -23,8 +22,6 @@ export class ListTruckComponent implements OnInit {
 
 ngOnInit(): void {
   this.getTrucks();
-  console.log(this.networkChecker+"AQUIIII")
-
 }
 
   ngAfterViewInit(): void {
@@ -52,25 +49,15 @@ public getTruck():void{
   public turnOn() {
     let element1 = document.getElementById("ARQSI");
     let element2 = document.getElementById("SGRAI");
-    console.log(this.networkChecker+"AQUIIII")
     if (element1 != null&&element2!=null) {
       if (this.networkChecker == 1) {
         element1.style.display = "none"
         element2.style.display = "block"
-        console.log("OP1")
-
       } else {
         element1.style.display = "block"
         element2.style.display = "none"
-        console.log("OP2")
-
       }
-    }else {
-      console.log("errouuu")
     }
   }
-
-
-
 }
 

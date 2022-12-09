@@ -10,6 +10,7 @@
 
        <li id="Option1" style="display: none"> <a (click)="scrollManualDelivery(listTrucksSection)"  >Manual Delivery</a></li>
       <li id="Option2" style="display: none"> <a (click)="scrollAutomaticDelivery(listTrucksSection)">Automatic Delivery</a></li>
+      <li id="Option3" style="display: none"> <a (click)="startAutomaticMovement()">Start</a></li>
     </ul>
   </nav>
 
@@ -24,9 +25,11 @@
         <app-list-truck  (getTruckLicencePlateEvent)="choiceTruck=$event" [networkChecker]="checkerTruck" ></app-list-truck>
       </div>
 
-      <div #listDeliveries>
-        <app-list-deliveries></app-list-deliveries>
+      <div>
+        <!-- HTML !-->
+        <button class="button-73" role="button" (click)="scrollCanvas(canvasSection)">Start</button>
       </div>
+
     </div>
   </div>
 
