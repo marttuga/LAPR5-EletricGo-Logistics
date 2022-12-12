@@ -3,8 +3,8 @@ import IFleetPlaningDTO from "../../dto/IFleetPlaningDTO";
 
 export default interface IFleetPlaningService  {
   getBestRoute(data: string,camiao:string): Promise<Result<{viagem : string[]}>> 
-  getNearestWarehouse(data: string): Promise<Result<any[]>>
-  getRouteGreaterMass(data: string): Promise<Result<any[]>> 
-  getRouteBestRelation(data: string): Promise<Result<any[]>> 
+  getNearestWarehouse(data: string): Promise<Result<{viagem : string[]}>> 
+  getRouteGreaterMass(data: string): Promise<Result<{viagem : string[]}>> 
+  getRouteBestRelation(data: string): Promise<Result<{viagem : string[]}>> 
   createPlaning( fleetPlaningDTO: IFleetPlaningDTO): Promise<Result<IFleetPlaningDTO>>
   }

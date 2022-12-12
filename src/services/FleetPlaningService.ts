@@ -25,16 +25,16 @@ export default class FleetPlaningService implements IFleetPlaningService {
 
   public async getNearestWarehouse(
     data: string
-  ): Promise<Result<any[]>> {
+  ): Promise<Result<{viagem : string[]}>> {
     try {
       const camiao = "eTruck01";
 
-      const melhorViagem: any[] = await this.planeamentoRepo.getNearestWarehouse(
+      const melhorViagem = await this.planeamentoRepo.getNearestWarehouse(
         data,
         camiao
       );
 
-      return Result.ok<any[]>(melhorViagem);
+      return Result.ok<{viagem : string[]}>(melhorViagem);
     } catch (e) {
       throw e;
     }
@@ -42,16 +42,16 @@ export default class FleetPlaningService implements IFleetPlaningService {
 
   public async getRouteGreaterMass(
     data: string
-  ): Promise<Result<any[]>> {
+  ): Promise<Result<{viagem : string[]}>>  {
     try {
       const camiao = "eTruck01";
 
-      const melhorViagem: any[] = await this.planeamentoRepo.getRouteGreaterMass(
+      const melhorViagem = await this.planeamentoRepo.getRouteGreaterMass(
         data,
         camiao
       );
 
-      return Result.ok<any[]>(melhorViagem);
+      return Result.ok<{viagem : string[]}>(melhorViagem);
     } catch (e) {
       throw e;
     }
@@ -59,16 +59,16 @@ export default class FleetPlaningService implements IFleetPlaningService {
 
   public async getRouteBestRelation(
     data: string
-  ): Promise<Result<any[]>> {
+  ):Promise<Result<{viagem : string[]}>>  {
     try {
       const camiao = "eTruck01";
 
-      const melhorViagem: any[] = await this.planeamentoRepo.getRouteBestRelation(
+      const melhorViagem = await this.planeamentoRepo.getRouteBestRelation(
         data,
         camiao
       );
 
-      return Result.ok<any[]>(melhorViagem);
+      return Result.ok<{viagem : string[]}>(melhorViagem);
     } catch (e) {
       throw e;
     }
