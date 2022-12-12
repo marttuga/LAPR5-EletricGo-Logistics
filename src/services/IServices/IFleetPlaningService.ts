@@ -2,7 +2,7 @@
 import IFleetPlaningDTO from "../../dto/IFleetPlaningDTO";
 
 export default interface ITruckService  {
-  getBestRoute(data: string): Promise<Result<any[]>> 
+  getBestRoute(data: string,camiao:string): Promise<Result<any[]>> 
   getNearestWarehouse(data: string): Promise<Result<any[]>>
   getRouteGreaterMass(data: string): Promise<Result<any[]>> 
   getRouteBestRelation(data: string): Promise<Result<any[]>> 

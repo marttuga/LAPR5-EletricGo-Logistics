@@ -16,7 +16,7 @@ export default class FleetPlaningController implements IFleetPlaningController {
 		try {
   
 			//const data = req.params.data;
-			const planeamentoOrError = await this.planningServiceInstance.getBestRoute(req.params.data);
+			const planeamentoOrError = await this.planningServiceInstance.getBestRoute(req.params.date,req.params.truckId);
 			
 			const planeamentoDTO = planeamentoOrError;
 

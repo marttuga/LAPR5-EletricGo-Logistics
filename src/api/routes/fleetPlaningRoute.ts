@@ -12,7 +12,7 @@ export default (app: Router) => {
 
 	const ctrl = Container.get(config.controllers.fleetPlaning.name) as IFleetPlaningController;
 
-	planningRoute.get('/getBestRoute/:date',
+	planningRoute.get('/getBestRoute/:date/:truckId',
 		(req, res, next) => ctrl.getBestRoute(req, res, next),);
 
 

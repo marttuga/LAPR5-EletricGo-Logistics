@@ -10,9 +10,8 @@ import IFleetPlaningService from "./IServices/IFleetPlaningService";
 export default class FleetPlaningService implements IFleetPlaningService {
   constructor(@Inject(config.repos.fleetPlaning.name) private planeamentoRepo) {}
 
-  public async getBestRoute(data: string): Promise<Result<any[]>> {
+  public async getBestRoute(data: string,camiao:string): Promise<Result<any[]>> {
     try {
-      const camiao = "eTruck01";
 
       const melhorViagem: any[] = await this.planeamentoRepo.getBestRoute(
         data,
