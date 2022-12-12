@@ -40,11 +40,7 @@ celebrate({
 (req, res, next) => ctrl.updateTruck(req, res, next) );
    
 
-    truck.get(
-    '/getTruck/:licencePlate',
- 
-    (req, res, next) => ctrl.getLicencePlate(req, res, next),
-  );
+truck.get('/getTruck/:licencePlate',(req, res, next) => ctrl.getLicencePlate(req, res, next),);
 
   truck.get('/getAll', (req, res, next) => ctrl.getTrucks(req, res, next));
 

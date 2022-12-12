@@ -12,23 +12,16 @@ export default (app: Router) => {
 
 	const ctrl = Container.get(config.controllers.fleetPlaning.name) as IFleetPlaningController;
 
-	planningRoute.get('/getBestRoute',
-		celebrate({
-			body: Joi.object({
-				truckId: Joi.string().required(),
-				date: Joi.string().required(),
-				
-			})
-		}),
-		(req, res, next) => ctrl.getBestRoute(req, res, next));
+	planningRoute.get('/getBestRoute/:date',
+		(req, res, next) => ctrl.getBestRoute(req, res, next),);
 
 
 
 planningRoute.get('/getNearestWarehouse',
 		celebrate({
-			body: Joi.object({
+			body: Joi.object({date: Joi.string().required(),
 				truckId: Joi.string().required(),
-				date: Joi.string().required(),
+				
 				
 			})
 		}),
@@ -37,9 +30,9 @@ planningRoute.get('/getNearestWarehouse',
 
 		planningRoute.get('/getRouteGreaterMass',
 		celebrate({
-			body: Joi.object({
+			body: Joi.object({date: Joi.string().required(),
 				truckId: Joi.string().required(),
-				date: Joi.string().required(),
+				
 			
 			})
 		}),
@@ -49,14 +42,14 @@ planningRoute.get('/getNearestWarehouse',
 
 		planningRoute.get('/getRouteBestRelation',
 		celebrate({
-			body: Joi.object({
+			body: Joi.object({date: Joi.string().required(),
 				truckId: Joi.string().required(),
-				date: Joi.string().required(),
+				
 			})
 		}),
 		(req, res, next) => ctrl.getRouteBestRelation(req, res, next));
 
-	planningRoute.post('/createPlanning',
+	planningRoute.post('/createPlaning',
 		celebrate({
 			body: Joi.object({
 				fleetPlaningId: Joi.string().required(),
@@ -65,6 +58,6 @@ planningRoute.get('/getNearestWarehouse',
 				route: Joi.array().required(),
 			})
 		}),
-		(req, res, next) => ctrl.createPlanning(req, res, next));
+		(req, res, next) => ctrl.createPlaning(req, res, next));
 
 } 

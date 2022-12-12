@@ -76,7 +76,7 @@ export default class FleetPlaningService implements IFleetPlaningService {
     }
   }
 
-  public async createPlanning( fleetPlaningDTO: IFleetPlaningDTO): Promise<Result<IFleetPlaningDTO>> {
+  public async createPlaning( fleetPlaningDTO: IFleetPlaningDTO): Promise<Result<IFleetPlaningDTO>> {
    
       const truckOrError = await FleetPlaning.create(fleetPlaningDTO);
       if (truckOrError.isFailure) {

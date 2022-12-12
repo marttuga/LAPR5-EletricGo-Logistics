@@ -15,11 +15,11 @@ export default class FleetPlaningController implements IFleetPlaningController {
 	public async  getBestRoute(req: Request, res: Response, next: NextFunction) {
 		try {
   
-			const data = req.params.data;
-  
-			const planeamentoOrError = await this.planningServiceInstance.getBestRoute(data) ;
-  
+			//const data = req.params.data;
+			const planeamentoOrError = await this.planningServiceInstance.getBestRoute(req.params.data);
+			
 			const planeamentoDTO = planeamentoOrError;
+
 			return res.json(planeamentoDTO.getValue()).status(201);
   
 		  } 
@@ -76,10 +76,10 @@ export default class FleetPlaningController implements IFleetPlaningController {
 	  }
   }
 
-  public async createPlanning(req: Request, res: Response, next: NextFunction){
+  public async createPlaning(req: Request, res: Response, next: NextFunction){
 
 	try {
-		const planOrError = (await this.planningServiceInstance.createPlanning(
+		const planOrError = (await this.planningServiceInstance.createPlaning(
 		  req.body as IFleetPlaningDTO,
 		)) as Result<IFleetPlaningDTO>;
 		if (planOrError.isFailure) {

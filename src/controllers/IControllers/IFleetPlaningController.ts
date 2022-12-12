@@ -9,5 +9,5 @@ export default interface IFleetPlaningController {
 
 	getRouteBestRelation(req: Request, res: Response, next: NextFunction);
 	
-	createPlanning(req: Request, res: Response, next: NextFunction);
+	createPlaning(req: Request, res: Response, next: NextFunction);
 } 
