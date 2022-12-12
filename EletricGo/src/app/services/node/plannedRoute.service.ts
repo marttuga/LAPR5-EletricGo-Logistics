@@ -8,14 +8,12 @@ import { map } from 'rxjs/operators';
 })
 export class PlannedRouteService {
 
-  private Url = 'http://localhost:64172/'
+ //Url = 'http://localhost:64172/'
+  Url = 'http://localhost:3000/api/fleetPlaning';
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllRoutesOnDate(date:string){
-    return this.httpClient.get(this.Url + 'getAllRoutesOnDate?date='+date).pipe(
-      map(this.extractData));
-  }
+/*  
 
   getBestRoute(date:string,truck:string){
     return this.httpClient.get(this.Url + 'getBestRoute?date='+date+"&truck="+truck).pipe(
@@ -33,8 +31,52 @@ export class PlannedRouteService {
   }
 
   getRouteBestRelation(date:string,truck:string){
-    return this.httpClient.get(this.Url + 'getRouteBestRelation?date='+date+"&truck="+truck).pipe(
+    return this.httpClient.get(this.Url + 'getRouteBestRelation?date='+date+"&dest="+truck).pipe(
       map(this.extractData));
+  } */
+
+  
+
+  getBestRoute(date:string,truckId:string){
+    return this.httpClient.get(this.Url + '/getBestRoute/'+ date +'/'+truckId)
+      .pipe(map(this.extractData)
+      );
+
+  }
+
+  getNearestWarehouse(date:string,truckId:string){
+    return this.httpClient.get(this.Url + '/getNearestWarehouse/'+ date +'/'+truckId)
+      .pipe(map(this.extractData)
+      );
+
+
+  }
+
+  
+  getRouteGreaterMass(date:string,truckId:string){
+   
+    return this.httpClient.get(this.Url + '/getRouteGreaterMass'+ date +'/'+truckId)
+      .pipe(map(this.extractData)
+      );
+
+  }
+
+    
+  getRouteBestRelation(date:string,truckId:string){
+  
+    return this.httpClient.get(this.Url + '/getRouteBestRelation'+ date +'/'+truckId)
+      .pipe(map(this.extractData)
+      );
+
+  }
+ 
+  createPlaning(fleetPlaningId: string,truckId:string,date:string,route:string[]) {
+    const body={"fleetPlaningId":fleetPlaningId, "truckId":truckId, "date":date, "route":route};
+    console.log(body);
+    return this.httpClient.post(this.Url + '/createPlaning',body)
+      .pipe(map(this.extractData)
+      );
+
   }
 
 

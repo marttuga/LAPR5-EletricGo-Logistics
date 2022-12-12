@@ -30,12 +30,6 @@ export class GetPlannedRouteComponent implements OnInit {
   }
   submit = false;
 
-  public getAllRoutesOnDate():void{
-    this.plannedRouteService.getAllRoutesOnDate(this.date).subscribe(data => {console.log(data.final_route);
-      this.plannedRoutes=data.final_route});
-      this.submit = !this.submit;
-  }
-
   public getBestRoute():void{
     this.plannedRouteService.getBestRoute(this.date,this.truckId).subscribe(data => {
       this.plannedRoute=data.best_route;
