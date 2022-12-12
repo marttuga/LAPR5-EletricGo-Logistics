@@ -1,19 +1,25 @@
-/* import { Service,Container, Inject, Token} from 'typedi';
+ import { Inject, Service} from 'typedi';
 
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IFleetPlaningPersistence } from '../dataschema/IFleetPlaningPersistence';
 
+import { response } from "express";
 import IFleetPlaningRepo from "../services/IRepos/IFleetPlaningRepo";
 import { FleetPlaning } from "../domain/fleetPlan/fleetPlaning";
 import { FleetPlaningMap } from "../mappers/FleetPlaningMap";
 import { throws } from 'assert';
 import { FleetPlaningId } from '../domain/fleetPlan/fleetPlaningId';
+import { stringify } from 'querystring';
+ import fetch from "node-fetch";
+ import * as http from "http";
+ import * as https from "https";
+
+
 
 
 @Service()
 export default class FleetPlaningRepo implements IFleetPlaningRepo {
-  private models: any;
-
+ 
   constructor(
     @Inject('fleetPlaningSchema') private fleetPlaningSchema : Model<IFleetPlaningPersistence & Document>,
   ) {}
@@ -24,6 +30,11 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
     }
   }
 
+   httpAgent = new http.Agent({});
+
+    httpsAgent = new https.Agent({
+      rejectUnauthorized: false,
+    });
   
 // @ts-ignore
   public async exists(fleetPlaningId: FleetPlaningId | string): Promise<boolean> {
@@ -63,7 +74,6 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
 
         fleetPlaningDocument.truckId = fleetPlaning.props.truckId;
         fleetPlaningDocument.date = fleetPlaning.props.date;
-        fleetPlaningDocument.totalTime = fleetPlaning.props.totalTime;
         fleetPlaningDocument.route =fleetPlaning.props.route;
 
         await fleetPlaningDocument.save();
@@ -83,4 +93,150 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
         return FleetPlaningMap.toDomain(t);
       } else return null;
     }
-} */
+
+
+
+    public async getBestRoute(
+      data: string,
+      camiao: string
+    ): Promise<{
+      viagem: string[];
+    }> {
+      const response = await fetch(
+        "http://localhost:64172/getBestRoute?date=" +
+          data +
+          "&truck=" +
+          camiao,
+        {
+          method: "GET",
+          agent: this.httpAgent,
+        }
+      );
+  
+      const viagem = await response.json();
+  
+      const formattedViagens = [];
+      for (let i = 0; i < viagem[1].length; i++) {
+        const armazemId = viagem[1][i];
+        //const armazemName = await this.getArmazemName((armazemId));
+        formattedViagens.push(armazemId);
+      }
+  
+      return {
+        viagem: formattedViagens,
+      };
+    }
+  
+/*      private async getArmazemName(armazemId: string): Promise<string> {
+     /* type Warehouse={id:string;wharehouseIdentifier:string; designation:string;latitude:number;longitude:number;street:string;doorNumber:number;city:string;zipCode:string;warehouseAltitude:string};
+
+      const res = await fetch(
+        `https://localhost:5001/api/warehouse/${armazemId.toString().padStart(3, "W0")}`,
+        {
+          method: "GET",
+          agent: this.httpsAgent,
+        }
+      );
+       const json =  await res.json();
+      
+      const result: Warehouse =JSON.parse(json);
+      console.log(json); 
+     
+      return result.designation;  */
+     /* const res = await fetch(
+        `https://localhost:5001/api/warehouse/${armazemId.padStart(3, "W0")}`,
+        {
+          method: "GET",
+          agent: this.httpsAgent,
+        }
+      );
+      const json = await res.json();
+      console.log(json);
+      return json.designation.;
+    }   */
+
+
+    public async getNearestWarehouse(
+      data: string,
+      camiao: string
+    ): Promise<{
+      viagem: string[];
+    }> {
+      const response = await fetch(
+        "http://localhost:64172/getNearestWarehouse?date=" + data + "&truck=" + camiao,
+        {
+          method: "GET",
+          agent: this.httpAgent,
+        }
+      );
+  
+      const viagem = await response.json();
+  
+      const formattedViagens = [];
+      for (let i = 0; i < viagem[1].length; i++) {
+        const armazemId = viagem[1][i];
+      //  const armazemName = await this.getArmazemName((armazemId));
+        formattedViagens.push(armazemId);
+      }
+  
+      return {
+        viagem: formattedViagens,
+      };
+    }
+  
+    public async getRouteGreaterMass(
+      data: string,
+      camiao: string
+    ): Promise<{
+      viagem: string[];
+    }> {
+      const response = await fetch(
+        "http://localhost:64172/getRouteGreaterMass?date=" + data + "&truck=" + camiao,
+        {
+          method: "GET",
+          agent: this.httpAgent,
+        }
+      );
+  
+      const viagem = await response.json();
+  
+      const formattedViagens = [];
+      for (let i = 0; i < viagem[1].length; i++) {
+        const armazemId = viagem[1][i];
+        //const armazemName = await this.getArmazemName((armazemId));
+        formattedViagens.push(armazemId);
+      }
+  
+      return {
+        viagem: formattedViagens,
+      };
+    }
+  
+    public async getRouteBestRelation(
+      data: string,
+      camiao: string
+    ): Promise<{
+      viagem: string[];
+    }> {
+      const response = await fetch(
+        "http://localhost:64172/getRouteBestRelation?date=" + data + "&truck=" + camiao,
+        {
+          method: "GET",
+          agent: this.httpAgent,
+        }
+      );
+  
+      const viagem = await response.json();
+  
+      const formattedViagens = [];
+      for (let i = 0; i < viagem[1].length; i++) {
+        const armazemId = viagem[1][i];
+        //const armazemName = await this.getArmazemName(armazemId);
+        formattedViagens.push(armazemId);
+      }
+  
+      return {
+        viagem: formattedViagens,
+      };
+    }
+} 

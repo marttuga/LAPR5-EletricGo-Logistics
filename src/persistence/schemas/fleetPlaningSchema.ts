@@ -1,4 +1,4 @@
-/* import { IFleetPlaningPersistence } from '../../dataschema/IFleetPlaningPersistence';
+import { IFleetPlaningPersistence } from '../../dataschema/IFleetPlaningPersistence';
 import mongoose from 'mongoose';
 
 const FleetPlaning = new mongoose.Schema(
@@ -24,14 +24,6 @@ const FleetPlaning = new mongoose.Schema(
       index: true,
     },
 
-
-    totalTime: {
-      type: String,
-      required: [true, 'Please enter totalTime'],
-      index: true,
-    },
-    
-
     route: {
       type: Array,
       required: [true, 'Please enter route'],
@@ -44,4 +36,4 @@ const FleetPlaning = new mongoose.Schema(
 );
 
 export default mongoose.model<IFleetPlaningPersistence & mongoose.Document>('FleetPlaning', FleetPlaning);
- */
+ 

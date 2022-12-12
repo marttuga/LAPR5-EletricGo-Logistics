@@ -1,69 +1,96 @@
-/* import {Inject, Service} from "typedi";
+import { Service, Inject } from "typedi";
 import config from "../../config";
-import {Result} from "../core/logic/Result";
-
-import fetch=require('node-fetch');
-
+import { Result } from "../core/logic/Result";
+import { FleetPlaning } from "../domain/fleetPlan/fleetPlaning";
 import IFleetPlaningDTO from "../dto/IFleetPlaningDTO";
-import {FleetPlaning} from "../domain/fleetPlan/fleetPlaning";
-import {FleetPlaningId} from "../domain/fleetPlan/fleetPlaningId";
+import { FleetPlaningMap } from "../mappers/FleetPlaningMap";
 import IFleetPlaningService from "./IServices/IFleetPlaningService";
-import {FleetPlaningMap} from "../mappers/FleetPlaningMap";
-import IFleetPlaningRepo from "./IRepos/IFleetPlaningRepo";
 
 @Service()
 export default class FleetPlaningService implements IFleetPlaningService {
-	constructor(@Inject(config.repos.fleetPlaning.name) private planningRepo: IFleetPlaningRepo) {
-	}
+  constructor(@Inject(config.repos.fleetPlaning.name) private planeamentoRepo) {}
 
-	public async createPlanning(planningDTO: IFleetPlaningDTO): Promise<Result<{ planningDTO: IFleetPlaningDTO, token: string }>> {
-    throw new Error('Method not implemented.');
-	
+  public async getBestRoute(data: string): Promise<Result<any[]>> {
+    try {
+      const camiao = "eTruck01";
 
-		/* try {
-			const url = "http://vs576.dei.isep.ipp.pt:2226/Fleetplaning?";
-			const path = url.concat("ls=" + planningDTO.truckId + "&date=" + planningDTO.date + "?heuristica=1");
+      const melhorViagem: any[] = await this.planeamentoRepo.melhorViagem(
+        data,
+        camiao
+      );
 
-			console.log(1)
-			const response = await fetch(path);
-			console.log(2)
-			console.log(response)
-			const date = await response.json();
+      return Result.ok<any[]>(melhorViagem);
+    } catch (e) {
+      throw e;
+    }
+  }
 
-			const planningOrError = await FleetPlaning.create({
-			  fleetPlaningId= FleetPlaningId.create(planningDTO.fleetPlaningId).getValue(),
-        truckId =truckId,
-        date = date,
-        totalTime = totalTime,
-        route = route,
-			});
+  public async getNearestWarehouse(
+    data: string
+  ): Promise<Result<any[]>> {
+    try {
+      const camiao = "eTruck01";
 
-			if (planningOrError.isFailure) {
-				return Result.fail<{ planningDTO: IFleetPlaningDTO, token: string }>(planningOrError.errorValue());
-			}
+      const melhorViagem: any[] = await this.planeamentoRepo.menorDistancia(
+        data,
+        camiao
+      );
 
-			const planningResult = planningOrError.getValue();
+      return Result.ok<any[]>(melhorViagem);
+    } catch (e) {
+      throw e;
+    }
+  }
 
-			await this.planningRepo.save(planningResult);
-			const planningDTOResult = FleetPlaningMap.toDTO(planningResult) as IFleetPlaningDTO;
-			return Result.ok<{ planningDTO: IFleetPlaningDTO, token: string }>({
-				planningDTO: planningDTOResult,
-				token: "Truck created successfully."
-			});
-		} catch (e) {
-			throw e;
-		} */
-/* 	}
+  public async getRouteGreaterMass(
+    data: string
+  ): Promise<Result<any[]>> {
+    try {
+      const camiao = "eTruck01";
 
-	public async getPlanning(query?: any): Promise<Result<IFleetPlaningDTO[]>> {
-		return null;
-	}
+      const melhorViagem: any[] = await this.planeamentoRepo.maiorMassa(
+        data,
+        camiao
+      );
 
-	public async updatePlanning(planningDTO: IFleetPlaningDTO): Promise<Result<{ planningDTO: IFleetPlaningDTO, token: string }>> {
-		return null;
-	}
+      return Result.ok<any[]>(melhorViagem);
+    } catch (e) {
+      throw e;
+    }
+  }
 
-	public async deletePlanning(id: string): Promise<Result<{ planningDTO: IFleetPlaningDTO, token: string }>> {
-		return null;
-	}
-}  */
+  public async getRouteBestRelation(
+    data: string
+  ): Promise<Result<any[]>> {
+    try {
+      const camiao = "eTruck01";
+
+      const melhorViagem: any[] = await this.planeamentoRepo.melhorRelacao(
+        data,
+        camiao
+      );
+
+      return Result.ok<any[]>(melhorViagem);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async createPlanning( fleetPlaningDTO: IFleetPlaningDTO): Promise<Result<IFleetPlaningDTO>> {
+   
+      const truckOrError = await FleetPlaning.create(fleetPlaningDTO);
+      if (truckOrError.isFailure) {
+        return Result.fail<IFleetPlaningDTO>(truckOrError.errorValue());
+      }
+
+      const result = truckOrError.getValue();
+
+      await this.planeamentoRepo.save(result);
+      const dTOResult = FleetPlaningMap.toDTO( result ) as IFleetPlaningDTO;
+
+      return Result.ok<IFleetPlaningDTO>( dTOResult )
+    } catch (e) {
+      throw e;
+    }
+  
+}
