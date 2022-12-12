@@ -11,13 +11,13 @@ import IFleetPlaningRepo from "./IRepos/IFleetPlaningRepo";
 export default class FleetPlaningService implements IFleetPlaningService {
   constructor(@Inject(config.repos.fleetPlaning.name) private planeamentoRepo : IFleetPlaningRepo) {}
 
-  public async getBestRoute(data: string,camiao:string): Promise<Result<any[]>> {
+  public async getBestRoute(data: string,camiao:string): Promise<Result<{viagem : string[]}>> {
     try {
 
       const melhorViagem = await this.planeamentoRepo.getBestRoute(data, camiao
       );
 
-      return Result.ok<any[]>(melhorViagem);
+      return Result.ok<{viagem : string[]}>(melhorViagem);
     } catch (e) {
       throw e;
     }
