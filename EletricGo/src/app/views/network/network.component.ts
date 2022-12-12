@@ -1,16 +1,13 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as THREE from "three";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import TextSprite from "@seregpie/three.text-sprite";
-import {BoxGeometry, Camera, CatmullRomCurve3, Clock, Matrix4, Mesh, Object3D, PerspectiveCamera, Vector3} from 'three';
+import {CatmullRomCurve3, Group, MeshBasicMaterial, MeshStandardMaterial, Object3D, Vector3} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
 import {RoutesService} from "../../services/node/routes.service";
-import {ListTruckComponent} from "../list-truck/list-truck.component";
 import {TrucksService} from "../../services/node/truck.service";
-
-
 
 @Component({
   selector: 'app-network',
@@ -19,6 +16,10 @@ import {TrucksService} from "../../services/node/truck.service";
 })
 export class NetworkComponent implements OnInit, AfterViewInit {
 
+  public choiceTruck:string;
+  public checkerTruck:number=1
+
+   //tipo do canvas
   @ViewChild('canvas')
   private canvasRef: ElementRef;
 
@@ -26,35 +27,43 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   @Input() public cameraZ: number = 400; //* Aproximação da câmara || Coordenada Z
   @Input() public fieldOfView: number = 5;  //* Distância da câmara
   @Input('nearClipping') public nearClippingPlane: number = 1;//* Proximidade do plano
-  @Input('farClipping') public farClippingPlane: number = 2000;//* Afastamento do plano
+  @Input('farClipping') public farClippingPlane: number = 30000;//* Afastamento do plano
+
 
   private renderer!: THREE.WebGLRenderer;
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
 
-
-
-  //private roundabouts:THREE.Mesh[]=[];
   private warehouses:any[]=[];
   private routes:Route[]=[];
   private trucks:Truck[]=[];
+  private activeTrucks:Object3D[]=[];
+
+  private skyBoxTexture:THREE.Texture;
+  private skyBoxGroundTexture:THREE.Texture;
 
   private warehouseBaseGeometry = new THREE.CylinderGeometry(5, 5, 0.22, 64);
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
+  private warehouse3D: Group;
+  private roundaboutTexture: THREE.Texture ;
+  private elemLigTexture: THREE.Texture ;
+  private roadTexture:THREE.Texture;
+  private truck3D:Group;
 
   private activateMotion=0;
-  private truckChek=0;
-  private roadsData = new Map<string, number[]>([]);
+  private isAutomaticMovement=0;
+
+  private roadsData = new Map<string, number[]>([]);//Experimentar com array bidimensional
   private static TETA_0=0;private static TETA_1=1;
   private static EL0_X=2;private static EL0_Y=3;private static EL0_Z=4;
   private static EL1_X=5;private static EL1_Y=6;private static EL1_Z=7;
   private static ROAD_X=8;private static ROAD_Y=9;private static ROAD_Z=10;
-  private static BETA=11;private static INCLINATION=12;
-
+  private static BETA=11;private static OMEGA=12;
 
   constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService, private routesService:RoutesService,private trucksService:TrucksService) { }
 
   ngOnInit(): void {
+    this.importLoaders();
 
     this.warehousesService.getWarehouses().subscribe(async data=>{
       this.warehouses=data;
@@ -75,13 +84,13 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
   }
 
   private get canvas(): HTMLCanvasElement {
-      return this.canvasRef.nativeElement;
+    return this.canvasRef.nativeElement;
   }
 
+  //tamanho da janela
   private static getAspectRatio() {
     return window.innerWidth/ window.innerHeight;
   }
@@ -98,14 +107,34 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.nearClippingPlane,
       this.farClippingPlane
     );
+    //fog
+   // this.scene.fog = new THREE.Fog(0xFFFFFF, 10,5000);
+
     this.camera.position.z = this.cameraZ;
-  //  this.camera.lookAt(new Vector3(0,-26.359,0));
     this.scene.add(this.camera);
 
+    //this.addSkybox();
+    this.addBackgroundSound();
     this.addWarehouses()
     this.addLights()
   }
 
+  private addBackgroundSound(){
+    const listener = new THREE.AudioListener();
+    this.camera.add( listener );
+
+// create a global audio source
+    const sound = new THREE.Audio( listener );
+
+// load a sound and set it as the Audio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load( 'assets/network/audio/Burn it Down.mp3', function( buffer ) {
+      sound.setBuffer( buffer );
+      sound.setLoop( true );
+      sound.setVolume( 0.5 );
+      sound.play();
+    });
+  }
 
 
   private startRenderingLoop() {
@@ -117,44 +146,32 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     //definir janela
     this.renderer.setSize(window.innerWidth,window.innerHeight);
 
-    /*
-    this.renderer.shadowMap.enabled=true;
-    this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-
-    const ground = new THREE.Mesh(
-      new THREE.PlaneGeometry(2000, -100, 80, 80),
-      new THREE.MeshStandardMaterial({
-          color: 0x808080,
-        }));
-    ground.castShadow = false;
-    ground.receiveShadow = true;
-    ground.rotation.x = -Math.PI / 2;
-    this.scene.add (ground);*/
-
+    //ShadowMap para permitir Sombras
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     //Orbit Controls
     let controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-    controls.maxDistance = 1000;//900;
-    controls.minDistance = 50;//100;
-    controls.minAzimuthAngle = -Math.PI/2 ;//Rotação
-    controls.maxAzimuthAngle = Math.PI/2 ;
-
+    controls.maxDistance = 1500;//900 zoom out
+    controls.minDistance = 50;//100 zoom in
+    controls.minAzimuthAngle = -Math.PI/2 ;//Rotação D 90º
+    controls.maxAzimuthAngle = Math.PI/2 ;//Rotação E 90º
+    controls.maxPolarAngle=Math.PI/2 //Rotação Eixo Y 90º
+   // controls.minPolarAngle=Math.PI/2
 
     let component: NetworkComponent = this;
     (function render() {
       requestAnimationFrame(render);
 
-      let truck=component.scene.getObjectByName("TruckyBlue");
-
 
       //Render truck Movement animation
-      component.manualMovement(truck);
+      component.manualMovement();
 
-      component.automaticMovement(truck);
+      component.automaticMovement();
 
 
-            //render perspective camera/graph
+      //janelade visualização
       component.renderer.setViewport(-200, 0, window.innerWidth+200, window.innerHeight);
       component.renderer.setClearColor(0xCADFED, 1);
       component.renderer.render(component.scene, component.camera);
@@ -168,37 +185,31 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
       const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
-      //this.roundabouts[i]=base;
 
       base.position.set(
         NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[0],
         NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[1],
         NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[2]);
 
-       base.name=this.warehouses[i].warehouseIdentifier;
+      base.name=this.warehouses[i].warehouseIdentifier;
+      base.castShadow=true;
+      base.receiveShadow=true;
 
-       let sprite=new TextSprite({ text: this.warehouses[i].designation,alignment: 'left',
-         color: '#000000',
-         fontFamily: '"Times New Roman", Times, serif',
-         fontStyle: 'italic', });
-      sprite.position.setX(base.position.x);
-      sprite.position.setY(base.position.y+3.2);
-      sprite.position.setZ(base.position.z);
+      //Nomes cidades
+      let sprite=new TextSprite({ text: this.warehouses[i].designation,alignment: 'left',
+        color: '#000000',
+        fontFamily: '"Arial", Times, serif',
+        fontStyle: 'italic',});
+      sprite.position.set(base.position.x,base.position.y+3.2,base.position.z);
       this.scene.add(sprite)
 
-      const loader = new GLTFLoader();
-      loader.load('/assets/network/warehouse.glb', (gltf) => {
-        gltf.scene.name = this.warehouses[i].designation;
-        gltf.scene.position.set(base.position.x, base.position.y, base.position.z);
-        gltf.scene.scale.set(0.28, 0.28, 0.28);
-        this.scene.add(gltf.scene);
+      let warehouse3D=this.warehouse3D.clone();
+      warehouse3D.name = this.warehouses[i].designation;
+      warehouse3D.position.set(base.position.x, base.position.y, base.position.z);
+      this.scene.add(warehouse3D);
 
-      }, undefined, function (error) {
-
-        console.error(error);
-      });
       this.scene.add(base);
-      this.warehouseBaseMaterial.map = new THREE.TextureLoader().load('assets/network/rotunda.jpg');
+      this.warehouseBaseMaterial.map = this.roundaboutTexture;
     }
     this.addRoads();
   }
@@ -214,109 +225,142 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         let teta1=Math.PI+teta0;
 
         let elemLigMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-        elemLigMaterial.map= new THREE.TextureLoader().load('assets/network/road.jpg')
+        elemLigMaterial.map= this.elemLigTexture;
         let elemLigGeometry =new THREE.BoxGeometry(0.3, 0.20, 2);
 
         let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
         elemLig0Mesh.position.set(ware0.position.x+ this.warehouseBaseGeometry.parameters.radiusTop*Math.cos(teta0),ware0.position.y,ware0.position.z-this.warehouseBaseGeometry.parameters.radiusTop*Math.sin(teta0));
         elemLig0Mesh.rotateY(teta0)
+        elemLig0Mesh.castShadow=true;
+        elemLig0Mesh.receiveShadow=true;
         this.scene.add(elemLig0Mesh)
 
 
         let elemLig1Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
         elemLig1Mesh.position.set(ware1.position.x+ this.warehouseBaseGeometry.parameters.radiusTop*Math.cos(teta1),ware1.position.y,ware1.position.z-this.warehouseBaseGeometry.parameters.radiusTop*Math.sin(teta1));
         elemLig1Mesh.rotateY(teta1)
+        elemLig1Mesh.castShadow=true;
+        elemLig1Mesh.receiveShadow=true;
         this.scene.add(elemLig1Mesh)
 
         let roadMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-        roadMaterial.map= new THREE.TextureLoader().load('assets/network/road1.jpg')
+        roadMaterial.map= this.roadTexture;
 
         //formula da distancia entre dois pontos
         let roadGeometry =new THREE.BoxGeometry(2, 0.20,  Math.sqrt(Math.pow(elemLig0Mesh.position.x-elemLig1Mesh.position.x,2)+Math.pow(elemLig0Mesh.position.y-elemLig1Mesh.position.y,2)+Math.pow(elemLig0Mesh.position.z-elemLig1Mesh.position.z,2)));      let roadMesh=new THREE.Mesh(roadGeometry,roadMaterial);
         //posiçao conforme o ponto medio entre os elementos de ligaçao
         roadMesh.position.set((elemLig0Mesh.position.x+elemLig1Mesh.position.x)/2,(elemLig0Mesh.position.y+elemLig1Mesh.position.y)/2,(elemLig0Mesh.position.z+elemLig1Mesh.position.z)/2);
-
+        roadMesh.castShadow=true;
+        roadMesh.receiveShadow=true;
         this.scene.add(roadMesh)
-
 
         let beta =Math.asin((elemLig0Mesh.position.y-elemLig1Mesh.position.y)/roadGeometry.parameters.depth);
 
         let omega=teta0+Math.PI/2;
         roadMesh.rotation.set(beta,omega,0, "ZYX")
 
-        this.roadsData.set(<string>this.getRouteByWarehouses(ware0, ware1)?.routeId.toString(),[teta0,teta1,elemLig0Mesh.position.x,elemLig0Mesh.position.y,elemLig0Mesh.position.z,elemLig1Mesh.position.x,elemLig1Mesh.position.y,elemLig1Mesh.position.z,roadMesh.position.x,roadMesh.position.y,roadMesh.position.z,beta,(teta0+Math.PI/2)])
+        this.roadsData.set(this.routes[i].routeId,[teta0,teta1,elemLig0Mesh.position.x,elemLig0Mesh.position.y,elemLig0Mesh.position.z,elemLig1Mesh.position.x,elemLig1Mesh.position.y,elemLig1Mesh.position.z,roadMesh.position.x,roadMesh.position.y,roadMesh.position.z,beta,(teta0+Math.PI/2)])
       }
     }
   }
 
 
   private addTruck(){
-    const ware0 = this.scene.getObjectByName(this.routes[0].departureId);
-    const ware1 = this.scene.getObjectByName(this.routes[0].arrivalId);
 
-    const loader = new GLTFLoader();
-    loader.load('/assets/network/Truck.glb', (gltf) => {
-      gltf.scene.name = "TruckyBlue";
-      gltf.scene.position.set(<number>this.scene.getObjectByName(this.routes[0].departureId)?.position.x, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.y, <number>this.scene.getObjectByName(this.routes[0].departureId)?.position.z);
-      gltf.scene.scale.set(0.4, 0.4, 0.4);
-      let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0, ware1)?.routeId);
+    const ware0 = this.scene.getObjectByName(this.routes[1].departureId);
+    const ware1 = this.scene.getObjectByName(this.routes[1].arrivalId);
+
+    if(ware0!=null&&ware1!=null){
+      const truck3D = this.truck3D.clone();
+      truck3D.name = this.choiceTruck;
+      truck3D.position.set(ware0?.position.x+0.3, ware0.position.y, ware0.position.z);
+
+      let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0.name, ware1.name)?.routeId);
       if(roadData!=null) {
-        gltf.scene.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.INCLINATION] , 0, "ZYX")
-        this.scene.add(gltf.scene);
-        this.truckChek = 1;
+        truck3D.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.OMEGA] , 0, "ZYX")
+        this.scene.add(truck3D);
+        if(this.isAutomaticMovement==1){
+          this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
+          this.isAutomaticMovement=0;
+        }
       }
-    }, undefined, function (error) {
-
-      console.error(error);
-    });
+    }
   }
 
+  public startAutomaticMovement(){
+    let x3=document.getElementById("Option3");
+    let z=document.getElementById("delivery");
+    if (x3!=null && z!=null) {
+      if (x3.style.display === "block" &&z.style.display === "none") {
+        z.style.display = "block";
+        x3.style.display = "none";
+        this.activateMotion=1;
+      }
+    }
+  }
 
-  private automaticMovement(truck:any) {
+  private automaticMovement() {
     //Automatic truck movement
+    if (this.activateMotion == 1 && this.activeTrucks.length!=0) {
+      for(let i=0;i<this.activeTrucks.length;i++){
 
-    if (this.activateMotion == 1 && this.truckChek == 1) {
+        const wareDeparture = this.scene.getObjectByName(this.routes[1].departureId);
+        const wareArrival = this.scene.getObjectByName(this.routes[1].arrivalId);
 
-      const departure = this.scene.getObjectByName(this.routes[0].departureId);
-      const arrival = this.scene.getObjectByName(this.routes[0].arrivalId);
-      let roadData = this.roadsData.get(<string>this.getRouteByWarehouses(departure, arrival)?.routeId);
-      if (roadData!=null) {
-        let path = new CatmullRomCurve3([
-          new Vector3(departure?.position.x, departure?.position.y, departure?.position.z),//inicio
-          new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),//EL0
-          new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),//PM
-          new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),//EL1
-          new Vector3(arrival?.position.x, arrival?.position.y, arrival?.position.z),//fim
-        ]);
+        if(wareDeparture!=null&&wareArrival!=null){
+
+          let roadData = this.roadsData.get(this.routes[1].routeId);
+          if (roadData!=null) {
+
+            let pathsData = new Map<string, CatmullRomCurve3>([]);
+            let path = new CatmullRomCurve3(
+            [
+              new Vector3(wareDeparture?.position.x, wareDeparture?.position.y, wareDeparture?.position.z),//inicio
+              new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),//EL0
+              new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2),//PM(EL0-PM)
+              new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),//PM
+              new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2),//PM(EL1-PM)
+              new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),//EL1
+              new Vector3(wareArrival?.position.x, wareArrival?.position.y, wareArrival?.position.z),//fim
+            ]);
+
+            pathsData.set(this.activeTrucks[i].name,path)
+
+            //verificar chegada a ElemLig0 e dar a inclinacao
 
 
-        const time = .0002 * performance.now();
-        const points = path.getPoint(time);
+
+            //verificar chegada a ElemLig1 e dar a inclinacao
+
+            const time = .0002 * performance.now();
+            const points = pathsData.get(this.activeTrucks[i].name)?.getPoint(time);
 
 
-        if (arrival?.position.x != undefined && departure?.position.x != undefined) {
-          /* if(Math.abs(departure?.position.x) - Math.abs(points.x) <0.010 && Math.abs(departure?.position.y) - Math.abs(points.y) <0.010 && Math.abs(departure?.position.z) - Math.abs(points.z) <0.010){
+            if (points!=undefined) {
 
-           }*/
-          truck?.position?.set(points.x, points.y, points.z);
+              this.activeTrucks[i]?.position?.set(points.x, points.y, points.z);
 
-          console.log("Departure  : " + departure?.position.x + " " + departure?.position.y + " " + departure?.position.z)
-          console.log("Arrival  : " + arrival?.position.x + " " + arrival?.position.y + " " + arrival?.position.z)
-          console.log("=========================")
-          console.log("Truck :" + truck.position.x + " " + truck.position.y + " " + truck.position.z)
-          console.log("\n")
+              console.log("Departure  : " + wareDeparture?.position.x + " " + wareDeparture?.position.y + " " + wareDeparture?.position.z)
+              console.log("Arrival  : " + wareArrival?.position.x + " " + wareArrival?.position.y + " " + wareArrival?.position.z)
+              console.log("=========================")
+              console.log("Truck :" + this.activeTrucks[i].position.x + " " + this.activeTrucks[i].position.y + " " + this.activeTrucks[i].position.z)
+              console.log("\n")
 
-          if (parseInt(Math.abs(arrival?.position.x).toFixed(2)) == parseInt(Math.abs(truck?.position.x).toFixed(2)) && parseInt(Math.abs(arrival?.position.y).toFixed(2)) == parseInt(Math.abs(truck?.position.y).toFixed(2)) && parseInt(Math.abs(arrival?.position.z).toFixed(2)) == parseInt(Math.abs(truck?.position.z).toFixed(2))) {
-            this.activateMotion = 0;
-            this.truckChek = 0;
-            this.scene.remove(truck);
+              if (parseInt(Math.abs(wareArrival?.position.x).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.x).toFixed(2)) && parseInt(Math.abs(wareArrival?.position.y).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.y).toFixed(2)) && parseInt(Math.abs(wareArrival?.position.z).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.z).toFixed(2))) {
+                this.activateMotion = 0;
+                this.scene.remove(this.activeTrucks[i]);
+                this.activeTrucks= this.activeTrucks.filter(obj => obj!= this.activeTrucks[i]);
+              }
+            }
           }
         }
       }
     }
   }
-  private manualMovement(truck:any){
-    if(truck!=undefined) {
+
+
+  private manualMovement(){
+     /*
       document.onkeydown = function (e) {
         switch (e.key) {
           case "a":
@@ -371,46 +415,42 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
           default:break;
         }
-      }
-    }
+
+    }*/
   }
 
 
 
   private addLights(){
     //*Light
-    const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light1.position.set(-window.innerWidth, 0, 0);
-    light1.castShadow=true;
-    this.scene.add(light1);
 
-    const light2 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light2.position.set(window.innerWidth, 0, 0);
-    light2.castShadow=true;
-    this.scene.add(light2);
-
-    const light3 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light3.position.set(0, -window.innerHeight, 0);
-    light3.castShadow=true;
-    this.scene.add(light3);
-
-    const light4 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light4.position.set(0, window.innerHeight, 0);
-    light4.castShadow=true;
-    this.scene.add(light4);
-
-    const light_amb = new THREE.AmbientLight(0x8080ff, 0.01);
+    const light_amb = new THREE.AmbientLight(0xffffff, 0.5);
     this.scene.add(light_amb);
 
-    const focusLight = new THREE.SpotLight(0xffffff, 1);
-    this.camera.add(focusLight);
+    const directLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directLight.castShadow=true;
+   this.camera.add(directLight);
+
+    const spotLight = new THREE.SpotLight(0xffffff, 0.8);
+    spotLight.position.set(0, 500, 40);
+    spotLight.castShadow=true;
+    spotLight.target.position.set(0,0,40);
+    spotLight.shadow.mapSize.width = 2048;
+    spotLight.shadow.mapSize.height = 2048;
+    spotLight.shadow.camera.far =1000;
+    this.scene.add(spotLight);
+    this.scene.add(spotLight.target);
   }
 
   private static getCoordinates(lat:number, lon:number, alt: number):any {
     let coordinatesArr: number[]=[];
-    coordinatesArr[0]=-(((50-(-50))/(8.7613-8.2451))*(lon-8.2451)+(-50));
-    coordinatesArr[1]=((((50-(-50))/(42.1115-40.8387))*(lat-40.8387)+(-50)));
-    coordinatesArr[2]=((((50 / 800) * alt)));
+    const min=-100;
+    const max=100;
+    const med=max/2;
+
+    coordinatesArr[0]=-(((max-(min))/(8.7613-8.2451))*(lon-8.2451)+(min));
+    coordinatesArr[1]=((((med-(-med))/(42.1115-40.8387))*(lat-40.8387)+(-med)));
+    coordinatesArr[2]=((((max / 800) * alt)));
     parseInt( coordinatesArr[0].toFixed(4));
     parseInt( coordinatesArr[1].toFixed(4));
     parseInt( coordinatesArr[2].toFixed(4));
@@ -419,10 +459,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
   onClick() {
-    /*this.addTruck();
-
-    this.activateMotion=1;
-    */
 
   }
 
@@ -431,24 +467,76 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
 
-  public getRouteByWarehouses(ware1:any,ware2:any):Route | null{
+  //Auxiliar Methods
+  public importLoaders(){
+    this.skyBoxTexture=new THREE.TextureLoader().load('assets/network/sky.jpg');
+
+    this.skyBoxGroundTexture=new THREE.TextureLoader().load('assets/network/ground.jpg');
+    this.skyBoxGroundTexture.anisotropy = 16;
+    this.skyBoxGroundTexture.wrapS = this.skyBoxGroundTexture.wrapT = THREE.MirroredRepeatWrapping;
+    this.skyBoxGroundTexture.minFilter = THREE.LinearFilter;
+    this.skyBoxGroundTexture.magFilter = THREE.LinearFilter;
+    this.skyBoxGroundTexture.generateMipmaps = false;
+    this.skyBoxGroundTexture.needsUpdate = true;
+
+    const loaderWare = new GLTFLoader();
+    loaderWare.load('/assets/network/warehouse.glb', (gltf) => {
+      gltf.scene.scale.set(0.25, 0.25, 0.25);
+      gltf.scene.castShadow=true;
+      gltf.scene.receiveShadow=true;
+      this.warehouse3D=gltf.scene;
+    }, undefined, function (error) {
+
+      console.error(error);
+    });
+    const loaderTruck = new GLTFLoader();
+    loaderTruck.load('/assets/network/Truck.glb', (gltf) => {
+      gltf.scene.scale.set(0.4, 0.4, 0.4);
+      gltf.scene.castShadow=true;
+      gltf.scene.receiveShadow=true;
+      this.truck3D=gltf.scene;
+    }, undefined, function (error) {
+
+      console.error(error);
+    });
+    this.roundaboutTexture=new THREE.TextureLoader().load('assets/network/rotunda.jpg')
+
+    this.elemLigTexture=new THREE.TextureLoader().load('assets/network/road.jpg')
+    this.elemLigTexture.anisotropy = 16;
+    this.elemLigTexture.wrapS = this.elemLigTexture.wrapT = THREE.MirroredRepeatWrapping;
+    this.elemLigTexture.minFilter = THREE.LinearFilter;
+    this.elemLigTexture.magFilter = THREE.LinearFilter;
+    this.elemLigTexture.generateMipmaps = false;
+    this.elemLigTexture.needsUpdate = true;
+
+    this.roadTexture=new THREE.TextureLoader().load('assets/network/road1.jpg')
+    this.roadTexture.anisotropy = 16;
+    this.roadTexture.wrapS = this.roadTexture.wrapT = THREE.MirroredRepeatWrapping;
+    this.roadTexture.minFilter = THREE.LinearFilter;
+    this.roadTexture.magFilter = THREE.LinearFilter;
+    this.roadTexture.generateMipmaps = false;
+    this.roadTexture.needsUpdate = true;
+  }
+
+
+  public getRouteByWarehouses(ware1Identifier:any,ware2Identifier:any):Route | null{
     for(let i=0;i<this.routes.length;i++){
-      if(ware1.warehouseIdentifier==this.routes[i].arrivalId && ware2.warehouseIdentifier==this.routes[i].departureId||ware1.warehouseIdentifier==this.routes[i].departureId && ware2.warehouseIdentifier==this.routes[i].arrivalId){
+      if(ware1Identifier==this.routes[i].arrivalId  && ware2Identifier==this.routes[i].departureId){
+        return this.routes[i];
+      }else if(ware1Identifier==this.routes[i].departureId && ware2Identifier==this.routes[i].arrivalId){
         return this.routes[i];
       }
     }
     return null;
   }
 
-
   public makeDelivery() {
     let x1 = document.getElementById("Option1");
     let x2 = document.getElementById("Option2");
 
-    let y=document.getElementById("navbar")
     let z=document.getElementById("delivery");
 
-    if (x1!=null && x2!=null && y!=null&&z!=null) {
+    if (x1!=null && x2!=null&&z!=null) {
       if (x1.style.display === "none" &&x2.style.display === "none") {
         x1.style.display = "block";
         x2.style.display = "block";
@@ -458,10 +546,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   public scrollAutomaticDelivery(el: HTMLElement) {
-
-
+    this.isAutomaticMovement=1;
     el.scrollIntoView({behavior: 'smooth'});
 
   }
@@ -471,7 +557,26 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     el.scrollIntoView({behavior: 'smooth'});
 
   }
+  public scrollCanvas(el: HTMLElement) {
+    let x1 = document.getElementById("Option1");
+    let x2 = document.getElementById("Option2");
+    let x3 = document.getElementById("Option3");
+
+    if (x1!=null && x2!=null&&x3!=null) {
+      if (x1.style.display === "block" &&x2.style.display === "block") {
+        x1.style.display = "none";
+        x2.style.display = "none";
+        x3.style.display="block"
+        this.addTruck();
+      }
+    }
+    el.scrollIntoView({behavior: 'smooth'});
+
+  }
+
+
 }
+
 
 
 

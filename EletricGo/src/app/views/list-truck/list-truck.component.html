@@ -10,27 +10,12 @@
 <body>
     <div id="contentSection">
     <h2>ALL EXISTENT TRUCKS</h2>
+  <!--    <h3>Selected: {{chosenTruck}}</h3>-->
+
+
     </div>
 
-
-      <form>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-addon">
-              <i class="glyphicon glyphicon-search"></i>
-            </div>
-            <!-- <input
-              type="text"
-              class="form-control"
-              name="searchString"
-              placeholder="Type to search..."
-              [(ngModel)]="searchString"
-            /> -->
-          </div>
-        </div>
-      </form>
-
-      <table class="table">
+      <table id="ARQSI" class="table">
         <tr>
           <th><input type="text" class="search-input" placeholder="Licence_Plate" pattern="([A-Za-z]{2}-[0-9]{2}-[A-Za-z]{2})" title="Must be of format XX-00-XX" required [(ngModel)]="searchString">
           </th>
@@ -42,24 +27,61 @@
 
             <!-- <th><input type="number" class="search-input" placeholder="Time" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th> -->
           <th class="text-right"></th>
-          
+
         </tr>
-        <tr
-          *ngFor="let truck of trucks | filter : 'licencePlate': searchString  ; let i = index"
-        >
+
+        <tr *ngFor="let truck of trucks | filter : 'licencePlate': searchString  ; let i = index">
+
           <td class="text-left">{{truck.licencePlate}}</td>
           <td><span>{{truck.tare}}</span></td>
           <td><span>{{truck.capacity}}</span></td>
           <td><span>{{truck.maxBateryCapacity}}</span></td>
           <td><span>{{truck.autonomyFullChargeLoad}}</span></td>
           <td><span>{{truck.timeCharging}}</span></td>
-
-          <!-- <td class="text-left">{{truck.timeCharging}}</td>  -->
-          <td><span><button class="button-21" role="button" id="chooseTruck" style="display: none">Choose</button></span></td>
         </tr>
-
-
       </table>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <table id="SGRAI" class="table">
+      <h2 style="display: inline-block;color: #313f57">Selected Truck:&nbsp;</h2>  <h3  style="display: inline-block">{{chosenTruck}}</h3>
+
+      <tr>
+        <th><input type="text" class="search-input" placeholder="Licence_Plate" pattern="([A-Za-z]{2}-[0-9]{2}-[A-Za-z]{2})" title="Must be of format XX-00-XX" required [(ngModel)]="searchString">
+        </th>
+        <th>Tare</th>
+        <th>Capacity</th>
+        <th>Batery_Capacity</th>
+        <th>Autonomy</th>
+        <th>Time</th>
+
+        <!-- <th><input type="number" class="search-input" placeholder="Time" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th> -->
+        <th class="text-right"></th>
+
+      </tr>
+
+      <tr *ngFor="let truck of trucks | filter : 'licencePlate': searchString  ; let i = index">
+
+        <td class="text-left">{{truck.licencePlate}}</td>
+        <td><span>{{truck.tare}}</span></td>
+        <td><span>{{truck.capacity}}</span></td>
+        <td><span>{{truck.maxBateryCapacity}}</span></td>
+        <td><span>{{truck.autonomyFullChargeLoad}}</span></td>
+        <td><span>{{truck.timeCharging}}</span></td>
+        <td ><span><button  class="button-21" role="button" (click)="getTruckLicencePlate(truck.licencePlate)" >Choose   </button></span></td>
+      </tr>
+    </table>
 
     </body>

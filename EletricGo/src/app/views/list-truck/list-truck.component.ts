@@ -1,6 +1,5 @@
 import {TrucksService} from "../../services/node/truck.service";
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';  import {ActivatedRoute, Router} from "@angular/router";
-  import {Observable} from "rxjs";
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-list-truck',
@@ -8,15 +7,16 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'; 
   styleUrls: ['./list-truck.component.css']
 })
 export class ListTruckComponent implements OnInit {
+  @Output() getTruckLicencePlateEvent = new EventEmitter<string>();
+  @Input() networkChecker=0;
+
   trucks: Truck[];
   truck:Truck;
-licencePlate: string;
-searchString: string;
-searchNumber:number;
+  licencePlate: string;
+  searchString: string;
+  chosenTruck:string;
 
-  constructor( private truckService: TrucksService,
-    private route: ActivatedRoute,
-    private router: Router) {
+  constructor( private truckService: TrucksService) {
 
 }
 
@@ -24,30 +24,40 @@ ngOnInit(): void {
   this.getTrucks();
 }
 
+  ngAfterViewInit(): void {
+   this.turnOn();
 
-public getTrucks():void{
-this.truckService.getTrucks().subscribe(data => {console.log(data);
-this.trucks=data});
-}
+  }
+
+
+  public getTruckLicencePlate(value: string) {
+    this.chosenTruck=value;
+    this.getTruckLicencePlateEvent.emit(value);
+  }
+
+  public getTrucks():void{
+    this.truckService.getTrucks().subscribe(data => {console.log(data);
+      this.trucks=data
+
+    });
+  }
 
 public getTruck():void{
   this.truckService.getTruck(this.licencePlate).subscribe(data => {console.log(data);
-  this.truck=data});
+    this.truck=data});
 }
-
-public static turnOff(){
-  let x1 = document.getElementById("chooseTruck");
-  if(x1!=null){
-    x1.style.display="none";
-  }
-}
-
-  public static turnOn(){
-    let x1 = document.getElementById("chooseTruck");
-    if(x1!=null){
-      x1.style.display="block";
+  public turnOn() {
+    let element1 = document.getElementById("ARQSI");
+    let element2 = document.getElementById("SGRAI");
+    if (element1 != null&&element2!=null) {
+      if (this.networkChecker == 1) {
+        element1.style.display = "none"
+        element2.style.display = "block"
+      } else {
+        element1.style.display = "block"
+        element2.style.display = "none"
+      }
     }
   }
-
 }
 
