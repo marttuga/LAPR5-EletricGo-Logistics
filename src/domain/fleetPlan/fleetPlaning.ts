@@ -1,4 +1,4 @@
-/* import { AggregateRoot } from "../../core/domain/AggregateRoot";
+ import { AggregateRoot } from "../../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../../core/domain/UniqueEntityID";
 
 import { Result } from "../../core/logic/Result";
@@ -10,7 +10,6 @@ interface FleetPlaningProps {
 fleetPlaningId:FleetPlaningId;
 truckId:string;
 date:string;
-totalTime:string; 
 route: string[]
 }
 
@@ -40,13 +39,6 @@ export class FleetPlaning extends AggregateRoot<FleetPlaningProps> {
     this.props.date = value;
   }
 
-  get totalTime (): string {
-    return this.props.totalTime;
-  }
-  set totalTime ( value: string) {
-    this.props.totalTime = value;
-  }
-
   get route (): string[]{
     return this.props.route;
   }
@@ -61,20 +53,19 @@ export class FleetPlaning extends AggregateRoot<FleetPlaningProps> {
 
 
   public static create(FleetPlaningDTO: IFleetPlaningDTO, id?: UniqueEntityID): Result<FleetPlaning>  {
-    let fleetPlaningId; let truckId; let date; let totalTime; let route;
+    let fleetPlaningId; let truckId; let date; let route;
     try {
       fleetPlaningId= FleetPlaningId.create(FleetPlaningDTO.fleetPlaningId).getValue();
       truckId =truckId;
       date = date;
-      totalTime = totalTime;
       route = route
    
      
-    if (fleetPlaningId === undefined || truckId === undefined || date === undefined || totalTime === undefined || route === undefined) {
+    if (fleetPlaningId === undefined || truckId === undefined || date === undefined || route === undefined) {
       return Result.fail<FleetPlaning>('Error creating FleetPlaning!');
       
     } else {        
-      const fleetPlaning = new FleetPlaning({ fleetPlaningId:fleetPlaningId, truckId: truckId, date: date, totalTime: totalTime, route: route}, id);
+      const fleetPlaning = new FleetPlaning({ fleetPlaningId:fleetPlaningId, truckId: truckId, date: date, route: route}, id);
     
       return Result.ok<FleetPlaning>(fleetPlaning);
     }
@@ -85,4 +76,4 @@ export class FleetPlaning extends AggregateRoot<FleetPlaningProps> {
 
 }
 
- */
+ 

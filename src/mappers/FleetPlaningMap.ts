@@ -1,4 +1,4 @@
-/* import { Service,Container, Inject, Token} from 'typedi';
+ import { Service,Container, Inject, Token} from 'typedi';
 
 import { Mapper } from "../core/infra/Mapper";
 
@@ -18,7 +18,6 @@ export class FleetPlaningMap extends Mapper<FleetPlaning> {
       fleetPlaningId: plan.props.fleetPlaningId.fleetPlaningId,
       truckId: plan.props.truckId,
       date: plan.props.date,
-      totalTime: plan.props.totalTime,
       route: plan.props.route,
     } as IFleetPlaningDTO;
   } 
@@ -30,7 +29,6 @@ export class FleetPlaningMap extends Mapper<FleetPlaning> {
       fleetPlaningId:raw.fleetPlaningId ,
       truckId:raw.truckId,
       date: raw.date,
-      totalTime: raw.totalTime,
       route: raw.route,      
     }, new UniqueEntityID(raw.licencePlate))
 
@@ -46,8 +44,7 @@ export class FleetPlaningMap extends Mapper<FleetPlaning> {
       fleetPlaningId: plan.props.fleetPlaningId.fleetPlaningId,
       truckId: plan.props.truckId,
       date: plan.props.date,
-      totalTime: plan.props.totalTime,
       route: plan.props.route
     }
   }
-} */
+} 
