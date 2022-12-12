@@ -1,11 +1,13 @@
-/* import {NextFunction, Request, Response} from 'express';
+ import {NextFunction, Request, Response} from 'express';
 
 export default interface IFleetPlaningController {
+	getBestRoute(req: Request, res: Response, next: NextFunction);
+
+	getNearestWarehouse(req: Request, res: Response, next: NextFunction);
+
+	getRouteGreaterMass(req: Request, res: Response, next: NextFunction);
+
+	getRouteBestRelation(req: Request, res: Response, next: NextFunction);
+	
 	createPlanning(req: Request, res: Response, next: NextFunction);
-
-	findPlanning(req: Request, res: Response, next: NextFunction);
-
-	updatePlanning(req: Request, res: Response, next: NextFunction);
-
-	deletePlanning(req: Request, res: Response, next: NextFunction);
-} */
+} 
