@@ -4,12 +4,7 @@ import { FleetPlaning } from "../../domain/fleetPlan/fleetPlaning";
 import { FleetPlaningId } from "../../domain/fleetPlan/fleetPlaningId";
 
 export default interface ITruckRepo extends Repo<FleetPlaning> {
-	getBestRoute(
-		data: string,
-		camiao: string
-	  ): Promise<{
-		viagem: string[];
-	  }> ,
+	getBestRoute(data: string, camiao: string): Promise< string[]> ,
 	  //getArmazemName(armazemId: string): Promise<string>,
 	  getNearestWarehouse(
 		data: string,

@@ -5,17 +5,16 @@ import { FleetPlaning } from "../domain/fleetPlan/fleetPlaning";
 import IFleetPlaningDTO from "../dto/IFleetPlaningDTO";
 import { FleetPlaningMap } from "../mappers/FleetPlaningMap";
 import IFleetPlaningService from "./IServices/IFleetPlaningService";
+import IFleetPlaningRepo from "./IRepos/IFleetPlaningRepo";
 
 @Service()
 export default class FleetPlaningService implements IFleetPlaningService {
-  constructor(@Inject(config.repos.fleetPlaning.name) private planeamentoRepo) {}
+  constructor(@Inject(config.repos.fleetPlaning.name) private planeamentoRepo : IFleetPlaningRepo) {}
 
   public async getBestRoute(data: string,camiao:string): Promise<Result<any[]>> {
     try {
 
-      const melhorViagem: any[] = await this.planeamentoRepo.getBestRoute(
-        data,
-        camiao
+      const melhorViagem = await this.planeamentoRepo.getBestRoute(data, camiao
       );
 
       return Result.ok<any[]>(melhorViagem);

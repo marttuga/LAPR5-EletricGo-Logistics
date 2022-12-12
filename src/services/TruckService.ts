@@ -16,9 +16,7 @@ import {TimeCharging} from "../domain/truck/timeCharging";
 
 @Service()
 export default class TruckService implements ITruckService {
-  constructor(
-      @Inject(config.repos.truck.name) private truckRepo : ITruckRepo
-  ) {  }
+  constructor(@Inject(config.repos.truck.name) private truckRepo : ITruckRepo) {  }
 
   
 
