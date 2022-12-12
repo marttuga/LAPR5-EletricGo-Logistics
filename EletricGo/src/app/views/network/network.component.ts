@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import * as THREE from "three";
 import { ActivatedRoute } from "@angular/router";
 import TextSprite from "@seregpie/three.text-sprite";
-import {CatmullRomCurve3, Group, MeshBasicMaterial, Object3D, Vector3} from 'three';
+import {CatmullRomCurve3, Group, MeshBasicMaterial, MeshStandardMaterial, Object3D, Vector3} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
@@ -40,6 +40,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private activeTrucks:Object3D[]=[];
 
   private skyBoxTexture:THREE.Texture;
+  private skyBoxGroundTexture:THREE.Texture;
 
   private warehouseBaseGeometry = new THREE.CylinderGeometry(5, 5, 0.22, 64);
   private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
@@ -135,6 +136,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     });
   }
 
+
   private startRenderingLoop() {
     //* Renderer
     // Use canvas element in template
@@ -151,11 +153,12 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     //Orbit Controls
     let controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-    controls.maxDistance = 1000;//900 zoom out
+    controls.maxDistance = 1500;//900 zoom out
     controls.minDistance = 50;//100 zoom in
     controls.minAzimuthAngle = -Math.PI/2 ;//Rotação D 90º
     controls.maxAzimuthAngle = Math.PI/2 ;//Rotação E 90º
     controls.maxPolarAngle=Math.PI/2 //Rotação Eixo Y 90º
+   // controls.minPolarAngle=Math.PI/2
 
     let component: NetworkComponent = this;
     (function render() {
@@ -420,38 +423,34 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private addLights(){
     //*Light
-    /*const light1 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light1.position.set(-window.innerWidth, 0, 0);
-    light1.castShadow=true;
-    this.scene.add(light1);
 
-    const light2 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light2.position.set(window.innerWidth, 0, 0);
-    light2.castShadow=true;
-    this.scene.add(light2);
-
-    const light3 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light3.position.set(0, -window.innerHeight, 0);
-    light3.castShadow=true;
-    this.scene.add(light3);
-
-    const light4 = new THREE.PointLight(0xFFFFFF, 1, 10000);
-    light4.position.set(0, window.innerHeight, 0);
-    light4.castShadow=true;
-    this.scene.add(light4);*/
-
-    const light_amb = new THREE.AmbientLight(0xffffff, 1);
+    const light_amb = new THREE.AmbientLight(0xffffff, 0.5);
     this.scene.add(light_amb);
 
-    /*const focusLight = new THREE.SpotLight(0xffffff, 1);
-    this.camera.add(focusLight);*/
+    const directLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directLight.castShadow=true;
+   this.camera.add(directLight);
+
+    const spotLight = new THREE.SpotLight(0xffffff, 0.8);
+    spotLight.position.set(0, 500, 40);
+    spotLight.castShadow=true;
+    spotLight.target.position.set(0,0,40);
+    spotLight.shadow.mapSize.width = 2048;
+    spotLight.shadow.mapSize.height = 2048;
+    spotLight.shadow.camera.far =1000;
+    this.scene.add(spotLight);
+    this.scene.add(spotLight.target);
   }
 
   private static getCoordinates(lat:number, lon:number, alt: number):any {
     let coordinatesArr: number[]=[];
-    coordinatesArr[0]=-(((50-(-50))/(8.7613-8.2451))*(lon-8.2451)+(-50));
-    coordinatesArr[1]=((((50-(-50))/(42.1115-40.8387))*(lat-40.8387)+(-50)));
-    coordinatesArr[2]=((((50 / 800) * alt)));
+    const min=-100;
+    const max=100;
+    const med=max/2;
+
+    coordinatesArr[0]=-(((max-(min))/(8.7613-8.2451))*(lon-8.2451)+(min));
+    coordinatesArr[1]=((((med-(-med))/(42.1115-40.8387))*(lat-40.8387)+(-med)));
+    coordinatesArr[2]=((((max / 800) * alt)));
     parseInt( coordinatesArr[0].toFixed(4));
     parseInt( coordinatesArr[1].toFixed(4));
     parseInt( coordinatesArr[2].toFixed(4));
@@ -471,6 +470,14 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   //Auxiliar Methods
   public importLoaders(){
     this.skyBoxTexture=new THREE.TextureLoader().load('assets/network/sky.jpg');
+
+    this.skyBoxGroundTexture=new THREE.TextureLoader().load('assets/network/ground.jpg');
+    this.skyBoxGroundTexture.anisotropy = 16;
+    this.skyBoxGroundTexture.wrapS = this.skyBoxGroundTexture.wrapT = THREE.MirroredRepeatWrapping;
+    this.skyBoxGroundTexture.minFilter = THREE.LinearFilter;
+    this.skyBoxGroundTexture.magFilter = THREE.LinearFilter;
+    this.skyBoxGroundTexture.generateMipmaps = false;
+    this.skyBoxGroundTexture.needsUpdate = true;
 
     const loaderWare = new GLTFLoader();
     loaderWare.load('/assets/network/warehouse.glb', (gltf) => {
