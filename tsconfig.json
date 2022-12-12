@@ -28,5 +28,9 @@
   "exclude": [
     "node_modules",
     "tests"
-  ]
+  ],
+    "angularCompilerOptions": {
+      "strictTemplates": true
+    },
+  
 }

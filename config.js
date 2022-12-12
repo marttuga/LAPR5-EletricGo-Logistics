@@ -53,10 +53,10 @@ export default {
       name: "RouteController",
       path: "../controllers/routeController"
     },
-  /*   fleetPlaning: {
+    fleetPlaning: {
       name: "FleetPlaningController",
       path: "../controllers/fleetPlaningController"
-    } */
+    } 
   },
 
   repos: {
@@ -76,10 +76,10 @@ export default {
       name: "RouteRepo",
       path: "../repos/RouteRepo"
     },
-/*     fleetPlaning: {
+     fleetPlaning: {
       name: "fleetPlaningRepo",
       path: "../repos/fleetPlaningRepo"
-    } */
+    } 
   },
 
   services: {
@@ -98,9 +98,9 @@ export default {
       name: "RouteService",
       path: "../services/routeService"
     },
-/*     fleetPlaning: {
+     fleetPlaning: {
       name: "fleetPlaningService",
       path: "../services/fleetPlaningService"
-    } */
+    } 
   },
 };

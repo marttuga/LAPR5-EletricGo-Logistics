@@ -35,11 +35,11 @@ export default async ({ expressApp }) => {
     name: 'truckSchema',
     schema: '../persistence/schemas/truckSchema',
   };
-/*   const fleetPlaningSchema = {
+   const fleetPlaningSchema = {
     // compare with the approach followed in repos and services
     name: 'fleetPlaningSchema',
     schema: '../persistence/schemas/fleetPlaningSchema',
-  }; */
+  }; 
 
 
   const roleController = {
@@ -55,10 +55,10 @@ export default async ({ expressApp }) => {
     name: config.controllers.truck.name,
     path: config.controllers.truck.path
   }
-/*   const fleetPlaningController = {
+   const fleetPlaningController = {
     name: config.controllers.fleetPlaning.name,
     path: config.controllers.fleetPlaning.path
-  } */
+  } 
 
   const roleRepo = {
     name: config.repos.role.name,
@@ -78,12 +78,12 @@ export default async ({ expressApp }) => {
     name: config.repos.truck.name,
     path: config.repos.truck.path
   }
-/* 
+ 
   const fleetPlaningRepo = {
     name: config.repos.fleetPlaning.name,
     path: config.repos.fleetPlaning.path
   }
- */
+ 
 
   const roleService = {
     name: config.services.role.name,
@@ -98,10 +98,10 @@ export default async ({ expressApp }) => {
     name: config.services.truck.name,
     path: config.services.truck.path
   }
-/*   const fleetPlaningService = {
+   const fleetPlaningService = {
     name: config.services.fleetPlaning.name,
     path: config.services.fleetPlaning.path
-  } */
+  }
 
   await dependencyInjectorLoader({
     mongoConnection,
@@ -110,26 +110,26 @@ export default async ({ expressApp }) => {
       roleSchema,
       routeSchema,
       truckSchema,
-/*       fleetPlaningSchema
- */    ],
+       fleetPlaningSchema
+    ],
     controllers: [
       roleController,
       routeController,
       truckController,
-      // fleetPlaningController
+      fleetPlaningController
     ],
     repos: [
       roleRepo,
       userRepo,
       routeRepo,
       truckRepo,
-      // fleetPlaningRepo
+       fleetPlaningRepo
     ],
     services: [
       roleService,
       routeService,
       truckService,
-      // fleetPlaningService
+       fleetPlaningService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
