@@ -12,7 +12,7 @@ export default (app: Router) => {
 
 	const ctrl = Container.get(config.controllers.fleetPlaning.name) as IFleetPlaningController;
 
-	planningRoute.post('/getBestRoute',
+	planningRoute.get('/getBestRoute',
 		celebrate({
 			body: Joi.object({
 				truckId: Joi.string().required(),
@@ -24,7 +24,7 @@ export default (app: Router) => {
 
 
 
-planningRoute.post('/getNearestWarehouse',
+planningRoute.get('/getNearestWarehouse',
 		celebrate({
 			body: Joi.object({
 				truckId: Joi.string().required(),
@@ -35,7 +35,7 @@ planningRoute.post('/getNearestWarehouse',
 		(req, res, next) => ctrl.getNearestWarehouse(req, res, next));
 
 
-		planningRoute.post('/getRouteGreaterMass',
+		planningRoute.get('/getRouteGreaterMass',
 		celebrate({
 			body: Joi.object({
 				truckId: Joi.string().required(),
@@ -47,7 +47,7 @@ planningRoute.post('/getNearestWarehouse',
 
 
 
-		planningRoute.post('/getRouteBestRelation',
+		planningRoute.get('/getRouteBestRelation',
 		celebrate({
 			body: Joi.object({
 				truckId: Joi.string().required(),

@@ -14,7 +14,7 @@ export default class FleetPlaningService implements IFleetPlaningService {
     try {
       const camiao = "eTruck01";
 
-      const melhorViagem: any[] = await this.planeamentoRepo.melhorViagem(
+      const melhorViagem: any[] = await this.planeamentoRepo.getBestRoute(
         data,
         camiao
       );
@@ -31,7 +31,7 @@ export default class FleetPlaningService implements IFleetPlaningService {
     try {
       const camiao = "eTruck01";
 
-      const melhorViagem: any[] = await this.planeamentoRepo.menorDistancia(
+      const melhorViagem: any[] = await this.planeamentoRepo.getNearestWarehouse(
         data,
         camiao
       );
@@ -48,7 +48,7 @@ export default class FleetPlaningService implements IFleetPlaningService {
     try {
       const camiao = "eTruck01";
 
-      const melhorViagem: any[] = await this.planeamentoRepo.maiorMassa(
+      const melhorViagem: any[] = await this.planeamentoRepo.getRouteGreaterMass(
         data,
         camiao
       );
@@ -65,7 +65,7 @@ export default class FleetPlaningService implements IFleetPlaningService {
     try {
       const camiao = "eTruck01";
 
-      const melhorViagem: any[] = await this.planeamentoRepo.melhorRelacao(
+      const melhorViagem: any[] = await this.planeamentoRepo.getRouteBestRelation(
         data,
         camiao
       );
@@ -92,5 +92,6 @@ export default class FleetPlaningService implements IFleetPlaningService {
     } catch (e) {
       throw e;
     }
+    
   
 }
