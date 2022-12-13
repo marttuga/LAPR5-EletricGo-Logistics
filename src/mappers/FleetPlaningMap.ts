@@ -15,7 +15,7 @@ export class FleetPlaningMap extends Mapper<FleetPlaning> {
   public static toDTO( plan: FleetPlaning): IFleetPlaningDTO {
     return {
       //id: plan.id.toString(),
-      fleetPlaningId: plan.props.fleetPlaningId.fleetPlaningId,
+      fleetPlaningId: plan.props.fleetPlaningId.toString(),
       truckId: plan.props.truckId,
       date: plan.props.date,
       route: plan.props.route,
@@ -41,7 +41,7 @@ export class FleetPlaningMap extends Mapper<FleetPlaning> {
   public static toPersistence (plan: FleetPlaning): any {
     return  {
       domainId: plan.id.toString(),
-      fleetPlaningId: plan.props.fleetPlaningId.fleetPlaningId,
+      fleetPlaningId: plan.props.fleetPlaningId,
       truckId: plan.props.truckId,
       date: plan.props.date,
       route: plan.props.route

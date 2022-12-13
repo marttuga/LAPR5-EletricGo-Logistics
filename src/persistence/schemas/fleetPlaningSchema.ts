@@ -26,6 +26,9 @@ const FleetPlaning = new mongoose.Schema(
 
     route: {
       type: Array,
+      items:{
+       type: String
+      },
       required: [true, 'Please enter route'],
       index: true,
     },

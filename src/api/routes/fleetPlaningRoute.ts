@@ -52,7 +52,7 @@ planningRoute.get('/getNearestWarehouse',
 	planningRoute.post('/createPlaning',
 		celebrate({
 			body: Joi.object({
-				fleetPlaningId: Joi.string().required(),
+				fleetPlaningId: Joi.string().min(4).required(),
 				truckId: Joi.string().required(),
 				date: Joi.string().required(),
 				route: Joi.array().required(),

@@ -77,7 +77,7 @@ export default {
       path: "../repos/RouteRepo"
     },
      fleetPlaning: {
-      name: "fleetPlaningRepo",
+      name: "FleetPlaningRepo",
       path: "../repos/fleetPlaningRepo"
     } 
   },
@@ -99,7 +99,7 @@ export default {
       path: "../services/routeService"
     },
      fleetPlaning: {
-      name: "fleetPlaningService",
+      name: "FleetPlaningService",
       path: "../services/fleetPlaningService"
     } 
   },

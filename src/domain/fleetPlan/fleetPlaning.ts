@@ -55,18 +55,17 @@ export class FleetPlaning extends AggregateRoot<FleetPlaningProps> {
   public static create(FleetPlaningDTO: IFleetPlaningDTO, id?: UniqueEntityID): Result<FleetPlaning>  {
     let fleetPlaningId; let truckId; let date; let route;
     try {
-      fleetPlaningId= FleetPlaningId.create(FleetPlaningDTO.fleetPlaningId).getValue();
-      truckId =truckId;
-      date = date;
-      route = route
-   
-     
+      fleetPlaningId= FleetPlaningDTO.fleetPlaningId;
+      truckId =FleetPlaningDTO.truckId;
+      date = FleetPlaningDTO.date;
+      route = FleetPlaningDTO.route;
+
     if (fleetPlaningId === undefined || truckId === undefined || date === undefined || route === undefined) {
-      return Result.fail<FleetPlaning>('Error creating FleetPlaning!');
+      return Result.fail<FleetPlaning>('Error creating FleetPlaning!, data undefined');
       
     } else {        
       const fleetPlaning = new FleetPlaning({ fleetPlaningId:fleetPlaningId, truckId: truckId, date: date, route: route}, id);
-    
+  
       return Result.ok<FleetPlaning>(fleetPlaning);
     }
     }catch (error){

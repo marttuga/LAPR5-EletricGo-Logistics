@@ -13,6 +13,7 @@ import { stringify } from 'querystring';
  import fetch from "node-fetch";
  import * as http from "http";
  import * as https from "https";
+import { Console } from 'console';
 
 
 
@@ -57,15 +58,15 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
 
   public async save(fleetPlaning: FleetPlaning): Promise<FleetPlaning>{
 
-    const query = { fleetPlaningId: fleetPlaning.props.fleetPlaningId.fleetPlaningId };
+    const query = { fleetPlaningId: fleetPlaning.props.fleetPlaningId };
     const fleetPlaningDocument = await this.fleetPlaningSchema.findOne(query);
-
 
     try {
       if (fleetPlaningDocument === null) {
 
         const rawtruck: any = FleetPlaningMap.toPersistence(fleetPlaning);
         const truckCreated = await this.fleetPlaningSchema.create(rawtruck);
+       
 
         return FleetPlaningMap.toDomain(truckCreated);
       
@@ -76,7 +77,9 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
         fleetPlaningDocument.date = fleetPlaning.props.date;
         fleetPlaningDocument.route =fleetPlaning.props.route;
 
+
         await fleetPlaningDocument.save();
+
         return fleetPlaning;
       }
     } catch (err) {
@@ -102,6 +105,8 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
     ): Promise<{
       viagem: string[];
     }> {
+      console.log("REPO");
+
       const response = await fetch(
         "http://localhost:64172/getBestRoute?date=" +
           data +
@@ -112,16 +117,16 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
           agent: this.httpAgent,
         }
       );
-  
+      console.log("REPO2");
       const viagem = await response.json();
-  
+      console.log(viagem);
       const formattedViagens = [];
       for (let i = 0; i < viagem[1].length; i++) {
         const armazemId = viagem[1][i];
         //const armazemName = await this.getArmazemName((armazemId));
         formattedViagens.push(armazemId);
       }
-  
+      console.log(formattedViagens);
       return {
         viagem: formattedViagens,
       };

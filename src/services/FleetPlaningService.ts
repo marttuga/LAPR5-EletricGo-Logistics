@@ -6,14 +6,15 @@ import IFleetPlaningDTO from "../dto/IFleetPlaningDTO";
 import { FleetPlaningMap } from "../mappers/FleetPlaningMap";
 import IFleetPlaningService from "./IServices/IFleetPlaningService";
 import IFleetPlaningRepo from "./IRepos/IFleetPlaningRepo";
+import { Console } from "console";
 
 @Service()
 export default class FleetPlaningService implements IFleetPlaningService {
   constructor(@Inject(config.repos.fleetPlaning.name) private planeamentoRepo : IFleetPlaningRepo) {}
 
   public async getBestRoute(data: string,camiao:string): Promise<Result<{viagem : string[]}>> {
-    try {
 
+    try {
       const melhorViagem = await this.planeamentoRepo.getBestRoute(data, camiao
       );
 
@@ -76,7 +77,16 @@ export default class FleetPlaningService implements IFleetPlaningService {
 
   public async createPlaning( fleetPlaningDTO: IFleetPlaningDTO): Promise<Result<IFleetPlaningDTO>> {
    
+    try {
+      const fleetPlan = await this.planeamentoRepo.findFleetPlaningId(fleetPlaningDTO.fleetPlaningId);
+
+      if (fleetPlan != null) {
+  
+        return Result.fail< IFleetPlaningDTO>("fleetPlan already exists: " +fleetPlaningDTO.fleetPlaningId);
+      }
+
       const truckOrError = await FleetPlaning.create(fleetPlaningDTO);
+
       if (truckOrError.isFailure) {
         return Result.fail<IFleetPlaningDTO>(truckOrError.errorValue());
       }
@@ -85,6 +95,8 @@ export default class FleetPlaningService implements IFleetPlaningService {
 
       await this.planeamentoRepo.save(result);
       const dTOResult = FleetPlaningMap.toDTO( result ) as IFleetPlaningDTO;
+      
+
 
       return Result.ok<IFleetPlaningDTO>( dTOResult )
     } catch (e) {
@@ -92,4 +104,5 @@ export default class FleetPlaningService implements IFleetPlaningService {
     }
     
   
+  }
 }
