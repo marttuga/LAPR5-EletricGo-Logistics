@@ -15,7 +15,6 @@ export default class FleetPlaningController implements IFleetPlaningController {
 	public async  getBestRoute(req: Request, res: Response, next: NextFunction) {
 		try {
 			const planeamentoOrError = await this.planningServiceInstance.getBestRoute(req.params.date,req.params.truckId);
-			console.log(planeamentoOrError);
 
 			return res.json(planeamentoOrError.getValue().viagem).status(201);
 		  } 
