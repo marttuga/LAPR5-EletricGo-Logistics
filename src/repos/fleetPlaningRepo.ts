@@ -99,37 +99,16 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
 
 
 
-    public async getBestRoute(
-      data: string,
-      camiao: string
-    ): Promise<{
-      viagem: string[];
-    }> {
+    public async getBestRoute(data: string, camiao: string): Promise<{ viagem: string[]; }> {
       console.log("REPO");
 
-      const response = await fetch(
-        "http://localhost:64172/getBestRoute?date=" +
-          data +
-          "&truck=" +
-          camiao,
-        {
-          method: "GET",
-          agent: this.httpAgent,
-        }
-      );
+      const response = await fetch("http://localhost:64172/getBestRoute?date=" + data + "&truck=" + camiao, {method: "GET", agent: this.httpAgent,});
       console.log("REPO2");
+    
       const viagem = await response.json();
-      console.log(viagem);
-      const formattedViagens = [];
-      for (let i = 0; i < viagem[1].length; i++) {
-        const armazemId = viagem[1][i];
-        //const armazemName = await this.getArmazemName((armazemId));
-        formattedViagens.push(armazemId);
-      }
-      console.log(formattedViagens);
-      return {
-        viagem: formattedViagens,
-      };
+      console.log(viagem.best_route);
+    
+      return {viagem: viagem.best_route};
     }
   
 /*      private async getArmazemName(armazemId: string): Promise<string> {
@@ -161,87 +140,29 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
     }   */
 
 
-    public async getNearestWarehouse(
-      data: string,
-      camiao: string
-    ): Promise<{
-      viagem: string[];
-    }> {
-      const response = await fetch(
-        "http://localhost:64172/getNearestWarehouse?date=" + data + "&truck=" + camiao,
-        {
-          method: "GET",
-          agent: this.httpAgent,
-        }
-      );
+    public async getNearestWarehouse(data: string, camiao: string): Promise<{ viagem: string[]; }> {const response = await fetch("http://localhost:64172/getNearestWarehouse?date=" + data + "&truck=" + camiao, {method: "GET", agent: this.httpAgent,});
   
       const viagem = await response.json();
-  
-      const formattedViagens = [];
-      for (let i = 0; i < viagem[1].length; i++) {
-        const armazemId = viagem[1][i];
-      //  const armazemName = await this.getArmazemName((armazemId));
-        formattedViagens.push(armazemId);
-      }
-  
-      return {
-        viagem: formattedViagens,
-      };
+
+      return {viagem: viagem.route_nearest_warehouse};
+
     }
   
-    public async getRouteGreaterMass(
-      data: string,
-      camiao: string
-    ): Promise<{
-      viagem: string[];
-    }> {
-      const response = await fetch(
-        "http://localhost:64172/getRouteGreaterMass?date=" + data + "&truck=" + camiao,
-        {
-          method: "GET",
-          agent: this.httpAgent,
-        }
-      );
+    public async getRouteGreaterMass(data: string, camiao: string): Promise<{ viagem: string[]; }> {
+      const response = await fetch("http://localhost:64172/getRouteGreaterMass?date=" + data + "&truck=" + camiao, {method: "GET", agent: this.httpAgent,});
   
       const viagem = await response.json();
-  
-      const formattedViagens = [];
-      for (let i = 0; i < viagem[1].length; i++) {
-        const armazemId = viagem[1][i];
-        //const armazemName = await this.getArmazemName((armazemId));
-        formattedViagens.push(armazemId);
-      }
-  
-      return {
-        viagem: formattedViagens,
-      };
+
+
+      return {viagem: viagem.route_plus_mass};
+
     }
   
-    public async getRouteBestRelation(
-      data: string,
-      camiao: string
-    ): Promise<{
-      viagem: string[];
-    }> {
-      const response = await fetch(
-        "http://localhost:64172/getRouteBestRelation?date=" + data + "&truck=" + camiao,
-        {
-          method: "GET",
-          agent: this.httpAgent,
-        }
-      );
-  
+    public async getRouteBestRelation(data: string, camiao: string): Promise<{ viagem: string[]; }> {const response = await fetch("http://localhost:64172/getRouteBestRelation?date=" + data + "&truck=" + camiao, {method: "GET", agent: this.httpAgent,});
+      
       const viagem = await response.json();
-  
-      const formattedViagens = [];
-      for (let i = 0; i < viagem[1].length; i++) {
-        const armazemId = viagem[1][i];
-        //const armazemName = await this.getArmazemName(armazemId);
-        formattedViagens.push(armazemId);
-      }
-  
-      return {
-        viagem: formattedViagens,
-      };
+
+      return {viagem: viagem.route_best_relation};
+
     }
 } 

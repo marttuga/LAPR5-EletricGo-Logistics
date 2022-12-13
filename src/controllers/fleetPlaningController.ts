@@ -13,17 +13,11 @@ export default class FleetPlaningController implements IFleetPlaningController {
 	}
 
 	public async  getBestRoute(req: Request, res: Response, next: NextFunction) {
-		console.log("I");
 		try {
-			console.log("OI");
-  
-			//const data = req.params.data;
 			const planeamentoOrError = await this.planningServiceInstance.getBestRoute(req.params.date,req.params.truckId);
-			console.log("O");
-			const planeamentoDTO = planeamentoOrError;
+			console.log(planeamentoOrError);
 
-			return res.json(planeamentoDTO.getValue()).status(201);
-  
+			return res.json(planeamentoOrError.getValue().viagem).status(201);
 		  } 
 		  catch (e) {
 			return next(e);
@@ -32,12 +26,10 @@ export default class FleetPlaningController implements IFleetPlaningController {
 	public async  getNearestWarehouse(req: Request, res: Response, next: NextFunction) {
 		try {
   
-			const data = req.params.data;
   
-			const planeamentoOrError = await this.planningServiceInstance.getNearestWarehouse(data) ;
-  
-			const planeamentoDTO = planeamentoOrError;
-			return res.json(planeamentoDTO.getValue()).status(201);
+			const planeamentoOrError = await this.planningServiceInstance.getNearestWarehouse(req.params.date,req.params.truckId) ;
+
+			return res.json(planeamentoOrError.getValue().viagem).status(201);
   
 		  } 
 		  catch (e) {
@@ -49,12 +41,10 @@ export default class FleetPlaningController implements IFleetPlaningController {
 	public async getRouteGreaterMass(req: Request, res: Response, next: NextFunction) {
 	  try {
   
-		  const data = req.params.data;
   
-		  const planeamentoOrError = await this.planningServiceInstance.getRouteGreaterMass(data) ;
+		  const planeamentoOrError = await this.planningServiceInstance.getRouteGreaterMass(req.params.date,req.params.truckId) ;
   
-		  const planeamentoDTO = planeamentoOrError;
-		  return res.json(planeamentoDTO.getValue()).status(201);
+		  return res.json(planeamentoOrError.getValue().viagem).status(201);
   
 		} 
 		catch (e) {
@@ -65,12 +55,10 @@ export default class FleetPlaningController implements IFleetPlaningController {
   public async  getRouteBestRelation(req: Request, res: Response, next: NextFunction) {
 	try {
   
-		const data = req.params.data;
   
-		const planeamentoOrError = await this.planningServiceInstance.getRouteBestRelation(data) ;
+		const planeamentoOrError = await this.planningServiceInstance.getRouteBestRelation(req.params.date,req.params.truckId) ;
   
-		const planeamentoDTO = planeamentoOrError;
-		return res.json(planeamentoDTO.getValue()).status(201);
+		return res.json(planeamentoOrError.getValue().viagem).status(201);
   
 	  } 
 	  catch (e) {

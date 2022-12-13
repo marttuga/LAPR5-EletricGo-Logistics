@@ -17,7 +17,7 @@ export default (app: Router) => {
 
 
 
-planningRoute.get('/getNearestWarehouse',
+planningRoute.get('/getNearestWarehouse/:date/:truckId',
 		celebrate({
 			body: Joi.object({date: Joi.string().required(),
 				truckId: Joi.string().required(),
@@ -28,7 +28,7 @@ planningRoute.get('/getNearestWarehouse',
 		(req, res, next) => ctrl.getNearestWarehouse(req, res, next));
 
 
-		planningRoute.get('/getRouteGreaterMass',
+		planningRoute.get('/getRouteGreaterMass/:date/:truckId',
 		celebrate({
 			body: Joi.object({date: Joi.string().required(),
 				truckId: Joi.string().required(),
@@ -40,7 +40,7 @@ planningRoute.get('/getNearestWarehouse',
 
 
 
-		planningRoute.get('/getRouteBestRelation',
+		planningRoute.get('/getRouteBestRelation/:date/:truckId',
 		celebrate({
 			body: Joi.object({date: Joi.string().required(),
 				truckId: Joi.string().required(),

@@ -15,8 +15,8 @@ export default class FleetPlaningService implements IFleetPlaningService {
   public async getBestRoute(data: string,camiao:string): Promise<Result<{viagem : string[]}>> {
 
     try {
-      const melhorViagem = await this.planeamentoRepo.getBestRoute(data, camiao
-      );
+     
+      const melhorViagem = await this.planeamentoRepo.getBestRoute(data, camiao);
 
       return Result.ok<{viagem : string[]}>(melhorViagem);
     } catch (e) {
@@ -24,16 +24,10 @@ export default class FleetPlaningService implements IFleetPlaningService {
     }
   }
 
-  public async getNearestWarehouse(
-    data: string
-  ): Promise<Result<{viagem : string[]}>> {
+  public async getNearestWarehouse(data: string,camiao:string): Promise<Result<{viagem : string[]}>> {
     try {
-      const camiao = "eTruck01";
 
-      const melhorViagem = await this.planeamentoRepo.getNearestWarehouse(
-        data,
-        camiao
-      );
+      const melhorViagem = await this.planeamentoRepo.getNearestWarehouse(data, camiao);
 
       return Result.ok<{viagem : string[]}>(melhorViagem);
     } catch (e) {
@@ -41,16 +35,10 @@ export default class FleetPlaningService implements IFleetPlaningService {
     }
   }
 
-  public async getRouteGreaterMass(
-    data: string
-  ): Promise<Result<{viagem : string[]}>>  {
+  public async getRouteGreaterMass(data: string,camiao:string): Promise<Result<{viagem : string[]}>>  {
     try {
-      const camiao = "eTruck01";
 
-      const melhorViagem = await this.planeamentoRepo.getRouteGreaterMass(
-        data,
-        camiao
-      );
+      const melhorViagem = await this.planeamentoRepo.getRouteGreaterMass(data, camiao);
 
       return Result.ok<{viagem : string[]}>(melhorViagem);
     } catch (e) {
@@ -58,16 +46,10 @@ export default class FleetPlaningService implements IFleetPlaningService {
     }
   }
 
-  public async getRouteBestRelation(
-    data: string
-  ):Promise<Result<{viagem : string[]}>>  {
+  public async getRouteBestRelation(data: string,camiao:string):Promise<Result<{viagem : string[]}>>  {
     try {
-      const camiao = "eTruck01";
 
-      const melhorViagem = await this.planeamentoRepo.getRouteBestRelation(
-        data,
-        camiao
-      );
+      const melhorViagem = await this.planeamentoRepo.getRouteBestRelation(data, camiao);
 
       return Result.ok<{viagem : string[]}>(melhorViagem);
     } catch (e) {
