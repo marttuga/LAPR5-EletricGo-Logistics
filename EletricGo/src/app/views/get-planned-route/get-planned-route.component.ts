@@ -32,7 +32,7 @@ export class GetPlannedRouteComponent implements OnInit {
 
   public getBestRoute():void{
     this.plannedRouteService.getBestRoute(this.date,this.truckId).subscribe(data => {
-      this.plannedRoute=data.best_route;
+      this.plannedRoute=data;
       this.plannedRoutes=[];
       console.log(this.plannedRoute)
 
@@ -42,21 +42,21 @@ export class GetPlannedRouteComponent implements OnInit {
   }
   public getNearestWarehouse():void{
     this.plannedRouteService.getNearestWarehouse(this.date,this.truckId).subscribe(data => {console.log(data);
-      this.plannedRoute=data.route_nearest_warehouse});
+      this.plannedRoute=data});
     this.plannedRoutes=[];
     this.submit = !this.submit;
   }
 
   public getRouteGreaterMass():void{
     this.plannedRouteService.getRouteGreaterMass(this.date,this.truckId).subscribe(data => {console.log(data);
-      this.plannedRoute=data.route_plus_mass});
+      this.plannedRoute=data});
     this.plannedRoutes=[];
     this.submit = !this.submit;
   }
 
   public getRouteBestRelation():void{
     this.plannedRouteService.getRouteBestRelation(this.date,this.truckId).subscribe(data => {console.log(data);
-      this.plannedRoute=data.route_best_relation});
+      this.plannedRoute=data});
     this.plannedRoutes=[];
     this.submit = !this.submit;
   }

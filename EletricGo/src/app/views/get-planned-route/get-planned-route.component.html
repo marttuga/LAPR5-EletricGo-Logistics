@@ -15,7 +15,7 @@
     </ul>
   </nav>
 
-    <div id="contentSection">
+    <div >
     <h2>PLANNED ROUTE</h2>
     </div>
 
@@ -41,7 +41,7 @@
 
 
         <div class="button">
-            <button   class="button-create"  type="submit"  (click)="getAllRoutesOnDate()" >Get All possible routes!</button>
+            <button   class="button-create"  type="submit"  >Get All possible routes!</button>
             <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getBestRoute()" >Get Best Route!</button>
             <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getNearestWarehouse()" >Get Nearest Warehouse!</button>
             <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getRouteGreaterMass()" >Get Delivery With Greater Mass!</button>
