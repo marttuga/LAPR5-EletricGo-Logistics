@@ -100,13 +100,10 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
 
 
     public async getBestRoute(data: string, camiao: string): Promise<{ viagem: string[]; }> {
-      console.log("REPO");
 
       const response = await fetch("http://localhost:64172/getBestRoute?date=" + data + "&truck=" + camiao, {method: "GET", agent: this.httpAgent,});
-      console.log("REPO2");
     
       const viagem = await response.json();
-      console.log(viagem.best_route);
     
       return {viagem: viagem.best_route};
     }
