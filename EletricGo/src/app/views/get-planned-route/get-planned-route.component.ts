@@ -114,6 +114,14 @@ export class GetPlannedRouteComponent implements OnInit {
         this.getNearestWarehouse();
         break;
       }
+      case "greaterMass": {
+        this.getRouteGreaterMass();
+        break;
+      }
+      case "bestRelation": {
+        this.getRouteBestRelation();
+        break;
+      }
     }
   }
 }
