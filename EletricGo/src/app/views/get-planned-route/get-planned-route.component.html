@@ -1,4 +1,4 @@
-<!doctype html>
+<!-- <!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -41,7 +41,6 @@
 
 
         <div class="button">
-            <button   class="button-create"  type="submit"  >Get All possible routes!</button>
             <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getBestRoute()" >Get Best Route!</button>
             <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getNearestWarehouse()" >Get Nearest Warehouse!</button>
             <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getRouteGreaterMass()" >Get Delivery With Greater Mass!</button>
@@ -68,6 +67,126 @@
 
 
       </table>
+
+
+
+
+
+    </body>
+</html>
+ -->
+
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="get-planned-route.component.css">
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <div id="contentSection">
+      <h2>PLANNED ROUTE</h2>
+
+      </div>
+    <section class="input">
+  
+      <div class="input-data">
+          <div class="textfield">
+            <input type="text" required maxlength="8" #Date="ngModel"  name="Date" placeholder="Date"  required [(ngModel)]="date">
+          </div>
+          <div class="textfield" >
+            <input type="text" required  #TruckId="ngModel"  name="TruckId" placeholder="Truck_Id"  title="TruckId must be of format eTruck00" required [(ngModel)]="truckId">
+          </div>
+      </div>
+      <div id="options-dropdown">
+        <div class="textfield">
+           <h3>SELECT THE PREFERED ROUTE OPTION</h3>
+          <select [(ngModel)]="choice" (ngModelChange)="callFunction()" type="text" name="options" id="options" >
+            <option selected disabled>Select an option..</option>
+            <option value="bestRoute">Get Best Route</option>
+            <option value="nearestWarehouse">Get Nearest Warehouse</option>
+            <option>Get Delivery With Greater Mass</option>
+            <option>Get Fastest Route With Greater Mass</option>
+          </select>
+        </div>
+      </div>
+    </section>
+    <div class="output">
+      <div class="solution-output" >
+        <table class="table">
+          <h1>WAREHOUSE'S IDS BY ORDER</h1>
+          <tr><span>{{plannedRoute}}</span></tr>
+        </table>
+      </div>
+    </div>
+    <section> 
+
+    </section>
+
+ 
+    
+  </div>
+  <!--
+      <div id="contentSection">
+      <h2>PLANNED ROUTE</h2>
+      </div>
+
+      <div id="contentSection">
+        <form class="create-form" #createForm="ngForm">
+          <div id="data1">
+              <div class="textfield">
+                  <input type="text" required maxlength="8" #Date="ngModel" [class.is-invalid]="Date.invalid && Date.touched" name="Date" placeholder="Date"  required [(ngModel)]="date">
+                  <div *ngIf="Date.touched">
+                      <small class="requiredError" *ngIf="Date.errors?.['required']">Date is required!</small>
+                    </div>
+              </div>
+              <div class="textfield" >
+                  <input type="text" required  #TruckId="ngModel" [class.is-invalid]="TruckId.invalid && TruckId.touched" name="TruckId" placeholder="Truck_Id"  title="TruckId must be of format eTruck00" required [(ngModel)]="truckId">
+                  <div *ngIf="TruckId.touched">
+
+                      <small class="requiredError"*ngIf="TruckId.errors?.['required']">TruckId is required!</small>
+                  </div>
+              </div>
+          </div>
+
+
+          <div class="button">
+              <button   class="button-create"  type="submit"  (click)="getAllRoutesOnDate()" >Get All possible routes!</button>
+              <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getBestRoute()" >Get Best Route!</button>
+              <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getNearestWarehouse()" >Get Nearest Warehouse!</button>
+              <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getRouteGreaterMass()" >Get Delivery With Greater Mass!</button>
+              <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit"  (click)="getRouteBestRelation()" >Get Fastest Route With Greater Mass!</button>
+
+
+              <div *ngIf="submit">
+                <small class="created-message"></small>
+              </div>
+            </div>
+
+    </form>
+      </div>
+
+        <table class="table">
+      <tr>${{date}}</tr>
+      <tr>${{truckId}}</tr>
+
+          <tr><span>[{{plannedRoute}}]</span></tr>
+
+            <tr *ngFor="let plannedRoute of plannedRoutes | filter : 'date': searchDate ; let i = index">
+              <td><span>{{plannedRoute}}</span></td>
+            </tr>
+
+
+        </table>-->
 
 <!--       <table class="table">
 

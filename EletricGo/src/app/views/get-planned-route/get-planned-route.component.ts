@@ -20,7 +20,7 @@ export class GetPlannedRouteComponent implements OnInit {
   searchDate: string;
   routes: string[];
   plannedRoute:any;
-
+  choice: string;
   constructor(private  plannedRouteService:PlannedRouteService) {
 
 }
@@ -62,4 +62,16 @@ export class GetPlannedRouteComponent implements OnInit {
   }
 
 
+  callFunction(){
+    switch(this.choice) {
+      case "bestRoute": {
+        this.getBestRoute();
+        break;
+      }
+      case "nearestWarehouse": {
+        this.getNearestWarehouse();
+        break;
+      }
+    }
+  }
 }

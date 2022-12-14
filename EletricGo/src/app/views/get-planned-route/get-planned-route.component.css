@@ -1,33 +1,57 @@
 *{
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: "Lato", sans-serif;
 }
 
 body{
-  font-family: Mukta, sans-serif;
+  margin: 0;
+  font-size: 100%;
+  background: #ffffff;
+  line-height: 1.6;
   height: 100vh;
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  color: #778DB3;
-  font-size: 0.9rem;
-  background-color: #f9f8fb;
-  width: 100%;
-
+  overflow: hidden;
 }
 
-  #container
- {
+section{
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100vh;
+  scroll-snap-align: center;
+}
+
+.container{
+  width: 100%;
+  height: 100%;
   display: flex;
-justify-content: center;
-align-items: center;
-    height: 100vh;
-    width: 100%;
-    background:#f9f8fb;
-    position: relative;
- }
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+
+.input{
+  display: flex;
+  flex-direction: row;
+  align-content: space-around;
+}
+
+#options-dropdown select{
+  margin: 15px 0px;
+  height: 50px;
+  border-radius: 30px;
+  font-family: sans-serif;
+  border: none;
+  padding: 15px;
+  background:#E4E4E4;
+  color: #313f57;
+  outline: none;
+}
+
+
 
 .container thead{
   height: 40px;
@@ -75,10 +99,20 @@ align-items: center;
 }
 
 .table{
-  margin-bottom: 15%;
+  margin-bottom: 10%;
 
 
 }
+
+h1{
+  font-family: sans-serif;
+font-size: 13px;
+color: #4d5b74;
+font-weight: 800;
+text-align: center;
+margin-bottom: -20%;
+}
+
 tr{
   text-align: center;
 
@@ -112,29 +146,37 @@ th {
 
 td{
   padding: 0.1rem 2.5rem;
-}
 
+}
 #contentSection h2{
   font-family: sans-serif;
 font-size: 40px;
 color: #778DB3;
-margin-top:2%;
+margin-top:40%;
 position: relative;
 font-weight: 900;
 text-align: center;
 
 }
 
+#options-dropdown h3{
+  font-family: sans-serif;
+font-size: 13px;
+color: #4d5b74;
+font-weight: 700;
+margin-right: -40%;
+}
+
 
 .textfield{
   justify-content: space-around;
-  margin-top:2%;
+  margin-top:20%;
   width: 70%;
   justify-content: center;
 }
 
 .textfield > input{
- 
+
   width: 100%;
   border: none;
   border-radius: 30px;
@@ -144,7 +186,7 @@ text-align: center;
   font-size: 12pt;
   outline: none;
   box-sizing: border-box;
-  
+
 }
 
 #data1
@@ -155,7 +197,7 @@ text-align: center;
   width: 30%;
 right: -35% ;
   display:flex;
-  
+
   flex-direction:row;
   position: relative;
 text-align: center;
@@ -171,13 +213,13 @@ text-align: center;
    height: 50px;
     cursor: pointer;
 
- 
+
 
 }
 
 .button:hover{
    animation: animate 1s linear;
-   
+
 }
 
 .button-create{
