@@ -1,0 +1,132 @@
+{
+	"info": {
+		"_postman_id": "5122bf0d-8112-436c-a8b5-a3354e6c1675",
+		"name": "PlannedRouteCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23548838"
+	},
+	"item": [
+		{
+			"name": "Create Planned route",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fleetPlaningId\": \"AE02\",\r\n  \"truckId\": \"eTruck01\",\r\n  \"date\": \"20221205\",\r\n  \"route\": [\"1\",\"2\",\"3\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/fleetPlaning/createPlaning",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"fleetPlaning",
+						"createPlaning"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getBestRoute",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/fleetPlaning/getBestRoute/20221205/eTruck01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"fleetPlaning",
+						"getBestRoute",
+						"20221205",
+						"eTruck01"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getNearestWarehouse",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/fleetPlaning/getNearestWarehouse/20221205/eTruck01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"fleetPlaning",
+						"getNearestWarehouse",
+						"20221205",
+						"eTruck01"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getRouteGreaterMass",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/fleetPlaning/getRouteGreaterMass/20221205/eTruck01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"fleetPlaning",
+						"getRouteGreaterMass",
+						"20221205",
+						"eTruck01"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getRouteBestRelation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/fleetPlaning/getRouteBestRelation/20221205/eTruck01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"fleetPlaning",
+						"getRouteBestRelation",
+						"20221205",
+						"eTruck01"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
