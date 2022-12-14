@@ -39,36 +39,42 @@ describe('Route Tests', () => {
       cy.get('h1').contains('Create a new route!')
     })
 
+
+    it('Creating route fails', () => {
+      cy.get('[class="textfield"]').should('have.length',5)
+      cy.get('[type="text"]').eq(0).type(' ')
+      cy.get('[type="text"]').eq(1).type(' ')
+      cy.get('[type="text"]').eq(0).type(' ')
+      cy.get('[type="text"]').eq(1).type(' ')
+      cy.get('[type="text"]').eq(2).type(' ')
+      cy.get('[type="text"]').eq(3).type(' ')
+  
+    })
+
+
+    it('Creates a new route', () => {
+      cy.visit('/views/create-route')
+      cy.get('[class="textfield"]').should('have.length',5)
+      cy.get('[type="text"]').eq(0).type('W01')
+      cy.get('[type="text"]').eq(1).type('12')
+      cy.get('[type="text"]').eq(0).type('22')
+      cy.get('[type="text"]').eq(1).type('22')
+      cy.get('[type="text"]').eq(2).type('12')
+      cy.get('[type="text"]').eq(3).type('22')
+
+      cy.get('[type="submit"]').should('be.enabled')
+      cy.get('[type="submit"]').click()    
+    })
+  
+
     it('Visits the List Available Routes page', () => {
       cy.visit('/views/list-routes')
       cy.get('h2').contains('ALL ROUTES AVAILABLE')
     })
 
-/*     it('Searches Route', () => {
-      //cy.get('[class="table"]').should('have.length',7)
-      cy.get('[type="text"]').type('W01')
-      cy.get('[class="table"]').contains('W01')
-    }) */
-
-
-
-/*     it('creates routes', () => {
-      cy.visit('/views/create-route')
-      cy.get('[class="textfield"]').should('have.length',7)
-      cy.get('[type="text"]').type('W01')
-      cy.get('[type="number"]').eq(0).type('12')
-      cy.get('[type="number"]').eq(1).type('22')
-      cy.get('[type="number"]').eq(2).type('22')
-      cy.get('[type="number"]').eq(3).type('12')
-      cy.get('[type="number"]').eq(4).type('22')
-      cy.get('[type="submit"]').click()
-    })
-  
-    it('Visits the list Route page', () => {
-      cy.visit('/views/list-routes')
-      cy.get('h2').contains('ALL AVAILABLE ROUTES')
-   
-    })
- */
+     it('Searches Route', () => {
+      cy.get('th').should('have.length',8)
+      cy.get('[type="text"]').eq(0).type('W01')
+    }) 
 
   })
