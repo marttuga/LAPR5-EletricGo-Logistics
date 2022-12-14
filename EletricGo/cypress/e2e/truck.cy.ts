@@ -45,7 +45,7 @@ describe('Truck Test', () => {
 
     it('creating truck fails', () => {
       cy.get('[class="textfield"]').should('have.length',6)
-      cy.get('[type="text"]').type('FFF')
+      cy.get('[type="text"]').eq(0).type('FFF')
       
       cy.get('[type="number"]').eq(0).type('8')
       cy.get('[class="requiredError"]').should('be.visible').should('contain','Licence Plate must must be of format XX-00-XX!')
@@ -66,7 +66,7 @@ describe('Truck Test', () => {
       cy.get('[type="submit"]').should('be.disabled')
     
 
-      cy.get('[type="text"]').clear()   
+      cy.get('[type="text"]').eq(0).clear()   
       cy.get('[class="requiredError"]').should('be.visible').should('contain','Time to charge must be between 1h and 5h!')
       cy.get('[class="requiredError"]').should('be.visible').should('contain','Licence Plate is required!')
 
@@ -94,8 +94,7 @@ describe('Truck Test', () => {
     })
 
     it('Searches Truck failed', () => {
-      cy.get('th').should('have.length',7)
-      cy.get('[type="text"]').type('FFF')
+      cy.get('[type="text"]').eq(0).type('FFF')
     })
 
     it('Visits the create Truck page', () => {
@@ -106,7 +105,7 @@ describe('Truck Test', () => {
 
     it('creating truck success', () => {
       cy.get('[class="textfield"]').should('have.length',6)
-      cy.get('[type="text"]').type('AA-11-AA')
+      cy.get('[type="text"]').eq(0).type('AA-11-AA')
 
 
       cy.get('[type="number"]').eq(0).type('12000')
@@ -128,8 +127,7 @@ describe('Truck Test', () => {
     })
 
     it('Searches Truck success', () => {
-      cy.get('th').should('have.length',7)
-      cy.get('[type="text"]').type('AA-11-AA')
+      cy.get('[type="text"]').eq(0).type('AA-11-AA')
       cy.get('[class="table"]').should('contain','AA-11-AA')
 
 

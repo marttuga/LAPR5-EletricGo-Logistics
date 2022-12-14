@@ -9,7 +9,7 @@
       </li>
 
        <li id="Option1" style="display: none"> <a (click)="scrollManualDelivery(listTrucksSection)"  >Manual Delivery</a></li>
-      <li id="Option2" style="display: none"> <a (click)="scrollAutomaticDelivery(listTrucksSection)">Automatic Delivery</a></li>
+      <li id="Option2" style="display: none"> <a (click)="scrollAutomaticDelivery(listRoutesSection)">Automatic Delivery</a></li>
       <li id="Option3" style="display: none"> <a (click)="startAutomaticMovement()">Start</a></li>
     </ul>
   </nav>
@@ -21,13 +21,16 @@
         <canvas #canvas id="canvas"  (mousemove)="onMouseMove($event)" (click)="onClick()"></canvas>
       </div>
 
-      <div #listTrucksSection>
-        <app-list-truck  (getTruckLicencePlateEvent)="choiceTruck=$event" [networkChecker]="checkerTruck" ></app-list-truck>
+       <div #listTrucksSection>
+        <app-list-truck id="manualSection" style="display: none" [networkChecker]="checkerNetworkTruck"> <!--(getTruckLicencePlateEvent)="scrollToPlannedRoute($event,listRoutesSection)">--> </app-list-truck>
       </div>
 
-      <div>
+      <div #listRoutesSection>
+        <app-get-planned-route id="automaticSection" style="display: none" [networkChecker]="checkerNetworkPlanedRoutes" (getRouteAndTruckEvent)="setAutomaticMovementRoutAndTruck(done,$event)" ></app-get-planned-route>
+      </div>
+      <div #done style="align-content: center">
         <!-- HTML !-->
-        <button class="button-73" role="button" (click)="scrollCanvas(canvasSection)">Start</button>
+        <button id="doneSection" class="button-73" role="button" style="display: none" (click)="scrollCanvas(canvasSection)">Done</button>
       </div>
 
     </div>
