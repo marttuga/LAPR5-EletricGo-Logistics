@@ -104,13 +104,13 @@ section{
 
 }
 
-h1{
+#content h1{
   font-family: sans-serif;
 font-size: 13px;
 color: #4d5b74;
 font-weight: 800;
 text-align: center;
-margin-bottom: -20%;
+margin-top: 40%;
 }
 
 tr{
