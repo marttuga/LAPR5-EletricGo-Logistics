@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="get-planned-route.component.css">
 </head>
 <body>
-  <nav class="navbar">
+  <nav class="navbar" id="navBar">
     <ul>
       <li><a href="#home">Home</a></li>
       <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
@@ -30,13 +30,26 @@
                   </div>
             </div>
 
-            <div class="textfield" >
+            <div class="textfield" id="truck" >
                 <input type="text" required  #TruckId="ngModel" [class.is-invalid]="TruckId.invalid && TruckId.touched" name="TruckId" placeholder="Truck_Id"  title="TruckId must be of format eTruck00" required [(ngModel)]="truckId">
                 <div *ngIf="TruckId.touched">
 
                     <small class="requiredError"*ngIf="TruckId.errors?.['required']">TruckId is required!</small>
                 </div>
             </div>
+
+          <div class="textfield" id="truck1" style="display: none">
+            <div class="dropDownArrival">
+              <select type="text" name="arrival_Id" id="arrivalId" placeholder="Truck" required [(ngModel)]="truckId">
+                <option>Choose a Tuck</option>
+                <option *ngFor="let trucks of allTrucks"> {{trucks.licencePlate}}</option>
+              </select>
+              <!-- <input type="" name="arrivalId" placeholder="Warehouse Arrival Id" required [(ngModel)]="arrivalId"> -->
+            </div>
+            <div *ngIf="TruckId.touched">
+              <small class="requiredError"*ngIf="TruckId.errors?.['required']">TruckId is required!</small>
+            </div>
+          </div>
         </div>
 
 

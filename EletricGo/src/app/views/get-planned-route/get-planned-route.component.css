@@ -134,7 +134,7 @@ text-align: center;
 }
 
 .textfield > input{
- 
+
   width: 100%;
   border: none;
   border-radius: 30px;
@@ -144,7 +144,7 @@ text-align: center;
   font-size: 12pt;
   outline: none;
   box-sizing: border-box;
-  
+
 }
 
 #data1
@@ -155,7 +155,7 @@ text-align: center;
   width: 30%;
 right: -35% ;
   display:flex;
-  
+
   flex-direction:row;
   position: relative;
 text-align: center;
@@ -171,13 +171,13 @@ text-align: center;
    height: 50px;
     cursor: pointer;
 
- 
+
 
 }
 
 .button:hover{
    animation: animate 1s linear;
-   
+
 }
 
 .button-create{

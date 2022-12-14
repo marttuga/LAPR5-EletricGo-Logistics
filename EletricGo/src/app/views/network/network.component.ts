@@ -16,8 +16,9 @@ import {TrucksService} from "../../services/node/truck.service";
 })
 export class NetworkComponent implements OnInit, AfterViewInit {
 
-  public choiceTruck:string;
-  public checkerTruck:number=1
+  public automaticTruck:string;
+  public checkerNetworkTruck:number=1
+  public checkerNetworkPlanedRoutes:number=1
 
    //tipo do canvas
   @ViewChild('canvas')
@@ -272,7 +273,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     if(ware0!=null&&ware1!=null){
       const truck3D = this.truck3D.clone();
-      truck3D.name = this.choiceTruck;
+      truck3D.name = this.automaticTruck;
       truck3D.position.set(ware0?.position.x+0.3, ware0.position.y, ware0.position.z);
 
       let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0.name, ware1.name)?.routeId);
@@ -287,6 +288,27 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     }
   }
 
+  private addLights(){
+    //*Light
+
+    const light_amb = new THREE.AmbientLight(0xffffff, 0.5);
+    this.scene.add(light_amb);
+
+    const directLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directLight.castShadow=true;
+    this.camera.add(directLight);
+
+    const spotLight = new THREE.SpotLight(0xffffff, 0.8);
+    spotLight.position.set(0, 500, 40);
+    spotLight.castShadow=true;
+    spotLight.target.position.set(0,0,40);
+    spotLight.shadow.mapSize.width = 2048;
+    spotLight.shadow.mapSize.height = 2048;
+    spotLight.shadow.camera.far =1000;
+    this.scene.add(spotLight);
+    this.scene.add(spotLight.target);
+  }
+
   public startAutomaticMovement(){
     let x3=document.getElementById("Option3");
     let z=document.getElementById("delivery");
@@ -298,6 +320,14 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  public setAutomaticMovementRoutAndTruck(el:HTMLElement,map:Map<string,string[]>){
+    map.forEach((value, key) => {
+      this.automaticTruck=key;
+    });
+    this.scrollDone(el);
+  }
+
 
   private automaticMovement() {
     //Automatic truck movement
@@ -348,6 +378,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
               if (parseInt(Math.abs(wareArrival?.position.x).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.x).toFixed(2)) && parseInt(Math.abs(wareArrival?.position.y).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.y).toFixed(2)) && parseInt(Math.abs(wareArrival?.position.z).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.z).toFixed(2))) {
                 this.activateMotion = 0;
+                this.automaticTruck="";
                 this.scene.remove(this.activeTrucks[i]);
                 this.activeTrucks= this.activeTrucks.filter(obj => obj!= this.activeTrucks[i]);
               }
@@ -421,26 +452,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
 
-  private addLights(){
-    //*Light
 
-    const light_amb = new THREE.AmbientLight(0xffffff, 0.5);
-    this.scene.add(light_amb);
-
-    const directLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directLight.castShadow=true;
-   this.camera.add(directLight);
-
-    const spotLight = new THREE.SpotLight(0xffffff, 0.8);
-    spotLight.position.set(0, 500, 40);
-    spotLight.castShadow=true;
-    spotLight.target.position.set(0,0,40);
-    spotLight.shadow.mapSize.width = 2048;
-    spotLight.shadow.mapSize.height = 2048;
-    spotLight.shadow.camera.far =1000;
-    this.scene.add(spotLight);
-    this.scene.add(spotLight.target);
-  }
 
   private static getCoordinates(lat:number, lon:number, alt: number):any {
     let coordinatesArr: number[]=[];
@@ -466,8 +478,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   }
 
-
-  //Auxiliar Methods
   public importLoaders(){
     this.skyBoxTexture=new THREE.TextureLoader().load('assets/network/sky.jpg');
 
@@ -519,6 +529,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
 
+  //Auxiliar Methods
   public getRouteByWarehouses(ware1Identifier:any,ware2Identifier:any):Route | null{
     for(let i=0;i<this.routes.length;i++){
       if(ware1Identifier==this.routes[i].arrivalId  && ware2Identifier==this.routes[i].departureId){
@@ -530,7 +541,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     return null;
   }
 
-  public makeDelivery() {
+  public makeDelivery() {//bloquear o make delivery e mostrar as opcoes de automatic ou manual movement
     let x1 = document.getElementById("Option1");
     let x2 = document.getElementById("Option2");
 
@@ -540,7 +551,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       if (x1.style.display === "none" &&x2.style.display === "none") {
         x1.style.display = "block";
         x2.style.display = "block";
-        //   y.style.height ="80px";
         z.style.display="none"
       }
     }
@@ -548,25 +558,52 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   public scrollAutomaticDelivery(el: HTMLElement) {
     this.isAutomaticMovement=1;
+    let x=document.getElementById("automaticSection");
+    if(x!=null){
+      x.style.display="block"
+    }
     el.scrollIntoView({behavior: 'smooth'});
 
   }
 
   public scrollManualDelivery(el: HTMLElement) {
-
+    let x=document.getElementById("manualSection");
+    if(x!=null){
+      x.style.display="block"
+    }
     el.scrollIntoView({behavior: 'smooth'});
 
   }
+  /*public scrollToPlannedRoute(el1:string,el2: HTMLElement) {
+    this.automaticTruck=el1;
+    el2.scrollIntoView({behavior: 'smooth'});
+
+  }*/
+
+  public scrollDone(el: HTMLElement){
+    let done=document.getElementById("doneSection")
+    if(done!=null){
+      done.style.display="block"
+    }
+  el.scrollIntoView({behavior: 'smooth'});
+  }
+
   public scrollCanvas(el: HTMLElement) {
     let x1 = document.getElementById("Option1");
     let x2 = document.getElementById("Option2");
     let x3 = document.getElementById("Option3");
+    let x4=document.getElementById("manualSection");
+    let x5=document.getElementById("automaticSection");
+    let done=document.getElementById("doneSection")
 
-    if (x1!=null && x2!=null&&x3!=null) {
+    if (x1!=null && x2!=null&&x3!=null&&x4!=null&&x5!=null&&done!=null) {
       if (x1.style.display === "block" &&x2.style.display === "block") {
         x1.style.display = "none";
         x2.style.display = "none";
         x3.style.display="block"
+        x4.style.display="none"
+        x5.style.display="none"
+        done.style.display="none";
         this.addTruck();
       }
     }
