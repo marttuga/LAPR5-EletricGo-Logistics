@@ -22,8 +22,25 @@ describe('CreateWarehouseComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('component should be created',() => {
+    const fixture = TestBed.createComponent(CreateWarehouseComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
   });
+
+
+  it('should render New Location? in h1', () => {
+    const fixture = TestBed.createComponent(CreateWarehouseComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('New location?');
+  });
+
+  it('should render Let us know where! in h2', () => {
+    const fixture = TestBed.createComponent(CreateWarehouseComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h2')?.textContent).toContain('Let us know where!');
+  });
+
 });
