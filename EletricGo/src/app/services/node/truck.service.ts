@@ -16,6 +16,10 @@ export class TrucksService {
     return this.httpClient.get<any>(this.Url + '/getAll').pipe(
       map(this.extractData));
   }
+  getActiveTrucks(): Observable<any> {
+    return this.httpClient.get<any>(this.Url + '/getAllActive').pipe(
+      map(this.extractData));
+  }
 
   getTruck(licencePlate: string): Observable<any> {
     return this.httpClient.get(this.Url + '/getTruck/' +licencePlate).pipe(

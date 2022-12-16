@@ -134,6 +134,20 @@ export class GetPlannedRouteComponent implements OnInit {
        this.plannedRoute[i]="W"+data[i];
      }
     }
-
   }
+
+  private transformerCity(data:any) {
+    this.plannedRoute=[];
+    for(let i=0;i<data.length;i++){
+     let j= data[i].toString().length;
+     if(j==1){
+     this.plannedRoute[i]="W0"+data[i];
+     
+     }else {
+       this.plannedRoute[i]="W"+data[i];
+     }
+    }
+  }
+
+
 }
