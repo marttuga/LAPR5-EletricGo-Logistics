@@ -71,11 +71,12 @@ section{
 }
 
 .message{
-
+width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  margin-left: 12%;
 }
 
 section h1{
@@ -97,6 +98,10 @@ section h1{
 }
 
 
+.m{
+  margin-right: 0%;
+
+}
 
 .image{
     width: 45vw;
