@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="get-planned-route.component.css">
 </head>
 <body>
-  <nav class="navbar">
+  <nav class="navbar" id="navBar">
     <ul>
       <li><a href="#home">Home</a></li>
       <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
@@ -17,21 +17,33 @@
   <div class="container">
     <div id="contentSection">
       <h2>PLANNED ROUTE</h2>
+    </div>
 
-      </div>
     <section class="input">
-  
+
       <div class="input-data">
           <div class="textfield">
             <input type="text" required maxlength="8" #Date="ngModel"  name="Date" placeholder="Date"  required [(ngModel)]="date">
           </div>
-          <div class="textfield" >
+          <div class="textfield" id="truck">
             <input type="text" required  #TruckId="ngModel"  name="TruckId" placeholder="Truck_Id"  title="TruckId must be of format eTruck00" required [(ngModel)]="truckId">
           </div>
       </div>
+
+
+
       <div id="options-dropdown">
         <div class="textfield">
-           <h3>SELECT THE PREFERED ROUTE OPTION</h3>
+          <div id="options-dropdown-truck" style="display: none">
+            <h3>SELECT THE PREFERED TRUCK OPTION</h3>
+            <select [(ngModel)]="truckId" type="text" name="options" id="options_truck" >
+              <option>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+              <option selected disabled>Select an option..</option>
+              <option  *ngFor="let trucks of allTrucks" >{{trucks.licencePlate}}</option>
+            </select>
+          </div>
+
+          <h3>SELECT THE PREFERED ROUTE OPTION</h3>
           <select [(ngModel)]="choice" (ngModelChange)="callFunction()" type="text" name="options" id="options" >
             <option selected disabled>Select an option..</option>
             <option value="bestRoute">Get Best Route</option>
@@ -41,27 +53,28 @@
           </select>
         </div>
       </div>
-    </section> 
+    </section>
+
     <div id="content">
-    
+
           <h1>WAREHOUSES IDS BY ORDER</h1>
         </div>
     <div class="output">
-     
+
       <div id="solution-output" >
 
         <table class="table">
-          
+
           <tr><span>{{plannedRoute}}</span></tr>
         </table>
       </div>
     </div>
-    <section> 
+    <section>
 
     </section>
 
- 
-    
+
+
   </div>
 
 
