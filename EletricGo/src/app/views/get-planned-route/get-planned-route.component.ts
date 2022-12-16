@@ -26,7 +26,7 @@ export class GetPlannedRouteComponent implements OnInit {
   allTrucks:Truck[]=[];
   choice: string;
   constructor(private  plannedRouteService:PlannedRouteService,private trucksService:TrucksService) {}
-  
+
 
 
 
@@ -43,7 +43,7 @@ export class GetPlannedRouteComponent implements OnInit {
 
   public getBestRoute():void{
     this.plannedRouteService.getBestRoute(this.date,this.truckId).subscribe(data => {
-      this.plannedRoute=data;
+      this.transformer(data);
       this.getRouteAndTruck();
     });
     this.plannedRoutes=[];
@@ -51,7 +51,7 @@ export class GetPlannedRouteComponent implements OnInit {
   }
   public getNearestWarehouse():void{
     this.plannedRouteService.getNearestWarehouse(this.date,this.truckId).subscribe(data => {console.log(data);
-      this.plannedRoute=data
+      this.transformer(data);
       this.getRouteAndTruck();
     });
     this.plannedRoutes=[];
@@ -61,7 +61,7 @@ export class GetPlannedRouteComponent implements OnInit {
 
   public getRouteGreaterMass():void{
     this.plannedRouteService.getRouteGreaterMass(this.date,this.truckId).subscribe(data => {console.log(data);
-      this.plannedRoute=data
+      this.transformer(data);
       this.getRouteAndTruck();
     });
     this.plannedRoutes=[];
@@ -70,7 +70,7 @@ export class GetPlannedRouteComponent implements OnInit {
 
   public getRouteBestRelation():void{
     this.plannedRouteService.getRouteBestRelation(this.date,this.truckId).subscribe(data => {console.log(data);
-      this.plannedRoute=data
+      this.transformer(data);
       this.getRouteAndTruck();
     });
     this.plannedRoutes=[];
@@ -81,7 +81,7 @@ export class GetPlannedRouteComponent implements OnInit {
    if(checker==1){
     let x1=document.getElementById("navBar")
     let x2=document.getElementById("truck")
-     let x3=document.getElementById("truck1")
+     let x3=document.getElementById("options-dropdown-truck")
 
      if(x1!=null&&x2!=null&&x3!=null) {
       x1.style.display = "none"
@@ -123,5 +123,17 @@ export class GetPlannedRouteComponent implements OnInit {
         break;
       }
     }
+  }
+  private transformer(data:any) {
+    this.plannedRoute=[];
+    for(let i=0;i<data.length;i++){
+     let j= data[i].toString().length;
+     if(j==1){
+     this.plannedRoute[i]="W0"+data[i];
+     }else {
+       this.plannedRoute[i]="W"+data[i];
+     }
+    }
+
   }
 }

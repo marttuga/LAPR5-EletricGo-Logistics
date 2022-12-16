@@ -114,7 +114,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     this.camera.position.z = this.cameraZ;
     this.scene.add(this.camera);
 
-    //this.addSkybox();
+  //  this.addSkybox();
     this.addBackgroundSound();
     this.addWarehouses()
     this.addLights()
@@ -136,7 +136,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       sound.play();
     });
   }
-
 
   private startRenderingLoop() {
     //* Renderer
