@@ -132,7 +132,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
 
-
   private startRenderingLoop() {
     //* Renderer
     // Use canvas element in template
@@ -277,7 +276,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         if(this.isAutomaticMovement==1){
           this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
           console.log("A adicionar o TRUCk")
-          console.log(this.activeTrucks)
           this.isAutomaticMovement=0;
         }
       }
@@ -460,9 +458,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private static getCoordinates(lat:number, lon:number, alt: number):any {
     let coordinatesArr: number[]=[];
-    coordinatesArr[0]=parseInt((-(((100-(-100))/(8.7613-8.2451))*(lon-8.2451)+(-100))).toFixed(4));
-    coordinatesArr[1]=parseInt(((((50-(-50))/(42.1115-40.8387))*(lat-40.8387)+(-50))).toFixed(4));
-    coordinatesArr[2]=parseInt(((((100 / 800) * alt)).toFixed(4)));
+       const min=-100;
+       const max=100;
+       const med=max/2;
+
+      coordinatesArr[0]=-(((max-(min))/(8.7613-8.2451))*(lon-8.2451)+(min));
+      coordinatesArr[1]=((((med-(-med))/(42.1115-40.8387))*(lat-40.8387)+(-med)));
+      coordinatesArr[2]=((((max / 800) * alt)));
+      parseInt( coordinatesArr[0].toFixed(4));
+      parseInt( coordinatesArr[1].toFixed(4));
+      parseInt( coordinatesArr[2].toFixed(4));
 
     return coordinatesArr;
   }
