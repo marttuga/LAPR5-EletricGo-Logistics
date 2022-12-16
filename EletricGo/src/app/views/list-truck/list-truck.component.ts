@@ -21,6 +21,7 @@ export class ListTruckComponent implements OnInit {
 }
 
 ngOnInit(): void {
+  //this.getActiveTrucks();
   this.getTrucks();
 }
 
@@ -37,6 +38,13 @@ ngOnInit(): void {
 
   public getTrucks():void{
     this.truckService.getTrucks().subscribe(data => {console.log(data);
+      this.trucks=data
+
+    });
+  }
+  
+  public getActiveTrucks():void{
+    this.truckService.getActiveTrucks().subscribe(data => {console.log(data);
       this.trucks=data
 
     });
