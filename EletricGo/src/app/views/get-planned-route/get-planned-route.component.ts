@@ -80,13 +80,13 @@ export class GetPlannedRouteComponent implements OnInit {
   public turnOff(checker:number){
    if(checker==1){
     let x1=document.getElementById("navBar")
-    let x2=document.getElementById("truck")
-     let x3=document.getElementById("options-dropdown-truck")
+   /* let x2=document.getElementById("truck")
+     let x3=document.getElementById("options-dropdown-truck")*/
 
-     if(x1!=null&&x2!=null&&x3!=null) {
+     if(x1!=null/*&&x2!=null&&x3!=null*/) {
       x1.style.display = "none"
-      x2.style.display = "none"
-       x3.style.display = "block"
+     /* x2.style.display = "none"
+       x3.style.display = "block"*/
 
      }
     }
