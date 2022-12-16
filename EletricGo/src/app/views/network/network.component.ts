@@ -61,6 +61,14 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private static ROAD_X=8;private static ROAD_Y=9;private static ROAD_Z=10;
   private static BETA=11;private static OMEGA=12;
 
+  private ambientSoundLoader = new THREE.AudioLoader();
+  private ambientListener=new THREE.AudioListener();
+  private ambientAudio=new THREE.Audio(this.ambientListener);
+
+  private truckSoundLoader = new THREE.AudioLoader();
+  private truckListener=new THREE.AudioListener();
+  private truckAudio=new THREE.Audio(this.truckListener);
+
   constructor(private route: ActivatedRoute,private  warehousesService:WarehousesService, private routesService:RoutesService,private trucksService:TrucksService) { }
 
   ngOnInit(): void {
@@ -114,28 +122,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     this.camera.position.z = this.cameraZ;
     this.scene.add(this.camera);
 
-  //  this.addSkybox();
-    this.addBackgroundSound();
+    //sounds
+    this.camera.add( this.ambientListener);
+    this.camera.add(this.truckListener);
+
+//    this.addSkybox();
     this.addWarehouses()
     this.addLights()
   }
 
-  private addBackgroundSound(){
-    const listener = new THREE.AudioListener();
-    this.camera.add( listener );
 
-// create a global audio source
-    const sound = new THREE.Audio( listener );
-
-// load a sound and set it as the Audio object's buffer
-    const audioLoader = new THREE.AudioLoader();
-    audioLoader.load( 'assets/network/audio/Burn it Down.mp3', function( buffer ) {
-      sound.setBuffer( buffer );
-      sound.setLoop( true );
-      sound.setVolume( 0.5 );
-      sound.play();
-    });
-  }
 
   private startRenderingLoop() {
     //* Renderer
@@ -157,7 +153,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     controls.minDistance = 50;//100 zoom in
     controls.minAzimuthAngle = -Math.PI/2 ;//Rotação D 90º
     controls.maxAzimuthAngle = Math.PI/2 ;//Rotação E 90º
-    controls.maxPolarAngle=Math.PI/2 //Rotação Eixo Y 90º
+    controls.maxPolarAngle = Math.PI/2 //Rotação Eixo Y 90º
    // controls.minPolarAngle=Math.PI/2
 
     let component: NetworkComponent = this;
@@ -246,9 +242,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         let roadMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
         roadMaterial.map= this.roadTexture;
 
-        //formula da distancia entre dois pontos
-        let roadGeometry =new THREE.BoxGeometry(2, 0.20,  Math.sqrt(Math.pow(elemLig0Mesh.position.x-elemLig1Mesh.position.x,2)+Math.pow(elemLig0Mesh.position.y-elemLig1Mesh.position.y,2)+Math.pow(elemLig0Mesh.position.z-elemLig1Mesh.position.z,2)));      let roadMesh=new THREE.Mesh(roadGeometry,roadMaterial);
-        //posiçao conforme o ponto medio entre os elementos de ligaçao
+        let roadGeometry =new THREE.BoxGeometry(2, 0.20,  Math.sqrt(Math.pow(elemLig0Mesh.position.x-elemLig1Mesh.position.x,2)+Math.pow(elemLig0Mesh.position.y-elemLig1Mesh.position.y,2)+Math.pow(elemLig0Mesh.position.z-elemLig1Mesh.position.z,2)));
+        let roadMesh=new THREE.Mesh(roadGeometry,roadMaterial);
         roadMesh.position.set((elemLig0Mesh.position.x+elemLig1Mesh.position.x)/2,(elemLig0Mesh.position.y+elemLig1Mesh.position.y)/2,(elemLig0Mesh.position.z+elemLig1Mesh.position.z)/2);
         roadMesh.castShadow=true;
         roadMesh.receiveShadow=true;
@@ -281,6 +276,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         this.scene.add(truck3D);
         if(this.isAutomaticMovement==1){
           this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
+          console.log("A adicionar o TRUCk")
+          console.log(this.activeTrucks)
           this.isAutomaticMovement=0;
         }
       }
@@ -308,25 +305,32 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     this.scene.add(spotLight.target);
   }
 
-  public startAutomaticMovement(){
-    let x3=document.getElementById("Option3");
-    let z=document.getElementById("delivery");
-    if (x3!=null && z!=null) {
-      if (x3.style.display === "block" &&z.style.display === "none") {
-        z.style.display = "block";
-        x3.style.display = "none";
-        this.activateMotion=1;
-      }
-    }
-  }
+
 
   public setAutomaticMovementRoutAndTruck(el:HTMLElement,map:Map<string,string[]>){
     map.forEach((value, key) => {
-      this.automaticTruck=key;
+      this.automaticTruck=key;//atribuir um camião
     });
     this.scrollDone(el);
   }
 
+  public startAutomaticMovement(){
+    //ativar o som do camião
+    this.truckAudio.play();
+
+    let x3=document.getElementById("OptionStartAutomaticDelivery");
+    let z=document.getElementById("OptionMakeDelivery");
+
+    if (x3!=null && z!=null) {
+      if (x3.style.display === "block" &&z.style.display === "none") {
+        z.style.display = "block";
+        x3.style.display = "none";
+
+       //ativar o movimento do camião
+        this.activateMotion=1;
+      }
+    }
+  }
 
   private automaticMovement() {
     //Automatic truck movement
@@ -380,6 +384,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
                 this.automaticTruck="";
                 this.scene.remove(this.activeTrucks[i]);
                 this.activeTrucks= this.activeTrucks.filter(obj => obj!= this.activeTrucks[i]);
+                this.truckAudio.stop();
               }
             }
           }
@@ -455,16 +460,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private static getCoordinates(lat:number, lon:number, alt: number):any {
     let coordinatesArr: number[]=[];
-    const min=-100;
-    const max=100;
-    const med=max/2;
+    coordinatesArr[0]=parseInt((-(((100-(-100))/(8.7613-8.2451))*(lon-8.2451)+(-100))).toFixed(4));
+    coordinatesArr[1]=parseInt(((((50-(-50))/(42.1115-40.8387))*(lat-40.8387)+(-50))).toFixed(4));
+    coordinatesArr[2]=parseInt(((((100 / 800) * alt)).toFixed(4)));
 
-    coordinatesArr[0]=-(((max-(min))/(8.7613-8.2451))*(lon-8.2451)+(min));
-    coordinatesArr[1]=((((med-(-med))/(42.1115-40.8387))*(lat-40.8387)+(-med)));
-    coordinatesArr[2]=((((max / 800) * alt)));
-    parseInt( coordinatesArr[0].toFixed(4));
-    parseInt( coordinatesArr[1].toFixed(4));
-    parseInt( coordinatesArr[2].toFixed(4));
     return coordinatesArr;
   }
 
@@ -478,6 +477,19 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public importLoaders(){
+   /* this.ambientSoundLoader.load( 'assets/network/audio/Burn it Down.mp3', (buffer) => {
+      this.ambientAudio.setBuffer( buffer );
+      this.ambientAudio.setLoop( true );
+      this.ambientAudio.setVolume( 0.5 );
+      this.ambientAudio.play();
+    });*/
+
+    this.truckSoundLoader.load('assets/network/audio/Truck Sound.mp3', (buffer) => {
+      this.truckAudio.setBuffer( buffer );
+      this.truckAudio.setLoop( true );
+      this.truckAudio.setVolume( 0.5 );
+    });
+
     this.skyBoxTexture=new THREE.TextureLoader().load('assets/network/sky.jpg');
 
     this.skyBoxGroundTexture=new THREE.TextureLoader().load('assets/network/ground.jpg');
@@ -541,10 +553,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public makeDelivery() {//bloquear o make delivery e mostrar as opcoes de automatic ou manual movement
-    let x1 = document.getElementById("Option1");
-    let x2 = document.getElementById("Option2");
+    let x1 = document.getElementById("OptionManualDelivery");
+    let x2 = document.getElementById("OptionAutomaticDelivery");
 
-    let z=document.getElementById("delivery");
+    let z=document.getElementById("OptionMakeDelivery");
 
     if (x1!=null && x2!=null&&z!=null) {
       if (x1.style.display === "none" &&x2.style.display === "none") {
@@ -557,7 +569,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   public scrollAutomaticDelivery(el: HTMLElement) {
     this.isAutomaticMovement=1;
-    let x=document.getElementById("automaticSection");
+    let x=document.getElementById("AutomaticSection");
     if(x!=null){
       x.style.display="block"
     }
@@ -566,7 +578,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public scrollManualDelivery(el: HTMLElement) {
-    let x=document.getElementById("manualSection");
+    let x=document.getElementById("ManualSection");
     if(x!=null){
       x.style.display="block"
     }
@@ -580,7 +592,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }*/
 
   public scrollDone(el: HTMLElement){
-    let done=document.getElementById("doneSection")
+    let done=document.getElementById("ButtonDoneSection")
     if(done!=null){
       done.style.display="block"
     }
@@ -588,12 +600,12 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public scrollCanvas(el: HTMLElement) {
-    let x1 = document.getElementById("Option1");
-    let x2 = document.getElementById("Option2");
-    let x3 = document.getElementById("Option3");
-    let x4=document.getElementById("manualSection");
-    let x5=document.getElementById("automaticSection");
-    let done=document.getElementById("doneSection")
+    let x1 = document.getElementById("OptionManualDelivery");
+    let x2 = document.getElementById("OptionAutomaticDelivery");
+    let x3 = document.getElementById("OptionStartAutomaticDelivery");
+    let x4=document.getElementById("ManualSection");
+    let x5=document.getElementById("AutomaticSection");
+    let done=document.getElementById("ButtonDoneSection")
 
     if (x1!=null && x2!=null&&x3!=null&&x4!=null&&x5!=null&&done!=null) {
       if (x1.style.display === "block" &&x2.style.display === "block") {

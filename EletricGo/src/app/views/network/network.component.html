@@ -1,16 +1,16 @@
 
-<nav class="navbar" id="navbar">
+<nav class="navbar" id="SectionNavbar">
     <ul>
       <li >
         <a href="/views/login">Home</a>
       </li>
       <li >
-          <a id="delivery" (click)="makeDelivery()">Make Delivery</a>
+          <a id="OptionMakeDelivery" (click)="makeDelivery()">Make Delivery</a>
       </li>
 
-       <li id="Option1" style="display: none"> <a (click)="scrollManualDelivery(listTrucksSection)"  >Manual Delivery</a></li>
-      <li id="Option2" style="display: none"> <a (click)="scrollAutomaticDelivery(listRoutesSection)">Automatic Delivery</a></li>
-      <li id="Option3" style="display: none"> <a (click)="startAutomaticMovement()">Start</a></li>
+       <li id="OptionManualDelivery" style="display: none"> <a (click)="scrollManualDelivery(listTrucksSection)"  >Manual Delivery</a></li>
+      <li id="OptionAutomaticDelivery" style="display: none"> <a (click)="scrollAutomaticDelivery(listRoutesSection)">Automatic Delivery</a></li>
+      <li id="OptionStartAutomaticDelivery" style="display: none"> <a (click)="startAutomaticMovement()">Start</a></li>
     </ul>
   </nav>
 
@@ -22,15 +22,15 @@
       </div>
 
        <div #listTrucksSection>
-        <app-list-truck id="manualSection" style="display: none" [networkChecker]="checkerNetworkTruck"> <!--(getTruckLicencePlateEvent)="scrollToPlannedRoute($event,listRoutesSection)">--> </app-list-truck>
+        <app-list-truck id="ManualSection" style="display: none" [networkChecker]="checkerNetworkTruck"> <!--(getTruckLicencePlateEvent)="scrollToPlannedRoute($event,listRoutesSection)">--> </app-list-truck>
       </div>
 
       <div #listRoutesSection>
-        <app-get-planned-route id="automaticSection" style="display: none" [networkChecker]="checkerNetworkPlanedRoutes" (getRouteAndTruckEvent)="setAutomaticMovementRoutAndTruck(done,$event)" ></app-get-planned-route>
+        <app-get-planned-route id="AutomaticSection" style="display: none" [networkChecker]="checkerNetworkPlanedRoutes" (getRouteAndTruckEvent)="setAutomaticMovementRoutAndTruck(done,$event)" ></app-get-planned-route>
       </div>
       <div #done style="align-content: center">
         <!-- HTML !-->
-        <button id="doneSection" class="button-73" role="button" style="display: none" (click)="scrollCanvas(canvasSection)">Done</button>
+        <button id="ButtonDoneSection" class="button-73" role="button" style="display: none" (click)="scrollCanvas(canvasSection)">Done</button>
       </div>
 
     </div>
