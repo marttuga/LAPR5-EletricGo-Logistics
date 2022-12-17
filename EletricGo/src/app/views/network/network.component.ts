@@ -54,6 +54,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private activateMotion=0;
   private isAutomaticMovement=0;
 
+  private pathsData = new Map<string, CatmullRomCurve3>([]);
+  private wareI_wareF_Data=new Map<string,string[]>();
+
   private roadsData = new Map<string, number[]>([]);//Experimentar com array bidimensional
   private static TETA_0=0;private static TETA_1=1;
   private static EL0_X=2;private static EL0_Y=3;private static EL0_Z=4;
@@ -126,11 +129,28 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     this.camera.add( this.ambientListener);
     this.camera.add(this.truckListener);
 
-//    this.addSkybox();
+    this.addSkybox();
     this.addWarehouses()
     this.addLights()
   }
 
+
+  private addSkybox(){
+    let skyboxGeo = new THREE.BoxGeometry(1000, 1000,1000);
+    let skyboxMaterials= [
+      new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}),
+      new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}),
+      new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}),
+      new MeshStandardMaterial({map:this.skyBoxGroundTexture,side:THREE.BackSide}),
+      new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}),
+      new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide})
+    ];
+
+    let skybox = new THREE.Mesh(skyboxGeo,skyboxMaterials);
+    skybox.position.y=400;
+    skybox.receiveShadow=true;
+    this.scene.add(skybox);
+  }
 
   private startRenderingLoop() {
     //* Renderer
@@ -259,28 +279,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
 
-  private addTruck(){
-
-    const ware0 = this.scene.getObjectByName(this.routes[1].departureId);
-    const ware1 = this.scene.getObjectByName(this.routes[1].arrivalId);
-
-    if(ware0!=null&&ware1!=null){
-      const truck3D = this.truck3D.clone();
-      truck3D.name = this.automaticTruck;
-      truck3D.position.set(ware0?.position.x+0.3, ware0.position.y, ware0.position.z);
-
-      let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0.name, ware1.name)?.routeId);
-      if(roadData!=null) {
-        truck3D.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.OMEGA] , 0, "ZYX")
-        this.scene.add(truck3D);
-        if(this.isAutomaticMovement==1){
-          this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
-          console.log("A adicionar o TRUCk")
-          this.isAutomaticMovement=0;
-        }
-      }
-    }
-  }
 
   private addLights(){
     //*Light
@@ -304,11 +302,61 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
 
+  private addTruck(truckName:string){
+
+    // @ts-ignore
+    const ware0 =  this.scene.getObjectByName( this.wareI_wareF_Data.get(truckName)[0]);
+    // @ts-ignore
+    const ware1 =  this.scene.getObjectByName( this.wareI_wareF_Data.get(truckName)[1]);
+
+
+    if(ware0!=null&&ware1!=null){
+      const truck3D = this.truck3D.clone();
+      truck3D.name = this.automaticTruck;
+      truck3D.position.set(ware0?.position.x+0.3, ware0.position.y, ware0.position.z);
+
+      console.log(ware0?.name)
+      console.log(ware1?.name)
+
+      let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0.name, ware1.name)?.routeId);
+
+      if(roadData!=null) {
+        truck3D.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.OMEGA] , 0, "ZYX")
+        this.scene.add(truck3D);
+        console.log("swuiiiiiii")
+        if(this.isAutomaticMovement==1){
+          this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
+          console.log("A adicionar o TRUCk")
+          this.isAutomaticMovement=0;
+        }
+      }
+    }
+  }
 
   public setAutomaticMovementRoutAndTruck(el:HTMLElement,map:Map<string,string[]>){
     map.forEach((value, key) => {
       this.automaticTruck=key;//atribuir um camião
+      let path = new CatmullRomCurve3();
+
+      for(let i=0;i<value.length-1;i++){
+        let road=this.getRouteByWarehouses(value[i],value[i+1]);
+        const wareDeparture = this.scene.getObjectByName(value[i]);
+        let roadData=this.roadsData.get(<string>road?.routeId);
+        if(roadData!=undefined){
+        path.points.push(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z));//WARE0
+        path.points.push(new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]));//EL0
+        path.points.push(new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2));//PM(EL0-PM))
+        path.points.push(new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]));//PM
+        path.points.push(new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2));//PM(EL1-PM));
+        path.points.push(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]));//EL1
+        }
+      }
+      this.wareI_wareF_Data.set(this.automaticTruck,[value[0],value[value.length-1]]);
+      this.pathsData.set(this.automaticTruck,path);
+      this.addTruck(key)
+
     });
+
     this.scrollDone(el);
   }
 
@@ -332,44 +380,32 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private automaticMovement() {
     //Automatic truck movement
+
+
     if (this.activateMotion == 1 && this.activeTrucks.length!=0) {
       for(let i=0;i<this.activeTrucks.length;i++){
 
-        const wareDeparture = this.scene.getObjectByName(this.routes[1].departureId);
-        const wareArrival = this.scene.getObjectByName(this.routes[1].arrivalId);
+
+
+        // @ts-ignore
+        const wareDeparture = this.scene.getObjectByName( this.wareI_wareF_Data.get(this.activeTrucks[i].name)[0]);
+        // @ts-ignore
+        const wareArrival = this.scene.getObjectByName(this.wareI_wareF_Data.get(this.activeTrucks[i].name)[1]);
 
         if(wareDeparture!=null&&wareArrival!=null){
+        let pathsData=this.pathsData;
 
-          let roadData = this.roadsData.get(this.routes[1].routeId);
-          if (roadData!=null) {
-
-            let pathsData = new Map<string, CatmullRomCurve3>([]);
-            let path = new CatmullRomCurve3(
-            [
-              new Vector3(wareDeparture?.position.x, wareDeparture?.position.y, wareDeparture?.position.z),//inicio
-              new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),//EL0
-              new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2),//PM(EL0-PM)
-              new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),//PM
-              new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2),//PM(EL1-PM)
-              new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),//EL1
-              new Vector3(wareArrival?.position.x, wareArrival?.position.y, wareArrival?.position.z),//fim
-            ]);
-
-            pathsData.set(this.activeTrucks[i].name,path)
-
-            //verificar chegada a ElemLig0 e dar a inclinacao
-
-
-
-            //verificar chegada a ElemLig1 e dar a inclinacao
-
+        if(pathsData!=null){
             const time = .0002 * performance.now();
-            const points = pathsData.get(this.activeTrucks[i].name)?.getPoint(time);
+            const points = this.pathsData.get(this.activeTrucks[i].name)?.getPoint(time);
 
 
             if (points!=undefined) {
 
               this.activeTrucks[i]?.position?.set(points.x, points.y, points.z);
+              const wareDeparture = this.scene.getObjectByName(this.routes[1].departureId);
+              const wareArrival = this.scene.getObjectByName(this.routes[1].arrivalId);
+
 
               console.log("Departure  : " + wareDeparture?.position.x + " " + wareDeparture?.position.y + " " + wareDeparture?.position.z)
               console.log("Arrival  : " + wareArrival?.position.x + " " + wareArrival?.position.y + " " + wareArrival?.position.z)
@@ -377,18 +413,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
               console.log("Truck :" + this.activeTrucks[i].position.x + " " + this.activeTrucks[i].position.y + " " + this.activeTrucks[i].position.z)
               console.log("\n")
 
-              if (parseInt(Math.abs(wareArrival?.position.x).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.x).toFixed(2)) && parseInt(Math.abs(wareArrival?.position.y).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.y).toFixed(2)) && parseInt(Math.abs(wareArrival?.position.z).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.z).toFixed(2))) {
+              if (parseInt(Math.abs(<number>wareArrival?.position.x).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.x).toFixed(2)) && parseInt(Math.abs(<number>wareArrival?.position.y).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.y).toFixed(2)) && parseInt(Math.abs(<number>wareArrival?.position.z).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.z).toFixed(2))) {
                 this.activateMotion = 0;
-                this.automaticTruck="";
+                this.automaticTruck = "";
                 this.scene.remove(this.activeTrucks[i]);
-                this.activeTrucks= this.activeTrucks.filter(obj => obj!= this.activeTrucks[i]);
+                this.activeTrucks = this.activeTrucks.filter(obj => obj != this.activeTrucks[i]);
                 this.truckAudio.stop();
               }
             }
-          }
-        }
+          }}}
       }
-    }
   }
 
 
@@ -620,7 +654,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         x4.style.display="none"
         x5.style.display="none"
         done.style.display="none";
-        this.addTruck();
       }
     }
     el.scrollIntoView({behavior: 'smooth'});
