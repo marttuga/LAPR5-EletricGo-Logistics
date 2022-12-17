@@ -6,8 +6,8 @@ import {map, Observable} from "rxjs";
   providedIn: 'root'
 })
 export class WarehousesService {
-   //   Url = 'https://localhost:5001/api/warehouse';
- Url = 'https://lapr5-dotnet.herokuapp.com/api/warehouse';
+     Url = 'https://localhost:5001/api/warehouse';
+ //Url = 'https://lapr5-dotnet.herokuapp.com/api/warehouse';
 
   constructor(private httpClient: HttpClient) { }
 
