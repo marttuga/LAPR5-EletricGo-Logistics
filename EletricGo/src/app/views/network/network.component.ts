@@ -319,7 +319,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       console.log(ware1?.name)
 
       let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0.name, ware1.name)?.routeId);
-
+console.log(roadData)
       if(roadData!=null) {
         truck3D.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.OMEGA] , 0, "ZYX")
         this.scene.add(truck3D);
@@ -351,7 +351,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         path.points.push(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]));//EL1
         }
       }
-      this.wareI_wareF_Data.set(this.automaticTruck,[value[0],value[value.length-1]]);
+      this.wareI_wareF_Data.set(this.automaticTruck,[value[0],value[1],value[value.length-1]]);
       this.pathsData.set(this.automaticTruck,path);
       this.addTruck(key)
 
@@ -390,7 +390,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         // @ts-ignore
         const wareDeparture = this.scene.getObjectByName( this.wareI_wareF_Data.get(this.activeTrucks[i].name)[0]);
         // @ts-ignore
-        const wareArrival = this.scene.getObjectByName(this.wareI_wareF_Data.get(this.activeTrucks[i].name)[1]);
+        const wareArrival = this.scene.getObjectByName(this.wareI_wareF_Data.get(this.activeTrucks[i].name)[2]);
 
         if(wareDeparture!=null&&wareArrival!=null){
         let pathsData=this.pathsData;
