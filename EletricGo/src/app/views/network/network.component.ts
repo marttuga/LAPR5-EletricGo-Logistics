@@ -8,6 +8,7 @@ import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
 import {RoutesService} from "../../services/node/routes.service";
 import {TrucksService} from "../../services/node/truck.service";
+import * as net from "net";
 
 @Component({
   selector: 'app-network',
@@ -55,12 +56,15 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private isAutomaticMovement=0;
 
   private pathsData = new Map<string, THREE.CurvePath<any>>([]);
-  private wareI_wareF_Data=new Map<string,string[]>();
+  private pathsData_Warehouses=new Map<string,string[]>();
+  private static WARE0=0;  private static WARE1=1;private static WARE_FINAL=2;
+
   private pathLength:number;
   private currentDistance = 0;
-  private speed = 0.15;
+  private speed = 0.2;
 
-  private roadsData = new Map<string, number[]>([]);//Experimentar com array bidimensional
+
+  private roadsData = new Map<string, number[]>([]);
   private static TETA_0=0;private static TETA_1=1;
   private static EL0_X=2;private static EL0_Y=3;private static EL0_Z=4;
   private static EL1_X=5;private static EL1_Y=6;private static EL1_Z=7;
@@ -308,27 +312,21 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private addTruck(truckName:string){
 
     // @ts-ignore
-    const ware0 =  this.scene.getObjectByName( this.wareI_wareF_Data.get(truckName)[0]);
+    const ware0 =  this.scene.getObjectByName( this.pathsData_Warehouses.get(truckName)[NetworkComponent.WARE0]);
     // @ts-ignore
-    const ware1 =  this.scene.getObjectByName( this.wareI_wareF_Data.get(truckName)[1]);
+    const ware1 =  this.scene.getObjectByName( this.pathsData_Warehouses.get(truckName)[NetworkComponent.WARE1]);
 
 
     if(ware0!=null&&ware1!=null){
       const truck3D = this.truck3D.clone();
       truck3D.name = this.automaticTruck;
-      truck3D.position.set(ware0?.position.x+0.3, ware0.position.y, ware0.position.z);
+      truck3D.position.set(ware0?.position.x, ware0.position.y, ware0.position.z+2);
+      this.scene.add(truck3D);
 
-      console.log(ware0?.name)
-      console.log(ware1?.name)
-
-      let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0.name, ware1.name)?.routeId);
-      if(roadData!=null) {
-        truck3D.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.OMEGA] , 0, "ZYX")
-        this.scene.add(truck3D);
         if(this.isAutomaticMovement==1){
           this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
           this.isAutomaticMovement=0;
-        }
+
       }
     }
   }
@@ -343,7 +341,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         let road=this.getRouteByWarehouses(value[i],value[i+1]);
 
         let wareDeparture = this.scene.getObjectByName(value[i]);
-        let warehouseArrival= this.scene.getObjectByName(value[value.length-1])
+        let warehouseArrival= this.scene.getObjectByName(value[i+1])
 
         let roadData=this.roadsData.get(<string>road?.routeId);
 
@@ -353,14 +351,12 @@ export class NetworkComponent implements OnInit, AfterViewInit {
           path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z])));//EL0-ROAD_ROAD
           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//ROAD-ROAD_EL1
           path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z])));//ROAD_EL1_EL1
-          if(i==value.length-2){
-            path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z)));//WARE0
-          }
+          path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z)));//WARE1
         }
       }
-
+      path.autoClose=true;
       this.pathLength=path.getLength();
-      this.wareI_wareF_Data.set(this.automaticTruck,[value[0],value[1],value[value.length-1]]);
+      this.pathsData_Warehouses.set(this.automaticTruck,[value[0],value[1],value[value.length-1]]);
       this.pathsData.set(this.automaticTruck,path);
       this.addTruck(key)
 
@@ -394,20 +390,22 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       for(let i=0;i<this.activeTrucks.length;i++){
 
         // @ts-ignore
-        const wareDeparture = this.scene.getObjectByName( this.wareI_wareF_Data.get(this.activeTrucks[i].name)[0]);
+        const wareDeparture = this.scene.getObjectByName( this.pathsData_Warehouses.get(this.activeTrucks[i].name)[NetworkComponent.WARE0]);
         // @ts-ignore
-        const wareArrival = this.scene.getObjectByName(this.wareI_wareF_Data.get(this.activeTrucks[i].name)[2]);
+        const wareArrival = this.scene.getObjectByName(this.pathsData_Warehouses.get(this.activeTrucks[i].name)[NetworkComponent.WARE_FINAL]);
 
         if(wareDeparture!=null&&wareArrival!=null){
 
-            this.currentDistance += this.speed;
 
             // @ts-ignore
             let points =this.pathsData.get(this.activeTrucks[i].name).getPoint(this.currentDistance / this.pathLength);
 
             if (points!=undefined) {
 
+              this.activeTrucks[i]?.lookAt(points);
               this.activeTrucks[i]?.position?.set(points.x, points.y, points.z);
+              this.currentDistance += this.speed;
+
 
               console.log("Departure  : " + wareDeparture?.position.x + " " + wareDeparture?.position.y + " " + wareDeparture?.position.z)
               console.log("Arrival  : " + wareArrival?.position.x + " " + wareArrival?.position.y + " " + wareArrival?.position.z)
@@ -556,7 +554,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     });
     const loaderTruck = new GLTFLoader();
     loaderTruck.load('/assets/network/Truck.glb', (gltf) => {
-      gltf.scene.scale.set(0.4, 0.4, 0.4);
+      gltf.scene.scale.set(0.3, 0.3, 0.3);
       gltf.scene.castShadow=true;
       gltf.scene.receiveShadow=true;
       this.truck3D=gltf.scene;
