@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from 'express';
 import {PlannedRouteService} from "../../services/node/plannedRoute.service";
 import {TrucksService} from "../../services/node/truck.service";
+import {WarehousesService} from "../../services/dotnet/warehouses.service";
 
 
 @Component({
@@ -16,6 +17,7 @@ export class GetPlannedRouteComponent implements OnInit {
   @Output() getRouteAndTruckEvent = new EventEmitter<Map<string,string[]>>();
 
   plannedRoutes: PlannedRoute[];
+
   fleetPlaningId:string;
   truckId:string;
   date: string;
@@ -23,9 +25,11 @@ export class GetPlannedRouteComponent implements OnInit {
   searchDate: string;
   routes: string[];
   plannedRoute:any;
+  plannedRoutesNames: any;
   allTrucks:Truck[]=[];
+  allWarehouses:Warehouse[]=[];
   choice: string;
-  constructor(private  plannedRouteService:PlannedRouteService,private trucksService:TrucksService) {}
+  constructor(private  plannedRouteService:PlannedRouteService,private trucksService:TrucksService,private warehousesService:WarehousesService) {}
 
 
 
@@ -33,6 +37,7 @@ export class GetPlannedRouteComponent implements OnInit {
   ngOnInit(): void {
     //this.getPlannedRoutes();
     this.getAllTrucks();
+    this.getAllWarehouses();
   }
   ngAfterViewInit(): void {
     this.turnOff(this.networkChecker);
@@ -44,6 +49,7 @@ export class GetPlannedRouteComponent implements OnInit {
   public getBestRoute():void{
     this.plannedRouteService.getBestRoute(this.date,this.truckId).subscribe(data => {
       this.transformer(data);
+      this.transformerCity();
       this.getRouteAndTruck();
     });
     this.plannedRoutes=[];
@@ -52,6 +58,7 @@ export class GetPlannedRouteComponent implements OnInit {
   public getNearestWarehouse():void{
     this.plannedRouteService.getNearestWarehouse(this.date,this.truckId).subscribe(data => {console.log(data);
       this.transformer(data);
+      this.transformerCity();
       this.getRouteAndTruck();
     });
     this.plannedRoutes=[];
@@ -62,6 +69,7 @@ export class GetPlannedRouteComponent implements OnInit {
   public getRouteGreaterMass():void{
     this.plannedRouteService.getRouteGreaterMass(this.date,this.truckId).subscribe(data => {console.log(data);
       this.transformer(data);
+      this.transformerCity();
       this.getRouteAndTruck();
     });
     this.plannedRoutes=[];
@@ -71,6 +79,7 @@ export class GetPlannedRouteComponent implements OnInit {
   public getRouteBestRelation():void{
     this.plannedRouteService.getRouteBestRelation(this.date,this.truckId).subscribe(data => {console.log(data);
       this.transformer(data);
+      this.transformerCity();
       this.getRouteAndTruck();
     });
     this.plannedRoutes=[];
@@ -94,6 +103,11 @@ export class GetPlannedRouteComponent implements OnInit {
   public getAllTrucks(){
     this.trucksService.getTrucks().subscribe(data=>{
       this.allTrucks=data;
+    })
+  }
+  public getAllWarehouses(){
+    this.warehousesService.getWarehouses().subscribe(data=>{
+      this.allWarehouses=data;
     })
   }
   public getRouteAndTruck(){
@@ -136,16 +150,15 @@ export class GetPlannedRouteComponent implements OnInit {
     }
   }
 
-  private transformerCity(data:any) {
-    this.plannedRoute=[];
-    for(let i=0;i<data.length;i++){
-     let j= data[i].toString().length;
-     if(j==1){
-     this.plannedRoute[i]="W0"+data[i];
-     
-     }else {
-       this.plannedRoute[i]="W"+data[i];
-     }
+  private transformerCity() {
+    this.plannedRoutesNames=[];
+    for(let i=0;i<this.plannedRoute.length;i++){
+      for(let j=0;j<this.allWarehouses.length;j++){
+        if(this.plannedRoute[i]==this.allWarehouses[j].warehouseIdentifier) {
+          this.plannedRoutesNames[i]=this.allWarehouses[j].designation;
+        }
+
+      }
     }
   }
 

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import * as THREE from "three";
 import { ActivatedRoute } from "@angular/router";
 import TextSprite from "@seregpie/three.text-sprite";
-import {CatmullRomCurve3, Group, MeshBasicMaterial, MeshStandardMaterial, Object3D, Vector3} from 'three';
+import {CatmullRomCurve3, Group, LineCurve3, MeshBasicMaterial, MeshStandardMaterial, Object3D, Vector3} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
@@ -20,7 +20,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   public checkerNetworkTruck:number=1
   public checkerNetworkPlanedRoutes:number=1
 
-   //tipo do canvas
+  //tipo do canvas
   @ViewChild('canvas')
   private canvasRef: ElementRef;
 
@@ -54,8 +54,11 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private activateMotion=0;
   private isAutomaticMovement=0;
 
-  private pathsData = new Map<string, CatmullRomCurve3>([]);
+  private pathsData = new Map<string, THREE.CurvePath<any>>([]);
   private wareI_wareF_Data=new Map<string,string[]>();
+  private pathLength:number;
+  private currentDistance = 0;
+  private speed = 0.15;
 
   private roadsData = new Map<string, number[]>([]);//Experimentar com array bidimensional
   private static TETA_0=0;private static TETA_1=1;
@@ -120,7 +123,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.farClippingPlane
     );
     //fog
-   // this.scene.fog = new THREE.Fog(0xFFFFFF, 10,5000);
+    // this.scene.fog = new THREE.Fog(0xFFFFFF, 10,5000);
 
     this.camera.position.z = this.cameraZ;
     this.scene.add(this.camera);
@@ -173,7 +176,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     controls.minAzimuthAngle = -Math.PI ;//Rotação D 90º
     controls.maxAzimuthAngle = Math.PI ;//Rotação E 90º
     controls.maxPolarAngle = Math.PI/2 //Rotação Eixo Y 90º
-   // controls.minPolarAngle=Math.PI/2
+    // controls.minPolarAngle=Math.PI/2
 
     let component: NetworkComponent = this;
     (function render() {
@@ -333,30 +336,30 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   public setAutomaticMovementRoutAndTruck(el:HTMLElement,map:Map<string,string[]>){
     map.forEach((value, key) => {
       this.automaticTruck=key;//atribuir um camião
-      let path = new CatmullRomCurve3();
+      let path = new THREE.CurvePath();
 
-      let wareDeparture;
-      let warehouseArrival;
 
       for(let i=0;i<value.length-1;i++){
         let road=this.getRouteByWarehouses(value[i],value[i+1]);
 
-        wareDeparture = this.scene.getObjectByName(value[i]);
-        warehouseArrival= this.scene.getObjectByName(value[value.length-1])
+        let wareDeparture = this.scene.getObjectByName(value[i]);
+        let warehouseArrival= this.scene.getObjectByName(value[value.length-1])
 
         let roadData=this.roadsData.get(<string>road?.routeId);
 
         if(roadData!=undefined){
-        path.points.push(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z));//WARE0
-        path.points.push(new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]));//EL0
-        path.points.push(new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2));//PM(EL0-PM))
-        path.points.push(new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]));//PM
-        path.points.push(new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2));//PM(EL1-PM));
-        path.points.push(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]));//EL1
+          path.add(new LineCurve3(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z),new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z])));//W0-EL0
+          path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//EL0-EL0_ROAD
+          path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z])));//EL0-ROAD_ROAD
+          path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//ROAD-ROAD_EL1
+          path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z])));//ROAD_EL1_EL1
+          if(i==value.length-2){
+            path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z)));//WARE0
+          }
         }
       }
-      path.points.push(new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z));//WARE0
 
+      this.pathLength=path.getLength();
       this.wareI_wareF_Data.set(this.automaticTruck,[value[0],value[1],value[value.length-1]]);
       this.pathsData.set(this.automaticTruck,path);
       this.addTruck(key)
@@ -378,7 +381,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         z.style.display = "block";
         x3.style.display = "none";
 
-       //ativar o movimento do camião
+        //ativar o movimento do camião
         this.activateMotion=1;
       }
     }
@@ -387,11 +390,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private automaticMovement() {
     //Automatic truck movement
 
-
     if (this.activateMotion == 1 && this.activeTrucks.length!=0) {
       for(let i=0;i<this.activeTrucks.length;i++){
-
-
 
         // @ts-ignore
         const wareDeparture = this.scene.getObjectByName( this.wareI_wareF_Data.get(this.activeTrucks[i].name)[0]);
@@ -399,12 +399,11 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         const wareArrival = this.scene.getObjectByName(this.wareI_wareF_Data.get(this.activeTrucks[i].name)[2]);
 
         if(wareDeparture!=null&&wareArrival!=null){
-        let pathsData=this.pathsData;
 
-        if(pathsData!=null){
-            const time = .00002 * performance.now();
-            const points = this.pathsData.get(this.activeTrucks[i].name)?.getPoint(time);
+            this.currentDistance += this.speed;
 
+            // @ts-ignore
+            let points =this.pathsData.get(this.activeTrucks[i].name).getPoint(this.currentDistance / this.pathLength);
 
             if (points!=undefined) {
 
@@ -421,72 +420,75 @@ export class NetworkComponent implements OnInit, AfterViewInit {
                 this.automaticTruck = "";
                 this.scene.remove(this.activeTrucks[i]);
                 this.activeTrucks = this.activeTrucks.filter(obj => obj != this.activeTrucks[i]);
+                this.pathsData.delete(this.activeTrucks[i].name);
                 this.truckAudio.stop();
+                this.currentDistance=0;
               }
-            }
-          }}}
+          }
+        }
       }
+    }
   }
 
 
   private manualMovement(){
-     /*
-      document.onkeydown = function (e) {
-        switch (e.key) {
-          case "a":
-            //rodar a camara para a esquerda
-            truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
-            break;
+    /*
+     document.onkeydown = function (e) {
+       switch (e.key) {
+         case "a":
+           //rodar a camara para a esquerda
+           truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
+           break;
 
-          case "d":
-            //rodar a camara para a direita
-            truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
-            break;
+         case "d":
+           //rodar a camara para a direita
+           truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
+           break;
 
-          case "w":
-            //avançar - incrementar a posição da camara no eixo dos zz
-            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
-            break;
+         case "w":
+           //avançar - incrementar a posição da camara no eixo dos zz
+           truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
+           break;
 
-          case "s":
-            //recuar - decrementar a posição da camara no eixo dos zz
-            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
-            break;
+         case "s":
+           //recuar - decrementar a posição da camara no eixo dos zz
+           truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
+           break;
 
-          case "p":
-            //subir - incrementar a posição da camara no eixo dos yy
-            truck?.position.set(truck?.position.x,truck?.position.y+ 0.1,truck?.position.z) ;
-            break;
+         case "p":
+           //subir - incrementar a posição da camara no eixo dos yy
+           truck?.position.set(truck?.position.x,truck?.position.y+ 0.1,truck?.position.z) ;
+           break;
 
-          case "l":
-            //descer - decrementar a posição da camara no eixo dos yy
-            truck?.position.set(truck?.position.x,truck?.position.y- 0.1,truck?.position.z) ;
-            break;
+         case "l":
+           //descer - decrementar a posição da camara no eixo dos yy
+           truck?.position.set(truck?.position.x,truck?.position.y- 0.1,truck?.position.z) ;
+           break;
 
-          default:break;
-        }
+         default:break;
+       }
 
-        switch (e.keyCode){
-          case 39://right key
-            truck?.rotateY(5 * Math.PI / 180);
-            break;
+       switch (e.keyCode){
+         case 39://right key
+           truck?.rotateY(5 * Math.PI / 180);
+           break;
 
-          case 37://lef key
-            truck?.rotateY(-5 * Math.PI / 180);
-            break;
+         case 37://lef key
+           truck?.rotateY(-5 * Math.PI / 180);
+           break;
 
-          case 38://up key
-            truck?.rotateX(-5 * Math.PI / 180);
-            break;
+         case 38://up key
+           truck?.rotateX(-5 * Math.PI / 180);
+           break;
 
-          case 40://down key
-            truck?.rotateX(5 * Math.PI / 180);
-            break;
+         case 40://down key
+           truck?.rotateX(5 * Math.PI / 180);
+           break;
 
-          default:break;
-        }
+         default:break;
+       }
 
-    }*/
+   }*/
   }
 
 
@@ -495,16 +497,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private static getCoordinates(lat:number, lon:number, alt: number):any {
     let coordinatesArr: number[]=[];
-       const min=-100;
-       const max=100;
-       const med=max/2;
+    const min=-100;
+    const max=100;
+    const med=max/2;
 
-      coordinatesArr[0]=-(((max-(min))/(8.7613-8.2451))*(lon-8.2451)+(min));
-      coordinatesArr[1]=((((med-(-med))/(42.1115-40.8387))*(lat-40.8387)+(-med)));
-      coordinatesArr[2]=((((max / 800) * alt)));
-      parseInt( coordinatesArr[0].toFixed(4));
-      parseInt( coordinatesArr[1].toFixed(4));
-      parseInt( coordinatesArr[2].toFixed(4));
+    coordinatesArr[0]=-(((max-(min))/(8.7613-8.2451))*(lon-8.2451)+(min));
+    coordinatesArr[1]=((((med-(-med))/(42.1115-40.8387))*(lat-40.8387)+(-med)));
+    coordinatesArr[2]=((((max / 800) * alt)));
+    parseInt( coordinatesArr[0].toFixed(4));
+    parseInt( coordinatesArr[1].toFixed(4));
+    parseInt( coordinatesArr[2].toFixed(4));
 
     return coordinatesArr;
   }
@@ -519,18 +521,18 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public importLoaders(){
-   /* this.ambientSoundLoader.load( 'assets/network/audio/Burn it Down.mp3', (buffer) => {
-      this.ambientAudio.setBuffer( buffer );
-      this.ambientAudio.setLoop( true );
-      this.ambientAudio.setVolume( 0.5 );
-      this.ambientAudio.play();
-    });*/
+    /* this.ambientSoundLoader.load( 'assets/network/audio/Burn it Down.mp3', (buffer) => {
+       this.ambientAudio.setBuffer( buffer );
+       this.ambientAudio.setLoop( true );
+       this.ambientAudio.setVolume( 0.5 );
+       this.ambientAudio.play();
+     });*/
 
-   /* this.truckSoundLoader.load('assets/network/audio/Truck Sound.mp3', (buffer) => {
-      this.truckAudio.setBuffer( buffer );
-      this.truckAudio.setLoop( true );
-      this.truckAudio.setVolume( 0.5 );
-    });*/
+    /* this.truckSoundLoader.load('assets/network/audio/Truck Sound.mp3', (buffer) => {
+       this.truckAudio.setBuffer( buffer );
+       this.truckAudio.setLoop( true );
+       this.truckAudio.setVolume( 0.5 );
+     });*/
 
     this.skyBoxTexture=new THREE.TextureLoader().load('assets/network/sky.jpg');
 
@@ -638,7 +640,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     if(done!=null){
       done.style.display="block"
     }
-  el.scrollIntoView({behavior: 'smooth'});
+    el.scrollIntoView({behavior: 'smooth'});
   }
 
   public scrollCanvas(el: HTMLElement) {
