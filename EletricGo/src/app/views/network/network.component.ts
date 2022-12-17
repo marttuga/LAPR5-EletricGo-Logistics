@@ -170,8 +170,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     controls.maxDistance = 1500;//900 zoom out
     controls.minDistance = 50;//100 zoom in
-    controls.minAzimuthAngle = -Math.PI/2 ;//Rotação D 90º
-    controls.maxAzimuthAngle = Math.PI/2 ;//Rotação E 90º
+    controls.minAzimuthAngle = -Math.PI ;//Rotação D 90º
+    controls.maxAzimuthAngle = Math.PI ;//Rotação E 90º
     controls.maxPolarAngle = Math.PI/2 //Rotação Eixo Y 90º
    // controls.minPolarAngle=Math.PI/2
 
@@ -319,14 +319,11 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       console.log(ware1?.name)
 
       let roadData=this.roadsData.get(<string>this.getRouteByWarehouses(ware0.name, ware1.name)?.routeId);
-console.log(roadData)
       if(roadData!=null) {
         truck3D.rotation.set(roadData[NetworkComponent.BETA],roadData[NetworkComponent.OMEGA] , 0, "ZYX")
         this.scene.add(truck3D);
-        console.log("swuiiiiiii")
         if(this.isAutomaticMovement==1){
           this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
-          console.log("A adicionar o TRUCk")
           this.isAutomaticMovement=0;
         }
       }
@@ -338,10 +335,17 @@ console.log(roadData)
       this.automaticTruck=key;//atribuir um camião
       let path = new CatmullRomCurve3();
 
+      let wareDeparture;
+      let warehouseArrival;
+
       for(let i=0;i<value.length-1;i++){
         let road=this.getRouteByWarehouses(value[i],value[i+1]);
-        const wareDeparture = this.scene.getObjectByName(value[i]);
+
+        wareDeparture = this.scene.getObjectByName(value[i]);
+        warehouseArrival= this.scene.getObjectByName(value[value.length-1])
+
         let roadData=this.roadsData.get(<string>road?.routeId);
+
         if(roadData!=undefined){
         path.points.push(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z));//WARE0
         path.points.push(new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]));//EL0
@@ -351,6 +355,8 @@ console.log(roadData)
         path.points.push(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]));//EL1
         }
       }
+      path.points.push(new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z));//WARE0
+
       this.wareI_wareF_Data.set(this.automaticTruck,[value[0],value[1],value[value.length-1]]);
       this.pathsData.set(this.automaticTruck,path);
       this.addTruck(key)
@@ -396,16 +402,13 @@ console.log(roadData)
         let pathsData=this.pathsData;
 
         if(pathsData!=null){
-            const time = .0002 * performance.now();
+            const time = .00002 * performance.now();
             const points = this.pathsData.get(this.activeTrucks[i].name)?.getPoint(time);
 
 
             if (points!=undefined) {
 
               this.activeTrucks[i]?.position?.set(points.x, points.y, points.z);
-              const wareDeparture = this.scene.getObjectByName(this.routes[1].departureId);
-              const wareArrival = this.scene.getObjectByName(this.routes[1].arrivalId);
-
 
               console.log("Departure  : " + wareDeparture?.position.x + " " + wareDeparture?.position.y + " " + wareDeparture?.position.z)
               console.log("Arrival  : " + wareArrival?.position.x + " " + wareArrival?.position.y + " " + wareArrival?.position.z)
@@ -413,7 +416,7 @@ console.log(roadData)
               console.log("Truck :" + this.activeTrucks[i].position.x + " " + this.activeTrucks[i].position.y + " " + this.activeTrucks[i].position.z)
               console.log("\n")
 
-              if (parseInt(Math.abs(<number>wareArrival?.position.x).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.x).toFixed(2)) && parseInt(Math.abs(<number>wareArrival?.position.y).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.y).toFixed(2)) && parseInt(Math.abs(<number>wareArrival?.position.z).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.z).toFixed(2))) {
+              if (parseInt(Math.abs(wareArrival?.position.x).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.x).toFixed(2)) && parseInt(Math.abs(wareArrival?.position.y).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.y).toFixed(2)) && parseInt(Math.abs(wareArrival?.position.z).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.z).toFixed(2))) {
                 this.activateMotion = 0;
                 this.automaticTruck = "";
                 this.scene.remove(this.activeTrucks[i]);
@@ -523,11 +526,11 @@ console.log(roadData)
       this.ambientAudio.play();
     });*/
 
-    this.truckSoundLoader.load('assets/network/audio/Truck Sound.mp3', (buffer) => {
+   /* this.truckSoundLoader.load('assets/network/audio/Truck Sound.mp3', (buffer) => {
       this.truckAudio.setBuffer( buffer );
       this.truckAudio.setLoop( true );
       this.truckAudio.setVolume( 0.5 );
-    });
+    });*/
 
     this.skyBoxTexture=new THREE.TextureLoader().load('assets/network/sky.jpg');
 
