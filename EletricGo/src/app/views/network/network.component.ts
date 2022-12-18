@@ -38,6 +38,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private routes:Route[]=[];
   private trucks:Truck[]=[];
   private activeTrucks:Object3D[]=[];
+  private automaticTruck:string;
 
   private skyBoxTexture:THREE.Texture;
   private skyBoxGroundTexture:THREE.Texture;
@@ -331,7 +332,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   public setAutomaticMovementRoutAndTruck(el:HTMLElement,map:Map<string,string[]>){
     map.forEach((value, key) => {
       let path = new THREE.CurvePath();
-
+      this.automaticTruck=key;
 
       for(let i=0;i<value.length-1;i++){
         let road=this.getRouteByWarehouses(value[i],value[i+1]);
@@ -364,7 +365,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.pathLength=path.getLength();
       this.pathsData_Warehouses.set(key,[value[0],value[1],value[value.length-1]]);
       this.pathsData.set(key,path);
-      this.addTruck(key)
 
     });
 
@@ -644,6 +644,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public scrollCanvas(el: HTMLElement) {
+    this.addTruck(this.automaticTruck)
+
     let x1 = document.getElementById("OptionManualDelivery");
     let x2 = document.getElementById("OptionAutomaticDelivery");
     let x3 = document.getElementById("OptionStartAutomaticDelivery");

@@ -24,9 +24,9 @@
       <div #listRoutesSection>
         <app-get-planned-route id="AutomaticSection" style="display: none" [networkChecker]="checkerNetworkPlanedRoutes" (getRouteAndTruckEvent)="setAutomaticMovementRoutAndTruck(done,$event)" ></app-get-planned-route>
       </div>
-      <div #done style="align-content: center">
+      <div  style="align-content: center">
         <!-- HTML !-->
-        <button id="ButtonDoneSection" class="button-73" role="button" style="display: none" (click)="scrollCanvas(canvasSection)">Done</button>
+        <button #done id="ButtonDoneSection" class="button-73" role="button" style="display: none" (click)="scrollCanvas(canvasSection)">Done</button>
       </div>
 
     </div>
