@@ -2,13 +2,12 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import * as THREE from "three";
 import { ActivatedRoute } from "@angular/router";
 import TextSprite from "@seregpie/three.text-sprite";
-import {CatmullRomCurve3, Group, LineCurve3, MeshBasicMaterial, MeshStandardMaterial, Object3D, Vector3} from 'three';
+import {Group, LineCurve3, MeshBasicMaterial, MeshStandardMaterial, Object3D, Vector3} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
 import {RoutesService} from "../../services/node/routes.service";
 import {TrucksService} from "../../services/node/truck.service";
-import * as net from "net";
 
 @Component({
   selector: 'app-network',
@@ -17,7 +16,6 @@ import * as net from "net";
 })
 export class NetworkComponent implements OnInit, AfterViewInit {
 
-  public automaticTruck:string;
   public checkerNetworkTruck:number=1
   public checkerNetworkPlanedRoutes:number=1
 
@@ -62,7 +60,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private pathLength:number;
   private currentDistance = 0;
   private speed = 0.2;
-
 
   private roadsData = new Map<string, number[]>([]);
   private static TETA_0=0;private static TETA_1=1;
@@ -317,9 +314,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     const ware1 =  this.scene.getObjectByName( this.pathsData_Warehouses.get(truckName)[NetworkComponent.WARE1]);
 
 
-    if(ware0!=null&&ware1!=null){
+    if(ware0 != null && ware1 != null){
       const truck3D = this.truck3D.clone();
-      truck3D.name = this.automaticTruck;
+      truck3D.name = truckName;
       truck3D.position.set(ware0?.position.x, ware0.position.y, ware0.position.z+2);
       this.scene.add(truck3D);
 
@@ -333,7 +330,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   public setAutomaticMovementRoutAndTruck(el:HTMLElement,map:Map<string,string[]>){
     map.forEach((value, key) => {
-      this.automaticTruck=key;//atribuir um camião
       let path = new THREE.CurvePath();
 
 
@@ -366,8 +362,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       }
       path.autoClose=true;
       this.pathLength=path.getLength();
-      this.pathsData_Warehouses.set(this.automaticTruck,[value[0],value[1],value[value.length-1]]);
-      this.pathsData.set(this.automaticTruck,path);
+      this.pathsData_Warehouses.set(key,[value[0],value[1],value[value.length-1]]);
+      this.pathsData.set(key,path);
       this.addTruck(key)
 
     });
@@ -420,12 +416,11 @@ export class NetworkComponent implements OnInit, AfterViewInit {
               console.log("Departure  : " + wareDeparture?.position.x + " " + wareDeparture?.position.y + " " + wareDeparture?.position.z)
               console.log("Arrival  : " + wareArrival?.position.x + " " + wareArrival?.position.y + " " + wareArrival?.position.z)
               console.log("=========================")
-              console.log("Truck :" + this.activeTrucks[i].position.x + " " + this.activeTrucks[i].position.y + " " + this.activeTrucks[i].position.z)
+              console.log("Truck : "+this.activeTrucks[i].name +" -> "+ this.activeTrucks[i].position.x + " " + this.activeTrucks[i].position.y + " " + this.activeTrucks[i].position.z)
               console.log("\n")
 
-              if (parseInt(Math.abs(wareArrival?.position.x).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.x).toFixed(2)) && parseInt(Math.abs(wareArrival?.position.y).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.y).toFixed(2)) && parseInt(Math.abs(wareArrival?.position.z).toFixed(2)) == parseInt(Math.abs(this.activeTrucks[i]?.position.z).toFixed(2))) {
+              if (this.currentDistance >= this.pathLength) {
                 this.activateMotion = 0;
-                this.automaticTruck = "";
                 this.scene.remove(this.activeTrucks[i]);
                 this.pathsData.delete(this.activeTrucks[i].name);
                 this.activeTrucks = this.activeTrucks.filter(obj => obj != this.activeTrucks[i]);
