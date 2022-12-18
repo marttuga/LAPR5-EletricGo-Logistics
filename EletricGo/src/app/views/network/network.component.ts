@@ -346,12 +346,22 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         let roadData=this.roadsData.get(<string>road?.routeId);
 
         if(roadData!=undefined){
-          path.add(new LineCurve3(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z),new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z])));//W0-EL0
-          path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//EL0-EL0_ROAD
-          path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z])));//EL0-ROAD_ROAD
-          path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//ROAD-ROAD_EL1
-          path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z])));//ROAD_EL1_EL1
-          path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z)));//WARE1
+         if(!this.isRegisteredFirstOnRoutObject(wareDeparture?.name, warehouseArrival?.name)){
+           path.add(new LineCurve3(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z),new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z])));//W0-EL0
+           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//EL0-EL0_ROAD
+           path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z])));//EL0-ROAD_ROAD
+           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//ROAD-ROAD_EL1
+           path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z])));//ROAD_EL1_EL1
+           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z)));//WARE1
+         }else{
+           path.add(new LineCurve3(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z),new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z])));//W0-EL0
+           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//EL0-EL0_ROAD
+           path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z])));//EL0-ROAD_ROAD
+           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//ROAD-ROAD_EL1
+           path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z])));//ROAD_EL1_EL1
+           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z)));//WARE1
+
+         }
         }
       }
       path.autoClose=true;
@@ -417,8 +427,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
                 this.activateMotion = 0;
                 this.automaticTruck = "";
                 this.scene.remove(this.activeTrucks[i]);
-                this.activeTrucks = this.activeTrucks.filter(obj => obj != this.activeTrucks[i]);
                 this.pathsData.delete(this.activeTrucks[i].name);
+                this.activeTrucks = this.activeTrucks.filter(obj => obj != this.activeTrucks[i]);
                 this.truckAudio.stop();
                 this.currentDistance=0;
               }
@@ -526,11 +536,11 @@ export class NetworkComponent implements OnInit, AfterViewInit {
        this.ambientAudio.play();
      });*/
 
-    /* this.truckSoundLoader.load('assets/network/audio/Truck Sound.mp3', (buffer) => {
+    this.truckSoundLoader.load('assets/network/audio/Truck Sound.mp3', (buffer) => {
        this.truckAudio.setBuffer( buffer );
        this.truckAudio.setLoop( true );
        this.truckAudio.setVolume( 0.5 );
-     });*/
+     });
 
     this.skyBoxTexture=new THREE.TextureLoader().load('assets/network/sky.jpg');
 
@@ -593,6 +603,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     }
     return null;
   }
+  public isRegisteredFirstOnRoutObject(ware1Identifier:any,ware2Identifier:any):boolean{
+    for(let i=0;i<this.routes.length;i++){
+      if(ware1Identifier==this.routes[i].arrivalId  && ware2Identifier==this.routes[i].departureId){
+        return true;
+      }else if(ware1Identifier==this.routes[i].departureId && ware2Identifier==this.routes[i].arrivalId){
+        return false;
+      }
+    }
+    return false;
+  }
 
   public makeDelivery() {//bloquear o make delivery e mostrar as opcoes de automatic ou manual movement
     let x1 = document.getElementById("OptionManualDelivery");
@@ -619,19 +639,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   }
 
-  public scrollManualDelivery(el: HTMLElement) {
-    let x=document.getElementById("ManualSection");
-    if(x!=null){
-      x.style.display="block"
-    }
-    el.scrollIntoView({behavior: 'smooth'});
-
-  }
-  /*public scrollToPlannedRoute(el1:string,el2: HTMLElement) {
-    this.automaticTruck=el1;
-    el2.scrollIntoView({behavior: 'smooth'});
-
-  }*/
 
   public scrollDone(el: HTMLElement){
     let done=document.getElementById("ButtonDoneSection")
@@ -645,16 +652,14 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     let x1 = document.getElementById("OptionManualDelivery");
     let x2 = document.getElementById("OptionAutomaticDelivery");
     let x3 = document.getElementById("OptionStartAutomaticDelivery");
-    let x4=document.getElementById("ManualSection");
     let x5=document.getElementById("AutomaticSection");
     let done=document.getElementById("ButtonDoneSection")
 
-    if (x1!=null && x2!=null&&x3!=null&&x4!=null&&x5!=null&&done!=null) {
+    if (x1!=null && x2!=null&&x3!=null&&x5!=null&&done!=null) {
       if (x1.style.display === "block" &&x2.style.display === "block") {
         x1.style.display = "none";
         x2.style.display = "none";
         x3.style.display="block"
-        x4.style.display="none"
         x5.style.display="none"
         done.style.display="none";
       }

@@ -8,7 +8,7 @@
           <a id="OptionMakeDelivery" (click)="makeDelivery()">Make Delivery</a>
       </li>
 
-       <li id="OptionManualDelivery" style="display: none"> <a (click)="scrollManualDelivery(listTrucksSection)"  >Manual Delivery</a></li>
+       <li id="OptionManualDelivery" style="display: none"> <a>Manual Delivery</a></li>
       <li id="OptionAutomaticDelivery" style="display: none"> <a (click)="scrollAutomaticDelivery(listRoutesSection)">Automatic Delivery</a></li>
       <li id="OptionStartAutomaticDelivery" style="display: none"> <a (click)="startAutomaticMovement()">Start</a></li>
     </ul>
@@ -19,10 +19,6 @@
 
       <div #canvasSection>
         <canvas #canvas id="canvas"  (mousemove)="onMouseMove($event)" (click)="onClick()"></canvas>
-      </div>
-
-       <div #listTrucksSection>
-        <app-list-truck id="ManualSection" style="display: none" [networkChecker]="checkerNetworkTruck"> <!--(getTruckLicencePlateEvent)="scrollToPlannedRoute($event,listRoutesSection)">--> </app-list-truck>
       </div>
 
       <div #listRoutesSection>
