@@ -104,7 +104,7 @@ export default class RouteService implements IRouteService {
    //S.Tirso-Trofa
    const r4={"routeId":"4", "distance":"2", "routeTime":"3", "batteryWaste":"22", "arrivalId":"W11", "departureId":"W13", "extraTime":"2"} as IRouteDTO;
    //Vale de Cambra-Arouca
-  // const r5={"routeId":"5", "distance":"2", "routeTime":"3", "batteryWaste":"22", "arrivalId":"W14", "departureId":"W01", "extraTime":"2"} as IRouteDTO;
+   const r5={"routeId":"5", "distance":"2", "routeTime":"3", "batteryWaste":"22", "arrivalId":"W04", "departureId":"W06", "extraTime":"2"} as IRouteDTO;
    //Arouca-Oliveira.A
    //const r6={"routeId":"6", "distance":"2", "routeTime":"3", "batteryWaste":"22", "arrivalId":"W01", "departureId":"W06", "extraTime":"2"} as IRouteDTO;
    //Oliveira.A-Vale Cambra
@@ -147,7 +147,7 @@ export default class RouteService implements IRouteService {
    const r25={"routeId":"25", "distance":"2", "routeTime":"3", "batteryWaste":"22", "arrivalId":"W03", "departureId":"W11", "extraTime":"2"} as IRouteDTO;
 
 
-        const list=[r1,r2,r3,r4,/*r5,r6,*/r7,r8,r9,r10,r11,/*r12,*/r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25];
+        const list=[r1,r2,r3,r4,r5,/*,r6,*/r7,r8,r9,r10,r11,/*r12,*/r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25];
    
    for(let i=0;i<list.length;i++) {
      await this.createRoute(list[i].routeId, list[i]);
