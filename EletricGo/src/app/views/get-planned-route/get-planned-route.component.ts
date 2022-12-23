@@ -22,12 +22,12 @@ export class GetPlannedRouteComponent implements OnInit {
   truckId:string;
   date: string;
   totalTime: string;
-  searchDate: string;
-  routes: string[];
   plannedRoute:any;
   plannedRoutesNames: any;
   allTrucks:Truck[]=[];
   allWarehouses:Warehouse[]=[];
+  allPlanings:PlannedRoute[]=[];
+
   choice: string;
   constructor(private  plannedRouteService:PlannedRouteService,private trucksService:TrucksService,private warehousesService:WarehousesService) {}
 
@@ -38,6 +38,7 @@ export class GetPlannedRouteComponent implements OnInit {
     //this.getPlannedRoutes();
     this.getAllTrucks();
     this.getAllWarehouses();
+    this.getAllPlanings();
   }
   ngAfterViewInit(): void {
     this.turnOff(this.networkChecker);
@@ -46,13 +47,20 @@ export class GetPlannedRouteComponent implements OnInit {
 
   submit = false;
 
+  public createPlaning():void{
+    this.plannedRouteService.createPlaning(((this.allPlanings.length)+1).toString(),this.truckId,this.date,this.plannedRoutesNames).subscribe(data => {console.log(data);
+     this.plannedRoute=data
+  });
+    this.submit = !this.submit;
+  }
+
   public getBestRoute():void{
     this.plannedRouteService.getBestRoute(this.date,this.truckId).subscribe(data => {
       this.transformer(data);
       this.transformerCity();
       this.getRouteAndTruck();
+      this.createPlaning();
     });
-    this.plannedRoutes=[];
     this.submit = !this.submit;
   }
   public getNearestWarehouse():void{
@@ -60,8 +68,9 @@ export class GetPlannedRouteComponent implements OnInit {
       this.transformer(data);
       this.transformerCity();
       this.getRouteAndTruck();
+      this.createPlaning();
+
     });
-    this.plannedRoutes=[];
     this.submit = !this.submit;
 
   }
@@ -71,8 +80,9 @@ export class GetPlannedRouteComponent implements OnInit {
       this.transformer(data);
       this.transformerCity();
       this.getRouteAndTruck();
+      this.createPlaning();
+
     });
-    this.plannedRoutes=[];
     this.submit = !this.submit;
   }
 
@@ -81,8 +91,9 @@ export class GetPlannedRouteComponent implements OnInit {
       this.transformer(data);
       this.transformerCity();
       this.getRouteAndTruck();
+      this.createPlaning();
+
     });
-    this.plannedRoutes=[];
     this.submit = !this.submit;
   }
 
@@ -110,6 +121,13 @@ export class GetPlannedRouteComponent implements OnInit {
       this.allWarehouses=data;
     })
   }
+
+  public getAllPlanings(){
+    this.plannedRouteService.getPlanings().subscribe(data=>{
+      this.allPlanings=data;
+    })
+  }
+
   public getRouteAndTruck(){
     let map=new Map<string,string[]>();
     map.set(this.truckId,this.plannedRoute);

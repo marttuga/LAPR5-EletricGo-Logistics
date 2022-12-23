@@ -1,4 +1,4 @@
- <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -14,26 +14,39 @@
       <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
     </ul>
   </nav>
-  <div class="container">
-    <div id="contentSection">
-      <h2>PLANNED ROUTE</h2>
+ <form class="create-form" #createForm="ngForm">   
+  <div class="container"> 
+   
+
+  <div id="contentSection">
+      <h2>PLAN THE ROUTE</h2>
     </div>
 
     <section class="input">
-
       <div class="input-data">
+
           <div class="textfield">
-            <input type="text" required maxlength="8" #Date="ngModel"  name="Date" placeholder="Date"  required [(ngModel)]="date">
+            <input type="text" required pattern="([0-9]{8})" #Date="ngModel" [class.is-invalid]="Date.invalid && Date.touched" name="Date" placeholder="Date"  title="Please enter date" required [(ngModel)]="date">
+            <div *ngIf="Date.touched">
+              <small class="requiredError" *ngIf="Date.errors?.['required']">Date is required!</small>
+              <small class="requiredError" *ngIf="Date.errors?.['pattern']">Date must have 8 numbers without spaces!</small>
+            </div>
           </div>
+
+
           <div class="textfield" id="truck">
-            <input type="text" required  #TruckId="ngModel"  name="TruckId" placeholder="Truck_Id"  title="TruckId must be of format eTruck00" required [(ngModel)]="truckId">
+            <input type="text" required  #TruckId="ngModel"  [class.is-invalid]="TruckId.invalid && TruckId.touched" pattern="(eTruck[0-9]{2})" name="TruckId" placeholder="Truck_Id"  title="TruckId must be of format eTruck00" required [(ngModel)]="truckId">
+            <div *ngIf="TruckId.touched">
+              <small class="requiredError" *ngIf="TruckId.errors?.['required']">TruckId is required!</small>
+              <small class="requiredError" *ngIf="TruckId.errors?.['pattern']">TruckId must be of format eTruck00!</small>
+            </div>
           </div>
       </div>
 
 
 
       <div id="options-dropdown">
-        <div class="textfield">
+     <!--    <div class="textfield">
           <div id="options-dropdown-truck" style="display: none">
             <h3>SELECT THE PREFERED TRUCK OPTION</h3>
             <select [(ngModel)]="truckId" type="text" name="options" id="options_truck" >
@@ -41,18 +54,21 @@
               <option selected disabled>Select an option..</option>
               <option  *ngFor="let trucks of allTrucks" >{{trucks.licencePlate}}</option>
             </select>
-          </div>
+          </div> -->
 
           <h3>SELECT THE PREFERED ROUTE OPTION</h3>
-          <select [(ngModel)]="choice" (ngModelChange)="callFunction()" type="text" name="options" id="options" >
+          <select [disabled]="!createForm.valid" [ngClass]="{valid: createForm.valid}" [(ngModel)]="choice" (ngModelChange)="callFunction()" type="submit" name="options" id="options" >
+          
             <option selected disabled>Select an option..</option>
             <option value="bestRoute">Get Best Route</option>
             <option value="nearestWarehouse">Get Nearest Warehouse</option>
             <option value="greaterMass">Get Delivery With Greater Mass</option>
             <option value="bestRelation">Get Fastest Route With Greater Mass</option>
-          </select>
-        </div>
-      </div>
+            
+          </select>  
+       
+     <!--    </div> -->
+      </div> 
     </section>
 
     <div id="content">
@@ -60,12 +76,12 @@
       
 
     <div class="output">
-      <h1>WAREHOUSES IDS BY ORDER</h1>
+    <!--   <h1>WAREHOUSES IDS BY ORDER</h1>
       <div id="solution-output"  >
         <table class="table">
           <tr><span>{{plannedRoute}}</span></tr>
         </table>
-      </div>
+      </div> -->
 
    <h1>WAREHOUSES NAMES BY ORDER</h1>
 
@@ -76,18 +92,25 @@
         </div>
     </div>
 
-
+   <div *ngIf="submit">
+              <small class="created-message">Plan Validated!</small>
+            </div>
     </div>
 
-   
-    <section>
+ 
+  <!--  
+    <div class="button">
+      <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit" (click)="createPlaning()" >DONE!</button>
+      <div *ngIf="submit">
+        <small class="created-message">Plan Validated!</small>
+      </div>
+    </div> -->
 
+    <section> 
     </section>
-
-
+  
 
   </div>
-
-
+</form>
     </body>
 </html>
