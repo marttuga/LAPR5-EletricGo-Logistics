@@ -1,0 +1,120 @@
+body{
+    font-family: Mukta, sans-serif;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    color: #778DB3;
+    font-size: 0.9rem;
+    background-color: #f9f8fb;
+    width: 100%;
+  
+  }
+  
+  .navbar{
+    position: fixed;
+    top:0;
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    height: 60px;
+    background: rgba(239,238,244,0.7);
+    font-weight: 700;
+  
+  }
+  
+  .navbar ul{
+    display: flex;
+    list-style: none;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .navbar ul li{
+    margin: 0 1rem;
+    padding: 1rem;
+    font-family: 'Secular One', sans-serif;
+  
+  }
+  
+  .navbar ul li a{
+    text-decoration: none;
+    text-transform: uppercase;
+  
+    color: #778DB3;
+    font-size: 1.5rem;
+  
+  }
+  
+  .navbar ul li a:hover{
+    color: skyblue;
+  }
+  
+  .table{
+    margin-bottom: 30%;  /*10% */
+  
+  }
+  
+  .container{
+    border-collapse: collapse;
+    background-color: f9f8fb;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+    letter-spacing: 0.1rem;
+  
+  
+  }
+   .container thead{
+     height: 40px;
+  
+   }
+  
+  tr{
+    text-align: center;
+  
+  
+  }
+  
+  th >input{
+    text-align: center;
+    border: none;
+   border-radius: 30px;
+   padding: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: #4f648a;
+  width: 80%;
+  }
+  
+  
+  th {
+    text-align: center;
+  
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: #4f648a;
+  
+  }
+  
+  td{
+    padding: 0.1rem 2.5rem;
+  }
+  
+  
+  #contentSection h2{
+    margin-top: 15%;
+  
+    font-family: sans-serif;
+  font-size: 30px;
+  color: #778DB3;
+  position: relative;
+  font-weight: 900;
+  text-align: center;
+  }
+  

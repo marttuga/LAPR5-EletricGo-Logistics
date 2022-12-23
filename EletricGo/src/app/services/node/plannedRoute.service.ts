@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +80,10 @@ export class PlannedRouteService {
 
   }
 
+  getPlanings(): Observable<any> {
+    return this.httpClient.get<any>(this.Url + '/getAll').pipe(
+      map(this.extractData));
+  }
 
 
 

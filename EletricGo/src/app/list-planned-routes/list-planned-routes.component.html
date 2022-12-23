@@ -1,0 +1,45 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="list-planned-routes.component.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
+        </ul>
+      </nav>
+    <div id="contentSection">
+    <h2>ALL PLANNED ROUTES</h2>
+  <!--    <h3>Selected: {{chosenTruck}}</h3>-->
+
+
+    </div>
+
+      <table id="ARQSI" class="table">
+        <tr>
+          <th><input type="text" class="search-input" placeholder="Plan Number" title="Please type a number" required [(ngModel)]="searchString">
+          </th>
+          <th>Truck ID</th>
+          <th>Date</th>
+            <th>Route</th>
+
+            <!-- <th><input type="number" class="search-input" placeholder="Time" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th> -->
+          <th class="text-right"></th>
+
+        </tr>
+
+        <tr *ngFor="let plannedRoute of plannedRoutes | filter : 'fleetPlaningId': searchString  ; let i = index">
+
+          <td class="text-left">{{plannedRoute.fleetPlaningId}}</td>
+          <td><span>{{plannedRoute.truckId}}</span></td>
+          <td><span>{{plannedRoute.date}}</span></td>
+          <td><span>{{plannedRoute.route}}</span></td>
+        </tr>
+      </table>
+    </body>
