@@ -83,4 +83,21 @@ export default class FleetPlaningController implements IFleetPlaningController {
 	  }
 
 	}
+
+	public async getPlanings(req: Request, res: Response, next: NextFunction) {
+		try {
+		
+		  const truckOrError = await this.planningServiceInstance.getPlanings() as Result<IFleetPlaningDTO[]>;
+		  
+		  if (truckOrError.isFailure) {
+			return res.status(402).send();
+		  }
+	
+		  const truckDTO = truckOrError.getValue();
+	
+		  return res.json( truckDTO ).status(200);    }
+		catch (e) {
+		  return next(e);
+		}
+	  };
 } 

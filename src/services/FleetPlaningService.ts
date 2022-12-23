@@ -87,4 +87,23 @@ export default class FleetPlaningService implements IFleetPlaningService {
     
   
   }
+
+
+  
+  public async getPlanings(): Promise<Result<IFleetPlaningDTO[]>> {
+    try {
+
+      let truck = await this.planeamentoRepo.getAllFleetPlanings();
+
+      if (truck == null) {
+        return Result.fail('planings not found');
+      }
+
+      const truckDTORes = truck.map(item => FleetPlaningMap.toDTO(item));
+
+      return Result.ok<IFleetPlaningDTO[]>(truckDTORes);
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 }

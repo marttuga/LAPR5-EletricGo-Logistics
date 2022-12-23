@@ -7,4 +7,5 @@ export default interface IFleetPlaningService  {
   getRouteGreaterMass(data: string,camiao:string): Promise<Result<{viagem : string[]}>> 
   getRouteBestRelation(data: string,camiao:string): Promise<Result<{viagem : string[]}>> 
   createPlaning( fleetPlaningDTO: IFleetPlaningDTO): Promise<Result<IFleetPlaningDTO>>
+  getPlanings(): Promise<Result<IFleetPlaningDTO[]>> 
   }
