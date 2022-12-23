@@ -13,7 +13,7 @@ import {WarehousesService} from "../../services/dotnet/warehouses.service";
   styleUrls: ['./get-planned-route.component.css']
 })
 export class GetPlannedRouteComponent implements OnInit {
-  @Input() networkChecker=0;
+  @Input() networkChecker=false;
   @Output() getRouteAndTruckEvent = new EventEmitter<Map<string,string[]>>();
 
   plannedRoutes: PlannedRoute[];
@@ -86,8 +86,8 @@ export class GetPlannedRouteComponent implements OnInit {
     this.submit = !this.submit;
   }
 
-  public turnOff(checker:number){
-   if(checker==1){
+  public turnOff(checker:boolean){
+   if(checker){
     let x1=document.getElementById("navBar")
    /* let x2=document.getElementById("truck")
      let x3=document.getElementById("options-dropdown-truck")*/

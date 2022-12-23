@@ -2,7 +2,16 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import * as THREE from "three";
 import { ActivatedRoute } from "@angular/router";
 import TextSprite from "@seregpie/three.text-sprite";
-import {Group, LineCurve3, MeshBasicMaterial, MeshStandardMaterial, Object3D, Vector3} from 'three';
+import {
+  BackSide,
+  DoubleSide,
+  Group,
+  LineCurve3,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
+  Object3D,
+  Vector3
+} from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {WarehousesService} from "../../services/dotnet/warehouses.service";
@@ -15,9 +24,6 @@ import {TrucksService} from "../../services/node/truck.service";
   styleUrls: ['./network.component.css']
 })
 export class NetworkComponent implements OnInit, AfterViewInit {
-
-  public checkerNetworkTruck:number=1
-  public checkerNetworkPlanedRoutes:number=1
 
   //tipo do canvas
   @ViewChild('canvas')
@@ -38,20 +44,22 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private routes:Route[]=[];
   private trucks:Truck[]=[];
   private activeTrucks:Object3D[]=[];
+  private automaticTruck:string;
 
   private skyBoxTexture:THREE.Texture;
   private skyBoxGroundTexture:THREE.Texture;
 
   private warehouseBaseGeometry = new THREE.CylinderGeometry(5, 5, 0.22, 64);
-  private warehouseBaseMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
   private warehouse3D: Group;
   private roundaboutTexture: THREE.Texture ;
   private elemLigTexture: THREE.Texture ;
   private roadTexture:THREE.Texture;
   private truck3D:Group;
 
-  private activateMotion=0;
-  private isAutomaticMovement=0;
+  public checkerNetworkPlanedRoutes=true;
+
+  private activateMotion=false;
+  private isAutomaticMovement=false;
 
   private pathsData = new Map<string, THREE.CurvePath<any>>([]);
   private pathsData_Warehouses=new Map<string,string[]>();
@@ -201,9 +209,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private addWarehouses(){
     for (let i = 0; i < this.warehouses.length; i++)
     {
+     let warehouseBaseMaterial = [ new THREE.MeshLambertMaterial({color: 0x000000}),new  THREE.MeshLambertMaterial({map:this.roundaboutTexture}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000})];
 
-
-      const base = new THREE.Mesh(this.warehouseBaseGeometry, this.warehouseBaseMaterial);//*Base da Warehouse
+      const base = new THREE.Mesh(this.warehouseBaseGeometry, warehouseBaseMaterial);//*Base da Warehouse
 
       base.position.set(
         NetworkComponent.getCoordinates(this.warehouses[i].latitude, this.warehouses[i].longitude, this.warehouses[i].warehouseAltitude)[0],
@@ -228,7 +236,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.scene.add(warehouse3D);
 
       this.scene.add(base);
-      this.warehouseBaseMaterial.map = this.roundaboutTexture;
     }
     this.addRoads();
   }
@@ -243,8 +250,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         let teta0=Math.atan2(-(ware1.position.z-ware0.position.z),ware1.position.x-ware0.position.x);
         let teta1=Math.PI+teta0;
 
-        let elemLigMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-        elemLigMaterial.map= this.elemLigTexture;
+        let elemLigMaterial = [ new THREE.MeshLambertMaterial({color: 0x000000}),new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({map:this.elemLigTexture}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000})];
         let elemLigGeometry =new THREE.BoxGeometry(0.3, 0.20, 2);
 
         let elemLig0Mesh=new THREE.Mesh(elemLigGeometry,elemLigMaterial);
@@ -261,9 +267,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         elemLig1Mesh.castShadow=true;
         elemLig1Mesh.receiveShadow=true;
         this.scene.add(elemLig1Mesh)
-
-        let roadMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-        roadMaterial.map= this.roadTexture;
+        let roadMaterial =[ new THREE.MeshLambertMaterial({color: 0x000000}),new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({map:this.roadTexture}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000})];
 
         let roadGeometry =new THREE.BoxGeometry(2, 0.20,  Math.sqrt(Math.pow(elemLig0Mesh.position.x-elemLig1Mesh.position.x,2)+Math.pow(elemLig0Mesh.position.y-elemLig1Mesh.position.y,2)+Math.pow(elemLig0Mesh.position.z-elemLig1Mesh.position.z,2)));
         let roadMesh=new THREE.Mesh(roadGeometry,roadMaterial);
@@ -308,30 +312,24 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private addTruck(truckName:string){
 
-    // @ts-ignore
-    const ware0 =  this.scene.getObjectByName( this.pathsData_Warehouses.get(truckName)[NetworkComponent.WARE0]);
-    // @ts-ignore
-    const ware1 =  this.scene.getObjectByName( this.pathsData_Warehouses.get(truckName)[NetworkComponent.WARE1]);
-
-
-    if(ware0 != null && ware1 != null){
       const truck3D = this.truck3D.clone();
       truck3D.name = truckName;
-      truck3D.position.set(ware0?.position.x, ware0.position.y, ware0.position.z+2);
       this.scene.add(truck3D);
 
-        if(this.isAutomaticMovement==1){
+        if(this.isAutomaticMovement){
+          // @ts-ignore
+          const ware0 =  this.scene.getObjectByName( this.pathsData_Warehouses.get(truckName)[NetworkComponent.WARE0]);
+            // @ts-ignore
+          truck3D.position.set(ware0?.position.x, ware0?.position.y, ware0?.position.z+2);
           this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
-          this.isAutomaticMovement=0;
-
-      }
+          this.isAutomaticMovement=false;
     }
   }
 
   public setAutomaticMovementRoutAndTruck(el:HTMLElement,map:Map<string,string[]>){
     map.forEach((value, key) => {
       let path = new THREE.CurvePath();
-
+      this.automaticTruck=key;
 
       for(let i=0;i<value.length-1;i++){
         let road=this.getRouteByWarehouses(value[i],value[i+1]);
@@ -342,29 +340,36 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         let roadData=this.roadsData.get(<string>road?.routeId);
 
         if(roadData!=undefined){
-         if(!this.isRegisteredFirstOnRoutObject(wareDeparture?.name, warehouseArrival?.name)){
-           path.add(new LineCurve3(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z),new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z])));//W0-EL0
-           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//EL0-EL0_ROAD
-           path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z])));//EL0-ROAD_ROAD
-           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//ROAD-ROAD_EL1
-           path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z])));//ROAD_EL1_EL1
-           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z)));//WARE1
-         }else{
-           path.add(new LineCurve3(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z),new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z])));//W0-EL0
-           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]),new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//EL0-EL0_ROAD
-           path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z])));//EL0-ROAD_ROAD
-           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X],roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]),new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2)));//ROAD-ROAD_EL1
-           path.add(new LineCurve3(new Vector3((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,(roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2),new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z])));//ROAD_EL1_EL1
-           path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X],roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]),new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z)));//WARE1
+          if(!this.isRegisteredFirstOnRoutObject(wareDeparture?.name, warehouseArrival?.name)){
 
-         }
+            let rightMovement_X=0.45*Math.cos(roadData[NetworkComponent.TETA_0]-Math.PI/2);
+            let rightMovement_Z=0.45*Math.sin(roadData[NetworkComponent.TETA_0]+Math.PI/2);
+
+            path.add(new LineCurve3(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z),new Vector3(roadData[NetworkComponent.EL0_X]+rightMovement_X,roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]+rightMovement_Z)));//W0-EL0
+            path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X]+rightMovement_X,roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]+rightMovement_Z),new Vector3(((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2)+rightMovement_X,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,((roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2)+rightMovement_Z)));//EL0-EL0_ROAD
+            path.add(new LineCurve3(new Vector3(((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2)+rightMovement_X,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,((roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2)+rightMovement_Z),new Vector3(roadData[NetworkComponent.ROAD_X]+rightMovement_X,roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]+rightMovement_Z)));//EL0-ROAD_ROAD
+            path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X]+rightMovement_X,roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]+rightMovement_Z),new Vector3(((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2)+rightMovement_X,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,((roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)+rightMovement_Z)));//ROAD-ROAD_EL1
+            path.add(new LineCurve3(new Vector3(((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2)+rightMovement_X,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,((roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)+rightMovement_Z),new Vector3(roadData[NetworkComponent.EL1_X]+rightMovement_X,roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]+rightMovement_Z)));//ROAD_EL1_EL1
+            path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X]+rightMovement_X,roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]+rightMovement_Z),new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z)));//WARE1
+          }else{
+
+            let rightMovement_X=0.45*Math.cos(roadData[NetworkComponent.TETA_1]-Math.PI/2);
+            let rightMovement_Z=0.45*Math.sin(roadData[NetworkComponent.TETA_1]+Math.PI/2);
+
+            path.add(new LineCurve3(new Vector3(wareDeparture?.position.x,wareDeparture?.position.y,wareDeparture?.position.z),new Vector3(roadData[NetworkComponent.EL1_X]+rightMovement_X,roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]+rightMovement_Z)));//W0-EL0
+            path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X]+rightMovement_X,roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z]+rightMovement_Z),new Vector3(((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2)+rightMovement_X,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,((roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)+rightMovement_Z)));//EL0-EL0_ROAD
+            path.add(new LineCurve3(new Vector3(((roadData[NetworkComponent.EL1_X]+roadData[NetworkComponent.ROAD_X])/2)+rightMovement_X,(roadData[NetworkComponent.EL1_Y]+roadData[NetworkComponent.ROAD_Y])/2,((roadData[NetworkComponent.EL1_Z]+roadData[NetworkComponent.ROAD_Z])/2)+rightMovement_Z),new Vector3(roadData[NetworkComponent.ROAD_X]+rightMovement_X,roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]+rightMovement_Z)));//EL0-ROAD_ROAD
+            path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X]+rightMovement_X,roadData[NetworkComponent.ROAD_Y],roadData[NetworkComponent.ROAD_Z]+rightMovement_Z),new Vector3(((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2)+rightMovement_X,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,((roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2)+rightMovement_Z)));//ROAD-ROAD_EL1
+            path.add(new LineCurve3(new Vector3(((roadData[NetworkComponent.EL0_X]+roadData[NetworkComponent.ROAD_X])/2)+rightMovement_X,(roadData[NetworkComponent.EL0_Y]+roadData[NetworkComponent.ROAD_Y])/2,((roadData[NetworkComponent.EL0_Z]+roadData[NetworkComponent.ROAD_Z])/2)+rightMovement_Z),new Vector3(roadData[NetworkComponent.EL0_X]+rightMovement_X,roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]+rightMovement_Z)));//ROAD_EL1_EL1
+            path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X]+rightMovement_X,roadData[NetworkComponent.EL0_Y],roadData[NetworkComponent.EL0_Z]+rightMovement_Z),new Vector3(warehouseArrival?.position.x,warehouseArrival?.position.y,warehouseArrival?.position.z)));//WARE1
+          }
         }
       }
+
       path.autoClose=true;
       this.pathLength=path.getLength();
       this.pathsData_Warehouses.set(key,[value[0],value[1],value[value.length-1]]);
       this.pathsData.set(key,path);
-      this.addTruck(key)
 
     });
 
@@ -384,7 +389,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
         x3.style.display = "none";
 
         //ativar o movimento do camião
-        this.activateMotion=1;
+        this.activateMotion=true;
       }
     }
   }
@@ -392,7 +397,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private automaticMovement() {
     //Automatic truck movement
 
-    if (this.activateMotion == 1 && this.activeTrucks.length!=0) {
+    if (this.activateMotion  && this.activeTrucks.length!=0) {
       for(let i=0;i<this.activeTrucks.length;i++){
 
         // @ts-ignore
@@ -413,14 +418,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
               this.currentDistance += this.speed;
 
 
-              console.log("Departure  : " + wareDeparture?.position.x + " " + wareDeparture?.position.y + " " + wareDeparture?.position.z)
-              console.log("Arrival  : " + wareArrival?.position.x + " " + wareArrival?.position.y + " " + wareArrival?.position.z)
-              console.log("=========================")
-              console.log("Truck : "+this.activeTrucks[i].name +" -> "+ this.activeTrucks[i].position.x + " " + this.activeTrucks[i].position.y + " " + this.activeTrucks[i].position.z)
-              console.log("\n")
-
               if (this.currentDistance >= this.pathLength) {
-                this.activateMotion = 0;
+                this.activateMotion = false;
                 this.scene.remove(this.activeTrucks[i]);
                 this.pathsData.delete(this.activeTrucks[i].name);
                 this.activeTrucks = this.activeTrucks.filter(obj => obj != this.activeTrucks[i]);
@@ -625,7 +624,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public scrollAutomaticDelivery(el: HTMLElement) {
-    this.isAutomaticMovement=1;
+    this.isAutomaticMovement=true;
     let x=document.getElementById("AutomaticSection");
     if(x!=null){
       x.style.display="block"
@@ -644,6 +643,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public scrollCanvas(el: HTMLElement) {
+    this.addTruck(this.automaticTruck)
+
     let x1 = document.getElementById("OptionManualDelivery");
     let x2 = document.getElementById("OptionAutomaticDelivery");
     let x3 = document.getElementById("OptionStartAutomaticDelivery");
