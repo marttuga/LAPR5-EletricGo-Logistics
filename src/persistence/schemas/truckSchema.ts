@@ -42,6 +42,12 @@ const Truck = new mongoose.Schema(
       required: [true, 'Please enter time of charging'],
       index: true,
     },
+    
+    active: {
+      type: Boolean,
+      required: [true, 'Truck state'],
+      index: true,
+    },
 
   },
   { timestamps: true },

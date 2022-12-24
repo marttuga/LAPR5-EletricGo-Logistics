@@ -32,6 +32,22 @@ export default class TruckController implements ITruckController /* TODO: extend
     }
   };
 
+  public async getActiveTrucks(req: Request, res: Response, next: NextFunction) {
+    try {
+    
+      const truckOrError = await this.truckServiceInstance.getActiveTrucks() as Result<ITruckDTO[]>;
+      if (truckOrError.isFailure) {
+        return res.status(402).send();
+      }
+
+      const truckDTO = truckOrError.getValue();
+
+      return res.json( truckDTO ).status(200);    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
   public async createTruck(req: Request, res: Response, next: NextFunction) {
     try {
       const truckOrError = (await this.truckServiceInstance.createTruck(
@@ -52,6 +68,38 @@ export default class TruckController implements ITruckController /* TODO: extend
   public async updateTruck(req: Request, res: Response, next: NextFunction) {
     try {
       const truckOrError = await this.truckServiceInstance.updateTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
+      if (truckOrError.isFailure) {
+        return res.status(402).send();
+      }
+
+      const truckDTO = truckOrError.getValue();  
+
+    
+      return res.json( truckDTO ).status(201);    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
+  public async changeStatustoActive(req: Request, res: Response, next: NextFunction) {
+    try {
+      const truckOrError = await this.truckServiceInstance.changeStatustoActive(req.body as ITruckDTO) as Result<ITruckDTO>;
+      if (truckOrError.isFailure) {
+        return res.status(402).send();
+      }
+
+      const truckDTO = truckOrError.getValue();  
+
+    
+      return res.json( truckDTO ).status(201);    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
+  public async changeStatustoInactive(req: Request, res: Response, next: NextFunction) {
+    try {
+      const truckOrError = await this.truckServiceInstance.changeStatustoInactive(req.body as ITruckDTO) as Result<ITruckDTO>;
       if (truckOrError.isFailure) {
         return res.status(402).send();
       }

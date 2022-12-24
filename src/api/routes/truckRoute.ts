@@ -34,16 +34,25 @@ celebrate({
     capacity:Joi.number().min(2000).max(20000).required().error(new Error('capacity not valid,min value is 2000kg and max value is 20000kg')),
     maxBateryCapacity:Joi.number().min(80).max(200).required().error(new Error('max batery not valid,min value is 80KW and max value is 200kw')),
     autonomyFullChargeLoad:Joi.number().min(100).max(8000).required().error(new Error('autonomy not valid,min value is 100km and max value is 8000km')),
-    timeCharging: Joi.number().min(1).max(5).required().error(new Error('time not valid,min value is 1h and max value is 5h')),
-  }),
+    timeCharging: Joi.number().min(1).max(5).required().error(new Error('time not valid,min value is 1h and max value is 5h'))  }),
 }),
+
 (req, res, next) => ctrl.updateTruck(req, res, next) );
+
+
+truck.put('/changeStatusToActivate',
+(req, res, next) => ctrl.changeStatustoActive(req, res, next) );
+
+
+truck.put('/changeStatusToInactive',
+(req, res, next) => ctrl.changeStatustoInactive(req, res, next) );
    
 
 truck.get('/getTruck/:licencePlate',(req, res, next) => ctrl.getLicencePlate(req, res, next),);
 
   truck.get('/getAll', (req, res, next) => ctrl.getTrucks(req, res, next));
 
+  truck.get('/getAllActive', (req, res, next) => ctrl.getActiveTrucks(req, res, next));
 
 
 }

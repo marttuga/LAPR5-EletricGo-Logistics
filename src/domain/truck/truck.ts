@@ -20,6 +20,7 @@ interface TruckProps {
   maxBateryCapacity:MaxBateryCapacity;
   autonomyFullChargeLoad:AutonomyFullChargeLoad;
   timeCharging: TimeCharging;
+  active: boolean;
 }
 
 export class Truck extends AggregateRoot<TruckProps> {
@@ -72,6 +73,17 @@ export class Truck extends AggregateRoot<TruckProps> {
   set timeCharging ( value: TimeCharging) {
   this.props.timeCharging = value;
   }
+  
+  get active (): boolean {
+    return this.props.active;
+  }
+
+  public markAsInactive () {
+  this.props.active = false;
+  }
+  public markActive () {
+    this.props.active = true;
+  }
 
   private constructor (props: TruckProps, id?: UniqueEntityID) {
     super(props, id);
@@ -93,7 +105,7 @@ export class Truck extends AggregateRoot<TruckProps> {
       return Result.fail<Truck>('Error creating truck!');
       
     } else {        
-      const truck = new Truck({ licencePlate:licencePlate, tare: tare, capacity: capacity, maxBateryCapacity: maxBateryCapacity, autonomyFullChargeLoad: autonomyFullChargeLoad, timeCharging:timeCharging}, id);
+      const truck = new Truck({ licencePlate:licencePlate, tare: tare, capacity: capacity, maxBateryCapacity: maxBateryCapacity, autonomyFullChargeLoad: autonomyFullChargeLoad, timeCharging:timeCharging, active:true}, id);
     
       return Result.ok<Truck>(truck);
     }

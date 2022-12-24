@@ -13,6 +13,7 @@ export interface ITruckPersistence {
 	maxBateryCapacity:number;
 	autonomyFullChargeLoad:number;
 	timeCharging: number;
+	active: boolean;
 /* 	_id: string;
 	licencePlate:LicencePlate;
 	tare: Tare;

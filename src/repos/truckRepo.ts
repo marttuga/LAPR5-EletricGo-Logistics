@@ -38,7 +38,13 @@ export default class TruckRepo implements ITruckRepo {
   public async getAllTrucks(): Promise<Truck[]> {
 
     const t = await this.truckSchema.find();
+    return t.map(item => TruckMap.toDomain(item));
+  }
 
+  public async getAllActiveTrucks(): Promise<Truck[]> {
+
+    const query = { active: true };
+    const t = await this.truckSchema.find(query);
     return t.map(item => TruckMap.toDomain(item));
   }
 
@@ -66,7 +72,7 @@ export default class TruckRepo implements ITruckRepo {
         truckDocument.maxBateryCapacity = truck.props.maxBateryCapacity.props.value;
         truckDocument.autonomyFullChargeLoad =truck.props.autonomyFullChargeLoad.props.value;
         truckDocument.timeCharging = truck.props.timeCharging.props.value;
-
+        truckDocument.active=truck.props.active
 
         await truckDocument.save();
         return truck;

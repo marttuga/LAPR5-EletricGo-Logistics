@@ -51,7 +51,8 @@ export class TruckMap extends Mapper<Truck> {
       capacity: truck.props.capacity.value,
       maxBateryCapacity: truck.props.maxBateryCapacity.value,
       autonomyFullChargeLoad: truck.props.autonomyFullChargeLoad.value,
-      timeCharging: truck.props.timeCharging.value
+      timeCharging: truck.props.timeCharging.value,
+      active:truck.props.active
     }
   }
 }
