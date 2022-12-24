@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PlannedRouteService } from '../services/node/plannedRoute.service';
+import { PlannedRouteService } from '../../services/node/plannedRoute.service';
 
 @Component({
   selector: 'app-list-planned-routes',
