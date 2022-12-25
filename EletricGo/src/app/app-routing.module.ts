@@ -14,7 +14,8 @@ import {ListTruckComponent} from "./views/list-truck/list-truck.component";
 import {ListDeliveriesComponent} from "./views/list-deliveries/list-deliveries.component";
 import { GetPlannedRouteComponent } from './views/get-planned-route/get-planned-route.component';
 import { ListRoutesComponent } from './views/list-routes/list-routes.component';
-import { ListPlannedRoutesComponent } from './list-planned-routes/list-planned-routes.component';
+import { ListPlannedRoutesComponent } from './views/list-planned-routes/list-planned-routes.component';
+import { TruckStatusComponent } from './views/truck-status/truck-status.component';
 
 const routes: Routes = [
   { path: '',redirectTo: '/views/login', pathMatch: 'full' },
@@ -35,7 +36,9 @@ const routes: Routes = [
   { path: 'views/list-deliveries', component:ListDeliveriesComponent},
   { path: 'views/get-planned-route', component:GetPlannedRouteComponent},
   { path: 'views/list-routes', component:ListRoutesComponent},
-  { path: 'views/list-planned-routes', component:ListPlannedRoutesComponent}
+  { path: 'views/list-planned-routes', component:ListPlannedRoutesComponent},
+  { path: 'views/truck-status', component:TruckStatusComponent},
+
 
 ];
 

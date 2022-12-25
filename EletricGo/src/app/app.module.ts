@@ -20,7 +20,8 @@ import { ListDeliveriesComponent } from './views/list-deliveries/list-deliveries
 import { GetPlannedRouteComponent } from './views/get-planned-route/get-planned-route.component';
 import { ListRoutesComponent } from './views/list-routes/list-routes.component';
 import { SharedModule } from './views/shared.module';
-import { ListPlannedRoutesComponent } from './list-planned-routes/list-planned-routes.component';
+import { ListPlannedRoutesComponent } from './views/list-planned-routes/list-planned-routes.component';
+import { TruckStatusComponent } from './views/truck-status/truck-status.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ListPlannedRoutesComponent } from './list-planned-routes/list-planned-r
     ListDeliveriesComponent,
     GetPlannedRouteComponent,
     ListRoutesComponent,
-    ListPlannedRoutesComponent
+    ListPlannedRoutesComponent,
+    TruckStatusComponent
 
   ],
     imports: [
