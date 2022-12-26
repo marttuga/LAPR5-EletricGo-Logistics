@@ -19,6 +19,7 @@ export class ListRoutesComponent implements OnInit {
   extraTime: string;
   searchArrivalID: string;
   searchDepartureID: string;
+  p:number = 1;
 
   constructor( private routeService: RoutesService,
     private activedRoute: ActivatedRoute,
