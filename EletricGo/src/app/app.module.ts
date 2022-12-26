@@ -57,3 +57,4 @@ import { TruckStatusComponent } from './views/truck-status/truck-status.componen
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
