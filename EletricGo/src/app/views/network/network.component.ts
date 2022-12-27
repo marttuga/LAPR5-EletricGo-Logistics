@@ -591,11 +591,11 @@ export class NetworkComponent implements OnInit, AfterViewInit {
        this.ambientAudio.play();
      });*/
 
-   /* this.truckSoundLoader.load('assets/network/audio/Truck Sound.mp3', (buffer) => {
+    this.truckSoundLoader.load('assets/network/audio/Truck Sound.mp3', (buffer) => {
        this.truckAudio.setBuffer( buffer );
        this.truckAudio.setLoop( true );
        this.truckAudio.setVolume( 0.5 );
-     });*/
+     });
 
     this.skyBoxTexture=new THREE.TextureLoader().load('assets/network/sky.jpg');
 
