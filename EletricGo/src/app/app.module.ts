@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -49,9 +50,11 @@ import { TruckStatusComponent } from './views/truck-status/truck-status.componen
       AppRoutingModule,
       HttpClientModule,
       FormsModule,
-      SharedModule
+      SharedModule,
+      NgxPaginationModule
     ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

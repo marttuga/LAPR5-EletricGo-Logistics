@@ -20,8 +20,8 @@ export class ListTruckComponent implements OnInit {
 }
 
 ngOnInit(): void {
-  //this.getActiveTrucks();
-  this.getTrucks();
+  this.getActiveTrucks();
+  //this.getTrucks();
 }
 
   ngAfterViewInit(): void {

@@ -11,8 +11,11 @@
       <nav class="navbar">
         <ul>
           <li><a href="#home">Home</a></li>
-          <li><a (click)="scroll(createTruckComponent)">Manage Trucks</a></li>
-          <li><a (click)="scroll(listTruckComponent)">See all Trucks</a></li>
+          <li><a href="#createTruck" [routerLink]="['/views/create-truck']">Manage Trucks</a></li>
+          <li><a href="#listTruck" [routerLink]="['/views/list-truck']">See active Trucks</a></li>
+          <li><a href="#statusTruck" [routerLink]="['/views/truck-status']">Change the status</a></li>
+        <!--   <li><a (click)="scroll(createTruckComponent)">Manage Trucks</a></li>
+          <li><a (click)="scroll(listTruckComponent)">See all Trucks</a></li> -->
 
 
         </ul>
@@ -29,14 +32,14 @@
 
         <!-- <button class="btn-create" [routerLink]="['/views/create-truck']">create</button> -->~
 
-      <section #createTruckComponent>
+     <!--  <section #createTruckComponent>
         <app-create-truck></app-create-truck>
       </section>
      
       <section #listTruckComponent>
         <app-list-truck></app-list-truck>
       </section>
-    
+     -->
 
     </div>
 </body>
