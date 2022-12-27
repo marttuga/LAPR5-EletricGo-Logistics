@@ -1,0 +1,83 @@
+{
+	"info": {
+		"_postman_id": "e7f45fc3-5c59-4ef3-941c-e4994c01dcf8",
+		"name": "RolesCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23548838"
+	},
+	"item": [
+		{
+			"name": "createRole",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Warehouse_Manager\"\r\n   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/roles/createRole",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"roles",
+						"createRole"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/roles/getAll",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"roles",
+						"getAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getRole",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/roles/getRole/Logistics_Manager",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"roles",
+						"getRole",
+						"Logistics_Manager"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
