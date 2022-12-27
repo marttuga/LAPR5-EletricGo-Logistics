@@ -29,7 +29,7 @@ export class UserMap extends Mapper<User> {
     const userEmailOrError = UserEmail.create(raw.email);
     const userPasswordOrError = UserPassword.create({value: raw.password, hashed: true});
     const repo = Container.get(RoleRepo);
-    const role = await repo.findByDomainId(raw.role);
+    const role = await repo.findByName(raw.role);
 
     const userOrError = User.create({
       firstName: raw.firstName,

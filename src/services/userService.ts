@@ -169,7 +169,7 @@ export default class UserService implements IUserService{
 
   private async getRole (roleId: string): Promise<Result<Role>> {
 
-    const role = await this.roleRepo.findByDomainId( roleId );
+    const role = await this.roleRepo.findByName( roleId );
     const found = !!role;
 
     if (found) {
