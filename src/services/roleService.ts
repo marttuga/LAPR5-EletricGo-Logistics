@@ -6,6 +6,7 @@ import IRoleRepo from '../services/IRepos/IRoleRepo';
 import IRoleService from './IServices/IRoleService';
 import { Result } from "../core/logic/Result";
 import { RoleMap } from "../mappers/RoleMap";
+import { RoleName } from '../domain/role/roleName';
 
 @Service()
 export default class RoleService implements IRoleService {
@@ -13,16 +14,34 @@ export default class RoleService implements IRoleService {
       @Inject(config.repos.role.name) private roleRepo : IRoleRepo
   ) {}
 
-  public async getRole( roleId: string): Promise<Result<IRoleDTO>> {
+  public async getRoles(): Promise<Result<IRoleDTO[]>> {
     try {
-      const role = await this.roleRepo.findByDomainId(roleId);
 
-      if (role === null) {
-        return Result.fail<IRoleDTO>("Role not found");
+      let truck = await this.roleRepo.getAllRoles();
+
+      if (truck == null) {
+        return Result.fail('roles not found');
+      }
+
+      const truckDTORes = truck.map(item => RoleMap.toDTO(item));
+
+      return Result.ok<IRoleDTO[]>(truckDTORes);
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+
+
+  public async getByName( name: string): Promise<Result<IRoleDTO>> {
+    try {
+      const truck = await this.roleRepo.findByName(name);
+      if (truck === null) {
+        return Result.fail<IRoleDTO>("role not found");
       }
       else {
-        const roleDTOResult = RoleMap.toDTO( role ) as IRoleDTO;
-        return Result.ok<IRoleDTO>( roleDTOResult )
+        const truckDTOResult = RoleMap.toDTO( truck ) as IRoleDTO;
+        return Result.ok<IRoleDTO>( truckDTOResult )
         }
     } catch (e) {
       throw e;
@@ -30,21 +49,26 @@ export default class RoleService implements IRoleService {
   }
 
 
-  public async createRole(roleDTO: IRoleDTO): Promise<Result<IRoleDTO>> {
+  public async createRole( roleDTO: IRoleDTO): Promise<Result<IRoleDTO>> {
+
     try {
+      const truck = await this.roleRepo.findByName(roleDTO.name);
 
-      const roleOrError = await Role.create( roleDTO );
-
-      if (roleOrError.isFailure) {
-        return Result.fail<IRoleDTO>(roleOrError.errorValue());
+      if (truck != null) {
+  
+        return Result.fail< IRoleDTO>("Role already exists: " +roleDTO.name);
+      }
+      const truckOrError = await Role.create(roleDTO);
+      if (truckOrError.isFailure) {
+        return Result.fail<IRoleDTO>(truckOrError.errorValue());
       }
 
-      const roleResult = roleOrError.getValue();
+      const truckResult = truckOrError.getValue();
 
-      await this.roleRepo.save(roleResult);
+      await this.roleRepo.save(truckResult);
+      const truckDTOResult = RoleMap.toDTO( truckResult ) as IRoleDTO;
 
-      const roleDTOResult = RoleMap.toDTO( roleResult ) as IRoleDTO;
-      return Result.ok<IRoleDTO>( roleDTOResult )
+      return Result.ok<IRoleDTO>( truckDTOResult )
     } catch (e) {
       throw e;
     }
@@ -52,21 +76,21 @@ export default class RoleService implements IRoleService {
 
   public async updateRole(roleDTO: IRoleDTO): Promise<Result<IRoleDTO>> {
     try {
-      const role = await this.roleRepo.findByDomainId(roleDTO.id);
+      const truck = await this.roleRepo.findByName(roleDTO.name);
 
-      if (role === null) {
+      if (truck === null) {
         return Result.fail<IRoleDTO>("Role not found");
       }
       else {
-        role.name = roleDTO.name;
-        await this.roleRepo.save(role);
+        truck.props.name=RoleName.create(roleDTO.name).getValue();
 
-        const roleDTOResult = RoleMap.toDTO( role ) as IRoleDTO;
-        return Result.ok<IRoleDTO>( roleDTOResult )
+        await this.roleRepo.save(truck);
+
+        const truckDTOResult = RoleMap.toDTO( truck ) as IRoleDTO;
+        return Result.ok<IRoleDTO>( truckDTOResult )
         }
     } catch (e) {
       throw e;
     }
   }
-
 }

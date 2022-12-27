@@ -13,7 +13,7 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.role.name) as IRoleController;
 
-  route.post('',
+  route.post('/createRole',
     celebrate({
       body: Joi.object({
         name: Joi.string().required()
@@ -21,12 +21,17 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.createRole(req, res, next) );
 
-  route.put('',
+  route.put('/updateRole',
     celebrate({
       body: Joi.object({
-        id: Joi.string().required(),
         name: Joi.string().required()
       }),
     }),
     (req, res, next) => ctrl.updateRole(req, res, next) );
+
+    route.get('/getRole/:name',(req, res, next) => ctrl.getByName(req, res, next),);
+
+    route.get('/getAll', (req, res, next) => ctrl.getRoles(req, res, next));
+
+
 };

@@ -12,26 +12,27 @@ export class RoleMap extends Mapper<Role> {
   
   public static toDTO( role: Role): IRoleDTO {
     return {
-      id: role.id.toString(),
-      name: role.name,
+      name: role.props.name.roleName,
     } as IRoleDTO;
   }
 
-  public static toDomain (role: any | Model<IRolePersistence & Document> ): Role {
-    const roleOrError = Role.create(
-      role,
-      new UniqueEntityID(role.domainId)
-    );
+  public static toDomain(raw: any | Model<IRolePersistence & Document>): Role {
+    const routeOrError = Role.create(raw, new UniqueEntityID(raw.domainId));
 
-    roleOrError.isFailure ? console.log(roleOrError.error) : '';
+    const TruckOrError = Role.create({
+      name:raw.name
+      
+    }, new UniqueEntityID(raw.licencePlate))
 
-    return roleOrError.isSuccess ? roleOrError.getValue() : null;
+    TruckOrError.isFailure ? console.log(TruckOrError.error) : 'erro no toDomain';
+    
+    return routeOrError.isSuccess ? routeOrError.getValue() : null;
   }
 
   public static toPersistence (role: Role): any {
     return {
       domainId: role.id.toString(),
-      name: role.name
+      name: role.name.roleName
     }
   }
 }

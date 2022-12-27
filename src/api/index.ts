@@ -14,6 +14,6 @@ export default () => {
 	role(app);
 	truck(app);
 	route(app);
-	 fleetPlaning(app)
+	fleetPlaning(app)
 	return app
 }

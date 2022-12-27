@@ -2,11 +2,11 @@ import { Service, Inject } from 'typedi';
 
 import IRoleRepo from "../services/IRepos/IRoleRepo";
 import { Role } from "../domain/role/role";
-import { RoleId } from "../domain/role/roleId";
 import { RoleMap } from "../mappers/RoleMap";
 
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
+import { RoleName } from '../domain/role/roleName';
 
 @Service()
 export default class RoleRepo implements IRoleRepo {
@@ -22,32 +22,46 @@ export default class RoleRepo implements IRoleRepo {
     }
   }
 
-  public async exists(role: Role): Promise<boolean> {
-    
-    const idX = role.id instanceof RoleId ? (<RoleId>role.id).toValue() : role.id;
+// @ts-ignore
+  public async exists(roleName: RoleName | string): Promise<boolean> {
+    const idX = roleName instanceof RoleName ? (<RoleName>roleName).roleName : roleName;
 
-    const query = { domainId: idX}; 
-    const roleDocument = await this.roleSchema.findOne( query as FilterQuery<IRolePersistence & Document>);
+    const query = { domainId: idX };
+    const t = await this.roleSchema.findOne(query);
 
-    return !!roleDocument === true;
+    return !!t === true;
   }
 
-  public async save (role: Role): Promise<Role> {
-    const query = { domainId: role.id.toString()}; 
+  
+  public async getAllRoles(): Promise<Role[]> {
 
-    const roleDocument = await this.roleSchema.findOne( query );
+    const t = await this.roleSchema.find();
+    return t.map(item => RoleMap.toDomain(item));
+  }
+
+
+  public async save(role: Role): Promise<Role>{
+
+    const query = { name: role.props.name.roleName };
+    const truckDocument = await this.roleSchema.findOne(query);
+
 
     try {
-      if (roleDocument === null ) {
-        const rawRole: any = RoleMap.toPersistence(role);
+      if (truckDocument === null) {
 
-        const roleCreated = await this.roleSchema.create(rawRole);
+        const rawtruck: any = RoleMap.toPersistence(role);
+        const truckCreated = await this.roleSchema.create(rawtruck);
 
-        return RoleMap.toDomain(roleCreated);
+        return RoleMap.toDomain(truckCreated);
+      
       } else {
-        roleDocument.name = role.name;
-        await roleDocument.save();
+        
+       // truckDocument.licencePlate = role.props.licencePlate.props.licencePlate;
 
+        truckDocument.name = role.props.name.props.roleName;
+
+
+        await truckDocument.save();
         return role;
       }
     } catch (err) {
@@ -55,14 +69,13 @@ export default class RoleRepo implements IRoleRepo {
     }
   }
 
-  public async findByDomainId (roleId: RoleId | string): Promise<Role> {
-    const query = { domainId: roleId};
-    const roleRecord = await this.roleSchema.findOne( query as FilterQuery<IRolePersistence & Document> );
+  public async findByName (name: RoleName | string): Promise<Role> {
+    const query = { name:name };
 
-    if( roleRecord != null) {
-      return RoleMap.toDomain(roleRecord);
-    }
-    else
-      return null;
+    const t = await this.roleSchema.findOne(query as FilterQuery<IRolePersistence & Document>);
+
+    if (t != null) {
+      return RoleMap.toDomain(t);
+    } else return null;
   }
 }
