@@ -19,6 +19,8 @@ export class ListDeliveriesComponent implements OnInit {
  timeLoad:number;
  timeUnload:number;
  deliveryWarehouse:string;
+ p:number = 1;
+
   constructor(private deliveryService: DeliveriesService,
               private route: ActivatedRoute,
               private router: Router) { }
