@@ -193,7 +193,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private addWarehouses(){
     for (let i = 0; i < this.warehouses.length; i++)
     {
-     let warehouseBaseMaterial = [ new THREE.MeshLambertMaterial({color: 0x000000}),new  THREE.MeshLambertMaterial({map:this.roundaboutTexture}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000})];
+      let warehouseBaseMaterial = [ new THREE.MeshLambertMaterial({color: 0x000000}),new  THREE.MeshLambertMaterial({map:this.roundaboutTexture}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000}), new  THREE.MeshLambertMaterial({color: 0x000000})];
 
       const base = new THREE.Mesh(this.warehouseBaseGeometry, warehouseBaseMaterial);//*Base da Warehouse
 
@@ -280,10 +280,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     const directLight = new THREE.DirectionalLight(0xffffff, 0.8);
     directLight.castShadow=true;
     this.camera.add(directLight);
- /*   directLight.rotateY(Math.PI)
-    const cameraHelper =
-      new THREE.CameraHelper(directLight.shadow.camera);
-    this.scene.add(cameraHelper);*/
 
     const spotLight = new THREE.SpotLight(0xffffff, 0.8);
     spotLight.position.set(0, 500, 40);
@@ -299,14 +295,14 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private addTruck(truckName:string,truckInitialPosition:Vector3){
 
-      const truck3D = this.truck3D.clone();
-      truck3D.name = truckName;
-      truck3D.position.set(truckInitialPosition.x,truckInitialPosition.y,truckInitialPosition.z);
-      this.scene.add(truck3D);
+    const truck3D = this.truck3D.clone();
+    truck3D.name = truckName;
+    truck3D.position.set(truckInitialPosition.x,truckInitialPosition.y,truckInitialPosition.z);
+    this.scene.add(truck3D);
 
-        if(this.isAutomaticMovement){
-          this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
-          this.isAutomaticMovement=false;
+    if(this.isAutomaticMovement){
+      this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
+      this.isAutomaticMovement=false;
     }
   }
 
@@ -315,6 +311,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.automaticTruck=key;
 
       let path = new THREE.CurvePath();
+
+      let divisionCount=10;
 
       for(let i=0;i<value.length-1;i++){
         let road=this.getRouteByWarehouses(value[i],value[i+1]);
@@ -331,52 +329,52 @@ export class NetworkComponent implements OnInit, AfterViewInit {
             let rightMovement_Z=0.45*Math.sin(roadData[NetworkComponent.TETA_0]+Math.PI/2);
 
 
-                if(i==0) {
-                 path.add(new LineCurve3(new Vector3(wareDeparture?.position.x, wareDeparture?.position.y, wareDeparture?.position.z), new Vector3(roadData[NetworkComponent.EL0_X] + rightMovement_X, roadData[NetworkComponent.EL0_Y], roadData[NetworkComponent.EL0_Z] + rightMovement_Z)));//W0-EL0
-               }
+            if(i==0) {
+              path.add(new LineCurve3(new Vector3(wareDeparture?.position.x, wareDeparture?.position.y, wareDeparture?.position.z), new Vector3(roadData[NetworkComponent.EL0_X] + rightMovement_X, roadData[NetworkComponent.EL0_Y], roadData[NetworkComponent.EL0_Z] + rightMovement_Z)));//W0-EL0
+            }
 
-               //road
-                path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X] + rightMovement_X, roadData[NetworkComponent.EL0_Y], roadData[NetworkComponent.EL0_Z] + rightMovement_Z), new Vector3(((roadData[NetworkComponent.EL0_X] + roadData[NetworkComponent.ROAD_X]) / 2) + rightMovement_X, (roadData[NetworkComponent.EL0_Y] + roadData[NetworkComponent.ROAD_Y]) / 2, ((roadData[NetworkComponent.EL0_Z] + roadData[NetworkComponent.ROAD_Z]) / 2) + rightMovement_Z)));
-                path.add(new LineCurve3(new Vector3(((roadData[NetworkComponent.EL0_X] + roadData[NetworkComponent.ROAD_X]) / 2) + rightMovement_X, (roadData[NetworkComponent.EL0_Y] + roadData[NetworkComponent.ROAD_Y]) / 2, ((roadData[NetworkComponent.EL0_Z] + roadData[NetworkComponent.ROAD_Z]) / 2) + rightMovement_Z), new Vector3(roadData[NetworkComponent.ROAD_X] + rightMovement_X, roadData[NetworkComponent.ROAD_Y], roadData[NetworkComponent.ROAD_Z] + rightMovement_Z)));
-                path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X] + rightMovement_X, roadData[NetworkComponent.ROAD_Y], roadData[NetworkComponent.ROAD_Z] + rightMovement_Z), new Vector3(((roadData[NetworkComponent.EL1_X] + roadData[NetworkComponent.ROAD_X]) / 2) + rightMovement_X, (roadData[NetworkComponent.EL1_Y] + roadData[NetworkComponent.ROAD_Y]) / 2, ((roadData[NetworkComponent.EL1_Z] + roadData[NetworkComponent.ROAD_Z]) / 2) + rightMovement_Z)));
-                path.add(new LineCurve3(new Vector3(((roadData[NetworkComponent.EL1_X] + roadData[NetworkComponent.ROAD_X]) / 2) + rightMovement_X, (roadData[NetworkComponent.EL1_Y] + roadData[NetworkComponent.ROAD_Y]) / 2, ((roadData[NetworkComponent.EL1_Z] + roadData[NetworkComponent.ROAD_Z]) / 2) + rightMovement_Z), new Vector3(roadData[NetworkComponent.EL1_X] + rightMovement_X, roadData[NetworkComponent.EL1_Y], roadData[NetworkComponent.EL1_Z] + rightMovement_Z)));
+            //road
+            path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X] + rightMovement_X, roadData[NetworkComponent.EL0_Y], roadData[NetworkComponent.EL0_Z] + rightMovement_Z), new Vector3(((roadData[NetworkComponent.EL0_X] + roadData[NetworkComponent.ROAD_X]) / 2) + rightMovement_X, (roadData[NetworkComponent.EL0_Y] + roadData[NetworkComponent.ROAD_Y]) / 2, ((roadData[NetworkComponent.EL0_Z] + roadData[NetworkComponent.ROAD_Z]) / 2) + rightMovement_Z)));
+            path.add(new LineCurve3(new Vector3(((roadData[NetworkComponent.EL0_X] + roadData[NetworkComponent.ROAD_X]) / 2) + rightMovement_X, (roadData[NetworkComponent.EL0_Y] + roadData[NetworkComponent.ROAD_Y]) / 2, ((roadData[NetworkComponent.EL0_Z] + roadData[NetworkComponent.ROAD_Z]) / 2) + rightMovement_Z), new Vector3(roadData[NetworkComponent.ROAD_X] + rightMovement_X, roadData[NetworkComponent.ROAD_Y], roadData[NetworkComponent.ROAD_Z] + rightMovement_Z)));
+            path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.ROAD_X] + rightMovement_X, roadData[NetworkComponent.ROAD_Y], roadData[NetworkComponent.ROAD_Z] + rightMovement_Z), new Vector3(((roadData[NetworkComponent.EL1_X] + roadData[NetworkComponent.ROAD_X]) / 2) + rightMovement_X, (roadData[NetworkComponent.EL1_Y] + roadData[NetworkComponent.ROAD_Y]) / 2, ((roadData[NetworkComponent.EL1_Z] + roadData[NetworkComponent.ROAD_Z]) / 2) + rightMovement_Z)));
+            path.add(new LineCurve3(new Vector3(((roadData[NetworkComponent.EL1_X] + roadData[NetworkComponent.ROAD_X]) / 2) + rightMovement_X, (roadData[NetworkComponent.EL1_Y] + roadData[NetworkComponent.ROAD_Y]) / 2, ((roadData[NetworkComponent.EL1_Z] + roadData[NetworkComponent.ROAD_Z]) / 2) + rightMovement_Z), new Vector3(roadData[NetworkComponent.EL1_X] + rightMovement_X, roadData[NetworkComponent.EL1_Y], roadData[NetworkComponent.EL1_Z] + rightMovement_Z)));
 
 
-                let nextRoadData=this.roadsData.get(<string>this.getRouteByWarehouses(value[i + 1], value[i + 2])?.routeId);
+            let nextRoadData=this.roadsData.get(<string>this.getRouteByWarehouses(value[i + 1], value[i + 2])?.routeId);
 
-                if( i< value.length-2 && nextRoadData!=null) {//Rotunda
+            if( i< value.length-2 && nextRoadData!=null) {//Rotunda
 
-                  let vectorEl0_Ware=new THREE.Vector3().subVectors(warehouseArrival.position,new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z])).normalize();
-                  let vectorWAre_EL1=new THREE.Vector3().subVectors(new Vector3(nextRoadData[NetworkComponent.EL1_X],nextRoadData[NetworkComponent.EL1_Y],nextRoadData[NetworkComponent.EL1_Z]),warehouseArrival.position).normalize();
+              let vectorEl0_Ware=new THREE.Vector3().subVectors(warehouseArrival.position,new Vector3(roadData[NetworkComponent.EL1_X],roadData[NetworkComponent.EL1_Y],roadData[NetworkComponent.EL1_Z])).normalize();
+              let vectorWAre_EL1=new THREE.Vector3().subVectors(new Vector3(nextRoadData[NetworkComponent.EL1_X],nextRoadData[NetworkComponent.EL1_Y],nextRoadData[NetworkComponent.EL1_Z]),warehouseArrival.position).normalize();
 
-                  let delta=vectorEl0_Ware.angleTo(vectorWAre_EL1) ;
+              let delta=vectorEl0_Ware.angleTo(vectorWAre_EL1) ;
 
-                  let t=(Math.PI-delta)/10;
+              let t=(Math.PI-delta)/divisionCount;
 
-                  for (let j = 0; j < 10; j++) {
-                    if(j==0) {
-                      path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X] + rightMovement_X, roadData[NetworkComponent.EL1_Y], roadData[NetworkComponent.EL1_Z] + rightMovement_Z),new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.cos(roadData[NetworkComponent.TETA_1]+(j*t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.sin(roadData[NetworkComponent.TETA_1]+(j*t)))));
-                    }
+              for (let j = 0; j < divisionCount-1; j++) {
+                if(j==0) {
+                  path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X] + rightMovement_X, roadData[NetworkComponent.EL1_Y], roadData[NetworkComponent.EL1_Z] + rightMovement_Z),new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.cos(roadData[NetworkComponent.TETA_1]+(j*t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.sin(roadData[NetworkComponent.TETA_1]+(j*t)))));
+                }
 
-                    if(j>0&&j<10-2){
-                      path.add(new LineCurve3(new Vector3(warehouseArrival.position.x +(this.warehouseBaseGeometry.parameters.radiusTop -0.5)* Math.cos(roadData[NetworkComponent.TETA_1]+((j-1)*t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.sin(roadData[NetworkComponent.TETA_1]+((j-1)*t))),new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.cos(roadData[NetworkComponent.TETA_1]+(j*t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.sin(roadData[NetworkComponent.TETA_1]+(j*t)))));
-                    }
+                if(j>0&&j<divisionCount-2){
+                  path.add(new LineCurve3(new Vector3(warehouseArrival.position.x +(this.warehouseBaseGeometry.parameters.radiusTop -0.5)* Math.cos(roadData[NetworkComponent.TETA_1]+((j-1)*t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.sin(roadData[NetworkComponent.TETA_1]+((j-1)*t))),new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.cos(roadData[NetworkComponent.TETA_1]+(j*t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.sin(roadData[NetworkComponent.TETA_1]+(j*t)))));
+                }
 
-                    if(j==10-2){
-                      if(this.isRegisteredFirstOnRoutObject(value[i+1],value[i+2])) {
-                        path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j - 1) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j - 1) * t))), new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j ) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j ) * t)))));
-                        path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j ) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j ) * t))), new Vector3(nextRoadData[NetworkComponent.EL1_X], nextRoadData[NetworkComponent.EL1_Y], nextRoadData[NetworkComponent.EL1_Z])));
-                      }else{
-                        path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j - 1) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j - 1) * t))), new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j ) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j ) * t)))));
-                        path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j - 1) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j - 1) * t))), new Vector3(nextRoadData[NetworkComponent.EL0_X], nextRoadData[NetworkComponent.EL0_Y], nextRoadData[NetworkComponent.EL0_Z])));
+                if(j==divisionCount-2){
+                  if(this.isRegisteredFirstOnRoutObject(value[i+1],value[i+2])) {
+                    path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j - 1) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j - 1) * t))), new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j ) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j ) * t)))));
+                    path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j ) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j ) * t))), new Vector3(nextRoadData[NetworkComponent.EL1_X], nextRoadData[NetworkComponent.EL1_Y], nextRoadData[NetworkComponent.EL1_Z])));
+                  }else{
+                    path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j - 1) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j - 1) * t))), new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j ) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j ) * t)))));
+                    path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_1] + ((j - 1) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_1] + ((j - 1) * t))), new Vector3(nextRoadData[NetworkComponent.EL0_X], nextRoadData[NetworkComponent.EL0_Y], nextRoadData[NetworkComponent.EL0_Z])));
 
-                      }
-                    }
                   }
                 }
-                if(i==value.length-2) {
-                  path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X] + rightMovement_X, roadData[NetworkComponent.EL1_Y], roadData[NetworkComponent.EL1_Z] + rightMovement_Z), new Vector3(warehouseArrival?.position.x, warehouseArrival?.position.y, warehouseArrival?.position.z)));
-                }
+              }
+            }
+            if(i==value.length-2) {
+              path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL1_X] + rightMovement_X, roadData[NetworkComponent.EL1_Y], roadData[NetworkComponent.EL1_Z] + rightMovement_Z), new Vector3(warehouseArrival?.position.x, warehouseArrival?.position.y, warehouseArrival?.position.z)));
+            }
 
           }else{
 
@@ -400,18 +398,18 @@ export class NetworkComponent implements OnInit, AfterViewInit {
               let vectorWAre_EL1=new THREE.Vector3().subVectors(new Vector3(nextRoadData[NetworkComponent.EL1_X],nextRoadData[NetworkComponent.EL1_Y],nextRoadData[NetworkComponent.EL1_Z]),warehouseArrival.position).normalize();
 
               let delta=vectorEl0_Ware.angleTo(vectorWAre_EL1) ;
-              let t=(Math.PI+delta)/10;
+              let t=(Math.PI+delta)/divisionCount;
 
-              for (let j = 0; j < 10-1; j++) {
+              for (let j = 0; j < divisionCount-1; j++) {
                 if(j==0) {
                   path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X] + rightMovement_X, roadData[NetworkComponent.EL0_Y], roadData[NetworkComponent.EL0_Z] + rightMovement_Z),new Vector3(warehouseArrival.position.x + this.warehouseBaseGeometry.parameters.radiusTop * Math.cos(roadData[NetworkComponent.TETA_0]+(j*t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.sin(roadData[NetworkComponent.TETA_0]+(j*t)))));
                 }
 
-                if(j>0&&j<10-2){
+                if(j>0&&j<divisionCount-2){
                   path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.cos(roadData[NetworkComponent.TETA_0]+((j-1)*t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.sin(roadData[NetworkComponent.TETA_0]+((j-1)*t))),new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.cos(roadData[NetworkComponent.TETA_0]+(j*t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop-0.5) * Math.sin(roadData[NetworkComponent.TETA_0]+(j*t)))));
                 }
 
-                if(j==10-2){
+                if(j==divisionCount-2){
                   if(this.isRegisteredFirstOnRoutObject(value[i+1],value[i+2])) {
                     path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_0] + ((j - 1) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_0] + ((j - 1) * t))), new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_0] + ((j ) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_0] + ((j ) * t)))));
                     path.add(new LineCurve3(new Vector3(warehouseArrival.position.x + (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.cos(roadData[NetworkComponent.TETA_0] + ((j ) * t)), warehouseArrival.position.y, warehouseArrival.position.z - (this.warehouseBaseGeometry.parameters.radiusTop - 0.5) * Math.sin(roadData[NetworkComponent.TETA_0] + ((j ) * t))), new Vector3(nextRoadData[NetworkComponent.EL1_X], nextRoadData[NetworkComponent.EL1_Y], nextRoadData[NetworkComponent.EL1_Z])));
@@ -423,12 +421,12 @@ export class NetworkComponent implements OnInit, AfterViewInit {
                 }
               }
             }
-              if(i==value.length-2) {
-                path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X] + rightMovement_X, roadData[NetworkComponent.EL0_Y], roadData[NetworkComponent.EL0_Z] + rightMovement_Z), new Vector3(warehouseArrival?.position.x, warehouseArrival?.position.y, warehouseArrival?.position.z)));
-              }
+            if(i==value.length-2) {
+              path.add(new LineCurve3(new Vector3(roadData[NetworkComponent.EL0_X] + rightMovement_X, roadData[NetworkComponent.EL0_Y], roadData[NetworkComponent.EL0_Z] + rightMovement_Z), new Vector3(warehouseArrival?.position.x, warehouseArrival?.position.y, warehouseArrival?.position.z)));
             }
           }
         }
+      }
 
 
       path.autoClose=true;
@@ -468,27 +466,27 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     if (this.activateMotion  && this.activeTrucks.length!=0) {
       for(let i=0;i<this.activeTrucks.length;i++){
 
-            // @ts-ignore
-            let points =this.pathsData.get(this.activeTrucks[i].name).getPoint(this.currentDistance / this.pathLength);
+        // @ts-ignore
+        let points =this.pathsData.get(this.activeTrucks[i].name).getPoint(this.currentDistance / this.pathLength);
 
-            if (points!=undefined) {
+        if (points!=undefined) {
 
-              this.activeTrucks[i]?.lookAt(points);
-              this.activeTrucks[i]?.position?.set(points.x, points.y, points.z);
-              this.currentDistance += this.speed;
+          this.activeTrucks[i]?.lookAt(points);
+          this.activeTrucks[i]?.position?.set(points.x, points.y, points.z);
+          this.currentDistance += this.speed;
 
 
-              if (this.currentDistance >= this.pathLength) {
-                this.activateMotion = false;
-                this.scene.remove(this.activeTrucks[i]);
-                this.pathsData.delete(this.activeTrucks[i].name);
-                this.activeTrucks = this.activeTrucks.filter(obj => obj != this.activeTrucks[i]);
-                this.truckAudio.stop();
-                this.currentDistance=0;
-                this.automaticTruckInitialPosition=new Vector3();
-              }
+          if (this.currentDistance >= this.pathLength) {
+            this.activateMotion = false;
+            this.scene.remove(this.activeTrucks[i]);
+            this.pathsData.delete(this.activeTrucks[i].name);
+            this.activeTrucks = this.activeTrucks.filter(obj => obj != this.activeTrucks[i]);
+            this.truckAudio.stop();
+            this.currentDistance=0;
+            this.automaticTruckInitialPosition=new Vector3();
           }
         }
+      }
 
     }
   }
@@ -592,10 +590,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
      });*/
 
     this.truckSoundLoader.load('assets/network/audio/Truck Sound.mp3', (buffer) => {
-       this.truckAudio.setBuffer( buffer );
-       this.truckAudio.setLoop( true );
-       this.truckAudio.setVolume( 0.5 );
-     });
+      this.truckAudio.setBuffer( buffer );
+      this.truckAudio.setLoop( true );
+      this.truckAudio.setVolume( 0.5 );
+    });
 
     this.skyBoxTexture=new THREE.TextureLoader().load('assets/network/sky.jpg');
 
