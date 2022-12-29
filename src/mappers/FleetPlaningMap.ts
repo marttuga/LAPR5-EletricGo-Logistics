@@ -30,7 +30,7 @@ export class FleetPlaningMap extends Mapper<FleetPlaning> {
       truckId:raw.truckId,
       date: raw.date,
       route: raw.route,      
-    }, new UniqueEntityID(raw.licencePlate))
+    }, new UniqueEntityID(raw.fleetPlaningId))
 
     TruckOrError.isFailure ? console.log(TruckOrError.error) : 'erro no toDomain';
     

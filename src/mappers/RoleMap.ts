@@ -22,7 +22,7 @@ export class RoleMap extends Mapper<Role> {
     const TruckOrError = Role.create({
       name:raw.name
       
-    }, new UniqueEntityID(raw.licencePlate))
+    }, new UniqueEntityID(raw.name))
 
     TruckOrError.isFailure ? console.log(TruckOrError.error) : 'erro no toDomain';
     
