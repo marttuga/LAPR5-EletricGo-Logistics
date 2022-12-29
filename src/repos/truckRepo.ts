@@ -8,6 +8,7 @@ import { Truck } from "../domain/truck/truck";
 import { LicencePlate } from "../domain/truck/licencePlate";
 import { TruckMap } from "../mappers/TruckMap";
 import { throws } from 'assert';
+import { Console } from 'console';
 
 
 @Service()
@@ -86,6 +87,7 @@ export default class TruckRepo implements ITruckRepo {
   public async findLicencePlate (licencePlate: LicencePlate | string): Promise<Truck> {
       const query = { licencePlate: licencePlate };
       const t = await this.truckSchema.findOne(query as FilterQuery<ITruckPersistence & Document>);
+      console.log(t)
 
       if (t != null) {
         return TruckMap.toDomain(t);

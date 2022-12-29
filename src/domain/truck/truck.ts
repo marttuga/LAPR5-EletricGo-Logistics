@@ -91,7 +91,7 @@ export class Truck extends AggregateRoot<TruckProps> {
 
 
   public static create(TruckDTO: ITruckDTO, id?: UniqueEntityID): Result<Truck>  {
-    let licencePlate; let tare; let capacity; let maxBateryCapacity; let autonomyFullChargeLoad; let timeCharging;
+    let licencePlate; let tare; let capacity; let maxBateryCapacity; let autonomyFullChargeLoad; let timeCharging; let active;
     try {
      licencePlate= LicencePlate.create(TruckDTO.licencePlate).getValue();
      tare = Tare.create(TruckDTO.tare).getValue();
@@ -99,7 +99,7 @@ export class Truck extends AggregateRoot<TruckProps> {
      maxBateryCapacity = MaxBateryCapacity.create(TruckDTO.maxBateryCapacity).getValue();
      autonomyFullChargeLoad = AutonomyFullChargeLoad.create(TruckDTO.autonomyFullChargeLoad).getValue();
      timeCharging = TimeCharging.create(TruckDTO.timeCharging).getValue();
-   
+  
      
     if (licencePlate === undefined || tare === undefined || capacity === undefined || maxBateryCapacity === undefined || autonomyFullChargeLoad === undefined || timeCharging === undefined) {
       return Result.fail<Truck>('Error creating truck!');

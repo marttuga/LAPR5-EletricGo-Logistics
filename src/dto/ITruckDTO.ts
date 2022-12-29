@@ -12,6 +12,7 @@ export default interface ITruckDTO {
   maxBateryCapacity:number;
   autonomyFullChargeLoad:number;
   timeCharging: number; 
+  active:boolean
  /* licencePlate: LicencePlate,
   tare: Tare,
   capacity:Capacity,

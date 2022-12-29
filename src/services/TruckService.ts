@@ -121,38 +121,49 @@ export default class TruckService implements ITruckService {
     }
   }
 
-    public async changeStatustoActive(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
+    public async changeStatustoActive(licencePlate: string): Promise<Result<ITruckDTO>> {
       try {
-        const truck = await this.truckRepo.findLicencePlate(truckDTO.licencePlate);
-  
+        const truck = await this.truckRepo.findLicencePlate(licencePlate);
+  console.log(truck.active)
         if (truck === null) {
           return Result.fail<ITruckDTO>("Truck not found");
         }
         else {
-          truck.markActive();
+          if (truck.active===false) {
+            return Result.fail<ITruckDTO>("Truck already active");
+          }
+          else {
+
+          truck.active===true;
           await this.truckRepo.save(truck);
-  
           const truckDTOResult = TruckMap.toDTO( truck ) as ITruckDTO;
+          console.log(truckDTOResult)
           return Result.ok<ITruckDTO>( truckDTOResult )
+          }
           }
       } catch (e) {
         throw e;
       }
     }
     
-    public async changeStatustoInactive(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
+    public async changeStatustoInactive(licencePlate: string): Promise<Result<ITruckDTO>> {
       try {
-        const truck = await this.truckRepo.findLicencePlate(truckDTO.licencePlate);
-  
+        const truck = await this.truckRepo.findLicencePlate(licencePlate);
         if (truck === null) {
           return Result.fail<ITruckDTO>("Truck not found");
         }
         else {
+
+          if (truck.props.active===false) {
+            return Result.fail<ITruckDTO>("Truck already inactive");
+          }
+          else {
           truck.markAsInactive();
           await this.truckRepo.save(truck);
   
           const truckDTOResult = TruckMap.toDTO( truck ) as ITruckDTO;
           return Result.ok<ITruckDTO>( truckDTOResult )
+          }
           }
       } catch (e) {
         throw e;

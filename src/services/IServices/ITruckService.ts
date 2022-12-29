@@ -7,6 +7,6 @@ export default interface ITruckService  {
   getTrucks(): Promise<Result<ITruckDTO[]>>;
   getActiveTrucks(): Promise<Result<ITruckDTO[]>>;
   getLicencePlate(licencePlate: string): Promise<Result<ITruckDTO>>;
-  changeStatustoInactive(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>>;
-  changeStatustoActive(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>>
+  changeStatustoInactive(licencePlate: string): Promise<Result<ITruckDTO>>;
+  changeStatustoActive(licencePlate: string): Promise<Result<ITruckDTO>>
 }

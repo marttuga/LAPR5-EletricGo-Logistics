@@ -83,7 +83,7 @@ export default class TruckController implements ITruckController /* TODO: extend
 
   public async changeStatustoActive(req: Request, res: Response, next: NextFunction) {
     try {
-      const truckOrError = await this.truckServiceInstance.changeStatustoActive(req.body as ITruckDTO) as Result<ITruckDTO>;
+      const truckOrError = await this.truckServiceInstance.changeStatustoActive(req.params.licencePlate) as Result<ITruckDTO>;
       if (truckOrError.isFailure) {
         return res.status(402).send();
       }
@@ -99,7 +99,7 @@ export default class TruckController implements ITruckController /* TODO: extend
 
   public async changeStatustoInactive(req: Request, res: Response, next: NextFunction) {
     try {
-      const truckOrError = await this.truckServiceInstance.changeStatustoInactive(req.body as ITruckDTO) as Result<ITruckDTO>;
+      const truckOrError = await this.truckServiceInstance.changeStatustoInactive(req.params.licencePlate) as Result<ITruckDTO>;
       if (truckOrError.isFailure) {
         return res.status(402).send();
       }

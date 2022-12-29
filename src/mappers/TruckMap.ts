@@ -21,6 +21,7 @@ export class TruckMap extends Mapper<Truck> {
       maxBateryCapacity: truck.props.maxBateryCapacity.value,
       autonomyFullChargeLoad: truck.props.autonomyFullChargeLoad.value,
       timeCharging: truck.props.timeCharging.value,
+      active:truck.props.active
     } as ITruckDTO;
   } 
  
@@ -34,6 +35,7 @@ export class TruckMap extends Mapper<Truck> {
       maxBateryCapacity: raw.maxBateryCapacity,
       autonomyFullChargeLoad: raw.autonomyFullChargeLoad,
       timeCharging: raw.timeCharging,
+      active:raw.active
       
     }, new UniqueEntityID(raw.licencePlate))
 
