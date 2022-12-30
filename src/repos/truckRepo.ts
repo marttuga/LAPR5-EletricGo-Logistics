@@ -87,10 +87,15 @@ export default class TruckRepo implements ITruckRepo {
   public async findLicencePlate (licencePlate: LicencePlate | string): Promise<Truck> {
       const query = { licencePlate: licencePlate };
       const t = await this.truckSchema.findOne(query as FilterQuery<ITruckPersistence & Document>);
-      console.log(t)
 
-      if (t != null) {
-        return TruckMap.toDomain(t);
+let active:boolean;
+active=t.active;
+
+      if (t != null) {       
+
+    let tt = TruckMap.toDomain(t);
+  tt.receiveActive(active);
+        return tt;
       } else return null;
     }
 }

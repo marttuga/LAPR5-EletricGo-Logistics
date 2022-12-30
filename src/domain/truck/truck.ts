@@ -78,6 +78,12 @@ export class Truck extends AggregateRoot<TruckProps> {
     return this.props.active;
   }
 
+  
+  public receiveActive (act:boolean) {
+
+    this.props.active = act;
+    }
+
   public markAsInactive () {
   this.props.active = false;
   }
