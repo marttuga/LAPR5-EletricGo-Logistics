@@ -36,7 +36,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private trucks:Truck[]=[];
   private activeTrucks:Object3D[]=[];
   private automaticTruck:string;
+  private manualTruck:string;
   private automaticTruckInitialPosition:Vector3;
+  private manualTruckInicialPosition:Vector3;
 
   private skyBoxTexture:THREE.Texture;
   private skyBoxGroundTexture:THREE.Texture;
@@ -52,6 +54,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private activateMotion=false;
   private isAutomaticMovement=false;
+  private isManualMovement=false;
 
   private pathsData = new Map<string, THREE.CurvePath<any>>([]);
   private static WARE0=0;  private static WARE1=1;private static WARE_FINAL=2;
@@ -493,8 +496,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
   private manualMovement(){
-     /*
-     document.onkeydown = function (e) {
+     
+     /*document.onkeydown = function (e) {
        switch (e.key) {
          case "a":
            //rodar a camara para a esquerda
@@ -683,6 +686,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   }
 
+  public scrollManualDelivery(el: HTMLElement) {
+    this.isManualMovement=true;
+    let x=document.getElementById("ManualSection");
+    if(x!=null){
+      x.style.display="block"
+    }
+    el.scrollIntoView({behavior: 'smooth'});
+
+  }
+
 
   public scrollDone(el: HTMLElement){
     let done=document.getElementById("ButtonDoneSection")
@@ -693,20 +706,23 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public scrollCanvas(el: HTMLElement) {
+    this.addTruck(this.manualTruck,this.manualTruckInicialPosition)
     this.addTruck(this.automaticTruck,this.automaticTruckInitialPosition)
 
     let x1 = document.getElementById("OptionManualDelivery");
     let x2 = document.getElementById("OptionAutomaticDelivery");
     let x3 = document.getElementById("OptionStartAutomaticDelivery");
     let x5=document.getElementById("AutomaticSection");
+    let x6=document.getElementById("ManualSection");
     let done=document.getElementById("ButtonDoneSection")
 
-    if (x1!=null && x2!=null&&x3!=null&&x5!=null&&done!=null) {
-      if (x1.style.display === "block" &&x2.style.display === "block") {
+    if (x1!=null && x2!=null&&x3!=null && x5!=null && x6!=null &&done!=null) {
+      if (x1.style.display === "block" && x2.style.display === "block") {
         x1.style.display = "none";
         x2.style.display = "none";
         x3.style.display="block"
         x5.style.display="none"
+        x6.style.display="none"
         done.style.display="none";
       }
     }
