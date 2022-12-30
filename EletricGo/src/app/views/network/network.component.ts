@@ -495,7 +495,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
   private manualMovement(){
-    /*
+     /*
      document.onkeydown = function (e) {
        switch (e.key) {
          case "a":
@@ -516,16 +516,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
          case "s":
            //recuar - decrementar a posição da camara no eixo dos zz
            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
-           break;
-
-         case "p":
-           //subir - incrementar a posição da camara no eixo dos yy
-           truck?.position.set(truck?.position.x,truck?.position.y+ 0.1,truck?.position.z) ;
-           break;
-
-         case "l":
-           //descer - decrementar a posição da camara no eixo dos yy
-           truck?.position.set(truck?.position.x,truck?.position.y- 0.1,truck?.position.z) ;
            break;
 
          default:break;
@@ -549,8 +539,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
            break;
 
          default:break;
-       }
+       
 
+   }
    }*/
   }
 
