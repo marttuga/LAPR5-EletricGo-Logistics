@@ -16,8 +16,8 @@ export class TruckStatusComponent implements OnInit {
  searchString: string;
  chosenTruck:string;
  activeT:true;
- activeF:false
-
+ activeF:false;
+active:boolean
   constructor( private truckService: TrucksService,
                private route: ActivatedRoute,
                private router: Router) {
@@ -47,10 +47,10 @@ public changeStatustoActive():void{
 
 }
 public getTruck():void{
-  this.truckService.getTruck(this  .licencePlate).subscribe(data => {console.log(data);
+  this.truckService.getTruck(this.licencePlate).subscribe(data => {console.log(data);
     this.truck=data});
-    console.log(this.licencePlate)
-    console.log(this.truck)
+    //console.log(" ora", this.truck.active)
+    //console.log(this.truck.active)
     this.submit = !this.submit;
 
 }
