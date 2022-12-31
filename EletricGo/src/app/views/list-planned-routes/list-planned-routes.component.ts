@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { WarehousesService } from 'src/app/services/dotnet/warehouses.service';
 import { PlannedRouteService } from '../../services/node/plannedRoute.service';
 
 @Component({
@@ -12,19 +13,25 @@ export class ListPlannedRoutesComponent implements OnInit {
   fleetPlaningId:string;
   truckId:string;
   date: string;
-  routes: string[];
+  routes: string;
   plannedRoute:PlannedRoute;
+  routesB: any;
+  routesE: string;
 
   searchString: string;
   chosenTruck:string;
+  p:number = 1;
+  allWarehouses:Warehouse[]=[];
+  plannedRoutesNames: any;
 
-  constructor( private prService: PlannedRouteService) {
+  constructor( private prService: PlannedRouteService,private warehousesService:WarehousesService) {
 
 }
 
 ngOnInit(): void {
   //this.getActiveTrucks();
   this.getPlanings();
+
 }
 
   ngAfterViewInit(): void {
@@ -39,4 +46,7 @@ ngOnInit(): void {
     });
   }
 
+
 }
+
+

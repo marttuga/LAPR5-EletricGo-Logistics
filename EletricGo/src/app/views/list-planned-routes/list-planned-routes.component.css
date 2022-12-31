@@ -52,7 +52,7 @@ body{
   }
   
   .table{
-    margin-bottom: 30%;  /*10% */
+    margin-bottom: 20%;  /*10% */
   
   }
   
@@ -87,7 +87,7 @@ body{
     font-size: 0.8rem;
     font-weight: 900;
     color: #4f648a;
-  width: 80%;
+  width: 70%;
   }
   
   
@@ -108,7 +108,7 @@ body{
   
   
   #contentSection h2{
-    margin-top: 10%;
+    margin-top: 8%;
   
     font-family: sans-serif;
   font-size: 30px;
