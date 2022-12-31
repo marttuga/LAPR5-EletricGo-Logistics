@@ -307,6 +307,10 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
       this.isAutomaticMovement=false;
     }
+    if(this.isManualMovement){
+      this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
+      this.isManualMovement=false;
+    }
   }
 
   public setAutomaticMovementRoutAndTruck(el:HTMLElement,map:Map<string,string[]>){
