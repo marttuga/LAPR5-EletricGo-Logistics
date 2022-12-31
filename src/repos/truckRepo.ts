@@ -88,10 +88,11 @@ export default class TruckRepo implements ITruckRepo {
       const query = { licencePlate: licencePlate };
       const t = await this.truckSchema.findOne(query as FilterQuery<ITruckPersistence & Document>);
 
-let active:boolean;
-active=t.active;
 
-      if (t != null) {       
+
+      if (t != null) { 
+         let active:boolean;
+active=t.active;
 
     let tt = TruckMap.toDomain(t);
   tt.receiveActive(active);
