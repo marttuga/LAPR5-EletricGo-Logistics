@@ -8,9 +8,10 @@
           <a id="OptionMakeDelivery" (click)="makeDelivery()">Make Delivery</a>
       </li>
 
-       <li id="OptionManualDelivery" style="display: none"> <a>Manual Delivery</a></li>
+      <li id="OptionManualDelivery" style="display: none"> <a (click)="scrollManualDelivery(listRoutesSection)">Manual Delivery</a></li>
       <li id="OptionAutomaticDelivery" style="display: none"> <a (click)="scrollAutomaticDelivery(listRoutesSection)">Automatic Delivery</a></li>
       <li id="OptionStartAutomaticDelivery" style="display: none"> <a (click)="startAutomaticMovement()">Start</a></li>
+      <!-- <li id="OptionStartManualDelivery" style="display: none"> <a (click)="manualMovement()">Start</a></li> -->
     </ul>
   </nav>
 
