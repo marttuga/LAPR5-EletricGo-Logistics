@@ -90,6 +90,14 @@ export class Truck extends AggregateRoot<TruckProps> {
   public markActive () {
     this.props.active = true;
   }
+  public changeActive (act:boolean) {
+    if(act===true){
+     this.markAsInactive()
+    }else{
+      this.markActive()
+    }
+    
+  }
 
   private constructor (props: TruckProps, id?: UniqueEntityID) {
     super(props, id);

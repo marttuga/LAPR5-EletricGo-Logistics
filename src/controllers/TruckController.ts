@@ -81,6 +81,22 @@ export default class TruckController implements ITruckController /* TODO: extend
     }
   };
 
+  public async changeStatus(req: Request, res: Response, next: NextFunction) {
+    try {
+      const truckOrError = await this.truckServiceInstance.changeStatus(req.params.licencePlate) as Result<ITruckDTO>;
+      if (truckOrError.isFailure) {
+        return res.status(402).send();
+      }
+
+      const truckDTO = truckOrError.getValue();  
+
+    
+      return res.json( truckDTO ).status(201);    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
   public async changeStatustoActive(req: Request, res: Response, next: NextFunction) {
     try {
       const truckOrError = await this.truckServiceInstance.changeStatustoActive(req.params.licencePlate) as Result<ITruckDTO>;

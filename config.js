@@ -56,6 +56,10 @@ export default {
     fleetPlaning: {
       name: "FleetPlaningController",
       path: "../controllers/fleetPlaningController"
+    } ,
+    user: {
+      name: "UserController",
+      path: "../controllers/userController"
     } 
   },
 
@@ -101,6 +105,10 @@ export default {
      fleetPlaning: {
       name: "FleetPlaningService",
       path: "../services/fleetPlaningService"
-    } 
+    } ,
+    user: {
+     name: "UserService",
+     path: "../services/userService"
+   } 
   },
 };

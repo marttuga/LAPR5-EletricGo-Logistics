@@ -131,8 +131,8 @@ export default class TruckService implements ITruckService {
         }
         else {
         
-
-          truck.markActive();
+     
+     truck.markActive();
           await this.truckRepo.save(truck);
 
           const truckDTOResult = TruckMap.toDTO( truck ) as ITruckDTO;
@@ -158,6 +158,28 @@ export default class TruckService implements ITruckService {
 
 
           const truckDTOResult = TruckMap.toDTO( truck ) as ITruckDTO;
+          return Result.ok<ITruckDTO>( truckDTOResult )
+          
+          }
+      } catch (e) {
+        throw e;
+      }
+    }
+    public async changeStatus(licencePlate: string): Promise<Result<ITruckDTO>> {
+      try {
+        const truck = await this.truckRepo.findLicencePlate(licencePlate);
+
+        if (truck === null) {
+          return Result.fail<ITruckDTO>("Truck not found");
+        }
+        else {
+        
+     truck.changeActive(truck.active);
+          await this.truckRepo.save(truck);
+
+          const truckDTOResult = TruckMap.toDTO( truck ) as ITruckDTO;
+
+
           return Result.ok<ITruckDTO>( truckDTOResult )
           
           }

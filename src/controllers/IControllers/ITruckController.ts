@@ -7,5 +7,6 @@ export default interface ITruckController  {
   updateTruck(req: Request, res: Response, next: NextFunction);
   getLicencePlate(req: Request, res: Response, next: NextFunction);
   changeStatustoInactive(req: Request, res: Response, next: NextFunction);
-  changeStatustoActive(req: Request, res: Response, next: NextFunction)
+  changeStatustoActive(req: Request, res: Response, next: NextFunction);
+  changeStatus(req: Request, res: Response, next: NextFunction)
 }

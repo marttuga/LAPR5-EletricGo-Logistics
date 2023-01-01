@@ -48,6 +48,9 @@ truck.put('/changeStatusToInactive/:licencePlate',
 (req, res, next) => ctrl.changeStatustoInactive(req, res, next) );
    
 
+truck.put('/changeStatus/:licencePlate',
+(req, res, next) => ctrl.changeStatus(req, res, next) );
+
 truck.get('/getTruck/:licencePlate',(req, res, next) => ctrl.getLicencePlate(req, res, next),);
 
   truck.get('/getAll', (req, res, next) => ctrl.getTrucks(req, res, next));
