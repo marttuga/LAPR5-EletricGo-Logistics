@@ -5,6 +5,7 @@
   maxBateryCapacity: number;
   autonomyFullChargeLoad: number;
   timeCharging: number;
+  active:boolean;
 }
 
 

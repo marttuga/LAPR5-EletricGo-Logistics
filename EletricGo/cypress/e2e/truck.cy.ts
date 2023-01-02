@@ -33,7 +33,9 @@ describe('Truck Test', () => {
       cy.get('h1').should('contain','FLEET MANAGER!')
       cy.get('[class="navbar"]').should('contain','Home')
       cy.get('[class="navbar"]').should('contain','Manage Trucks')
-      cy.get('[class="navbar"]').should('contain','See all Trucks')
+      cy.get('[class="navbar"]').should('contain','See active Trucks')
+      cy.get('[class="navbar"]').should('contain','Change the status')
+
     })
 
 
@@ -90,7 +92,7 @@ describe('Truck Test', () => {
 
     it('Visits the list Truck page', () => {
       cy.visit('/views/list-truck')
-      cy.get('h2').should('contain','ALL EXISTENT TRUCKS')
+      cy.get('h2').should('contain','ALL ACTIVE TRUCKS')
     })
 
     it('Searches Truck failed', () => {
@@ -105,7 +107,7 @@ describe('Truck Test', () => {
 
     it('creating truck success', () => {
       cy.get('[class="textfield"]').should('have.length',6)
-      cy.get('[type="text"]').eq(0).type('AA-11-AA')
+      cy.get('[type="text"]').eq(0).type('AQ-11-QQ')
 
 
       cy.get('[type="number"]').eq(0).type('12000')
@@ -123,14 +125,85 @@ describe('Truck Test', () => {
 
     it('Visits the list Truck page', () => {
       cy.visit('/views/list-truck')
-      cy.get('h2').should('contain','ALL EXISTENT TRUCKS')
+      cy.get('h2').should('contain','ALL ACTIVE TRUCKS')
     })
 
     it('Searches Truck success', () => {
-      cy.get('[type="text"]').eq(0).type('AA-11-AA')
-      cy.get('[class="table"]').should('contain','AA-11-AA')
+      cy.get('[type="text"]').eq(0).type('AQ-11-QQ')
+      cy.get('[class="table"]').should('contain','AQ-11-QQ')
 
 
     })
+
+
+    it('Visits the Change status page', () => {
+      cy.visit('/views/truck-status')
+      cy.get('h2').should('contain','TRUCK STATUS')
+      cy.get('h3').should('contain','Enter licence plate')
+    })
+
+    it('Searches Truck wrong ', () => {
+      cy.get('[class="textfield"]').should('have.length',1)
+      cy.get('[type="text"]').eq(0).type('FFF')
+      
+      
+      cy.get('[class="buttonn"]').click() 
+   
+      cy.get('[class="requiredError"]').should('be.visible').should('contain','Licence Plate must must be of format XX-00-XX!')
+
+      cy.get('[type="submit"]').should('be.disabled')
+    
+
+      cy.get('[type="text"]').eq(0).clear()   
+      cy.get('[class="requiredError"]').should('be.visible').should('contain','Licence Plate is required!')
+
+    })
+
+    
+    it('Searches Truck right ', () => {
+      cy.get('[type="text"]').eq(0).type('AQ-11-QQ')
+
+      cy.get('[type="submit"]').should('be.enabled')
+      cy.get('[class="buttonn"]').click()
+      cy.get('[class="table"]').should('contain','true')
+      cy.get('[type="submitt"]').should('be.enabled')
+      cy.get('[type="submittt"]').should('be.enabled')
+
+    })
+
+    it('Disable Truck', () => {
+      cy.get('[class="buttondisable"]').click()
+      cy.get('[class="created-message"]').should('be.visible').contains("Success!")
+
+      cy.visit('/views/list-truck')
+      cy.get('[type="text"]').eq(0).type('AQ-11-QQ')
+
+
+    })
+
+    it('Enable Truck again ', () => {
+      cy.visit('/views/truck-status')
+      cy.get('[type="text"]').eq(0).type('AQ-11-QQ')
+
+      cy.get('[type="submit"]').should('be.enabled')
+      cy.get('[class="buttonn"]').click()
+/*       cy.get('[class="table"]').should('contain','false')
+ */      cy.get('[type="submitt"]').should('be.enabled')
+      cy.get('[type="submittt"]').should('be.enabled')
+
+
+      cy.get('[class="buttonenable"]').click()
+      cy.get('[class="created-message"]').should('be.visible').contains("Success!")
+
+      cy.visit('/views/list-truck')
+      cy.get('[type="text"]').eq(0).type('AQ-11-QQ')
+      cy.get('[class="table"]').should('contain','AQ-11-QQ')
+
+
+    })
+
+
+
+
 
   })

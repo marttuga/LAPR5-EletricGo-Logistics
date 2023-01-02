@@ -56,3 +56,4 @@ import {WarehouseManagerModule} from "./views/warehouse-manager/warehouse-manage
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

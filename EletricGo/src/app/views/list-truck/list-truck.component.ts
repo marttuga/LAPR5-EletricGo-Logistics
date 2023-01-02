@@ -14,6 +14,7 @@ export class ListTruckComponent implements OnInit {
   licencePlate: string;
   searchString: string;
   chosenTruck:string;
+  p:number = 1;
 
   constructor( private truckService: TrucksService) {
 

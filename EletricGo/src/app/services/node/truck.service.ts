@@ -13,27 +13,31 @@ export class TrucksService {
   constructor(private httpClient: HttpClient) { }
 
   getTrucks(): Observable<any> {
-    return this.httpClient.get<any>(this.Url + '/getAll').pipe(
-      map(this.extractData));
+    return this.httpClient.get<any>(this.Url + '/getAll').pipe( map(this.extractData));
   }
   getActiveTrucks(): Observable<any> {
-    return this.httpClient.get<any>(this.Url + '/getAllActive').pipe(
-      map(this.extractData));
+    return this.httpClient.get<any>(this.Url + '/getAllActive').pipe( map(this.extractData));
   }
 
   getTruck(licencePlate: string): Observable<any> {
-    return this.httpClient.get(this.Url + '/getTruck/' +licencePlate).pipe(
-      map(this.extractData));
+    return this.httpClient.get(this.Url + '/getTruck/' +licencePlate).pipe( map(this.extractData));
+  }
+  changeStatustoInactive(licencePlate: string,active:boolean) {
+    const body={"active":active}
+    return this.httpClient.put(this.Url + '/changeStatustoInactive/' +licencePlate,body).pipe(map(this.extractData));
+  }
+  changeStatustoActive(licencePlate: string,active:boolean){
+    const body={"active":active}
+    return this.httpClient.put(this.Url + '/changeStatustoActive/' +licencePlate,body).pipe(map(this.extractData));
   }
 
   createTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number) {
     const body={"licencePlate":licencePlate, "tare":tare, "capacity":capacity, "maxBateryCapacity":maxBateryCapacity, "autonomyFullChargeLoad": autonomyFullChargeLoad, "timeCharging":timeCharging};
-    console.log(body);
-    return this.httpClient.post(this.Url + '/createTruck',body)
-      .pipe(map(this.extractData)
-      );
+    return this.httpClient.post(this.Url + '/createTruck',body).pipe(map(this.extractData) );
 
   }
+
+
 
 /*   updateTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number){
     const body={"tare":tare, "capacity":capacity, "maxBateryCapacity":maxBateryCapacity, "autonomyFullChargeLoad": autonomyFullChargeLoad, "timeCharging":timeCharging};

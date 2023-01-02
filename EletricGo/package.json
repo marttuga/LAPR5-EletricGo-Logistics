@@ -10,7 +10,8 @@
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
-  },
+  } ,
+
   "engines": {
     "node": "16.17.0",
     "npm": "8.15.0"

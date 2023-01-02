@@ -18,6 +18,7 @@ export class CreateTruckComponent implements OnInit {
  maxBateryCapacity:number;
  autonomyFullChargeLoad:number;
  timeCharging:number;
+ active:true;
 
 
   constructor( private truckService: TrucksService,
@@ -33,7 +34,7 @@ export class CreateTruckComponent implements OnInit {
 
 
   public createTruck():void{
-    this.truckService.createTruck(this.licencePlate,this.tare,this.capacity,this.maxBateryCapacity,this.autonomyFullChargeLoad,this.timeCharging).subscribe(data => {console.log(data);
+    this.truckService.createTruck(this.licencePlate,this.tare,this.capacity,this.maxBateryCapacity,this.autonomyFullChargeLoad,this.timeCharging ).subscribe(data => {console.log(data);
     this.truck=data});
     this.submit = !this.submit;
   }
