@@ -3,10 +3,6 @@ import mongoose from 'mongoose';
 
 const User = new mongoose.Schema(
   {
-    domainId: { 
-      type: String,
-      unique: true
-    },
 
     firstName: {
       type: String,
@@ -33,7 +29,13 @@ const User = new mongoose.Schema(
 
     role: {
       type: String,
-      default: 'user',
+      required: [true, 'Please enter role type'],
+    },
+
+    userContact: {
+      type: Number,
+      required: [true, 'Please enter contact number'],
+      index: true,
     },
   },
   { timestamps: true },

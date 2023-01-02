@@ -17,11 +17,12 @@ export class UserMap extends Mapper<User> {
   public static toDTO( user: User): IUserDTO {
     return {
       //id: user.id.toString(),
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email.value,
+      firstName: user.props.firstName,
+      lastName: user.props.lastName,
+      email: user.props.email.value,
       password: "",
-      role: user.role.id.toString()
+      role: user.props.role.props.name.roleName,
+      userContact: user.props.userContact.userContact
     } as IUserDTO;
   }
 
@@ -37,6 +38,7 @@ export class UserMap extends Mapper<User> {
       email: userEmailOrError.getValue(),
       password: userPasswordOrError.getValue(),
       role: role,
+      userContact:raw.userContact
     }, new UniqueEntityID(raw.domainId))
 
     userOrError.isFailure ? console.log(userOrError.error) : '';
@@ -47,11 +49,13 @@ export class UserMap extends Mapper<User> {
   public static toPersistence (user: User): any {
     const a = {
       domainId: user.id.toString(),
-      email: user.email.value,
-      password: user.password.value,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      role: user.role.id.toValue(),
+      email: user.props.email.value,
+      password: user.props.password.value,
+      firstName: user.props.firstName,
+      lastName: user.props.lastName,
+      role: user.props.role.props.name.roleName,
+      userContact: user.props.userContact.userContact
+
     }
     return a;
   }

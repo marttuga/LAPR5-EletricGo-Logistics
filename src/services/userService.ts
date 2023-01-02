@@ -21,6 +21,7 @@ import { UserEmail } from '../domain/user/userEmail';
 import { Role } from '../domain/role/role';
 
 import { Result } from "../core/logic/Result";
+import { UserContact } from '../domain/user/userContact';
 
 @Service()
 export default class UserService implements IUserService{
@@ -35,7 +36,7 @@ export default class UserService implements IUserService{
     try {
       const userDocument = await this.userRepo.findByEmail( userDTO.email );
       const found = !!userDocument;
-  
+  console.log(userDocument)
       if (found) {
         return Result.fail<{userDTO: IUserDTO, token: string}>("User already exists with email=" + userDTO.email);
       }
@@ -66,8 +67,11 @@ export default class UserService implements IUserService{
       const password = await UserPassword.create({ value: hashedPassword, hashed: true}).getValue();
       const email = await UserEmail.create( userDTO.email ).getValue();
       let role: Role;
+      const userContact = await UserContact.create( userDTO.userContact ).getValue();
+
 
       const roleOrError = await this.getRole(userDTO.role);
+
       if (roleOrError.isFailure) {
         return Result.fail<{userDTO: IUserDTO; token: string}>(roleOrError.error);
       } else {
@@ -80,6 +84,7 @@ export default class UserService implements IUserService{
         email: email,
         role: role,
         password: password,
+        userContact:userContact
       });
 
       if (userOrError.isFailure) {
@@ -151,7 +156,9 @@ export default class UserService implements IUserService{
     const email = user.email.value;
     const firstName = user.firstName;
     const lastName = user.lastName;
-    const role = user.role.id.value;
+    const role = user.role.name.roleName;
+    const userContact = user.userContact.userContact;
+
 
     return jwt.sign(
       {
@@ -160,6 +167,7 @@ export default class UserService implements IUserService{
         role: role,
         firstName: firstName,
         lastName: lastName,
+        userContact:userContact,
         exp: exp.getTime() / 1000,
       },
       config.jwtSecret,
@@ -175,7 +183,7 @@ export default class UserService implements IUserService{
     if (found) {
       return Result.ok<Role>(role);
     } else {
-      return Result.fail<Role>("Couldn't find role by id=" + roleId);
+      return Result.fail<Role>("Couldn't find role by name=" + roleId);
     }
   }
 

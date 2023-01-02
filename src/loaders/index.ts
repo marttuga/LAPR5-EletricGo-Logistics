@@ -59,6 +59,10 @@ export default async ({ expressApp }) => {
     name: config.controllers.fleetPlaning.name,
     path: config.controllers.fleetPlaning.path
   } 
+  const userController = {
+    name: config.controllers.user.name,
+    path: config.controllers.user.path
+  } 
 
   const roleRepo = {
     name: config.repos.role.name,
@@ -83,6 +87,8 @@ export default async ({ expressApp }) => {
     name: config.repos.fleetPlaning.name,
     path: config.repos.fleetPlaning.path
   }
+   
+ 
  
 
   const roleService = {
@@ -102,6 +108,10 @@ export default async ({ expressApp }) => {
     name: config.services.fleetPlaning.name,
     path: config.services.fleetPlaning.path
   }
+  const userService = {
+    name: config.services.user.name,
+    path: config.services.user.path
+  }
 
   await dependencyInjectorLoader({
     mongoConnection,
@@ -116,7 +126,8 @@ export default async ({ expressApp }) => {
       roleController,
       routeController,
       truckController,
-      fleetPlaningController
+      fleetPlaningController,
+      userController
     ],
     repos: [
       roleRepo,
@@ -129,7 +140,8 @@ export default async ({ expressApp }) => {
       roleService,
       routeService,
       truckService,
-       fleetPlaningService
+       fleetPlaningService,
+       userService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

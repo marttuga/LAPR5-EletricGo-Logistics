@@ -58,8 +58,8 @@ export default {
       path: "../controllers/fleetPlaningController"
     } ,
     user: {
-      name: "UserController",
-      path: "../controllers/userController"
+      name: "UserControllercopy",
+      path: "../controllers/userControllercopy"
     } 
   },
 
@@ -69,8 +69,8 @@ export default {
       path: "../repos/roleRepo"
     },
     user: {
-      name: "UserRepo",
-      path: "../repos/userRepo"
+      name: "UserRepocopy",
+      path: "../repos/userRepocopy"
     },
     truck: {
       name: "TruckRepo",
@@ -107,8 +107,8 @@ export default {
       path: "../services/fleetPlaningService"
     } ,
     user: {
-     name: "UserService",
-     path: "../services/userService"
+     name: "UserServicecopy",
+     path: "../services/userServicecopy"
    } 
   },
 };

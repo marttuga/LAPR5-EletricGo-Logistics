@@ -23,14 +23,15 @@ export default (app: Router) => {
         lastName: Joi.string().required(),
         email: Joi.string().required(),
         password: Joi.string().required(),
-        role: Joi.string().required()
+        role: Joi.string().required(),
+        userContact:Joi.number().min(100000000).max(999999999).required().error(new Error('enter contact with 9 digits')),
       }),
     }),
     async (req: Request, res: Response, next: NextFunction) => {
       const logger = Container.get('logger') as winston.Logger;
       logger.debug('Calling Sign-Up endpoint with body: %o', req.body )
-
       try {
+        console.log("oi")
         const authServiceInstance = Container.get(AuthService);
         const userOrError = await authServiceInstance.SignUp(req.body as IUserDTO);
 
@@ -99,6 +100,7 @@ export default (app: Router) => {
     }
   });
 
+  
   app.use('/users', route);
 
   route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, user_controller.getMe);

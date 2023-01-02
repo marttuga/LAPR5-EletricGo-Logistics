@@ -8,6 +8,7 @@ import { User } from "../domain/user/user";
 import { UserId } from "../domain/user/userId";
 import { UserEmail } from "../domain/user/userEmail";
 import { UserMap } from "../mappers/UserMap";
+import { UserContact } from '../domain/user/userContact';
 
 @Service()
 export default class UserRepo implements IUserRepo {
@@ -47,8 +48,10 @@ export default class UserRepo implements IUserRepo {
 
         return UserMap.toDomain(userCreated);
       } else {
-        userDocument.firstName = user.firstName;
-        userDocument.lastName = user.lastName;
+        userDocument.firstName = user.props.firstName;
+        userDocument.lastName = user.props.lastName;
+        userDocument.role = user.props.role.props.name.props.roleName;
+        userDocument.userContact = user.props.userContact.props.userContact;
         await userDocument.save();
 
         return user;
@@ -60,6 +63,17 @@ export default class UserRepo implements IUserRepo {
 
   public async findByEmail (email: UserEmail | string): Promise<User> {
     const query = { email: email.toString() };
+    const userRecord = await this.userSchema.findOne( query );
+
+    if( userRecord != null) {
+      return UserMap.toDomain(userRecord);
+    }
+    else
+      return null;
+  }
+
+  public async findByContact (userContact: UserContact | number): Promise<User> {
+    const query = { userContact: userContact.toString() };
     const userRecord = await this.userSchema.findOne( query );
 
     if( userRecord != null) {
