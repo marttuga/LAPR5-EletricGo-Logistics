@@ -10,8 +10,7 @@
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
-  } ,
-
+  },
   "engines": {
     "node": "16.17.0",
     "npm": "8.15.0"
@@ -19,15 +18,18 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.2.0",
+    "@angular/cdk": "^14.2.7",
     "@angular/common": "^14.2.0",
     "@angular/compiler": "^14.2.0",
     "@angular/core": "^14.2.0",
     "@angular/forms": "^14.2.0",
+    "@angular/material": "^14.2.7",
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
     "@seregpie/three.text-sprite": "^3.2.0",
-    "forms-angular": "^0.12.0-beta.193",
+    "dmat-table": "^1.0.2",
+    "forms-angular": "^0.11.0",
     "ngx-pagination": "^6.0.3",
     "rxjs": "~7.5.0",
     "three": "^0.146.0",
@@ -51,5 +53,4 @@
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~4.7.2"
   }
-
 }

@@ -17,10 +17,9 @@
       <nav class="navbar">
         <ul>
           <li><a href="#home">Home</a></li>
-          <li><a (click)="scroll(createWarehouseComponent)">Create Warehouse</a></li>
-          <li><a (click)="scroll(listWarehouseComponent)">See all warehouses</a></li>
-          <li><a (click)="scroll(createDeliveryComponent)">Create Delivery</a></li>
-          <li><a (click)="scroll(listDeliveriesComponent)">See all deliveries</a></li>
+          <li><a [routerLink]="['./list-warehouses']">Manage warehouses</a></li>
+         <!-- <li><a (click)="scroll(createDeliveryComponent)">Create Delivery</a></li>
+          <li><a (click)="scroll(listDeliveriesComponent)">See all deliveries</a></li>-->
 
         </ul>
       </nav>
@@ -40,7 +39,8 @@
 
 
     </section>
-    <!--<section #createWarehouse>
+
+   <!-- <section #createWarehouse>
         <div class="war">
           <div class="create-title">
             <h2>Create a Warehouse!</h2>
@@ -58,18 +58,18 @@
           </div>
         </div>
     </section>-->
-    <section #createWarehouseComponent>
+   <!-- <section #createWarehouseComponent>
       <app-create-warehouse></app-create-warehouse>
     </section>
     <section #listWarehouseComponent>
       <app-list-warehouses></app-list-warehouses>
-    </section>
-    <section #createDeliveryComponent>
+    </section>-->
+    <!--<section #createDeliveryComponent>
       <app-create-delivery></app-create-delivery>
     </section>
     <section #listDeliveriesComponent>
       <app-list-deliveries></app-list-deliveries>
-    </section>
+    </section>-->
 
   </div>
 </body>

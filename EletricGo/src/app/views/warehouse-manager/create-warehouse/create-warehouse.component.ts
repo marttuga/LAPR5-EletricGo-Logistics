@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {WarehousesService} from "../../services/dotnet/warehouses.service";
+
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
+import {WarehousesService} from "../../../services/dotnet/warehouses.service";
 
 @Component({
   selector: 'app-create-warehouse',
@@ -9,6 +10,7 @@ import {Observable} from "rxjs";
   styleUrls: ['./create-warehouse.component.css']
 })
 export class CreateWarehouseComponent implements OnInit {
+
 
   warehouse:Warehouse;
  warehouseIdentifier:string;
@@ -21,7 +23,7 @@ export class CreateWarehouseComponent implements OnInit {
  zipcode:string;
  altitude:string;
 
-  constructor( private warehouseService: WarehousesService,  
+  constructor( private warehouseService: WarehousesService,
                private route: ActivatedRoute,
                private router: Router) {
 
