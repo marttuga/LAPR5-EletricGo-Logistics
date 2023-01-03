@@ -9,7 +9,7 @@
 }
 
 body{
-  margin-top: 100px;
+  margin-top: 50px;
   font-size: 100%;
   background: #ffffff;
   height: 100vh;
@@ -91,6 +91,7 @@ small{
   font-size: 8pt;
   color: #e3242b;
 }
+
 .created-message {
   color: darkcyan;
 }

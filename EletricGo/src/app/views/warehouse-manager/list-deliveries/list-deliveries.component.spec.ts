@@ -3,8 +3,12 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+<<<<<<< HEAD:EletricGo/src/app/views/list-deliveries/list-deliveries.component.spec.ts
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FilterPipe } from '../model/filterPipe';
+=======
+import { FilterPipe } from '../../model/filterPipe';
+>>>>>>> 3746633b24eb3bdfdd1c8ec5bcb36a2dc9817ed1:EletricGo/src/app/views/warehouse-manager/list-deliveries/list-deliveries.component.spec.ts
 import { ListDeliveriesComponent } from './list-deliveries.component';
 
 describe('ListDeliveriesComponent', () => {

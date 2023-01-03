@@ -9,22 +9,28 @@
 </head>
 <body>
 <div class="container">
-  <h2>All Deliveries</h2>
-  <table class="table table-bordered  table-striped">
+  <nav class="navbar">
+    <ul>
+      <li><a href="#home">Home</a></li>
+
+    </ul>
+  </nav>
+
+  <table  class="table table-bordered  table-striped"  matSort>
     <thead>
       <tr>
         <th>DeliveryId</th>
-        <th><input type="text" class="form-control" name="searchString" placeholder="Date" required [(ngModel)]="searchString">
+        <th mat-sort-header><input type="text" class="search-input" placeholder="Date" required [(ngModel)]="searchDate">
         <th>Mass</th>
         <th>TimeLoad</th>
         <th>TimeUnload</th>
-        <th>DeliveryWarehouse</th>
+        <th mat-sort-header><input type="text" class="search-input" placeholder="DeliveryWarehouse" required [(ngModel)]="searchDeliveryWarehouse">
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let delivery of deliveries | filter : 'date' : searchString | paginate: { itemsPerPage: 1, currentPage: p} ; let i = index">
+      <tr *ngFor="let delivery of deliveries | filter : 'date' : searchDate | filter : 'deliveryWarehouse': searchDeliveryWarehouse | paginate : { itemsPerPage: 2, currentPage: p} ; let i = index">
         <td><span>{{delivery.dIdentifier.dIdentifier}}</span></td>
-        <td class="text-left">{{delivery.date}}</td>
+        <td><span>{{delivery.date}}</span></td>
         <td><span>{{delivery.mass}}</span></td>
         <td><span>{{delivery.timeLoad}}</span></td>
         <td><span>{{delivery.timeUnload}}</span></td>
@@ -33,6 +39,7 @@
     </tbody>
     <pagination-controls (pageChange)= "p=$event"></pagination-controls>
   </table>
+  <button class="btn-create" [routerLink]="['../create-delivery']">Create</button>
 </div>
 </body>
 </html>

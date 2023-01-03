@@ -11,6 +11,7 @@ export class WarehousesService {
 
   constructor(private httpClient: HttpClient) { }
 
+
   createWarehouse(warehouseIdentifier:string,designation:string,latitude:number,longitude:number,street:string,doorNumber:number,city:string,zipcode:string,altitude:string): Observable<any> {
     const body={
         "WarehouseIdentifier": warehouseIdentifier,
@@ -27,11 +28,22 @@ export class WarehousesService {
   }
 
   getWarehouses(): Observable<any> {
-    return this.httpClient.get<any>(this.Url + '/getAll').pipe(
+    return this.httpClient.get(this.Url + '/getAll').pipe(
       map(this.extractData));
   }
   getWarehouseByIdentifier(identifier: string): Observable<any> {
     return this.httpClient.get(this.Url + '/getByWI/' +identifier).pipe(
+      map(this.extractData));
+  }
+
+  softDelete(identifier: string): Observable<any> {
+    return this.httpClient.delete(this.Url + '/deleteSoft/' +identifier).pipe(
+      map(this.extractData));
+  }
+
+  activate(identifier: string): Observable<any> {
+    const body={};
+    return this.httpClient.patch(this.Url + '/activate/' +identifier,body).pipe(
       map(this.extractData));
   }
 

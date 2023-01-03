@@ -94,6 +94,41 @@ body{
   font-size: 12pt;
 }
 
+.navbar{
+  position: fixed;
+  top:0;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  height: 50px;
+  background: rgba(255,255,255,0.7);
+  font-family:"Secular One", sans-serif;
+}
+
+.navbar ul{
+  display: flex;
+  list-style: none;
+  width: 100%;
+  justify-content: center;
+}
+
+.navbar ul li{
+  margin: 5 2rem;
+  padding: 0rem;
+  font-family: 'Secular One', sans-serif;
+}
+
+.navbar ul li a{
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #778DB3;
+  font-size: 1.5rem;
+}
+
+.navbar ul li a:hover{
+  color: skyblue;
+}
+
 
 
  
