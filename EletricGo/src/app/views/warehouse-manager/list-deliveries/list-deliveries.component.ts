@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild} from '@angular/core';
 import {DeliveriesService} from "../../../services/dotnet/deliveries.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-list-deliveries',
@@ -9,8 +12,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 
 export class ListDeliveriesComponent implements OnInit {
-
-  searchString: string;
+  activeColumns = true;
+  searchDate: string;
+  searchDeliveryWarehouse: string;
   deliveries: Delivery[];
   delivery:Delivery;
   dIdentifier:string;
@@ -20,6 +24,10 @@ export class ListDeliveriesComponent implements OnInit {
  timeUnload:number;
  deliveryWarehouse:string;
  p:number = 1;
+ dataSource: any;
+ @ViewChild(MatPaginator) paginator: MatPaginator;
+ @ViewChild(MatSort) sort: MatSort;
+
 
   constructor(private deliveryService: DeliveriesService,
               private route: ActivatedRoute,
@@ -31,7 +39,10 @@ export class ListDeliveriesComponent implements OnInit {
 
   public listDeliveries():void{
     this.deliveryService.getDeliveries().subscribe(data => {console.log(data);
-      this.deliveries=data});
+      this.deliveries=data;
+      this.dataSource.sort =this.sort;});
   }
+  
+
 
 }
