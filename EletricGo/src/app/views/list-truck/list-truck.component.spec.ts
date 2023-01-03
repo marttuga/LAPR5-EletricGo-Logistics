@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ListTruckComponent } from './list-truck.component';
 import { FilterPipe } from "../model/filterPipe";
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('ListTruckComponent', () => {
   let component: ListTruckComponent;
@@ -12,8 +13,8 @@ describe('ListTruckComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FilterPipe, ListTruckComponent ],
-      imports:[HttpClientTestingModule,FormsModule,RouterTestingModule],
+      declarations: [FilterPipe, ListTruckComponent, ],
+      imports:[HttpClientTestingModule,FormsModule,RouterTestingModule,NgxPaginationModule],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ],
     })
     .compileComponents();
@@ -33,11 +34,11 @@ describe('ListTruckComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render ALL EXISTENT TRUCKS in h2', () => {
+  it('should render ALL ACTIVE TRUCKS in h2', () => {
     const fixture = TestBed.createComponent(ListTruckComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h2')?.textContent).toContain('ALL EXISTENT TRUCKS');
+    expect(compiled.querySelector('h2')?.textContent).toContain('ALL ACTIVE TRUCKS');
   });
 
   

@@ -31,6 +31,7 @@
             <th>Batery_Capacity</th>
             <th>Autonomy</th>
             <th>Time</th>
+            <th>Active</th>
 
             <!-- <th><input type="number" class="search-input" placeholder="Time" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th> -->
           <th class="text-right"></th>
@@ -47,6 +48,8 @@
           <td><span>{{truck.maxBateryCapacity}}</span></td>
           <td><span>{{truck.autonomyFullChargeLoad}}</span></td>
           <td><span>{{truck.timeCharging}}</span></td>
+          <td><span>{{truck.active}}</span></td>
+
         </tr>
       </tbody>
       <pagination-controls (pageChange)= "p=$event"></pagination-controls>

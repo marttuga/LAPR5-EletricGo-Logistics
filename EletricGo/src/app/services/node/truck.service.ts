@@ -30,7 +30,10 @@ export class TrucksService {
     const body={"active":active}
     return this.httpClient.put(this.Url + '/changeStatustoActive/' +licencePlate,body).pipe(map(this.extractData));
   }
-
+  changeStatus(licencePlate: string,active:boolean){
+    const body={"active":active}
+    return this.httpClient.put(this.Url + '/changeStatus/' +licencePlate,body).pipe(map(this.extractData));
+  }
   createTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number) {
     const body={"licencePlate":licencePlate, "tare":tare, "capacity":capacity, "maxBateryCapacity":maxBateryCapacity, "autonomyFullChargeLoad": autonomyFullChargeLoad, "timeCharging":timeCharging};
     return this.httpClient.post(this.Url + '/createTruck',body).pipe(map(this.extractData) );
