@@ -1,0 +1,43 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-page.component.css">
+</head>
+<body>
+  <div class="container">
+      <nav class="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#createUser" [routerLink]="['/views/create-user']">Manage Users</a></li>
+        <!--   <li><a (click)="scroll(createTruckComponent)">Manage Trucks</a></li>
+          <li><a (click)="scroll(listTruckComponent)">See all Trucks</a></li> -->
+
+
+        </ul>
+      </nav>
+
+      <section class="message"  >
+
+        <div class="text-box">
+          <p>WELCOME</p>
+          <h1>ADMINISTRATOR!</h1>
+        </div>
+       
+        </section>
+
+        <!-- <button class="btn-create" [routerLink]="['/views/create-truck']">create</button> -->~
+
+     <!--  <section #createTruckComponent>
+        <app-create-truck></app-create-truck>
+      </section>
+     
+      <section #listTruckComponent>
+        <app-list-truck></app-list-truck>
+      </section>
+     -->
+
+    </div>
+</body>

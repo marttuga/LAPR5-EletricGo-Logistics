@@ -15,7 +15,9 @@ import {ListDeliveriesComponent} from "./views/list-deliveries/list-deliveries.c
 import { GetPlannedRouteComponent } from './views/get-planned-route/get-planned-route.component';
 import { ListRoutesComponent } from './views/list-routes/list-routes.component';
 import { ListPlannedRoutesComponent } from './views/list-planned-routes/list-planned-routes.component';
-import { TruckStatusComponent } from './views/truck-status/truck-status.component';
+import { CreateUserComponent } from './views/create-user/create-user.component';
+import { AdminPageComponent } from './views/admin-page/admin-page.component';
+
 
 const routes: Routes = [
   { path: '',redirectTo: '/views/login', pathMatch: 'full' },
@@ -37,7 +39,8 @@ const routes: Routes = [
   { path: 'views/get-planned-route', component:GetPlannedRouteComponent},
   { path: 'views/list-routes', component:ListRoutesComponent},
   { path: 'views/list-planned-routes', component:ListPlannedRoutesComponent},
-  { path: 'views/truck-status', component:TruckStatusComponent},
+  { path: 'views/create-user', component:CreateUserComponent},
+  { path: 'views/admin-page', component:AdminPageComponent},
 
 
 ];

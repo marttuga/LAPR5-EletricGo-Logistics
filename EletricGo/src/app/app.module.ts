@@ -23,6 +23,8 @@ import { ListRoutesComponent } from './views/list-routes/list-routes.component';
 import { SharedModule } from './views/shared.module';
 import { ListPlannedRoutesComponent } from './views/list-planned-routes/list-planned-routes.component';
 import { TruckStatusComponent } from './views/truck-status/truck-status.component';
+import { CreateUserComponent } from './views/create-user/create-user.component';
+import { AdminPageComponent } from './views/admin-page/admin-page.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { TruckStatusComponent } from './views/truck-status/truck-status.componen
     GetPlannedRouteComponent,
     ListRoutesComponent,
     ListPlannedRoutesComponent,
-    TruckStatusComponent
+    TruckStatusComponent,
+    CreateUserComponent,
+    AdminPageComponent
 
   ],
     imports: [
