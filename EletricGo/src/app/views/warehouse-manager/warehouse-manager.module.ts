@@ -18,12 +18,17 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSortModule} from "@angular/material/sort";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import { CreateDeliveryComponent } from './create-delivery/create-delivery.component';
+import { ListDeliveriesComponent } from './list-deliveries/list-deliveries.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
   declarations: [WarehouseManagerComponent,
     CreateWarehouseComponent,
-    ListWarehousesComponent
+    ListWarehousesComponent,
+    CreateDeliveryComponent,
+    ListDeliveriesComponent
     ],
   imports: [
     CommonModule,
@@ -42,6 +47,7 @@ import {MatInputModule} from "@angular/material/input";
     MatSortModule,
     MatFormFieldModule,
     MatInputModule,
+    NgxPaginationModule
   ]
 
 
