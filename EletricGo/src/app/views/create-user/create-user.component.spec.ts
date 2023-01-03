@@ -1,24 +1,25 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgxPaginationModule } from 'ngx-pagination';
 
-import { TruckStatusComponent } from './truck-status.component';
+import { CreateUserComponent } from './create-user.component';
 
-describe('TruckStatusComponent', () => {
-  let component: TruckStatusComponent;
-  let fixture: ComponentFixture<TruckStatusComponent>;
+describe('CreateUserComponent', () => {
+  let component: CreateUserComponent;
+  let fixture: ComponentFixture<CreateUserComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TruckStatusComponent ],
-      imports:[HttpClientTestingModule,FormsModule,RouterTestingModule],
+      declarations: [ CreateUserComponent ],
+      imports:[HttpClientTestingModule,FormsModule,RouterTestingModule,NgxPaginationModule],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ],
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TruckStatusComponent);
+    fixture = TestBed.createComponent(CreateUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

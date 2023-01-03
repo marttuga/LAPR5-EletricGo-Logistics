@@ -1,4 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -12,6 +13,7 @@ describe('DeliveriesService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({      imports:[HttpClientTestingModule,FormsModule,RouterTestingModule],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ],
     });
     service = TestBed.inject(DeliveriesService);
     httpClientSpy=TestBed.inject(HttpTestingController);
@@ -50,7 +52,7 @@ describe('DeliveriesService', () => {
         expect(data).toBe(expectedResult);
     });
 
-    const req = httpClientSpy.expectOne('https://lapr5-dotnet.herokuapp.com/api/Deliveries/ById/D01');
+    const req = httpClientSpy.expectOne('https://localhost:5001/api/Deliveries/ById/D01');
     expect(req.request.method).toBe('GET');
     req.flush(expectedResult);
 });
@@ -77,7 +79,7 @@ it('should create', () => {
       expect(data).toBe(expectedResult);
   });
 
-  const req = httpClientSpy.expectOne('https://lapr5-dotnet.herokuapp.com/api/Deliveries');
+  const req = httpClientSpy.expectOne('https://localhost:5001/api/Deliveries');
   expect(req.request.method).toBe('POST');
   req.flush(expectedResult);
 });

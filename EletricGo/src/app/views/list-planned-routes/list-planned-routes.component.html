@@ -24,23 +24,35 @@
 
       <table id="ARQSI" class="table">
         <tr>
-          <th><input type="text" class="search-input" placeholder="Plan Number" title="Please type a number" required [(ngModel)]="searchString">
-          </th>
-          <th>Truck ID</th>
-          <th>Date</th>
-            <th>Route</th>
+          <th><input type="text" class="search-input" placeholder="Plan Number" title="Please type a number" required [(ngModel)]="searchString"></th>
+          <th><input type="text" class="search-input" placeholder="Truck ID" title="Please type the ID" required [(ngModel)]="truckId"></th>
+          <th><input type="text" class="search-input" placeholder="Date" title="Please type the date" required [(ngModel)]="date"></th>
+           <th><input type="text" class="search-input" placeholder="City Begin" title="Please type the route" required [(ngModel)]="routesB"></th>
+            <th><input type="text" class="search-input" placeholder="City End" title="Please type the route" required [(ngModel)]="routesE"></th>
+<!--             <th><input type="text" class="search-input" placeholder="Route" title="Please type the route" required [(ngModel)]="routes"></th>
+ -->            <th>Route</th>
 
             <!-- <th><input type="number" class="search-input" placeholder="Time" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th> -->
           <th class="text-right"></th>
 
         </tr>
 
-        <tr *ngFor="let plannedRoute of plannedRoutes | filter : 'fleetPlaningId': searchString  ; let i = index">
-
+        <tbody>
+        <tr *ngFor="let plannedRoute of plannedRoutes | filter : 'fleetPlaningId': searchString | filter : 'truckId': truckId| filter : 'date': date| filter : 'route': routesB| filter : 'route': routesE| paginate: { itemsPerPage: 8, currentPage: p} ; let i = index">
+<!-- 
           <td class="text-left">{{plannedRoute.fleetPlaningId}}</td>
+          <td class="text-left">{{plannedRoute.truckId}}</td>
+          <td class="text-left">{{plannedRoute.date}}</td>
+          <td class="text-left">{{plannedRoute.route}}</td> -->
+          <td><span>{{plannedRoute.fleetPlaningId}}</span></td>
           <td><span>{{plannedRoute.truckId}}</span></td>
           <td><span>{{plannedRoute.date}}</span></td>
+          <td><span>{{plannedRoute.route[0]}}</span></td>
+          <td><span>{{plannedRoute.route[3]}}</span></td>
           <td><span>{{plannedRoute.route}}</span></td>
+
         </tr>
+      </tbody>
+      <pagination-controls (pageChange)= "p=$event"></pagination-controls>
       </table>
     </body>

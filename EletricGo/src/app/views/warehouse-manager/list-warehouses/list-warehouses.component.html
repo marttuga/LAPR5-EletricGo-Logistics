@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div class="container">
+      <nav class="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+
+        </ul>
+      </nav>
+
+    <div class="all">
+      <a style="text-align: center">Filter</a>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. W01" style="color: grey">
+      </mat-form-field>
+      <div class="tab">
+        <button *ngIf="activeColumns" class="moreColumns" style="color: lightcoral" (click)="addColumns()" mat-icon-button>
+          <mat-icon>
+            <!--arrow_drop_down_circle-->
+            <!--library_add-->
+            add_circle
+          </mat-icon>
+        </button>
+        <button *ngIf="!activeColumns" class="moreColumns" style="color: blue" (click)="hideColumns()" mat-icon-button>
+          <mat-icon>
+            <!--arrow_drop_down_circle-->
+            <!--library_add-->
+            remove_circle
+          </mat-icon>
+        </button>
+        <div class="ta">
+
+
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
+
+
+
+            <ng-container matColumnDef="warehouseIdentifier">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Warehouse Identifier </th>
+              <td mat-cell *matCellDef="let warehouse" style="text-align: center">{{warehouse.warehouseIdentifier}}</td>
+
+            </ng-container>
+
+
+            <ng-container matColumnDef="designation">
+              <th mat-header-cell *matHeaderCellDef > Designation </th>
+              <td mat-cell *matCellDef="let warehouse"> {{warehouse.designation}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="latitude">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Latitude </th>
+              <td mat-cell *matCellDef="let warehouse" style="text-align: center"> {{warehouse.latitude}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="longitude">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Longitude </th>
+              <td mat-cell *matCellDef="let warehouse" style="text-align: center"> {{warehouse.longitude }} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="street">
+              <th mat-header-cell *matHeaderCellDef> Street </th>
+              <td mat-cell *matCellDef="let warehouse"> {{warehouse.street}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="doorNumber">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Door Number </th>
+              <td mat-cell *matCellDef="let warehouse" style="text-align: center"> {{warehouse.doorNumber}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="city">
+              <th mat-header-cell *matHeaderCellDef> City </th>
+              <td mat-cell *matCellDef="let warehouse" style="text-align: left"> {{warehouse.city}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="zipCode">
+              <th mat-header-cell *matHeaderCellDef> ZipCode </th>
+              <td mat-cell *matCellDef="let warehouse" style="text-align: center"> {{warehouse.zipCode}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="warehouseAltitude">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Altitude </th>
+              <td mat-cell *matCellDef="let warehouse" style="text-align: center" > {{warehouse.warehouseAltitude}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let warehouse" style="text-align: center">
+                <div *ngIf="warehouse.status">
+                  <button (click)="inhibitWarehouse(warehouse.warehouseIdentifier)" style="color: forestgreen" mat-icon-button>
+                    <mat-icon>
+                      beenhere
+                    </mat-icon>
+                  </button>
+                </div>
+                <div *ngIf="!warehouse.status">
+                  <button (click)="activateWarehouse(warehouse.warehouseIdentifier)" style="color: red" mat-icon-button>
+                    <mat-icon>
+                      highlight_off
+                    </mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>
+      </div>
+
+    </div>
+    </div>
+    <button class="btn-create" [routerLink]="['../create-warehouse']">Create</button>
+  </div>
+</body>

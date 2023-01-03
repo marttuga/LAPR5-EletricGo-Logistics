@@ -1,0 +1,224 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Lato", sans-serif;
+  }
+
+  .navbar{
+    position: fixed;
+    top:0;
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    height: 60px;
+    background: rgba(248,248,250,0.7);
+    font-weight: 800;
+  }
+  
+  .navbar ul{
+    display: flex;
+    list-style: none;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .navbar ul li{
+    margin: 0 1rem;
+    padding: 1rem;
+    font-family: 'Secular One', sans-serif;
+
+  }
+  
+  .navbar ul li a{
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: 'Secular One', sans-serif;
+    font-weight: 700;
+
+    color: #778DB3;
+    font-size: 1.5rem;
+  
+  }
+  
+  .navbar ul li a:hover{
+    color: skyblue;
+  }
+
+  #container
+ {
+  display: flex;
+justify-content: center;
+align-items: center;
+    height: 100vh;
+    width: 100%;
+    background:#f9f8fb;
+    position: relative;
+ }
+
+ #sideImg
+ {
+   position: absolute;
+   top: 13%; /*-6 */
+   left: 59%;
+   cursor: pointer;
+  
+ }
+
+  #sideImg img{
+    height: 240px;
+  }
+ 
+  #sideImg:hover img{
+  animation: animate 0.2s linear;
+ }
+
+  @keyframes animate {
+     0%
+    {
+      transform: scale(1);
+    }
+    20%
+    {
+    transform: scale(0.94);
+    }
+    40%
+    {
+    transform: scale(0.98);
+    }
+    80%
+    {
+    transform: scale(1.02);
+    }
+    100%
+    {
+    transform: scale(1);
+    }
+  }
+
+  #contentSection{
+    height: 100px;
+    width: 300px;
+     position: relative;
+     left: 10%;
+     bottom:15%; 
+ }
+
+  #contentSection h2{
+    font-family: sans-serif;
+  font-size: 40px;
+  color: #778DB3;
+   right: 135%; /*120 */
+  bottom:50%; /*130 */
+  position: relative;
+  font-weight: 900;
+  text-align: center;
+
+  }
+
+  #contentSection h3{
+    font-family: sans-serif;
+    font-size: 15px;
+    color: #465a7c;
+    font-weight: 700;
+    margin: 30px 15px;
+    right: 120%;  /* */
+    bottom:60%; /* */
+    position: relative;
+    }
+
+    
+  .textfield {
+    height: 60px;
+    width: 100%;
+    display:flexbox;
+    flex-direction:column;
+    align-items:center;
+    margin: -5% 12%;
+    margin-top: 40%;
+  margin-right: 20%;
+  margin-left: -2%;
+  }
+  
+  .textfield > input{
+    font-family: sans-serif;
+    border: none;
+    border-radius: 30px;
+    padding: 15px;
+      background: #E4E4E4;
+      color: #313f57;
+      font-size: 12pt;
+      outline: none;
+      width: 260px;
+  }
+
+
+  
+  #data1
+ {
+     cursor: pointer;
+   width: 90%;
+   display:inline-flex;
+   flex-direction:row;
+   right: 190%;
+   position: relative;
+ }
+ #data2
+ {
+     cursor: pointer;
+   width: 90%;
+   display:inline-flex;
+   flex-direction:row;
+   right: 190%;
+   position: relative;
+ }
+
+
+  .button
+ {
+  font-family: sans-serif;
+    width: 150px;
+     cursor: pointer;
+     font-size: 20px;
+   position: absolute;
+   top: 285%;  /*310 */
+   right: -87%; /*-134 */
+  
+
+ }
+
+ .button:hover{
+    animation: animate 1s linear;
+    
+ }
+
+ .button-create{
+  font-weight: 700;
+  cursor: pointer;
+  font-family: sans-serif;
+  color: #ffffff;
+  width: 100%;
+  border: none;
+  border-radius: 30px;
+  padding: 15px;
+    background: #778DB3;
+    font-size: 12pt;
+}
+
+input.ng-invalid.ng-touched {
+  border: red 1px solid;
+}
+
+small{
+  font-family: 'Secular One', sans-serif;
+  font-size: 8pt;
+  font-weight: 700;
+
+  color: #e3242b;
+}
+.created-message {
+  font-family: 'Secular One', sans-serif;
+  font-size: 10pt;
+  font-weight: 700;
+  color: #222d41;
+}

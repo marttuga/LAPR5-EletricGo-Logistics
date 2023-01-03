@@ -14,14 +14,15 @@ export class ListTruckComponent implements OnInit {
   licencePlate: string;
   searchString: string;
   chosenTruck:string;
-
+  p:number = 1;
+active:boolean
   constructor( private truckService: TrucksService) {
 
 }
 
 ngOnInit(): void {
-  this.getActiveTrucks();
-  //this.getTrucks();
+  //this.getActiveTrucks();
+  this.getTrucks();
 }
 
   ngAfterViewInit(): void {
@@ -47,6 +48,14 @@ public getTruck():void{
   this.truckService.getTruck(this.licencePlate).subscribe(data => {console.log(data);
     this.truck=data});
 }
+
+public changeStatus():void{
+  this.truckService.changeStatus(this.truck.licencePlate,this.active).subscribe(data => {console.log(data);
+    this.truck=data});
+
+}
+
+public get truckActive() { return (this.truck && this.truck.active) ? this.truck.active : [] } 
 
 }
 
