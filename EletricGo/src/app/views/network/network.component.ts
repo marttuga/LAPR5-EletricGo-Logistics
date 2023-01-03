@@ -54,7 +54,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private activateMotion=false;
   private isAutomaticMovement=false;
-  private isManualMovement=false;
+  private activateManualMovement=false;
+
+  private addManualTruckName:string;
 
   private pathsData = new Map<string, THREE.CurvePath<any>>([]);
   private static WARE0=0;  private static WARE1=1;private static WARE_FINAL=2;
@@ -307,10 +309,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
       this.isAutomaticMovement=false;
     }
-    if(this.isManualMovement){
-      this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
-      this.isManualMovement=false;
-    }
   }
 
   public setAutomaticMovementRoutAndTruck(el:HTMLElement,map:Map<string,string[]>){
@@ -497,11 +495,44 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     }
   }
+  public startManualMovement(){
+    //ativar o som do camião
+    this.truckAudio.play();
 
+    let x3=document.getElementById("OptionStartManualDelivery");
+    let stop=document.getElementById("OptionStopManualDelivery");
+
+    if (x3!=null && stop!=null) {
+     
+        x3.style.display = "none";
+        stop.style.display = "block";
+
+        //ativar o movimento do camião
+        this.activateManualMovement = true;
+    }
+  }
+
+
+  public stopManualMovement(){
+    //ativar o som do camião
+    this.truckAudio.stop();
+
+    let x3=document.getElementById("OptionStopManualDelivery");
+    let z=document.getElementById("OptionMakeDelivery");
+
+    if (x3!=null && z!=null) {
+        z.style.display = "block";
+        x3.style.display = "none";
+
+        //ativar o movimento do camião
+        this.activateManualMovement=false;
+    }
+  }
 
   private manualMovement(){
-     
-     /*document.onkeydown = function (e) {
+  if(this.activateManualMovement){
+  let truck = this.scene.getObjectByName(this.addManualTruckName); 
+     document.onkeydown = function (e) {
        switch (e.key) {
          case "a":
            //rodar a camara para a esquerda
@@ -525,30 +556,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
          default:break;
        }
-
-       switch (e.keyCode){
-         case 39://right key
-           truck?.rotateY(5 * Math.PI / 180);
-           break;
-
-         case 37://lef key
-           truck?.rotateY(-5 * Math.PI / 180);
-           break;
-
-         case 38://up key
-           truck?.rotateX(-5 * Math.PI / 180);
-           break;
-
-         case 40://down key
-           truck?.rotateX(5 * Math.PI / 180);
-           break;
-
-         default:break;
-       
-
+      }
    }
-   }*/
-  }
+}
 
 
 
@@ -691,7 +701,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public scrollManualDelivery(el: HTMLElement) {
-    this.isManualMovement=true;
     let x=document.getElementById("ManualSection");
     if(x!=null){
       x.style.display="block"
@@ -710,25 +719,32 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public scrollCanvas(el: HTMLElement) {
-    this.addTruck(this.manualTruck,this.manualTruckInicialPosition)
-    this.addTruck(this.automaticTruck,this.automaticTruckInitialPosition)
+    if (this.isAutomaticMovement){
+      this.addTruck(this.automaticTruck,this.automaticTruckInitialPosition)
+    }else
+    this.addTruck(this.manualTruck,this.manualTruckInicialPosition) //dar valor no html
+    
 
     let x1 = document.getElementById("OptionManualDelivery");
     let x2 = document.getElementById("OptionAutomaticDelivery");
-    let x3 = document.getElementById("OptionStartAutomaticDelivery");
+    let x3;
+    if (this.isAutomaticMovement){
+      x3 = document.getElementById("OptionStartAutomaticDelivery");
+    
+    }else 
+    x3 = document.getElementById("OptionStartManualDelivery");
+
     let x5=document.getElementById("AutomaticSection");
     let x6=document.getElementById("ManualSection");
     let done=document.getElementById("ButtonDoneSection")
 
     if (x1!=null && x2!=null&&x3!=null && x5!=null && x6!=null &&done!=null) {
-      if (x1.style.display === "block" && x2.style.display === "block") {
         x1.style.display = "none";
         x2.style.display = "none";
         x3.style.display="block"
         x5.style.display="none"
         x6.style.display="none"
         done.style.display="none";
-      }
     }
     el.scrollIntoView({behavior: 'smooth'});
 
