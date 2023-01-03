@@ -8,6 +8,25 @@ body{
   font-size: 0.9rem;
   background-color:  #CFCBCB;;
 }
+.navbar{
+  position: fixed;
+  top:0;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  height: 60px;
+  background: rgba(248,248,250,0.7);
+  font-weight: 800;
+}
+
+.navbar ul{
+  display: flex;
+  list-style: none;
+  width: 100%;
+  justify-content: center;
+}
+
+
 
 .container{
   border-collapse: collapse;

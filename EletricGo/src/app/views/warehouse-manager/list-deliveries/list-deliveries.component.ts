@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DeliveriesService} from "../../services/dotnet/deliveries.service";
+import {DeliveriesService} from "../../../services/dotnet/deliveries.service";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
