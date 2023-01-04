@@ -41,11 +41,11 @@ export default class TruckRepo implements ITruckRepo {
     const t = await this.truckSchema.find();
 let active:boolean;
 let dom:Truck
-let listfinal:Truck[] ;
+let listfinal:Truck[]=[] ;
 
 for(let i=0; i<t.length; i++){
   active=t[i].active;
-  
+
   dom=TruckMap.toDomain(t[i])
 
   dom.receiveActive(active);
