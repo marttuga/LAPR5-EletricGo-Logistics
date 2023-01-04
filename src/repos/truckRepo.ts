@@ -39,7 +39,20 @@ export default class TruckRepo implements ITruckRepo {
   public async getAllTrucks(): Promise<Truck[]> {
 
     const t = await this.truckSchema.find();
-    return t.map(item => TruckMap.toDomain(item));
+let active:boolean;
+let dom:Truck
+let listfinal:Truck[] ;
+
+for(let i=0; i<t.length; i++){
+  active=t[i].active;
+  
+  dom=TruckMap.toDomain(t[i])
+
+  dom.receiveActive(active);
+
+  listfinal.push(dom);
+}
+    return listfinal;
   }
 
   public async getAllActiveTrucks(): Promise<Truck[]> {

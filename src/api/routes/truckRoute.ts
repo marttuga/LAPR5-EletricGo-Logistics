@@ -40,11 +40,11 @@ celebrate({
 (req, res, next) => ctrl.updateTruck(req, res, next) );
 
 
-truck.put('/changeStatusToActive/:licencePlate',
+truck.patch('/changeStatusToActive/:licencePlate',
 (req, res, next) => ctrl.changeStatustoActive(req, res, next) );
 
 
-truck.put('/changeStatusToInactive/:licencePlate',
+truck.patch('/changeStatusToInactive/:licencePlate',
 (req, res, next) => ctrl.changeStatustoInactive(req, res, next) );
    
 
