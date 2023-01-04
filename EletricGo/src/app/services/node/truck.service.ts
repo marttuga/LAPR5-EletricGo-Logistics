@@ -24,11 +24,11 @@ export class TrucksService {
   }
   changeStatustoInactive(licencePlate: string,active:boolean) {
     const body={"active":active}
-    return this.httpClient.put(this.Url + '/changeStatustoInactive/' +licencePlate,body).pipe(map(this.extractData));
+    return this.httpClient.patch(this.Url + '/changeStatustoInactive/' +licencePlate,body).pipe(map(this.extractData));
   }
   changeStatustoActive(licencePlate: string,active:boolean){
     const body={"active":active}
-    return this.httpClient.put(this.Url + '/changeStatustoActive/' +licencePlate,body).pipe(map(this.extractData));
+    return this.httpClient.patch(this.Url + '/changeStatustoActive/' +licencePlate,body).pipe(map(this.extractData));
   }
   changeStatus(licencePlate: string,active:boolean){
     const body={"active":active}

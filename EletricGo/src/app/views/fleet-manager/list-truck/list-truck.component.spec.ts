@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ListTruckComponent } from './list-truck.component';
-import { FilterPipe } from "../model/filterPipe";
+import { FilterPipe } from "../../model/filterPipe";
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -38,7 +38,7 @@ describe('ListTruckComponent', () => {
     const fixture = TestBed.createComponent(ListTruckComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h2')?.textContent).toContain('ALL ACTIVE TRUCKS');
+    expect(compiled.querySelector('h2')?.textContent).toContain('MANAGE TRUCKS');
   });
 
   
