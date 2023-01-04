@@ -21,7 +21,7 @@
       </div>
         <div id="options1">
           <div class="textfield">
-            <input type="text" #RouteId="ngModel" [class.is-invalid]="RouteId.invalid && RouteId.touched" name="routeId" placeholder="RouteID" title="RouteID can not be empty" required [(ngModel)]="routeId">
+            <input type="text" #RouteId="ngModel" [class.is-invalid]="RouteId.invalid && RouteId.touched" name="routeId" placeholder="Route" title="RouteID can not be empty" required [(ngModel)]="routeId">
             <div *ngIf="RouteId.touched">
               <small *ngIf="RouteId.errors?.['required']">RouteID can not be empty.</small>
           </div>

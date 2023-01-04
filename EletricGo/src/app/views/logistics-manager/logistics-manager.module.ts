@@ -38,6 +38,14 @@ import { GetPlannedRouteComponent } from '../get-planned-route/get-planned-route
     HttpClientModule,
     FormsModule,
     SharedModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSlideToggleModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
     NgxPaginationModule
   ]
 
