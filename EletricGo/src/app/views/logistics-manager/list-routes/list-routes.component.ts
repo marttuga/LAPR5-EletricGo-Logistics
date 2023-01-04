@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import {RoutesService} from "../../../services/node/routes.service";
 
@@ -20,6 +23,8 @@ export class ListRoutesComponent implements OnInit {
   searchArrivalID: string;
   searchDepartureID: string;
   p:number = 1;
+  dataSource: any;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor( private routeService: RoutesService,
     private activedRoute: ActivatedRoute,
@@ -34,12 +39,14 @@ ngOnInit(): void {
 
 public getRoutes():void{
 this.routeService.getRoutes().subscribe(data => {console.log(data);
-this.routes=data});
+this.routes=data;
+this.dataSource.sort =this.sort;});
 }
 
 public getRoute():void{
   this.routeService.getRoute(this.routeId).subscribe(data => {console.log(data);
-  this.route=data});
+  this.route=data;
+  this.dataSource.sort =this.sort;});
 }
 
 }
