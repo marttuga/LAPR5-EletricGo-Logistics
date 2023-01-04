@@ -71,6 +71,10 @@ tr{
   text-align: center;
  
 }
+th.mat-header-cell{
+  text-align: center !important;
+
+}
 
 th >input{
   text-align: center;
