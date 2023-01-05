@@ -18,7 +18,6 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSortModule} from "@angular/material/sort";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import { TruckStatusComponent } from './truck-status/truck-status.component';
 
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -27,7 +26,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
   declarations: [FleetManagerComponent,
     CreateTruckComponent,
     ListTruckComponent,
-TruckStatusComponent
     ],
   imports: [
     CommonModule,

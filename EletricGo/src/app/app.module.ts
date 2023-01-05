@@ -18,6 +18,15 @@ import { CreateUserComponent } from './views/admin-page/create-user/create-user.
 import { AdminPageModule } from './views/admin-page/admin-page.module';
 import {FleetManagerModule} from "./views/fleet-manager/fleet-manager.module";
 import { LogisticsManagerModule } from './views/logistics-manager/logistics-manager.module';
+import {MatFormFieldModule} from "@angular/material/form-field";
+
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSortModule} from "@angular/material/sort";
+import {MatInputModule} from "@angular/material/input";
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +46,16 @@ import { LogisticsManagerModule } from './views/logistics-manager/logistics-mana
       WarehouseManagerModule,
       FleetManagerModule,
       AdminPageModule,
-      LogisticsManagerModule
+      LogisticsManagerModule,
+      MatFormFieldModule,
+      MatTableModule,
+      MatPaginatorModule,
+      MatIconModule,
+      MatButtonModule,
+      MatSlideToggleModule,
+      MatSortModule,
+      MatInputModule,
+
     ],
   providers: [],
   bootstrap: [AppComponent]
