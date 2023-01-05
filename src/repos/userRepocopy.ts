@@ -26,12 +26,12 @@ export default class UserRepocopy implements IUserRepocopy {
     }
   }
 
-/*   public async getAll(): Promise<UserCopy[]> {
+   public async getAll(): Promise<UserCopy[]> {
 
     const t = await this.userSchema.find();
     return t.map(item => UserMapcopy.toDomain(item));
   }
- */
+ 
   public async exists (userId: UserId | string): Promise<boolean> {
 
     const idX = userId instanceof UserId ? (<UserId>userId).id.toValue() : userId;

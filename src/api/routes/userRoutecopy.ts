@@ -45,5 +45,6 @@ export default (app: Router) => {
 
 	//userRoute.delete('/deleteAccount/:email/password', (req, res, next) => ctrl.deleteUser(req, res, next));
 	userRoute.delete('/deleteAccountByEmail/:email', (req, res, next) => ctrl.deleteUserByEmail(req, res, next));
+	userRoute.get('/getAll', (req, res, next) => ctrl.getUsers(req, res, next));
 
 }

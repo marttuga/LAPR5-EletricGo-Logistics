@@ -11,6 +11,8 @@ import { UserEmail } from "../domain/usercopy/userEmail";
 import RoleRepo from "../repos/roleRepo";
 import { UserCopy } from '../domain/usercopy/userCopy';
 import { UserPassword } from '../domain/usercopy/userPassword';
+import { IUserPersistence } from '../dataschema/IUserPersistence';
+import { Document, Model } from 'mongoose';
 
 export class UserMapcopy extends Mapper<UserCopy> {
 
@@ -26,7 +28,28 @@ export class UserMapcopy extends Mapper<UserCopy> {
     } as IUserDTO;
   }
 
-  public static async toDomain (raw: any): Promise<UserCopy> {
+  public static toDomain(raw: any | Model<IUserPersistence & Document>): UserCopy {
+    const routeOrError = UserCopy.create(raw, new UniqueEntityID(raw.domainId));
+
+    const userEmailOrError = UserEmail.create(raw.email);
+    const userPasswordOrError = UserPassword.create({value: raw.password, hashed: true});
+    const repo = Container.get(RoleRepo);
+
+    const userOrError = UserCopy.create({
+      firstName: raw.firstName,
+      lastName: raw.lastName,
+      email: userEmailOrError.getValue(),
+      password: userPasswordOrError.getValue(),
+      role: raw.role,
+      userContact:raw.userContact
+    }, new UniqueEntityID(raw.domainId))
+
+    userOrError.isFailure ? console.log(userOrError.error) : '';
+    
+    return routeOrError.isSuccess ? userOrError.getValue() : null;
+  }
+
+/*   public static async toDomain (raw: any): Promise<UserCopy> {
     const userEmailOrError = UserEmail.create(raw.email);
     const userPasswordOrError = UserPassword.create({value: raw.password, hashed: true});
     const repo = Container.get(RoleRepo);
@@ -44,7 +67,7 @@ export class UserMapcopy extends Mapper<UserCopy> {
     userOrError.isFailure ? console.log(userOrError.error) : '';
     
     return userOrError.isSuccess ? userOrError.getValue() : null;
-  }
+  } */
 
   public static toPersistence (user: UserCopy): any {
     const a = {

@@ -8,4 +8,5 @@ export default interface IUserControllercopy  {
   getPhone(req: Request, res: Response, next: NextFunction)
   getEmail(req: Request, res: Response, next: NextFunction)
   deleteUserByEmail(req: Request, res: Response, next: NextFunction)
+  getUsers(req: Request, res: Response, next: NextFunction)
 }

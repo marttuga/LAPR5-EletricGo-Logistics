@@ -121,6 +121,23 @@ console.log(userDTOResult)
 		return null;
 	}
 
+	public async getUsers(): Promise<Result<IUserDTO[]>> {
+		try {
+	
+		  let truck = await this.userRepo.getAll();
+	
+		  if (truck == null) {
+			return Result.fail('users not found');
+		  }
+	
+		  const truckDTORes = truck.map(item => UserMapcopy.toDTO(item));
+	
+		  return Result.ok<IUserDTO[]>(truckDTORes);
+		} catch (e) {
+		  throw new Error(e);
+		}
+	  }
+
 /* 	public async deleteUser(query: any, password: string): Promise<Result<{ userDTO: IUserDTO, token: string }>> {
 		try {
 			const userList = (await this.userRepo.findByEmail(query));

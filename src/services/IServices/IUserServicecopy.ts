@@ -10,4 +10,5 @@ export default interface IUserService  {
   getEmail( email: string): Promise<Result<IUserDTO>>
   getPhone( email: number): Promise<Result<IUserDTO>>
   deleteUserByEmail(email: string): Promise<Result<{ userDTO: IUserDTO, token: string }>>
+  getUsers(): Promise<Result<IUserDTO[]>>
 }

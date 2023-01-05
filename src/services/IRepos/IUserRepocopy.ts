@@ -10,6 +10,6 @@ export default interface IUserRepo extends Repo<UserCopy> {
 	findById (id: string): Promise<UserCopy>;
 	findByContact (userContact: UserContact | number): Promise<UserCopy>
 	delete(email: UserEmail | string): Promise<UserCopy>
-	
+	getAll(): Promise<UserCopy[]>
 }
   

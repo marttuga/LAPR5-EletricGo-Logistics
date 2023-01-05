@@ -120,4 +120,21 @@ export default class UserControllercopy implements IUserControllercopy {
 			return next(e);
 		  }
 		}; 
+
+		public async getUsers(req: Request, res: Response, next: NextFunction) {
+			try {
+			
+			  const truckOrError = await this.userServiceInstance.getUsers() as Result<IUserDTO[]>;
+			  
+			  if (truckOrError.isFailure) {
+				return res.status(402).send();
+			  }
+		
+			  const truckDTO = truckOrError.getValue();
+		
+			  return res.json( truckDTO ).status(200);    }
+			catch (e) {
+			  return next(e);
+			}
+		  };
 }
