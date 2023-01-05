@@ -13,6 +13,10 @@ export class UserService {
   constructor(private httpClient: HttpClient) { }
 
 
+  getUsers(): Observable<any> {
+    return this.httpClient.get<any>(this.Url + '/getAll').pipe( map(this.extractData));
+  }
+
   getUserByEmail(email: string): Observable<any> {
     return this.httpClient.get(this.Url + '/getUserByEmail/' +email).pipe( map(this.extractData));
   }
