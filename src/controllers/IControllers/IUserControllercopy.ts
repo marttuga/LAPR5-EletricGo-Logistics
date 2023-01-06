@@ -9,4 +9,7 @@ export default interface IUserControllercopy  {
   getEmail(req: Request, res: Response, next: NextFunction)
   deleteUserByEmail(req: Request, res: Response, next: NextFunction)
   getUsers(req: Request, res: Response, next: NextFunction)
+  changeStatustoInactive(req: Request, res: Response, next: NextFunction);
+  changeStatustoActive(req: Request, res: Response, next: NextFunction);
+  changeStatus(req: Request, res: Response, next: NextFunction)
 }

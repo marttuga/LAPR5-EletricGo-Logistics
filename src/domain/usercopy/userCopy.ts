@@ -16,7 +16,9 @@ interface UserCopyProps {
   email: UserEmail;
   password: UserPassword;
   role: UserRole;
-  userContact:UserContact
+  userContact:UserContact;
+  active: boolean;
+
 }
 
 export class UserCopy extends AggregateRoot<UserCopyProps> {
@@ -55,6 +57,31 @@ export class UserCopy extends AggregateRoot<UserCopyProps> {
       this.props.userContact = value;
   }
 
+  get active (): boolean {
+    return this.props.active;
+  }
+
+  
+  public receiveActive (act:boolean) {
+
+    this.props.active = act;
+    }
+
+  public markAsInactive () {
+  this.props.active = false;
+  }
+  public markActive () {
+    this.props.active = true;
+  }
+  public changeActive (act:boolean) {
+    if(act===true){
+     this.markAsInactive()
+    }else{
+      this.markActive()
+    }
+    
+  }
+
   private constructor (props: UserCopyProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -67,7 +94,9 @@ export class UserCopy extends AggregateRoot<UserCopyProps> {
       { argument: props.email, argumentName: 'email' },
       { argument: props.password, argumentName: "password" },
       { argument: props.role, argumentName: 'role' },
-      { argument: props.userContact, argumentName: 'userContact' }
+      { argument: props.userContact, argumentName: 'userContact' },
+      { argument: props.active=true, argumentName: 'active' },
+
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

@@ -5,5 +5,7 @@ export interface IUserDTO {
   email: string;
   password: string;
   role: string;
-  userContact: number
+  userContact: number;
+  active:boolean
+
 }

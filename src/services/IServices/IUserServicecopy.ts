@@ -11,4 +11,7 @@ export default interface IUserService  {
   getPhone( email: number): Promise<Result<IUserDTO>>
   deleteUserByEmail(email: string): Promise<Result<{ userDTO: IUserDTO, token: string }>>
   getUsers(): Promise<Result<IUserDTO[]>>
+  changeStatustoInactive(licencePlate: string): Promise<Result<IUserDTO>>;
+  changeStatustoActive(licencePlate: string): Promise<Result<IUserDTO>>;
+  changeStatus(licencePlate: string): Promise<Result<IUserDTO>>
 }

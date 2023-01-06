@@ -18,23 +18,33 @@ const User = new mongoose.Schema(
 
     email: {
       type: String,
-      lowercase: true,  
       unique: true,
       index: true,
     },
 
-    password: String,
+    password: {
+      type: String,
+      required: [true, 'Please enter password'],
+      index: true,
 
-    salt: String,
+    },
 
     role: {
       type: String,
       required: [true, 'Please enter role type'],
+      index: true,
+
     },
 
     userContact: {
       type: Number,
       required: [true, 'Please enter contact number'],
+      index: true,
+    },
+
+    active: {
+      type: Boolean,
+      required: [true, 'User state'],
       index: true,
     },
   },

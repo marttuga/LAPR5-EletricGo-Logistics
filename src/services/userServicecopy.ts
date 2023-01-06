@@ -43,7 +43,8 @@ export default class UserServicecopy implements IUserServicecopy {
 			  email: email,  
 			  password: password,
 			  role: role,
-			  userContact:userContact
+			  userContact:userContact,
+			  active:userDTO.active
 			});
 
 			if (userOrError.isFailure) {
@@ -178,5 +179,71 @@ console.log(userDTOResult)
 			throw e;
 		}
 	}
+
+	public async changeStatustoActive(licencePlate: string): Promise<Result<IUserDTO>> {
+		try {
+		  const truck = await this.userRepo.findByEmail(licencePlate);
+  
+		  if (truck === null) {
+			return Result.fail<IUserDTO>("user not found");
+		  }
+		  else {
+		  
+	   
+	   truck.markActive();
+			await this.userRepo.save(truck);
+  
+			const truckDTOResult = UserMapcopy.toDTO( truck ) as IUserDTO;
+  
+  
+			return Result.ok<IUserDTO>( truckDTOResult )
+			
+			}
+		} catch (e) {
+		  throw e;
+		}
+	  }
+	  
+	  public async changeStatustoInactive(licencePlate: string): Promise<Result<IUserDTO>> {
+		try {
+		  const truck = await this.userRepo.findByEmail(licencePlate);
+		  if (truck === null) {
+			return Result.fail<IUserDTO>("Truck not found");
+		  }
+		  else {
+			  truck.markAsInactive();
+			  await this.userRepo.save(truck);
+  
+  
+			const truckDTOResult = UserMapcopy.toDTO( truck ) as IUserDTO;
+			return Result.ok<IUserDTO>( truckDTOResult )
+			
+			}
+		} catch (e) {
+		  throw e;
+		}
+	  }
+	  public async changeStatus(licencePlate: string): Promise<Result<IUserDTO>> {
+		try {
+		  const truck = await this.userRepo.findByEmail(licencePlate);
+  
+		  if (truck === null) {
+			return Result.fail<IUserDTO>("Truck not found");
+		  }
+		  else {
+		  
+	   truck.changeActive(truck.active);
+			await this.userRepo.save(truck);
+  
+			const truckDTOResult = UserMapcopy.toDTO( truck ) as IUserDTO;
+  
+  
+			return Result.ok<IUserDTO>( truckDTOResult )
+			
+			}
+		} catch (e) {
+		  throw e;
+		}
+	  }
 
 }

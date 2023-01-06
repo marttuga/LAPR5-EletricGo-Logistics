@@ -137,4 +137,52 @@ export default class UserControllercopy implements IUserControllercopy {
 			  return next(e);
 			}
 		  };
+
+		  public async changeStatus(req: Request, res: Response, next: NextFunction) {
+			try {
+			  const truckOrError = await this.userServiceInstance.changeStatus(req.params.licencePlate) as Result<IUserDTO>;
+			  if (truckOrError.isFailure) {
+				return res.status(402).send();
+			  }
+		
+			  const truckDTO = truckOrError.getValue();  
+		
+			
+			  return res.json( truckDTO ).status(201);    }
+			catch (e) {
+			  return next(e);
+			}
+		  };
+		
+		  public async changeStatustoActive(req: Request, res: Response, next: NextFunction) {
+			try {
+			  const truckOrError = await this.userServiceInstance.changeStatustoActive(req.params.licencePlate) as Result<IUserDTO>;
+			  if (truckOrError.isFailure) {
+				return res.status(402).send();
+			  }
+		
+			  const truckDTO = truckOrError.getValue();  
+		
+			
+			  return res.json( truckDTO ).status(201);    }
+			catch (e) {
+			  return next(e);
+			}
+		  };
+		
+		  public async changeStatustoInactive(req: Request, res: Response, next: NextFunction) {
+			try {
+			  const truckOrError = await this.userServiceInstance.changeStatustoInactive(req.params.licencePlate) as Result<IUserDTO>;
+			  if (truckOrError.isFailure) {
+				return res.status(402).send();
+			  }
+		
+			  const truckDTO = truckOrError.getValue();  
+		
+			
+			  return res.json( truckDTO ).status(201);    }
+			catch (e) {
+			  return next(e);
+			}
+		  };
 }

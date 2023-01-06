@@ -28,10 +28,25 @@ export default class UserRepocopy implements IUserRepocopy {
 
    public async getAll(): Promise<UserCopy[]> {
 
+/*     const t = await this.userSchema.find();
+    return t.map(item => UserMapcopy.toDomain(item)); */
     const t = await this.userSchema.find();
-    return t.map(item => UserMapcopy.toDomain(item));
+      let active:boolean;
+      let dom:UserCopy
+      let listfinal:UserCopy[]=[] ;
+
+      for(let i=0; i<t.length; i++){
+        active=t[i].active;
+
+        dom=UserMapcopy.toDomain(t[i])
+
+        dom.receiveActive(active);
+
+        listfinal.push(dom);
+      }
+    return listfinal;
   }
- 
+
   public async exists (userId: UserId | string): Promise<boolean> {
 
     const idX = userId instanceof UserId ? (<UserId>userId).id.toValue() : userId;
@@ -58,6 +73,7 @@ export default class UserRepocopy implements IUserRepocopy {
 				userDocument.password = user.props.password.props.value;
 				userDocument.role = user.props.role.value;
 				userDocument.userContact = user.props.userContact.userContact;
+				userDocument.active = user.props.active;
 
 				await userDocument.save();
 				return user;
@@ -70,12 +86,17 @@ export default class UserRepocopy implements IUserRepocopy {
   public async findByEmail (email: UserEmail | string): Promise<UserCopy> {
     const query = { email: email.toString() };
     const userRecord = await this.userSchema.findOne( query );
-console.log(userRecord)
+
     if( userRecord != null) {
-      return UserMapcopy.toDomain(userRecord);
+      let active:boolean;
+      active=userRecord.active;
+      
+          let tt = UserMapcopy.toDomain(userRecord);
+        tt.receiveActive(active);
+        console.log(tt)
+              return tt;
     }
-    else
-      return null;
+    else return null;
   }
 
   public async findByContact (userContact: UserContact | number): Promise<UserCopy> {
@@ -83,8 +104,13 @@ console.log(userRecord)
     const userRecord = await this.userSchema.findOne( query );
 
     if( userRecord != null) {
-      return UserMapcopy.toDomain(userRecord);
-    }
+      let active:boolean;
+      active=userRecord.active;
+      
+          let tt = UserMapcopy.toDomain(userRecord);
+        tt.receiveActive(active);
+              return tt;    
+            }
     else
       return null;
   }

@@ -13,6 +13,8 @@ import { UserCopy } from '../domain/usercopy/userCopy';
 import { UserPassword } from '../domain/usercopy/userPassword';
 import { IUserPersistence } from '../dataschema/IUserPersistence';
 import { Document, Model } from 'mongoose';
+import { UserRole } from '../domain/usercopy/userRole';
+import { UserContact } from '../domain/usercopy/userContact';
 
 export class UserMapcopy extends Mapper<UserCopy> {
 
@@ -24,7 +26,9 @@ export class UserMapcopy extends Mapper<UserCopy> {
       email: user.props.email.value,
       password: user.props.password.value,
       role: user.props.role.value,
-      userContact: user.props.userContact.userContact
+      userContact: user.props.userContact.userContact,
+      active:user.props.active
+
     } as IUserDTO;
   }
 
@@ -32,6 +36,8 @@ export class UserMapcopy extends Mapper<UserCopy> {
     const routeOrError = UserCopy.create(raw, new UniqueEntityID(raw.domainId));
 
     const userEmailOrError = UserEmail.create(raw.email);
+    const roleOrError = UserRole.create(raw.role);
+    const contactOrError = UserContact.create(raw.userContact);
     const userPasswordOrError = UserPassword.create({value: raw.password, hashed: true});
     const repo = Container.get(RoleRepo);
 
@@ -40,8 +46,10 @@ export class UserMapcopy extends Mapper<UserCopy> {
       lastName: raw.lastName,
       email: userEmailOrError.getValue(),
       password: userPasswordOrError.getValue(),
-      role: raw.role,
-      userContact:raw.userContact
+      role: roleOrError.getValue(),
+      userContact:contactOrError.getValue(),
+      active:raw.active
+
     }, new UniqueEntityID(raw.domainId))
 
     userOrError.isFailure ? console.log(userOrError.error) : '';
@@ -77,7 +85,9 @@ export class UserMapcopy extends Mapper<UserCopy> {
       firstName: user.props.firstName,
       lastName: user.props.lastName,
       role: user.props.role.value,
-      userContact: user.props.userContact.userContact
+      userContact: user.props.userContact.userContact,
+      active:user.props.active
+
 
     }
     return a;

@@ -48,7 +48,7 @@ truck.patch('/changeStatusToInactive/:licencePlate',
 (req, res, next) => ctrl.changeStatustoInactive(req, res, next) );
    
 
-truck.put('/changeStatus/:licencePlate',
+truck.patch('/changeStatus/:licencePlate',
 (req, res, next) => ctrl.changeStatus(req, res, next) );
 
 truck.get('/getTruck/:licencePlate',(req, res, next) => ctrl.getLicencePlate(req, res, next),);
