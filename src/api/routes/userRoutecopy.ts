@@ -25,6 +25,10 @@ export default (app: Router) => {
 		}),
 		(req, res, next) => ctrl.createUser(req, res, next));
 
+		userRoute.get('/getUser/:email/:password', (req, res, next) => ctrl.findUser(req, res, next));
+		userRoute.get('/getUserByContact/:userContact/:password', (req, res, next) => ctrl.findUserContact(req, res, next));
+
+
 	userRoute.get('/getUserByEmail/:email', (req, res, next) => ctrl.getEmail(req, res, next));
 	userRoute.get('/getUserByPhone/:userContact', (req, res, next) => ctrl.getPhone(req, res, next));
 

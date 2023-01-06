@@ -11,5 +11,6 @@ export default interface IUserRepo extends Repo<UserCopy> {
 	findByContact (userContact: UserContact | number): Promise<UserCopy>
 	delete(email: UserEmail | string): Promise<UserCopy>
 	getAll(): Promise<UserCopy[]>
+	find(query?: any): Promise<UserCopy[]>
 }
   

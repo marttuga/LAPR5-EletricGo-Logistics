@@ -48,7 +48,6 @@ export default class UserControllercopy implements IUserControllercopy {
 	  public async getPhone(req: Request, res: Response, next: NextFunction) {
 		try {
 			const userContactt = parseInt(req.params.userContact);
-			console.log(userContactt)
 		  const truckOrError = await this.userServiceInstance.getPhone(userContactt) as Result<IUserDTO>;
 		 
 	
@@ -67,10 +66,30 @@ export default class UserControllercopy implements IUserControllercopy {
 
 	public async findUser(req: Request, res: Response, next: NextFunction) {
 		try {
-			const emailParameter = req.query.email as string;
-			const passwordParameter = req.query.password as string;
+			const emailParameter = req.params.email as string;
+			const passwordParameter = req.params.password as string;
 
 			const userOrError = await this.userServiceInstance.getUser({ email: emailParameter }, passwordParameter);
+			//const userOrError = await this.userServiceInstance.getUser(req.params.email,req.params.password);
+
+			if (userOrError.isFailure) {
+				return res.status(404).json(userOrError.error);
+			}
+
+			const userDTO = userOrError.getValue();
+			return res.status(200).json(userDTO);
+		} catch (e) {
+			return next(e);
+		}
+	}
+
+	public async findUserContact(req: Request, res: Response, next: NextFunction) {
+		try {
+			const userContactt = parseInt(req.params.userContact);
+			const passwordParameter = req.params.password as string;
+
+			const userOrError = await this.userServiceInstance.getUser({ userContact: userContactt }, passwordParameter);
+			//const userOrError = await this.userServiceInstance.getUser(req.params.email,req.params.password);
 
 			if (userOrError.isFailure) {
 				return res.status(404).json(userOrError.error);

@@ -99,9 +99,9 @@ console.log(userDTOResult)
 
 	public async getUser(query: any, password: string): Promise<Result<IUserDTO>> {
 		try {
-			const userList = await this.userRepo.findByEmail(query);
+			const userList = await this.userRepo.find(query);
 
-			if (userList == null) {
+			if (userList.length == 0) {
 				return Result.fail<IUserDTO>("Users not found.");
 			}
 

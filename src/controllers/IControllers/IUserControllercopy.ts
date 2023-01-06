@@ -12,4 +12,5 @@ export default interface IUserControllercopy  {
   changeStatustoInactive(req: Request, res: Response, next: NextFunction);
   changeStatustoActive(req: Request, res: Response, next: NextFunction);
   changeStatus(req: Request, res: Response, next: NextFunction)
+  findUserContact(req: Request, res: Response, next: NextFunction)
 }

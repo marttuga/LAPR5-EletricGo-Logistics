@@ -128,6 +128,14 @@ export default class UserRepocopy implements IUserRepocopy {
     else
       return null;
   }
+  public async find(query?: any): Promise<UserCopy[]> {
+		const userRecord = await this.userSchema.find(query);
+
+		if (userRecord != null) {
+			return (userRecord.map((postRecord) => UserMapcopy.toDomain(postRecord)));
+		}
+		return null;
+	}
   public async delete(email: UserEmail | string): Promise<UserCopy> {
 
     const query = { email: email.toString() };
