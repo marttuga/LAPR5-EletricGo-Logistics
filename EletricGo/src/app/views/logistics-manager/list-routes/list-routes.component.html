@@ -21,15 +21,15 @@
     </div>
 
     <div class="container">
-      <table class="table table-bordered  table-striped" matSort>
+      <table class="table table-bordered  table-striped">
         <thead>
           <tr>
-            <th>Route</th>
-            <th mat-sort-header>Distance</th>
+            <th (click) = "sortByRouteId()">Route</th>
+            <th>Distance</th>
             <th>Route_Time</th>
             <th>Battery_Waste</th>
-            <th mat-sort-header><input type="text" class="search-input" placeholder="ARRIVAL_ID" required [(ngModel)]="searchArrivalID">
-            <th mat-sort-header><input type="text" class="search-input" placeholder="DEPARTURE_ID" required [(ngModel)]="searchDepartureID">
+            <th (click) = "sortByArrivalId()"><input type="text" class="search-input" placeholder="ARRIVAL_ID" required [(ngModel)]="searchArrivalID">
+            <th (click) = "sortByDepartureId()"><input type="text" class="search-input" placeholder="DEPARTURE_ID" required [(ngModel)]="searchDepartureID">
             <th>Extra_Time</th>
             <th class="text-right"></th>
     
