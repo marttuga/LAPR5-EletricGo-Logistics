@@ -23,7 +23,7 @@
     <div class="all">
       <a style="text-align: center">Filter</a>
       <mat-form-field>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. 913766572" style="color: grey">
+        <input matInput (keyup)="applyFilter($event)" type="text" placeholder="Ex. 913766572" style="color: grey">
       </mat-form-field>
       <div class="tab">
         <button *ngIf="activeColumns" class="moreColumns" style="color: lightcoral" (click)="addColumns()" mat-icon-button>

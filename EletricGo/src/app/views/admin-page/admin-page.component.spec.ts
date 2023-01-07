@@ -24,4 +24,17 @@ describe('AdminPageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should render WELCOME in p', () => {
+    const fixture = TestBed.createComponent(AdminPageComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('p')?.textContent).toContain('WELCOME');
+  });
+
+  it('should render FLEET MANAGER! in h1', () => {
+    const fixture = TestBed.createComponent(AdminPageComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('ADMIN!');
+  });
 });
