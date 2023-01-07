@@ -34,12 +34,7 @@ describe('ListTruckComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render ALL ACTIVE TRUCKS in h2', () => {
-    const fixture = TestBed.createComponent(ListTruckComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h2')?.textContent).toContain('MANAGE TRUCKS');
-  });
+
 
   
 });

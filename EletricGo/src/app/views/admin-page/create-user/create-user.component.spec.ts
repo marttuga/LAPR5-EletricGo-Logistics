@@ -24,7 +24,19 @@ describe('CreateUserComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('component should be created',() => {
+    const fixture = TestBed.createComponent(CreateUserComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+    });
+
+
+  it('should render NEED MORE TRUCKS? in h2', () => {
+    const fixture = TestBed.createComponent(CreateUserComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h2')?.textContent).toContain('CREATE NEW USERS!');
   });
+
+
 });
