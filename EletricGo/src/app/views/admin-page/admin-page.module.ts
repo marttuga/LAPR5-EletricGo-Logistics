@@ -6,10 +6,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from '../../app-routing.module';
 import { SharedModule } from '../shared.module';
-import { CreateRouteComponent } from './create-route/create-route.component';
-import { ListRoutesComponent } from './list-routes/list-routes.component';
-import { LogisticsManagerRoutingModule } from './logistics-manager-routing.module';
-import { LogisticsManagerComponent } from './logistics-manager.component';
+import { CreateUserComponent } from './create-user/create-user.component';
+import { ListUserComponent } from './list-user/list-user.component';
+
+import { AdminPageRoutingModule } from './admin-page-routing.module';
+import { AdminPageComponent } from './admin-page.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatIconModule} from "@angular/material/icon";
@@ -18,18 +19,19 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSortModule} from "@angular/material/sort";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ListPlannedRoutesComponent } from '../list-planned-routes/list-planned-routes.component';
-import { GetPlannedRouteComponent } from '../get-planned-route/get-planned-route.component';
 
 
 @NgModule({
- declarations: [ LogisticsManagerComponent,CreateRouteComponent,ListRoutesComponent ],
-
+  declarations: [AdminPageComponent,
+    CreateUserComponent,
+ListUserComponent
+    ],
   imports: [
     CommonModule,
-    LogisticsManagerRoutingModule,
-    BrowserModule,
+    AdminPageRoutingModule,
+        BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -48,4 +50,4 @@ import { GetPlannedRouteComponent } from '../get-planned-route/get-planned-route
 
 
 })
-export class LogisticsManagerModule { }
+export class AdminPageModule { }

@@ -1,4 +1,105 @@
+<!doctype html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div class="container">
+      <nav class="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
+
+
+        </ul>
+      </nav>
+
+    <div class="all">
+      <a style="text-align: center">Filter</a>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. 1" style="color: grey">
+      </mat-form-field>
+      <div class="tab">
+        <button *ngIf="activeColumns" class="moreColumns" style="color: lightcoral" (click)="addColumns()" mat-icon-button>
+          <mat-icon>
+            <!--arrow_drop_down_circle-->
+            <!--library_add-->
+            add_circle
+          </mat-icon>
+        </button>
+        <button *ngIf="!activeColumns" class="moreColumns" style="color: blue" (click)="hideColumns()" mat-icon-button>
+          <mat-icon>
+            <!--arrow_drop_down_circle-->
+            <!--library_add-->
+            remove_circle
+          </mat-icon>
+        </button>
+        <div class="ta">
+
+
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
+
+
+
+            <ng-container matColumnDef="fleetPlaningId">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Plan Number </th>
+              <td mat-cell *matCellDef="let plannedRoute" style="text-align: center">{{plannedRoute.fleetPlaningId}}</td>
+
+            </ng-container>
+
+
+            <ng-container matColumnDef="truckId">
+              <th mat-header-cell *matHeaderCellDef > Truck Id </th>
+              <td mat-cell *matCellDef="let plannedRoute"> {{plannedRoute.truckId}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+              <td mat-cell *matCellDef="let plannedRoute" style="text-align: center"> {{plannedRoute.date}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="routesB">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> City Beginig </th>
+              <td mat-cell *matCellDef="let plannedRoute" style="text-align: center"> {{plannedRoute.route[0] }} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="routesE">
+              <th mat-header-cell *matHeaderCellDef> City End </th>
+              <td mat-cell *matCellDef="let plannedRoute"> {{plannedRoute.route[3]}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="routes">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Route  </th>
+              <td mat-cell *matCellDef="let plannedRoute"> {{plannedRoute.route}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>
+      </div>
+
+    </div>
+    </div>
+<!--     <button class="btn-create" [routerLink]="['../get-planned-route']">Create</button>
+ -->  </div>
+</body>
+
+
+
+
+
+<!-- <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +121,7 @@
   <!--    <h3>Selected: {{chosenTruck}}</h3>-->
 
 
-    </div>
+   <!--  </div>
 
       <table id="ARQSI" class="table">
         <tr>
@@ -30,20 +131,18 @@
            <th><input type="text" class="search-input" placeholder="City Begin" title="Please type the route" required [(ngModel)]="routesB"></th>
             <th><input type="text" class="search-input" placeholder="City End" title="Please type the route" required [(ngModel)]="routesE"></th>
 <!--             <th><input type="text" class="search-input" placeholder="Route" title="Please type the route" required [(ngModel)]="routes"></th>
- -->            <th>Route</th>
+ -->   <!--          <th>Route</th>
 
-            <!-- <th><input type="number" class="search-input" placeholder="Time" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th> -->
+            <!-- <th><input type="number" class="search-input" placeholder="Time" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th> 
           <th class="text-right"></th>
 
         </tr>
 
         <tbody>
         <tr *ngFor="let plannedRoute of plannedRoutes | filter : 'fleetPlaningId': searchString | filter : 'truckId': truckId| filter : 'date': date| filter : 'route': routesB| filter : 'route': routesE| paginate: { itemsPerPage: 8, currentPage: p} ; let i = index">
-<!-- 
+
           <td class="text-left">{{plannedRoute.fleetPlaningId}}</td>
-          <td class="text-left">{{plannedRoute.truckId}}</td>
-          <td class="text-left">{{plannedRoute.date}}</td>
-          <td class="text-left">{{plannedRoute.route}}</td> -->
+         
           <td><span>{{plannedRoute.fleetPlaningId}}</span></td>
           <td><span>{{plannedRoute.truckId}}</span></td>
           <td><span>{{plannedRoute.date}}</span></td>
@@ -56,3 +155,4 @@
       <pagination-controls (pageChange)= "p=$event"></pagination-controls>
       </table>
     </body>
+ -->

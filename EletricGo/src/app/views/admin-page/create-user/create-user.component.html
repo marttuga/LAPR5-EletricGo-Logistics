@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="textfield" >
-                    <input type="text" required #Email="ngModel" [class.is-invalid]="Email.invalid && Email.touched" name="Email"  placeholder="Email"  title="Please insert email" required [(ngModel)]="email">  
+                    <input type="email" required #Email="ngModel" [class.is-invalid]="Email.invalid && Email.touched" name="Email"  placeholder="Email"  title="Please insert email" required [(ngModel)]="email">  
                     <div *ngIf="Email.touched">
                         <small class="requiredError" *ngIf="Email.errors?.['required']">Email is required!</small>
              
@@ -54,7 +54,7 @@
             <div id="data2">
 
                 <div class="textfield" >
-                    <input type="text" required  #Password="ngModel" [class.is-invalid]="Password.invalid && Password.touched" name="Password" placeholder="Password" minlength="8"  title="1 uppercase, 1 lowercase, one digit or symbol and 8 chars min" required [(ngModel)]="password"> 
+                    <input type="password" required  #Password="ngModel" [class.is-invalid]="Password.invalid && Password.touched" name="Password" placeholder="Password" minlength="8"  title="1 uppercase, 1 lowercase, one digit or symbol and 8 chars min" required [(ngModel)]="password"> 
                     <div *ngIf="Password.touched">
                         <small class="requiredError"*ngIf="Password.errors?.['minlength']">Password must be 8 chars min</small>
                         <small class="requiredError" *ngIf="Password.errors?.['required']">Password is required!</small>

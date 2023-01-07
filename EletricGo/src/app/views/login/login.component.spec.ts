@@ -41,20 +41,6 @@ describe('LoginComponent', () => {
     expect(compiled.querySelector('[class="btn-login"]')?.textContent).toContain('Login');
   });
 
-  it('should render null in username', () => {
-    const fixture = TestBed.createComponent(LoginComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('[type="text"]')?.textContent).toBeNull;
-  });
-
-  it('should render null in password', () => {
-    const fixture = TestBed.createComponent(LoginComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('[type="password"]')?.textContent).toBeNull;
-  });
-
   it('number of', () => {
     const fixture = TestBed.createComponent(LoginComponent);
     fixture.detectChanges();

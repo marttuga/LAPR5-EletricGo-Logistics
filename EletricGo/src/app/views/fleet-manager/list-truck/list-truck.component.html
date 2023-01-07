@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div class="container">
+      <nav class="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#fleetManager" [routerLink]="['/views/fleet-manager']">FLEET MANAGER</a></li>
+
+
+        </ul>
+      </nav>
+
+    <div class="all">
+      <a style="text-align: center">Filter</a>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. AA-00-Aa" style="color: grey" type="text">
+      </mat-form-field>
+      <div class="tab">
+        <button *ngIf="activeColumns" class="moreColumns" style="color: lightcoral" (click)="addColumns()" mat-icon-button>
+          <mat-icon>
+            <!--arrow_drop_down_circle-->
+            <!--library_add-->
+            add_circle
+          </mat-icon>
+        </button>
+        <button *ngIf="!activeColumns" class="moreColumns" style="color: blue" (click)="hideColumns()" mat-icon-button>
+          <mat-icon>
+            <!--arrow_drop_down_circle-->
+            <!--library_add-->
+            remove_circle
+          </mat-icon>
+        </button>
+        <div class="ta">
+
+
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
+
+
+
+            <ng-container matColumnDef="licencePlate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Licence Plate </th>
+              <td mat-cell *matCellDef="let truck" >{{truck.licencePlate}}</td>
+
+            </ng-container>
+
+
+            <ng-container matColumnDef="tare">
+              <th mat-header-cell *matHeaderCellDef > Tare </th>
+              <td mat-cell *matCellDef="let truck"> {{truck.tare}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="capacity">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Capacity </th>
+              <td mat-cell *matCellDef="let truck" style="text-align: center"> {{truck.capacity}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="maxBateryCapacity">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Max Batery Capacity </th>
+              <td mat-cell *matCellDef="let truck" style="text-align: center"> {{truck.maxBateryCapacity }} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="autonomyFullChargeLoad">
+              <th mat-header-cell *matHeaderCellDef> Autonomy </th>
+              <td mat-cell *matCellDef="let truck"> {{truck.autonomyFullChargeLoad}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="timeCharging">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Time Charging  </th>
+              <td mat-cell *matCellDef="let truck" style="text-align: center"> {{truck.timeCharging}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="active">
+              <th mat-header-cell *matHeaderCellDef> Active </th>
+              <td mat-cell *matCellDef="let truck" style="text-align: center">
+                <div *ngIf="truck.active">
+                  <button (click)="changeStatustoInactive(truck.licencePlate)" style="color: forestgreen" mat-icon-button>
+                    <mat-icon>
+                      beenhere
+                    </mat-icon>
+                  </button>
+                </div>
+
+                <div *ngIf="!truck.active">
+                  <button (click)="changeStatustoActive(truck.licencePlate)" style="color: red" mat-icon-button>
+                    <mat-icon>
+                      highlight_off
+                    </mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>
+      </div>
+
+    </div>
+    </div>
+    <button class="btn-create" [routerLink]="['../create-truck']">Create</button>
+  </div>
+</body>
+
+
+<!-- <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="list-truck.component.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#fleetManager" [routerLink]="['/views/fleet-manager']">FLEET MANAGER</a></li>
+    </ul>
+  </nav>
+
+    <div id="contentSection">
+    <h2>ALL ACTIVE TRUCKS</h2>
+  <!--    <h3>Selected: {{chosenTruck}}</h3>-->
+
+
+<!--     </div>
+
+      <table id="ARQSI" class="table">
+        <tr>
+          <th><input type="text" class="search-input" placeholder="Licence_Plate" pattern="([A-Za-z]{2}-[0-9]{2}-[A-Za-z]{2})" title="Must be of format XX-00-XX" required [(ngModel)]="searchString">
+          </th>
+          <th>Tare</th>
+          <th>Capacity</th>
+            <th>Batery_Capacity</th>
+            <th>Autonomy</th>
+            <th>Time</th>
+            <th>Active</th>
+
+            <!-- <th><input type="number" class="search-input" placeholder="Time" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th> -->
+      <!--     <th class="text-right"></th>
+
+        </tr>
+
+        <tbody>
+
+        <tr *ngFor="let truck of trucks | filter : 'licencePlate': searchString | paginate: { itemsPerPage: 10, currentPage: p}  ; let i = index">
+
+          <td class="text-left">{{truck.licencePlate}}</td>
+          <td><span>{{truck.tare}}</span></td>
+          <td><span>{{truck.capacity}}</span></td>
+          <td><span>{{truck.maxBateryCapacity}}</span></td>
+          <td><span>{{truck.autonomyFullChargeLoad}}</span></td>
+          <td><span>{{truck.timeCharging}}</span></td>
+          <td><span>{{truck.active}}</span></td>
+
+        </tr>
+      </tbody>
+      <pagination-controls (pageChange)= "p=$event"></pagination-controls>
+      </table>
+    </body> --> 
+ 

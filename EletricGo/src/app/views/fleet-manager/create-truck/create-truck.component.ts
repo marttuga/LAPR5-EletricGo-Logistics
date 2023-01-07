@@ -1,4 +1,4 @@
-import {TrucksService} from "../../services/node/truck.service";
+import {TrucksService} from "../../../services/node/truck.service";
   import { Component, OnInit } from '@angular/core';
   import {ActivatedRoute, Router} from "@angular/router";
   import {Observable} from "rxjs";

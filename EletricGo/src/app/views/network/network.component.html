@@ -1,42 +1,47 @@
-
 <nav class="navbar" id="SectionNavbar">
-    <ul>
-      <li >
-        <a href="/views/login">Home</a>
-      </li>
-      <li >
-          <a id="OptionMakeDelivery" (click)="makeDelivery()">Make Delivery</a>
-      </li>
+  <ul>
+    <li >
+      <a href="/views/login">Home</a>
+    </li>
+    <li >
+      <a id="OptionMakeDelivery" (click)="makeDelivery()">Make Delivery</a>
+    </li>
 
-      <li id="OptionManualDelivery" style="display: none"> <a (click)="scrollManualDelivery(listRoutesSection)">Manual Delivery</a></li>
-      <li id="OptionAutomaticDelivery" style="display: none"> <a (click)="scrollAutomaticDelivery(listRoutesSection)">Automatic Delivery</a></li>
-      <li id="OptionStartAutomaticDelivery" style="display: none"> <a (click)="startAutomaticMovement()">Start</a></li>
-      <li id="OptionStartManualDelivery" style="display: none"> <a (click)="startManualMovement()">Start</a></li>
-      <li id="OptionStopManualDelivery" style="display: none"> <a (click)="stopManualMovement()">Stop</a></li>
-    </ul>
-  </nav>
+    <li id="OptionManualDelivery" style="display: none"> <a (click)="scrollManualDelivery(listRoutesSection)">Manual Delivery</a></li>
+    <li id="OptionAutomaticDelivery" style="display: none"> <a (click)="scrollAutomaticDelivery(listRoutesSection)">Automatic Delivery</a></li>
+    <li id="OptionStartAutomaticDelivery" style="display: none"> <a (click)="startAutomaticMovement()">Start</a></li>
+    <li id="OptionStartManualDelivery" style="display: none"> <a (click)="startManualMovement()">Start</a></li>
+    <li id="OptionStopManualDelivery" style="display: none"> <a (click)="stopManualMovement()">Stop</a></li>
 
-  <div class="page">
-    <div class="center">
+  </ul>
+</nav>
 
-      <div #canvasSection>
-        <canvas #canvas id="canvas"  (mousemove)="onMouseMove($event)" (click)="onClick()"></canvas>
-      </div>
+<div class="page">
+  <div class="center">
 
-      <div #listRoutesSection>
-        <app-get-planned-route id="AutomaticSection" style="display: none" [networkChecker]="checkerNetworkPlanedRoutes" (getRouteAndTruckEvent)="setAutomaticMovementRoutAndTruck(done,$event)" ></app-get-planned-route>
-      </div>
-      <div>
-        <!-- HTML(style="display: none") para selecionar o camião e o sitio onde vai ficar coordenadas da Warehouse, button done que leva ao canvas e adiciona o camião, button stop !-->
-        
-      </div>
-      <div  style="align-content: center">
-        <!-- HTML !-->
-        <button #done id="ButtonDoneSection" class="button-73" role="button" style="display: none" (click)="scrollCanvas(canvasSection)">Done</button>
-      </div>
+    <div #canvasSection>
+      <canvas #canvas id="canvas"  (mousemove)="onMouseMove($event)" (click)="onClick()"></canvas>
+    </div>
+
+    <div #listRoutesSection>
+      <app-get-planned-route id="AutomaticSection" style="display: none" [networkChecker]="checkerNetworkPlanedRoutes" (getRouteAndTruckEvent)="setAutomaticMovementRoutAndTruck(done,$event)" ></app-get-planned-route>
+    </div>
+
+    <div id="ManualSection" style="display: none">
+            <!-- HTML(style="display: none") para selecionar o camião e o sitio onde vai ficar coordenadas da Warehouse, button done que leva ao canvas e adiciona o camião, button stop !-->
 
     </div>
+
+    <div  style="align-content: center">
+      <!-- HTML !-->
+      <button #done id="ButtonDoneSection" class="button-73" role="button" style="display: none" (click)="scrollCanvas(canvasSection)">Done</button>
+    </div>
+
   </div>
+</div>
+
+
+
 
 
 

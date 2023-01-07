@@ -307,7 +307,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     if(this.isAutomaticMovement){
       this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
-      this.isAutomaticMovement=false;
     }
   }
 
@@ -499,16 +498,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     //ativar o som do camião
     this.truckAudio.play();
 
-    let x3=document.getElementById("OptionStartManualDelivery");
-    let stop=document.getElementById("OptionStopManualDelivery");
+    let optionStartManualDelivery=document.getElementById("OptionStartManualDelivery");
+    let optionStopManualDelivery=document.getElementById("OptionStopManualDelivery");
 
-    if (x3!=null && stop!=null) {
-     
-        x3.style.display = "none";
-        stop.style.display = "block";
+    if (optionStartManualDelivery!=null && stop!=null) {
 
-        //ativar o movimento do camião
-        this.activateManualMovement = true;
+      optionStartManualDelivery.style.display = "none";
+      optionStopManualDelivery.style.display = "block";
+
+      //ativar o movimento do camião
+      this.activateManualMovement = true;
     }
   }
 
@@ -517,48 +516,48 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     //ativar o som do camião
     this.truckAudio.stop();
 
-    let x3=document.getElementById("OptionStopManualDelivery");
-    let z=document.getElementById("OptionMakeDelivery");
+    let optionStopManualDelivery=document.getElementById("OptionStopManualDelivery");
+    let optionMakeDelivery=document.getElementById("OptionMakeDelivery");
 
-    if (x3!=null && z!=null) {
-        z.style.display = "block";
-        x3.style.display = "none";
+    if (optionStopManualDelivery!=null && optionMakeDelivery!=null) {
+      optionMakeDelivery.style.display = "block";
+      optionStopManualDelivery.style.display = "none";
 
-        //ativar o movimento do camião
-        this.activateManualMovement=false;
+      //ativar o movimento do camião
+      this.activateManualMovement=false;
     }
   }
 
   private manualMovement(){
-  if(this.activateManualMovement){
-  let truck = this.scene.getObjectByName(this.addManualTruckName); 
-     document.onkeydown = function (e) {
-       switch (e.key) {
-         case "a":
-           //rodar a camara para a esquerda
-           truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
-           break;
+    if(this.activateManualMovement){
+      let truck = this.scene.getObjectByName(this.addManualTruckName);
+      document.onkeydown = function (e) {
+        switch (e.key) {
+          case "a":
+            //rodar a camara para a esquerda
+            truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
+            break;
 
-         case "d":
-           //rodar a camara para a direita
-           truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
-           break;
+          case "d":
+            //rodar a camara para a direita
+            truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
+            break;
 
-         case "w":
-           //avançar - incrementar a posição da camara no eixo dos zz
-           truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
-           break;
+          case "w":
+            //avançar - incrementar a posição da camara no eixo dos zz
+            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
+            break;
 
-         case "s":
-           //recuar - decrementar a posição da camara no eixo dos zz
-           truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
-           break;
+          case "s":
+            //recuar - decrementar a posição da camara no eixo dos zz
+            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
+            break;
 
-         default:break;
-       }
+          default:break;
+        }
       }
-   }
-}
+    }
+  }
 
 
 
@@ -692,18 +691,19 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   public scrollAutomaticDelivery(el: HTMLElement) {
     this.isAutomaticMovement=true;
-    let x=document.getElementById("AutomaticSection");
-    if(x!=null){
-      x.style.display="block"
+    let automaticSection=document.getElementById("AutomaticSection");
+    if(automaticSection!=null){
+      automaticSection.style.display="block"
     }
     el.scrollIntoView({behavior: 'smooth'});
 
   }
 
   public scrollManualDelivery(el: HTMLElement) {
-    let x=document.getElementById("ManualSection");
-    if(x!=null){
-      x.style.display="block"
+    this.isAutomaticMovement=false;
+    let manualSection=document.getElementById("ManualSection");
+    if(manualSection!=null){
+      manualSection.style.display="block"
     }
     el.scrollIntoView({behavior: 'smooth'});
 
@@ -711,48 +711,46 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
   public scrollDone(el: HTMLElement){
-    let done=document.getElementById("ButtonDoneSection")
-    if(done!=null){
-      done.style.display="block"
+    let buttonDoneSection=document.getElementById("ButtonDoneSection")
+    if(buttonDoneSection!=null){
+      buttonDoneSection.style.display="block"
     }
     el.scrollIntoView({behavior: 'smooth'});
   }
 
   public scrollCanvas(el: HTMLElement) {
-    if (this.isAutomaticMovement){
-      this.addTruck(this.automaticTruck,this.automaticTruckInitialPosition)
-    }else
-    this.addTruck(this.manualTruck,this.manualTruckInicialPosition) //dar valor no html
-    
-
-    let x1 = document.getElementById("OptionManualDelivery");
-    let x2 = document.getElementById("OptionAutomaticDelivery");
-    let x3;
-    if (this.isAutomaticMovement){
-      x3 = document.getElementById("OptionStartAutomaticDelivery");
-    
-    }else 
-    x3 = document.getElementById("OptionStartManualDelivery");
-
-    let x5=document.getElementById("AutomaticSection");
-    let x6=document.getElementById("ManualSection");
-    let done=document.getElementById("ButtonDoneSection")
-
-    if (x1!=null && x2!=null&&x3!=null && x5!=null && x6!=null &&done!=null) {
-        x1.style.display = "none";
-        x2.style.display = "none";
-        x3.style.display="block"
-        x5.style.display="none"
-        x6.style.display="none"
-        done.style.display="none";
+    if (this.isAutomaticMovement) {
+      this.addTruck(this.automaticTruck, this.automaticTruckInitialPosition)
+    } else {
+      this.addTruck(this.manualTruck, this.manualTruckInicialPosition)
     }
-    el.scrollIntoView({behavior: 'smooth'});
+
+    let optionManualDelivery = document.getElementById("OptionManualDelivery");
+    let optionAutomaticDelivery = document.getElementById("OptionAutomaticDelivery");
+    let optionStartAutomaticOrManualDelivery;
+
+    if (this.isAutomaticMovement) {
+      optionStartAutomaticOrManualDelivery = document.getElementById("OptionStartAutomaticDelivery");
+    } else{
+      optionStartAutomaticOrManualDelivery = document.getElementById("OptionStartManualDelivery");
+    }
+
+    let automaticSection=document.getElementById("AutomaticSection");
+    let manualSection=document.getElementById("ManualSection");
+    let buttonDoneSection=document.getElementById("ButtonDoneSection")
+
+    if (optionManualDelivery!=null && optionAutomaticDelivery!=null&&optionStartAutomaticOrManualDelivery!=null && automaticSection!=null && manualSection!=null &&buttonDoneSection!=null) {
+      optionManualDelivery.style.display = "none";
+      optionAutomaticDelivery.style.display = "none";
+      optionStartAutomaticOrManualDelivery.style.display="block"
+      automaticSection.style.display="none"
+      manualSection.style.display="none"
+      buttonDoneSection.style.display="none";
+
+      el.scrollIntoView({behavior: 'smooth'});
+    }
 
   }
 
 
 }
-
-
-
-

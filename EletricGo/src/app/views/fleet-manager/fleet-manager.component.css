@@ -101,8 +101,8 @@
   font-weight:800;
   -webkit-text-stroke: 3px #778DB3;
   background: url("/assets/lines.png");
-  -webkit-background-clip: text;
-  background-position: 0 0;
+ -webkit-background-clip: text;
+   background-position: 0 0;
   animation: back 35s linear infinite;
 }
 

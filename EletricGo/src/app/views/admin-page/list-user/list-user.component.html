@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div class="container">
+      <nav class="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#adminPage" [routerLink]="['/views/admin-page']">ADMIN</a></li>
+
+
+        </ul>
+      </nav>
+
+    <div class="all">
+      <a style="text-align: center">Filter</a>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event)" type="text" placeholder="Ex. martaportugal@gmail.com" style="color: grey" [(ngModel)]="search">
+        <button class="btn-delete"(click)="deleteUser(search)">Delete</button>
+
+      </mat-form-field>
+      <div class="tab">
+        <button *ngIf="activeColumns" class="moreColumns" style="color: lightcoral" (click)="addColumns()" mat-icon-button>
+          <mat-icon>
+            <!--arrow_drop_down_circle-->
+            <!--library_add-->
+            add_circle
+          </mat-icon>
+        </button>
+        <button *ngIf="!activeColumns" class="moreColumns" style="color: blue" (click)="hideColumns()" mat-icon-button>
+          <mat-icon>
+            <!--arrow_drop_down_circle-->
+            <!--library_add-->
+            remove_circle
+          </mat-icon>
+        </button>
+        <div class="ta">
+
+
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
+
+
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+              <td mat-cell *matCellDef="let user" >{{user.email}}</td>
+
+            </ng-container>
+
+
+            <ng-container matColumnDef="role">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+              <td mat-cell *matCellDef="let user" style="text-align: center"> {{user.role}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="firstName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+              <td mat-cell *matCellDef="let user" style="text-align: center"> {{user.firstName }} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="lastName">
+              <th mat-header-cell *matHeaderCellDef> Last Name </th>
+              <td mat-cell *matCellDef="let user"> {{user.lastName}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="userContact">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact  </th>
+              <td mat-cell *matCellDef="let user" style="text-align: center"> {{user.userContact}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="active">
+              <th mat-header-cell *matHeaderCellDef> Active </th>
+              <td mat-cell *matCellDef="let user" style="text-align: center">
+                <div *ngIf="user.active">
+                  <button  class="btn"(click)="changeStatustoInactive(user.email)" style="color: forestgreen" mat-icon-button>
+                    <mat-icon>
+                      beenhere
+                    </mat-icon>
+                  </button>
+                </div>
+
+                <div *ngIf="!user.active">
+                  <button  class="btn"(click)="changeStatustoActive(user.email)" style="color: red" mat-icon-button>
+                    <mat-icon>
+                      highlight_off
+                    </mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[3, 6, 9]" showFirstLastButtons> </mat-paginator>
+      </div>
+
+    </div>
+    </div>
+    <button class="btn-create" [routerLink]="['../create-user']">Create</button>
+  </div>
+</body>
+
+
+

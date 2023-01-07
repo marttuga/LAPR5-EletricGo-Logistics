@@ -1,4 +1,4 @@
-describe('Truck Test', () => {
+describe('User Test', () => {
  
     beforeEach(() => {
       // run these tests as if in a desktop
@@ -24,34 +24,33 @@ describe('Truck Test', () => {
       
     })
 
-    it('Visits the fleet manager page', () => {
-      cy.get('[class="btn-login"]').should('contain','Fleet Manager')
-      cy.get('[class="btn-login"]').contains('Fleet Manager').click()
-      cy.visit('/views/fleet-manager')
+    it('Visits the admin page', () => {
+      cy.get('[class="btn-login"]').should('contain','Admin')
+      cy.get('[class="btn-login"]').contains('Admin').click()
+      cy.visit('/views/admin-page')
       cy.get('p').should('contain','WELCOME')
-      cy.get('h1').should('contain','FLEET MANAGER!')
+      cy.get('h1').should('contain','ADMIN!')
       cy.get('[class="navbar"]').should('contain','Home')
-      cy.get('[class="navbar"]').should('contain','Manage Trucks')
+      cy.get('[class="navbar"]').should('contain','Manage Users')
      
 
     })
 
 
-    it('Visits the list Truck page', () => {
-      cy.visit('/views/list-truck')
+    it('Visits the list users page', () => {
+      cy.visit('/views/list-user')
     })
 
-    it('Searches Truck failed', () => {
-      cy.get('[type="text"]').eq(0).type('AQ-11-QQ')
+    it('Searches user failed', () => {
+      cy.get('[type="text"]').eq(0).type('joaotiago@gmail.com')
       cy.get('[class="btn-create"]').contains('Create').click()
 
     })
 
 
-    it('Visits the create Truck page', () => {
-      cy.visit('/views/create-truck')
-      cy.get('h2').should('contain','NEED MORE TRUCKS?')
-      cy.get('h3').should('contain','CREATE ANOTHER ONE')
+    it('Visits the create user page', () => {
+      cy.visit('/views/create-user')
+      cy.get('h2').should('contain','CREATE NEW USERS!')
     })
 
     /* it('creating truck fails', () => {
@@ -106,36 +105,50 @@ describe('Truck Test', () => {
       cy.get('h3').should('contain','CREATE ANOTHER ONE')
     }) */
 
-    it('creating truck success', () => {
+    it('creating user success', () => {
       cy.get('[class="textfield"]').should('have.length',6)
-      cy.get('[type="text"]').eq(0).type('AQ-11-QQ')
-
-
-      cy.get('[type="number"]').eq(0).type('12000')
-      cy.get('[type="number"]').eq(1).type('15000')
-      cy.get('[type="number"]').eq(2).type('120')
-      cy.get('[type="number"]').eq(3).type('120')
-      cy.get('[type="number"]').eq(4).type('4')
+      cy.get('[type="text"]').eq(0).type('joao')
+      cy.get('[type="text"]').eq(1).type('tiago')
+      cy.get('[type="email"]').eq(0).type('joaotiago@gmail.com')
+      cy.get('[type="password"]').eq(0).type('Joaotiago1')
+      cy.get('[type="text"]').eq(2).type('Logistics_Manager')
+      cy.get('[type="number"]').eq(0).type('912323232')
 
       cy.get('[type="submit"]').should('be.enabled')
       cy.get('[type="submit"]').click()
-      cy.get('[class="created-message"]').should('be.visible').contains("Truck created!")
+      cy.get('[class="created-message"]').should('be.visible').contains("User created!")
 
     })
 
 
-    it('Visits the list Truck page', () => {
-      cy.visit('/views/list-truck')
+    it('Visits the list user page', () => {
+      cy.visit('/views/list-user')
     })
 
-    it('Searches Truck success', () => {
-      cy.get('[type="text"]').eq(0).type('AQ-11-QQ')
-      cy.get('[class="ta"]').should('contain','AQ-11-QQ')
+    it('Searches user success', () => {
+      cy.get('[type="text"]').eq(0).type('joaotiago@gmail.com')
+      cy.get('[class="ta"]').should('contain','joaotiago@gmail.com')
 
+      cy.get('[type="text"]').eq(0).clear()
 
     })
     
-    
+/*     it('anonimates the account', () => {
+      cy.get('[type="text"]').eq(0).type('joaotiago@gmail.com')
+      cy.get('[class="btn"]').click()
+      cy.get('[class="ta"]').eq(0).should('contain','joaotiago@gmail.com')
+      cy.get('[class="ta"]').eq(1).should('contain','role')
+      cy.get('[class="ta"]').eq(2).should('contain','false')
+      cy.get('[class="ta"]').eq(3).should('contain','first name')
+      cy.get('[class="ta"]').eq(4).should('contain','last name')
+      cy.get('[class="ta"]').eq(5).should('contain','999999999')
+
+    })
+
+    it('deletes the account', () => {
+      cy.get('[class="btn-delete"]').click()
+    }) */
+
 /*     it('disable truck', () => {
       cy.get('[class="button"]').click()
 
@@ -148,4 +161,4 @@ describe('Truck Test', () => {
 
 
 
-  })
+})

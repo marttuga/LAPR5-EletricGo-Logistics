@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {TrucksService} from "../../services/node/truck.service";
+import {TrucksService} from "../../../services/node/truck.service";
 import { CreateTruckComponent } from './create-truck.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
