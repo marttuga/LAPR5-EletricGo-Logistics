@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from '../../app-routing.module';
 import { SharedModule } from '../shared.module';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { ListUserComponent } from './list-user/list-user.component';
+
 import { AdminPageRoutingModule } from './admin-page-routing.module';
 import { AdminPageComponent } from './admin-page.component';
 import {MatTableModule} from '@angular/material/table';
@@ -24,7 +26,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [AdminPageComponent,
     CreateUserComponent,
-
+ListUserComponent
     ],
   imports: [
     CommonModule,

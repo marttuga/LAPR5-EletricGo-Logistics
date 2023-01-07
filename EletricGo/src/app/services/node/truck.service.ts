@@ -32,7 +32,7 @@ export class TrucksService {
   }
   changeStatus(licencePlate: string,active:boolean){
     const body={"active":active}
-    return this.httpClient.put(this.Url + '/changeStatus/' +licencePlate,body).pipe(map(this.extractData));
+    return this.httpClient.patch(this.Url + '/changeStatus/' +licencePlate,body).pipe(map(this.extractData));
   }
   createTruck(licencePlate: string,tare:number,capacity:number,maxBateryCapacity:number,autonomyFullChargeLoad: number, timeCharging: number) {
     const body={"licencePlate":licencePlate, "tare":tare, "capacity":capacity, "maxBateryCapacity":maxBateryCapacity, "autonomyFullChargeLoad": autonomyFullChargeLoad, "timeCharging":timeCharging};
