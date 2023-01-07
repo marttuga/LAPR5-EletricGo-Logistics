@@ -55,6 +55,8 @@ constructor(private userService: UserService,
   public deleteUser(email:string):void{
     this.userService.deleteAccountByEmail(email ).subscribe(data => {console.log(data);
     this.user =data});
+    setTimeout(window.location.reload.bind(window.location),200);
+
   }
 
   public changeStatustoInactive(email:string):void{

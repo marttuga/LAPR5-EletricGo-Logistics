@@ -51,7 +51,10 @@ export class GetPlannedRouteComponent implements OnInit {
     this.plannedRouteService.createPlaning(((this.allPlanings.length)+1).toString(),this.truckId,this.date,this.plannedRoutesNames).subscribe(data => {console.log(data);
      this.plannedRoute=data
   });
+  
     this.submit = !this.submit;
+    setTimeout(window.location.reload.bind(window.location),200);
+
   }
 
   public getBestRoute():void{
