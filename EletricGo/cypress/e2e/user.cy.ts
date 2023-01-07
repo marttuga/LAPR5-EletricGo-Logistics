@@ -129,10 +129,26 @@ describe('User Test', () => {
       cy.get('[type="text"]').eq(0).type('joaotiago@gmail.com')
       cy.get('[class="ta"]').should('contain','joaotiago@gmail.com')
 
+      cy.get('[type="text"]').eq(0).clear()
 
     })
     
-    
+/*     it('anonimates the account', () => {
+      cy.get('[type="text"]').eq(0).type('joaotiago@gmail.com')
+      cy.get('[class="btn"]').click()
+      cy.get('[class="ta"]').eq(0).should('contain','joaotiago@gmail.com')
+      cy.get('[class="ta"]').eq(1).should('contain','role')
+      cy.get('[class="ta"]').eq(2).should('contain','false')
+      cy.get('[class="ta"]').eq(3).should('contain','first name')
+      cy.get('[class="ta"]').eq(4).should('contain','last name')
+      cy.get('[class="ta"]').eq(5).should('contain','999999999')
+
+    })
+
+    it('deletes the account', () => {
+      cy.get('[class="btn-delete"]').click()
+    }) */
+
 /*     it('disable truck', () => {
       cy.get('[class="button"]').click()
 
@@ -145,4 +161,4 @@ describe('User Test', () => {
 
 
 
-  })
+})

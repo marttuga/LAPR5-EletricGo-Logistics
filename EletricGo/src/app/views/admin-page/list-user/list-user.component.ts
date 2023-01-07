@@ -20,7 +20,7 @@ export class ListUserComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-
+search:string;
   users: User[];
   user:User;
   firstName: string;
@@ -52,6 +52,10 @@ constructor(private userService: UserService,
     });
   }
 
+  public deleteUser(email:string):void{
+    this.userService.deleteAccountByEmail(email ).subscribe(data => {console.log(data);
+    this.user =data});
+  }
 
   public changeStatustoInactive(email:string):void{
     this.userService.changeStatustoInactive(email,false).subscribe(data => {console.log(data);
