@@ -60,11 +60,12 @@ export default class UserRepocopy implements IUserRepocopy {
 		const query = { email: user.email.value  };
 
 		const userDocument = await this.userSchema.findOne(query);
-
+console.log(userDocument)
 		try {
 			if (userDocument === null) {
 				const rawUser: any = UserMapcopy.toPersistence(user);
 				const userCreated = await this.userSchema.create(rawUser);
+        console.log(userCreated)
 				return UserMapcopy.toDomain(userCreated);
 			} else {
         userDocument.firstName = user.props.firstName;

@@ -30,17 +30,32 @@ export class UserCopy extends AggregateRoot<UserCopyProps> {
     return this.props.email;
   }
 
+  set email (value: UserEmail) {
+    this.props.email = value;
+}
   get firstName (): string {
     return this.props.firstName
   }
+    
+  set firstName (value: string) {
+    this.props.firstName = value;
+}
 
   get lastName (): string {
     return this.props.lastName;
   }
+    
+  set lastName (value: string) {
+    this.props.lastName = value;
+}
 
   get password (): UserPassword {
     return this.props.password;
   }
+    
+  set password (value: UserPassword) {
+    this.props.password = value;
+}
 
   get role (): UserRole {
     return this.props.role;

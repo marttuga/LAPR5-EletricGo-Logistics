@@ -51,11 +51,11 @@ export default (app: Router) => {
 	userRoute.delete('/deleteAccountByEmail/:email', (req, res, next) => ctrl.deleteUserByEmail(req, res, next));
 	userRoute.get('/getAll', (req, res, next) => ctrl.getUsers(req, res, next));
 
-	userRoute.patch('/changeStatusToActive/:licencePlate',
+	userRoute.put('/changeStatusToActive/:licencePlate',
 (req, res, next) => ctrl.changeStatustoActive(req, res, next) );
 
 
-userRoute.patch('/changeStatusToInactive/:licencePlate',
+userRoute.put('/changeStatusToInactive/:licencePlate',
 (req, res, next) => ctrl.changeStatustoInactive(req, res, next) );
    
 

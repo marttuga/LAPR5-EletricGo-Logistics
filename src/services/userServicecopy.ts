@@ -183,16 +183,24 @@ console.log(userDTOResult)
 	public async changeStatustoActive(licencePlate: string): Promise<Result<IUserDTO>> {
 		try {
 		  const truck = await this.userRepo.findByEmail(licencePlate);
-  
+  console.log(truck)
 		  if (truck === null) {
 			return Result.fail<IUserDTO>("user not found");
 		  }
 		  else {
-		  
+
 	   
-	   truck.markActive();
+	   		truck.markActive();
+
 			await this.userRepo.save(truck);
-  
+
+		/* 	truck.firstName = truck.firstName;
+			truck.lastName = truck.lastName;
+			truck.email = UserEmail.create(truck.email.value).getValue();
+			truck.password= UserPassword.create({ value: truck.password.value, hashed: true}).getValue();
+			truck.role= UserRole.create(truck.role.value).getValue();
+			truck.userContact= UserContact.create(truck.userContact.userContact).getValue();  */
+			
 			const truckDTOResult = UserMapcopy.toDTO( truck ) as IUserDTO;
   
   
@@ -208,14 +216,23 @@ console.log(userDTOResult)
 		try {
 		  const truck = await this.userRepo.findByEmail(licencePlate);
 		  if (truck === null) {
-			return Result.fail<IUserDTO>("Truck not found");
+			return Result.fail<IUserDTO>("user not found");
 		  }
 		  else {
-			  truck.markAsInactive();
-			  await this.userRepo.save(truck);
-  
-  
-			const truckDTOResult = UserMapcopy.toDTO( truck ) as IUserDTO;
+		
+
+			 
+
+			  truck.firstName = "first name";
+			  truck.lastName = "last name";
+			  truck.email = UserEmail.create(truck.email.value).getValue();
+			  truck.password= UserPassword.create({ value: "password", hashed: true}).getValue();
+			  truck.role= UserRole.create("role").getValue();
+			  truck.userContact= UserContact.create(999999999).getValue(); 
+  	  truck.markAsInactive();
+ await this.userRepo.save(truck);
+ 
+  			const truckDTOResult = UserMapcopy.toDTO( truck ) as IUserDTO;
 			return Result.ok<IUserDTO>( truckDTOResult )
 			
 			}
