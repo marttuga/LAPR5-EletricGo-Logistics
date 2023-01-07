@@ -19,6 +19,7 @@ import { AdminPageModule } from './views/admin-page/admin-page.module';
 import {FleetManagerModule} from "./views/fleet-manager/fleet-manager.module";
 import { LogisticsManagerModule } from './views/logistics-manager/logistics-manager.module';
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {ChooseTruckAndRouteComponent} from "./views/choose-truck-and-route/choose-truck-and-route.component";
 
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from "@angular/material/paginator";

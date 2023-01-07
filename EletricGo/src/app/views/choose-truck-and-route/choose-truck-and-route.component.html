@@ -1,0 +1,36 @@
+
+<html lang="en">
+
+<body>
+
+<form class="create-form" #createForm="ngForm">
+  <div class="container">
+
+
+    <div id="contentSection">
+      <h2>PLAN THE ROUTE</h2>
+    </div>
+
+    <section class="input">
+      <div id="options-dropdown" style="margin-left: 15%">
+
+        <h3>SELECT THE PREFERED ROUTE OPTION</h3>
+        <select   [(ngModel)]="chosenRoad" type="submit" name="options" id="options1" >
+          <option selected disabled>Select a road..</option>
+          <option *ngFor="let road of manualTruckRoads" [value]="road">{{ road }}
+        </select>
+
+        <h3>SELECT THE PREFERED TRUCK OPTION</h3>
+        <select [(ngModel)]="chosenTruck"   type="submit" name="options" id="options2" (input)="getRouteAndTruck()" >
+          <option selected disabled>Select a truck..</option>
+          <option *ngFor="let truck of allTrucks" [value]="truck.licencePlate">{{ truck.licencePlate }}
+        </select>
+
+      </div>
+
+    </section>
+
+  </div>
+</form>
+</body>
+</html>
