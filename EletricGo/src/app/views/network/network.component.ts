@@ -54,7 +54,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private activateMotion=false;
   private isAutomaticMovement=false;
-  private isManualMovement=false;
+  private activateManualMovement=false;
+
+  private addManualTruckName:string;
 
   private pathsData = new Map<string, THREE.CurvePath<any>>([]);
   private static WARE0=0;  private static WARE1=1;private static WARE_FINAL=2;
@@ -305,11 +307,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     if(this.isAutomaticMovement){
       this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
-      this.isAutomaticMovement=false;
-    }
-    if(this.isManualMovement){
-      this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
-      this.isManualMovement=false;
     }
   }
 
@@ -497,57 +494,69 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     }
   }
+  public startManualMovement(){
+    //ativar o som do camião
+    this.truckAudio.play();
 
+    let optionStartManualDelivery=document.getElementById("OptionStartManualDelivery");
+    let optionStopManualDelivery=document.getElementById("OptionStopManualDelivery");
+
+    if (optionStartManualDelivery!=null && stop!=null) {
+
+      optionStartManualDelivery.style.display = "none";
+      optionStopManualDelivery.style.display = "block";
+
+      //ativar o movimento do camião
+      this.activateManualMovement = true;
+    }
+  }
+
+
+  public stopManualMovement(){
+    //ativar o som do camião
+    this.truckAudio.stop();
+
+    let optionStopManualDelivery=document.getElementById("OptionStopManualDelivery");
+    let optionMakeDelivery=document.getElementById("OptionMakeDelivery");
+
+    if (optionStopManualDelivery!=null && optionMakeDelivery!=null) {
+      optionMakeDelivery.style.display = "block";
+      optionStopManualDelivery.style.display = "none";
+
+      //ativar o movimento do camião
+      this.activateManualMovement=false;
+    }
+  }
 
   private manualMovement(){
-     
-     /*document.onkeydown = function (e) {
-       switch (e.key) {
-         case "a":
-           //rodar a camara para a esquerda
-           truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
-           break;
+    if(this.activateManualMovement){
+      let truck = this.scene.getObjectByName(this.addManualTruckName);
+      document.onkeydown = function (e) {
+        switch (e.key) {
+          case "a":
+            //rodar a camara para a esquerda
+            truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
+            break;
 
-         case "d":
-           //rodar a camara para a direita
-           truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
-           break;
+          case "d":
+            //rodar a camara para a direita
+            truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
+            break;
 
-         case "w":
-           //avançar - incrementar a posição da camara no eixo dos zz
-           truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
-           break;
+          case "w":
+            //avançar - incrementar a posição da camara no eixo dos zz
+            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
+            break;
 
-         case "s":
-           //recuar - decrementar a posição da camara no eixo dos zz
-           truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
-           break;
+          case "s":
+            //recuar - decrementar a posição da camara no eixo dos zz
+            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
+            break;
 
-         default:break;
-       }
-
-       switch (e.keyCode){
-         case 39://right key
-           truck?.rotateY(5 * Math.PI / 180);
-           break;
-
-         case 37://lef key
-           truck?.rotateY(-5 * Math.PI / 180);
-           break;
-
-         case 38://up key
-           truck?.rotateX(-5 * Math.PI / 180);
-           break;
-
-         case 40://down key
-           truck?.rotateX(5 * Math.PI / 180);
-           break;
-
-         default:break;
-       
-
-   }
-   }*/
+          default:break;
+        }
+      }
+    }
   }
 
 
@@ -682,19 +691,19 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   public scrollAutomaticDelivery(el: HTMLElement) {
     this.isAutomaticMovement=true;
-    let x=document.getElementById("AutomaticSection");
-    if(x!=null){
-      x.style.display="block"
+    let automaticSection=document.getElementById("AutomaticSection");
+    if(automaticSection!=null){
+      automaticSection.style.display="block"
     }
     el.scrollIntoView({behavior: 'smooth'});
 
   }
 
   public scrollManualDelivery(el: HTMLElement) {
-    this.isManualMovement=true;
-    let x=document.getElementById("ManualSection");
-    if(x!=null){
-      x.style.display="block"
+    this.isAutomaticMovement=false;
+    let manualSection=document.getElementById("ManualSection");
+    if(manualSection!=null){
+      manualSection.style.display="block"
     }
     el.scrollIntoView({behavior: 'smooth'});
 
@@ -702,41 +711,46 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
 
   public scrollDone(el: HTMLElement){
-    let done=document.getElementById("ButtonDoneSection")
-    if(done!=null){
-      done.style.display="block"
+    let buttonDoneSection=document.getElementById("ButtonDoneSection")
+    if(buttonDoneSection!=null){
+      buttonDoneSection.style.display="block"
     }
     el.scrollIntoView({behavior: 'smooth'});
   }
 
   public scrollCanvas(el: HTMLElement) {
-    this.addTruck(this.manualTruck,this.manualTruckInicialPosition)
-    this.addTruck(this.automaticTruck,this.automaticTruckInitialPosition)
-
-    let x1 = document.getElementById("OptionManualDelivery");
-    let x2 = document.getElementById("OptionAutomaticDelivery");
-    let x3 = document.getElementById("OptionStartAutomaticDelivery");
-    let x5=document.getElementById("AutomaticSection");
-    let x6=document.getElementById("ManualSection");
-    let done=document.getElementById("ButtonDoneSection")
-
-    if (x1!=null && x2!=null&&x3!=null && x5!=null && x6!=null &&done!=null) {
-      if (x1.style.display === "block" && x2.style.display === "block") {
-        x1.style.display = "none";
-        x2.style.display = "none";
-        x3.style.display="block"
-        x5.style.display="none"
-        x6.style.display="none"
-        done.style.display="none";
-      }
+    if (this.isAutomaticMovement) {
+      this.addTruck(this.automaticTruck, this.automaticTruckInitialPosition)
+    } else {
+      this.addTruck(this.manualTruck, this.manualTruckInicialPosition)
     }
-    el.scrollIntoView({behavior: 'smooth'});
+
+    let optionManualDelivery = document.getElementById("OptionManualDelivery");
+    let optionAutomaticDelivery = document.getElementById("OptionAutomaticDelivery");
+    let optionStartAutomaticOrManualDelivery;
+
+    if (this.isAutomaticMovement) {
+      optionStartAutomaticOrManualDelivery = document.getElementById("OptionStartAutomaticDelivery");
+    } else{
+      optionStartAutomaticOrManualDelivery = document.getElementById("OptionStartManualDelivery");
+    }
+
+    let automaticSection=document.getElementById("AutomaticSection");
+    let manualSection=document.getElementById("ManualSection");
+    let buttonDoneSection=document.getElementById("ButtonDoneSection")
+
+    if (optionManualDelivery!=null && optionAutomaticDelivery!=null&&optionStartAutomaticOrManualDelivery!=null && automaticSection!=null && manualSection!=null &&buttonDoneSection!=null) {
+      optionManualDelivery.style.display = "none";
+      optionAutomaticDelivery.style.display = "none";
+      optionStartAutomaticOrManualDelivery.style.display="block"
+      automaticSection.style.display="none"
+      manualSection.style.display="none"
+      buttonDoneSection.style.display="none";
+
+      el.scrollIntoView({behavior: 'smooth'});
+    }
 
   }
 
 
 }
-
-
-
-
