@@ -16,19 +16,19 @@
     </ul>
   </nav>
 
-  <table  class="table table-bordered  table-striped"  matSort>
+  <table class="table table-bordered  table-striped" >
     <thead>
       <tr>
         <th>DeliveryId</th>
-        <th mat-sort-header><input type="text" class="search-input" placeholder="Date" required [(ngModel)]="searchDate">
+        <th (click) = "sortByDate()"> Date </th> 
         <th>Mass</th>
         <th>TimeLoad</th>
         <th>TimeUnload</th>
-        <th mat-sort-header><input type="text" class="search-input" placeholder="DeliveryWarehouse" required [(ngModel)]="searchDeliveryWarehouse">
+        <th (click) = "sortByDeliveryWarehouse()"><input type="text" class="search-input" placeholder="DeliveryWarehouse" required [(ngModel)]="searchDeliveryWarehouse"><i class="fa fa-fw fa-sort" aria-hidden="true"></i> 
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let delivery of deliveries | filter : 'date' : searchDate | filter : 'deliveryWarehouse': searchDeliveryWarehouse | paginate : { itemsPerPage: 2, currentPage: p} ; let i = index">
+      <tr *ngFor="let delivery of deliveries | filter : 'deliveryWarehouse': searchDeliveryWarehouse | paginate : { itemsPerPage: 2, currentPage: p} ; let i = index">
         <td><span>{{delivery.dIdentifier.dIdentifier}}</span></td>
         <td><span>{{delivery.date}}</span></td>
         <td><span>{{delivery.mass}}</span></td>
