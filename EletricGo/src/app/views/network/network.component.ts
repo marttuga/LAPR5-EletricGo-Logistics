@@ -32,13 +32,15 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private camera!: THREE.PerspectiveCamera;
 
   private warehouses:any[]=[];
-  private routes:Route[]=[];
-  private trucks:Truck[]=[];
+  private routes:Route[]=[];trucks:Truck[]=[];
+
   private activeTrucks:Object3D[]=[];
+
   private automaticTruck:string;
-  private manualTruck:string;
+  manualTruck:string;
+
   private automaticTruckInitialPosition:Vector3;
-  private manualTruckInicialPosition:Vector3;
+  private manualTruckInitialPosition:Vector3;
 
   private skyBoxTexture:THREE.Texture;
   private skyBoxGroundTexture:THREE.Texture;
@@ -56,10 +58,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private isAutomaticMovement=false;
   private activateManualMovement=false;
 
-  private addManualTruckName:string;
-
   private pathsData = new Map<string, THREE.CurvePath<any>>([]);
-  private static WARE0=0;  private static WARE1=1;private static WARE_FINAL=2;
 
   private pathLength:number;
   private currentDistance = 0;
@@ -87,15 +86,12 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     this.warehousesService.getWarehouses().subscribe(async data=>{
       this.warehouses=data;
-      console.log(this.warehouses)
 
       this.routesService.getRoutes().subscribe(async data=>{
         this.routes=data;
-        console.log(this.routes)
 
         this.trucksService.getTrucks().subscribe(async data=>{
           this.trucks=data;
-          console.log(this.trucks)
           await this.createScene();
           await this.startRenderingLoop();
         })
@@ -440,7 +436,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.automaticTruckInitialPosition=new Vector3(this.scene.getObjectByName(value[0])?.position.x,this.scene.getObjectByName(value[0])?.position.y,this.scene.getObjectByName(value[0])?.position.z+2);
 
 
-      this.scrollDone(el);
+      this.scrollDone(el,null);
     });
 
 
@@ -496,7 +492,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
   public startManualMovement(){
     //ativar o som do camião
-    this.truckAudio.play();
+   // this.truckAudio.play();
 
     let optionStartManualDelivery=document.getElementById("OptionStartManualDelivery");
     let optionStopManualDelivery=document.getElementById("OptionStopManualDelivery");
@@ -514,7 +510,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   public stopManualMovement(){
     //ativar o som do camião
-    this.truckAudio.stop();
+   // this.truckAudio.stop();
 
     let optionStopManualDelivery=document.getElementById("OptionStopManualDelivery");
     let optionMakeDelivery=document.getElementById("OptionMakeDelivery");
@@ -522,38 +518,42 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     if (optionStopManualDelivery!=null && optionMakeDelivery!=null) {
       optionMakeDelivery.style.display = "block";
       optionStopManualDelivery.style.display = "none";
-
-      //ativar o movimento do camião
+      this.scene.remove(this.scene.getObjectByName(this.manualTruck));
+      this.manualTruck="";
+      this.manualTruckInitialPosition=new Vector3();
+      //desativar o movimento do camião
       this.activateManualMovement=false;
     }
   }
 
   private manualMovement(){
     if(this.activateManualMovement){
-      let truck = this.scene.getObjectByName(this.addManualTruckName);
+      let truck = this.scene.getObjectByName(this.manualTruck);
+
+      // Intersect the ray with the objects in the scene
+
       document.onkeydown = function (e) {
         switch (e.key) {
           case "a":
-            //rodar a camara para a esquerda
-            truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
+            truck.rotateY(0.1);
             break;
 
           case "d":
-            //rodar a camara para a direita
-            truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
+            truck.rotateY(-0.1);
             break;
 
           case "w":
-            //avançar - incrementar a posição da camara no eixo dos zz
-            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
+              truck.translateZ(0.1);
+
             break;
 
           case "s":
-            //recuar - decrementar a posição da camara no eixo dos zz
-            truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
+              truck.translateZ(-0.1);
+
             break;
 
-          default:break;
+          default:
+            break;
         }
       }
     }
@@ -657,7 +657,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     for(let i=0;i<this.routes.length;i++){
       if(ware1Identifier==this.routes[i].arrivalId  && ware2Identifier==this.routes[i].departureId){
         return this.routes[i];
-      }else if(ware1Identifier==this.routes[i].departureId && ware2Identifier==this.routes[i].arrivalId){
+      }
+      else if(ware1Identifier==this.routes[i].departureId && ware2Identifier==this.routes[i].arrivalId){
         return this.routes[i];
       }
     }
@@ -672,6 +673,14 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       }
     }
     return false;
+  }
+
+  public wareDesignationToWareIdConverter(wareDesignation:string):string{
+    let w= this.warehouses.find(warehouse => warehouse.designation == wareDesignation);
+    if(w!=null){
+      return w.warehouseIdentifier;
+    }
+    return "";
   }
 
   public makeDelivery() {//bloquear o make delivery e mostrar as opcoes de automatic ou manual movement
@@ -701,6 +710,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   public scrollManualDelivery(el: HTMLElement) {
     this.isAutomaticMovement=false;
+
     let manualSection=document.getElementById("ManualSection");
     if(manualSection!=null){
       manualSection.style.display="block"
@@ -710,10 +720,27 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
 
-  public scrollDone(el: HTMLElement){
+  public scrollDone(el: HTMLElement,map:any){
     let buttonDoneSection=document.getElementById("ButtonDoneSection")
     if(buttonDoneSection!=null){
       buttonDoneSection.style.display="block"
+    }
+    if(map!=null){
+      map.forEach((road, truck) => {
+        this.manualTruck=truck;
+
+        let roadSplit = road.trim().split("-");
+        let ware0=this.wareDesignationToWareIdConverter(roadSplit[0].trim());
+        let ware1=this.wareDesignationToWareIdConverter(roadSplit[1].trim());
+
+        if(!this.isRegisteredFirstOnRoutObject(ware0,ware1)){
+          let vector= this.roadsData.get(<string>this.getRouteByWarehouses(ware0,ware1).routeId);
+          this.manualTruckInitialPosition=new Vector3(vector[NetworkComponent.EL0_X],vector[NetworkComponent.EL0_Y],vector[NetworkComponent.EL0_Z])
+        }else{
+          let vector= this.roadsData.get(<string>this.getRouteByWarehouses(ware1,ware0).routeId);
+          this.manualTruckInitialPosition=new Vector3(vector[NetworkComponent.EL1_X],vector[NetworkComponent.EL1_Y],vector[NetworkComponent.EL1_Z])
+        }
+      });
     }
     el.scrollIntoView({behavior: 'smooth'});
   }
@@ -722,7 +749,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     if (this.isAutomaticMovement) {
       this.addTruck(this.automaticTruck, this.automaticTruckInitialPosition)
     } else {
-      this.addTruck(this.manualTruck, this.manualTruckInicialPosition)
+      this.addTruck(this.manualTruck, this.manualTruckInitialPosition)
     }
 
     let optionManualDelivery = document.getElementById("OptionManualDelivery");

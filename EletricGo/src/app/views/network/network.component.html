@@ -7,8 +7,8 @@
       <a id="OptionMakeDelivery" (click)="makeDelivery()">Make Delivery</a>
     </li>
 
-    <li id="OptionManualDelivery" style="display: none"> <a (click)="scrollManualDelivery(listRoutesSection)">Manual Delivery</a></li>
-    <li id="OptionAutomaticDelivery" style="display: none"> <a (click)="scrollAutomaticDelivery(listRoutesSection)">Automatic Delivery</a></li>
+    <li id="OptionManualDelivery" style="display: none"> <a (click)="scrollManualDelivery(Automatic)">Manual Delivery</a></li>
+    <li id="OptionAutomaticDelivery" style="display: none"> <a (click)="scrollAutomaticDelivery(Manual)">Automatic Delivery</a></li>
     <li id="OptionStartAutomaticDelivery" style="display: none"> <a (click)="startAutomaticMovement()">Start</a></li>
     <li id="OptionStartManualDelivery" style="display: none"> <a (click)="startManualMovement()">Start</a></li>
     <li id="OptionStopManualDelivery" style="display: none"> <a (click)="stopManualMovement()">Stop</a></li>
@@ -23,13 +23,12 @@
       <canvas #canvas id="canvas"  (mousemove)="onMouseMove($event)" (click)="onClick()"></canvas>
     </div>
 
-    <div #listRoutesSection>
+    <div #Automatic>
       <app-get-planned-route id="AutomaticSection" style="display: none" [networkChecker]="checkerNetworkPlanedRoutes" (getRouteAndTruckEvent)="setAutomaticMovementRoutAndTruck(done,$event)" ></app-get-planned-route>
     </div>
 
-    <div id="ManualSection" style="display: none">
-            <!-- HTML(style="display: none") para selecionar o camião e o sitio onde vai ficar coordenadas da Warehouse, button done que leva ao canvas e adiciona o camião, button stop !-->
-
+    <div #Manual>
+       <app-choose-truck-and-route id="ManualSection" style="display: none" (getRouteAndTruckEvent)="scrollDone(done,$event)"></app-choose-truck-and-route>
     </div>
 
     <div  style="align-content: center">
