@@ -101,11 +101,10 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
 
     public async getBestRoute(data: string, camiao: string): Promise<{ viagem: string[]; }> {
 
-      const response = await fetch("http://localhost:64172/getBestRoute?date=" + data + "&truck=" + camiao, {method: "GET", agent: this.httpAgent,});
+      const response = await fetch("http://localhost:64172/gera?date=" + data + "&truck=" + camiao, {method: "GET", agent: this.httpAgent,});
     
       const viagem = await response.json();
-    
-      return {viagem: viagem.best_route};
+      return {viagem: viagem.gera};
     }
   
 /*      private async getArmazemName(armazemId: string): Promise<string> {
@@ -140,7 +139,6 @@ export default class FleetPlaningRepo implements IFleetPlaningRepo {
     public async getNearestWarehouse(data: string, camiao: string): Promise<{ viagem: string[]; }> {const response = await fetch("http://localhost:64172/getNearestWarehouse?date=" + data + "&truck=" + camiao, {method: "GET", agent: this.httpAgent,});
   
       const viagem = await response.json();
-
       return {viagem: viagem.route_nearest_warehouse};
 
     }
