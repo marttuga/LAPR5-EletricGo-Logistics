@@ -28,6 +28,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSortModule} from "@angular/material/sort";
 import {MatInputModule} from "@angular/material/input";
+import { RgpdComponent } from './views/rgpd/rgpd.component';
 @NgModule({
   declarations: [
     AppComponent,

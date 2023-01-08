@@ -21,7 +21,7 @@
       </div>
         <div id="options1">
           <div class="textfield">
-            <input type="text" #RouteId="ngModel" [class.is-invalid]="RouteId.invalid && RouteId.touched" name="routeId" placeholder="Route" title="RouteID can not be empty" required [(ngModel)]="routeId">
+            <input type="text" #RouteId="ngModel" [class.is-invalid]="RouteId.invalid && RouteId.touched" name="routeId" placeholder="Route number" title="Route number can not be empty" required [(ngModel)]="routeId">
             <div *ngIf="RouteId.touched">
               <small *ngIf="RouteId.errors?.['required']">RouteID can not be empty.</small>
           </div>
@@ -49,50 +49,46 @@
             <div class="dropDownArrival">
               <select type="text" name="arrival_Id" id="arrivalId"  required [(ngModel)]="arrivalId">
                 <option selected disabled>Warehouse Arrival ID</option>
-                <option value="W01">W01</option>
-                <option value="W02">W02</option>
-                <option value="W03">W03</option>
-                <option value="W04">W04</option>
-                <option value="W05">W05</option>
-                <option value="W06">W06</option>
-                <option value="W07">W07</option>
-                <option value="W08">W08</option>
-                <option value="W09">W09</option>
-                <option value="W10">W10</option>
-                <option value="W11">W11</option>
-                <option value="W12">W12</option>
-                <option value="W13">W13</option>
-                <option value="W14">W14</option>
-                <option value="W15">W15</option>
-                <option value="W16">W16</option>
-                <option value="W17">W17</option>
-                <option value="W18">W18</option>
-                <option value="W19">W19</option>
+                <option value="W01">W01 - Arouca</option>
+                <option value="W02">W02 - Espinho</option>
+                <option value="W03">W03 - Gondomar</option>
+                <option value="W04">W04 - Maia</option>
+                <option value="W05">W05 - Matosinhos</option>
+                <option value="W06">W06 - Oliveira de Azeméis</option>
+                <option value="W07">W07 - Paredes</option>
+                <option value="W08">W08 - Porto</option>
+                <option value="W09">W09 - Póvoa de Varzim</option>
+                <option value="W10">W10 - Sta. Maria da Feira</option>
+                <option value="W11">W11 - Sto. Tirso</option>
+                <option value="W12">W12 - S. J. Madeira</option>
+                <option value="W13">W13 - Trofa</option>
+                <option value="W14">W14 - Vale de Cambra</option>
+                <option value="W15">W15 - Valongo</option>
+                <option value="W16">W16 - Vila do Conde</option>
+                <option value="W17">W17 - Vila Nova de Gaia</option>
               </select>
               <!-- <input type="" name="arrivalId" placeholder="Warehouse Arrival Id" required [(ngModel)]="arrivalId"> -->
             </div>
             <div class="dropDownDeparture">
               <select type="text" name="departure_Id" id="departureId" placeholder="Warehouse Departure Id" required [(ngModel)]="departureId">
                 <option selected disabled>Warehouse Departure ID</option>
-                <option value="W01">W01</option>
-                <option value="W02">W02</option>
-                <option value="W03">W03</option>
-                <option value="W04">W04</option>
-                <option value="W05">W05</option>
-                <option value="W06">W06</option>
-                <option value="W07">W07</option>
-                <option value="W08">W08</option>
-                <option value="W09">W09</option>
-                <option value="W10">W10</option>
-                <option value="W11">W11</option>
-                <option value="W12">W12</option>
-                <option value="W13">W13</option>
-                <option value="W14">W14</option>
-                <option value="W15">W15</option>
-                <option value="W16">W16</option>
-                <option value="W17">W17</option>
-                <option value="W18">W18</option>
-                <option value="W19">W19</option>
+                <option value="W01">W01 - Arouca</option>
+                <option value="W02">W02 - Espinho</option>
+                <option value="W03">W03 - Gondomar</option>
+                <option value="W04">W04 - Maia</option>
+                <option value="W05">W05 - Matosinhos</option>
+                <option value="W06">W06 - Oliveira de Azeméis</option>
+                <option value="W07">W07 - Paredes</option>
+                <option value="W08">W08 - Porto</option>
+                <option value="W09">W09 - Póvoa de Varzim</option>
+                <option value="W10">W10 - Sta. Maria da Feira</option>
+                <option value="W11">W11 - Sto. Tirso</option>
+                <option value="W12">W12 - S. J. Madeira</option>
+                <option value="W13">W13 - Trofa</option>
+                <option value="W14">W14 - Vale de Cambra</option>
+                <option value="W15">W15 - Valongo</option>
+                <option value="W16">W16 - Vila do Conde</option>
+                <option value="W17">W17 - Vila Nova de Gaia</option>
               </select>
               <!-- <input type="" name="departureId" placeholder="Warehouse Departure Id" required [(ngModel)]="departureId"> -->
             </div>

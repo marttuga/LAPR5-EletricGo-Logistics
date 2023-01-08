@@ -19,19 +19,19 @@ describe('Delivery Test', () => {
     it('user and password shoul be empty, with buttons bellow', () => {
       cy.get('[type="text"]').should('be.empty')
       cy.get('[type="password"]').should('be.empty')
-      cy.get('button').should('have.length',5)
+      cy.get('button').should('have.length',6)
       
     })
 
     it('Visits the warehouse manager page', () => {
       cy.get('[class="btn-login"]').contains('Warehouse Manager').click()
       cy.visit('/views/warehouse-manager')
-      cy.contains('Create Delivery').click()
+      cy.get('[class="navbar"]').should('contain','Home')
     })
 
 
     it('Visits the create Delivery page', () => {
-      cy.visit('/views/create-delivery')
+      cy.visit('/views/warehouse-manager/create-delivery')
       cy.get('h1').contains('New Delivery?')
       cy.get('h2').contains('Enter all information here!')
     })
@@ -42,7 +42,6 @@ describe('Delivery Test', () => {
       cy.get('[type="number"]').eq(0).type('-5')
       cy.get('[type="number"]').eq(1).type('0')
       cy.get('[type="number"]').eq(2).type('0')
-      cy.get('[type="text"]').eq(3).type('2')
     
 
       cy.get('[type="submit"]').click()
@@ -52,18 +51,17 @@ describe('Delivery Test', () => {
       cy.get('[type="number"]').eq(0).clear()
       cy.get('[type="number"]').eq(1).clear()
       cy.get('[type="number"]').eq(2).clear()
-      cy.get('[type="text"]').eq(3).clear()
+    
      
 
     })
 
     it('Visits the list Delivery page', () => {
-      cy.visit('/views/list-deliveries')
-      cy.get('h2').contains('All Deliveries')
+      cy.visit('/views/warehouse-manager/list-deliveries')
     })
 
     it('Visits the create Delivery page', () => {
-      cy.visit('/views/create-delivery')
+      cy.visit('/views/warehouse-manager/create-delivery')
       cy.get('h1').contains('New Delivery?')
       cy.get('h2').contains('Enter all information here!')
     })
@@ -74,9 +72,9 @@ describe('Delivery Test', () => {
       cy.get('[type="number"]').eq(0).type('15')
       cy.get('[type="number"]').eq(1).type('2')
       cy.get('[type="number"]').eq(2).type('7')
-      cy.get('[type="text"]').eq(3).type('W01')
 
       cy.get('[type="submit"]').click()
+      cy.get('[class="created-message"]').should('be.visible').contains("Delivery created!")
     
 
       cy.get('[type="text"]').eq(0).clear()
@@ -84,15 +82,19 @@ describe('Delivery Test', () => {
       cy.get('[type="number"]').eq(0).clear()
       cy.get('[type="number"]').eq(1).clear()
       cy.get('[type="number"]').eq(2).clear()
-      cy.get('[type="text"]').eq(3).clear()
-     
 
     })
 
     it('Visits the list Deliveries page', () => {
-      cy.visit('/views/list-deliveries')
-      cy.get('h2').contains('All Deliveries')
+      cy.visit('/views/warehouse-manager/list-deliveries')
     })
+
+    it('Searches Delivery success', () => {
+      cy.get('[type="text"]').eq(0).type('W02')
+
+
+    })
+    
 
     
 
