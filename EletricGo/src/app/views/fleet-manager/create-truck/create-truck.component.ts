@@ -39,7 +39,6 @@ export class CreateTruckComponent implements OnInit {
    
 
     this.submit = !this.submit;
-     setTimeout(window.location.reload.bind(window.location),200);
   }
   
  

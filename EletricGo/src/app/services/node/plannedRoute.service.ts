@@ -39,7 +39,7 @@ export class PlannedRouteService {
 
 
   getBestRoute(date:string,truckId:string){
-    return this.httpClient.get(this.Url + '/getBestRoute/'+ date +'/'+truckId)
+    return this.httpClient.get(this.Url + '/gera/'+ date +'/'+truckId)
       .pipe(map(this.extractData)
       );
 
