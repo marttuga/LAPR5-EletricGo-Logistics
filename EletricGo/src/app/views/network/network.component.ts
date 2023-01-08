@@ -144,7 +144,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     let skyboxMaterials= [new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}), new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}), new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}), new MeshStandardMaterial({map:this.skyBoxGroundTexture,side:THREE.BackSide}), new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}), new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide})];
 
     let skybox = new THREE.Mesh(skyboxGeo,skyboxMaterials);
-    skybox.position.y=420;
+    skybox.position.y=415;
     skybox.receiveShadow=true;
     this.scene.add(skybox);
   }
@@ -690,11 +690,12 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     let optionMakeDelivery=document.getElementById("OptionMakeDelivery");
 
     if (optionManualDelivery!=null && optionAutomaticDelivery!=null&&optionMakeDelivery!=null) {
+      if (optionManualDelivery.style.display === "none" &&optionAutomaticDelivery.style.display === "none") {
         optionManualDelivery.style.display = "block";
         optionAutomaticDelivery.style.display = "block";
         optionMakeDelivery.style.display="none"
       }
-
+    }
   }
 
   public scrollAutomaticDelivery(el: HTMLElement) {
