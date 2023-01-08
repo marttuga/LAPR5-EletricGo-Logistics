@@ -32,6 +32,8 @@ export class CreateUserComponent implements OnInit {
   public createUser():void{
     this.userService.createUser(this.firstName,this.lastName,this.email,this.password,this.role,this.userContact ).subscribe(data => {console.log(data);
     this.user =data});
+ 
+
     this.submit = !this.submit;
   }
 

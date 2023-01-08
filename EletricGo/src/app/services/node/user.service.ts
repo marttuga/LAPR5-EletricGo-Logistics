@@ -41,16 +41,16 @@ export class UserService {
 
   }
   deleteAccountByEmail(email: string): Observable<any> {
-    return this.httpClient.get(this.Url + '/deleteAccountByEmail/' +email).pipe( map(this.extractData));
+    return this.httpClient.delete(this.Url + '/deleteAccountByEmail/' +email).pipe( map(this.extractData));
   }
 
   changeStatustoInactive(licencePlate: string,active:boolean) {
     const body={"active":active}
-    return this.httpClient.patch(this.Url + '/changeStatustoInactive/' +licencePlate,body).pipe(map(this.extractData));
+    return this.httpClient.put(this.Url + '/changeStatustoInactive/' +licencePlate,body).pipe(map(this.extractData));
   }
   changeStatustoActive(licencePlate: string,active:boolean){
     const body={"active":active}
-    return this.httpClient.patch(this.Url + '/changeStatustoActive/' +licencePlate,body).pipe(map(this.extractData));
+    return this.httpClient.put(this.Url + '/changeStatustoActive/' +licencePlate,body).pipe(map(this.extractData));
   }
   changeStatus(licencePlate: string,active:boolean){
     const body={"active":active}

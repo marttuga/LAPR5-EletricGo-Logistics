@@ -51,14 +51,17 @@ export class GetPlannedRouteComponent implements OnInit {
     this.plannedRouteService.createPlaning(((this.allPlanings.length)+1).toString(),this.truckId,this.date,this.plannedRoutesNames).subscribe(data => {console.log(data);
      this.plannedRoute=data
   });
+  
     this.submit = !this.submit;
+
   }
 
   public getBestRoute():void{
     this.plannedRouteService.getBestRoute(this.date,this.truckId).subscribe(data => {
+       console.log(data)
       this.transformer(data);
       this.transformerCity();
-      this.getRouteAndTruck();
+      this.getRouteAndTruck(); 
       this.createPlaning();
     });
     this.submit = !this.submit;

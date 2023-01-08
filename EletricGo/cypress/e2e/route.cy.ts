@@ -35,7 +35,7 @@ describe('Route Tests', () => {
 
 
     it('Visits the Create Route page', () => {
-      cy.visit('/views/create-route')
+      cy.visit('/views/logistics-manager/create-route')
       cy.get('h1').contains('Create a new route!')
     })
 
@@ -53,7 +53,7 @@ describe('Route Tests', () => {
 
 
     it('Creates a new route', () => {
-      cy.visit('/views/create-route')
+      cy.visit('/views/logistics-manager/create-route')
       cy.get('[class="textfield"]').should('have.length',5)
       cy.get('[type="text"]').eq(0).type('W01')
       cy.get('[type="text"]').eq(1).type('12')
@@ -68,7 +68,7 @@ describe('Route Tests', () => {
   
 
     it('Visits the List Available Routes page', () => {
-      cy.visit('/views/list-routes')
+      cy.visit('/views/logistics-manager/list-routes')
       cy.get('h2').contains('ALL ROUTES AVAILABLE')
     })
 

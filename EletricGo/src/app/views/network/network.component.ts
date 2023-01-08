@@ -32,13 +32,15 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private camera!: THREE.PerspectiveCamera;
 
   private warehouses:any[]=[];
-  private routes:Route[]=[];
-  private trucks:Truck[]=[];
+  private routes:Route[]=[];trucks:Truck[]=[];
+
   private activeTrucks:Object3D[]=[];
+
   private automaticTruck:string;
-  private manualTruck:string;
+  manualTruck:string;
+
   private automaticTruckInitialPosition:Vector3;
-  private manualTruckInicialPosition:Vector3;
+  private manualTruckInitialPosition:Vector3;
 
   private skyBoxTexture:THREE.Texture;
   private skyBoxGroundTexture:THREE.Texture;
@@ -54,10 +56,9 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   private activateMotion=false;
   private isAutomaticMovement=false;
-  private isManualMovement=false;
+  private activateManualMovement=false;
 
   private pathsData = new Map<string, THREE.CurvePath<any>>([]);
-  private static WARE0=0;  private static WARE1=1;private static WARE_FINAL=2;
 
   private pathLength:number;
   private currentDistance = 0;
@@ -85,15 +86,12 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     this.warehousesService.getWarehouses().subscribe(async data=>{
       this.warehouses=data;
-      console.log(this.warehouses)
 
       this.routesService.getRoutes().subscribe(async data=>{
         this.routes=data;
-        console.log(this.routes)
 
         this.trucksService.getTrucks().subscribe(async data=>{
           this.trucks=data;
-          console.log(this.trucks)
           await this.createScene();
           await this.startRenderingLoop();
         })
@@ -305,11 +303,6 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     if(this.isAutomaticMovement){
       this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
-      this.isAutomaticMovement=false;
-    }
-    if(this.isManualMovement){
-      this.activeTrucks.push(<Object3D<Event>>this.scene.getObjectByName(truck3D.name))
-      this.isManualMovement=false;
     }
   }
 
@@ -443,7 +436,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       this.automaticTruckInitialPosition=new Vector3(this.scene.getObjectByName(value[0])?.position.x,this.scene.getObjectByName(value[0])?.position.y,this.scene.getObjectByName(value[0])?.position.z+2);
 
 
-      this.scrollDone(el);
+      this.scrollDone(el,null);
     });
 
 
@@ -497,57 +490,73 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
     }
   }
+  public startManualMovement(){
+    //ativar o som do camião
+   // this.truckAudio.play();
 
+    let optionStartManualDelivery=document.getElementById("OptionStartManualDelivery");
+    let optionStopManualDelivery=document.getElementById("OptionStopManualDelivery");
+
+    if (optionStartManualDelivery!=null && stop!=null) {
+
+      optionStartManualDelivery.style.display = "none";
+      optionStopManualDelivery.style.display = "block";
+
+      //ativar o movimento do camião
+      this.activateManualMovement = true;
+    }
+  }
+
+
+  public stopManualMovement(){
+    //ativar o som do camião
+   // this.truckAudio.stop();
+
+    let optionStopManualDelivery=document.getElementById("OptionStopManualDelivery");
+    let optionMakeDelivery=document.getElementById("OptionMakeDelivery");
+
+    if (optionStopManualDelivery!=null && optionMakeDelivery!=null) {
+      optionMakeDelivery.style.display = "block";
+      optionStopManualDelivery.style.display = "none";
+      this.scene.remove(this.scene.getObjectByName(this.manualTruck));
+      this.manualTruck="";
+      this.manualTruckInitialPosition=new Vector3();
+      //desativar o movimento do camião
+      this.activateManualMovement=false;
+    }
+  }
 
   private manualMovement(){
-     
-     /*document.onkeydown = function (e) {
-       switch (e.key) {
-         case "a":
-           //rodar a camara para a esquerda
-           truck?.position.set(truck?.position.x- 0.1,truck?.position.y,truck?.position.z) ;
-           break;
+    if(this.activateManualMovement){
+      let truck = this.scene.getObjectByName(this.manualTruck);
 
-         case "d":
-           //rodar a camara para a direita
-           truck?.position.set(truck?.position.x+ 0.1,truck?.position.y,truck?.position.z) ;
-           break;
+      // Intersect the ray with the objects in the scene
 
-         case "w":
-           //avançar - incrementar a posição da camara no eixo dos zz
-           truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z- 0.1) ;
-           break;
+      document.onkeydown = function (e) {
+        switch (e.key) {
+          case "a":
+            truck.rotateY(0.1);
+            break;
 
-         case "s":
-           //recuar - decrementar a posição da camara no eixo dos zz
-           truck?.position.set(truck?.position.x,truck?.position.y,truck?.position.z+ 0.1) ;
-           break;
+          case "d":
+            truck.rotateY(-0.1);
+            break;
 
-         default:break;
-       }
+          case "w":
+              truck.translateZ(0.1);
 
-       switch (e.keyCode){
-         case 39://right key
-           truck?.rotateY(5 * Math.PI / 180);
-           break;
+            break;
 
-         case 37://lef key
-           truck?.rotateY(-5 * Math.PI / 180);
-           break;
+          case "s":
+              truck.translateZ(-0.1);
 
-         case 38://up key
-           truck?.rotateX(-5 * Math.PI / 180);
-           break;
+            break;
 
-         case 40://down key
-           truck?.rotateX(5 * Math.PI / 180);
-           break;
-
-         default:break;
-       
-
-   }
-   }*/
+          default:
+            break;
+        }
+      }
+    }
   }
 
 
@@ -648,7 +657,8 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     for(let i=0;i<this.routes.length;i++){
       if(ware1Identifier==this.routes[i].arrivalId  && ware2Identifier==this.routes[i].departureId){
         return this.routes[i];
-      }else if(ware1Identifier==this.routes[i].departureId && ware2Identifier==this.routes[i].arrivalId){
+      }
+      else if(ware1Identifier==this.routes[i].departureId && ware2Identifier==this.routes[i].arrivalId){
         return this.routes[i];
       }
     }
@@ -663,6 +673,14 @@ export class NetworkComponent implements OnInit, AfterViewInit {
       }
     }
     return false;
+  }
+
+  public wareDesignationToWareIdConverter(wareDesignation:string):string{
+    let w= this.warehouses.find(warehouse => warehouse.designation == wareDesignation);
+    if(w!=null){
+      return w.warehouseIdentifier;
+    }
+    return "";
   }
 
   public makeDelivery() {//bloquear o make delivery e mostrar as opcoes de automatic ou manual movement
@@ -682,61 +700,84 @@ export class NetworkComponent implements OnInit, AfterViewInit {
 
   public scrollAutomaticDelivery(el: HTMLElement) {
     this.isAutomaticMovement=true;
-    let x=document.getElementById("AutomaticSection");
-    if(x!=null){
-      x.style.display="block"
+    let automaticSection=document.getElementById("AutomaticSection");
+    if(automaticSection!=null){
+      automaticSection.style.display="block"
     }
     el.scrollIntoView({behavior: 'smooth'});
 
   }
 
   public scrollManualDelivery(el: HTMLElement) {
-    this.isManualMovement=true;
-    let x=document.getElementById("ManualSection");
-    if(x!=null){
-      x.style.display="block"
+    this.isAutomaticMovement=false;
+
+    let manualSection=document.getElementById("ManualSection");
+    if(manualSection!=null){
+      manualSection.style.display="block"
     }
     el.scrollIntoView({behavior: 'smooth'});
 
   }
 
 
-  public scrollDone(el: HTMLElement){
-    let done=document.getElementById("ButtonDoneSection")
-    if(done!=null){
-      done.style.display="block"
+  public scrollDone(el: HTMLElement,map:any){
+    let buttonDoneSection=document.getElementById("ButtonDoneSection")
+    if(buttonDoneSection!=null){
+      buttonDoneSection.style.display="block"
+    }
+    if(map!=null){
+      map.forEach((road, truck) => {
+        this.manualTruck=truck;
+
+        let roadSplit = road.trim().split("-");
+        let ware0=this.wareDesignationToWareIdConverter(roadSplit[0].trim());
+        let ware1=this.wareDesignationToWareIdConverter(roadSplit[1].trim());
+
+        if(!this.isRegisteredFirstOnRoutObject(ware0,ware1)){
+          let vector= this.roadsData.get(<string>this.getRouteByWarehouses(ware0,ware1).routeId);
+          this.manualTruckInitialPosition=new Vector3(vector[NetworkComponent.EL0_X],vector[NetworkComponent.EL0_Y],vector[NetworkComponent.EL0_Z])
+        }else{
+          let vector= this.roadsData.get(<string>this.getRouteByWarehouses(ware1,ware0).routeId);
+          this.manualTruckInitialPosition=new Vector3(vector[NetworkComponent.EL1_X],vector[NetworkComponent.EL1_Y],vector[NetworkComponent.EL1_Z])
+        }
+      });
     }
     el.scrollIntoView({behavior: 'smooth'});
   }
 
   public scrollCanvas(el: HTMLElement) {
-    this.addTruck(this.manualTruck,this.manualTruckInicialPosition)
-    this.addTruck(this.automaticTruck,this.automaticTruckInitialPosition)
-
-    let x1 = document.getElementById("OptionManualDelivery");
-    let x2 = document.getElementById("OptionAutomaticDelivery");
-    let x3 = document.getElementById("OptionStartAutomaticDelivery");
-    let x5=document.getElementById("AutomaticSection");
-    let x6=document.getElementById("ManualSection");
-    let done=document.getElementById("ButtonDoneSection")
-
-    if (x1!=null && x2!=null&&x3!=null && x5!=null && x6!=null &&done!=null) {
-      if (x1.style.display === "block" && x2.style.display === "block") {
-        x1.style.display = "none";
-        x2.style.display = "none";
-        x3.style.display="block"
-        x5.style.display="none"
-        x6.style.display="none"
-        done.style.display="none";
-      }
+    if (this.isAutomaticMovement) {
+      this.addTruck(this.automaticTruck, this.automaticTruckInitialPosition)
+    } else {
+      this.addTruck(this.manualTruck, this.manualTruckInitialPosition)
     }
-    el.scrollIntoView({behavior: 'smooth'});
+
+    let optionManualDelivery = document.getElementById("OptionManualDelivery");
+    let optionAutomaticDelivery = document.getElementById("OptionAutomaticDelivery");
+    let optionStartAutomaticOrManualDelivery;
+
+    if (this.isAutomaticMovement) {
+      optionStartAutomaticOrManualDelivery = document.getElementById("OptionStartAutomaticDelivery");
+    } else{
+      optionStartAutomaticOrManualDelivery = document.getElementById("OptionStartManualDelivery");
+    }
+
+    let automaticSection=document.getElementById("AutomaticSection");
+    let manualSection=document.getElementById("ManualSection");
+    let buttonDoneSection=document.getElementById("ButtonDoneSection")
+
+    if (optionManualDelivery!=null && optionAutomaticDelivery!=null&&optionStartAutomaticOrManualDelivery!=null && automaticSection!=null && manualSection!=null &&buttonDoneSection!=null) {
+      optionManualDelivery.style.display = "none";
+      optionAutomaticDelivery.style.display = "none";
+      optionStartAutomaticOrManualDelivery.style.display="block"
+      automaticSection.style.display="none"
+      manualSection.style.display="none"
+      buttonDoneSection.style.display="none";
+
+      el.scrollIntoView({behavior: 'smooth'});
+    }
 
   }
 
 
 }
-
-
-
-

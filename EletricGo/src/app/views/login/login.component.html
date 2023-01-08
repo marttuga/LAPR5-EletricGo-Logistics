@@ -40,6 +40,10 @@
           <div class="textfield">
             <input type="password" name="password" placeholder="Password">
           </div>
+          <form action="/action_page.php">
+            <input type="checkbox" id="termsConditions" name="termsConditions" value="termsConditions">
+            <label [routerLink]="['/views/rgpd']" for="termsConditions"> I accept the terms and conditions of use of ElectricGo.</label><br>
+          </form>
           <div class="textfield">
               <button class="btn-login" >Login</button>
             <div *ngIf="!user">
