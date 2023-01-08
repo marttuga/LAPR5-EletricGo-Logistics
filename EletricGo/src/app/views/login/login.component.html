@@ -98,6 +98,10 @@
       <div class="alert alert-success" *ngIf="isLoggedIn">
         Logged in as {{user.role}}
       </div>
+      <form action="/action_page.php">
+        <input type="checkbox" id="termsConditions" name="termsConditions" value="termsConditions">
+        <label [routerLink]="['/views/rgpd']" for="termsConditions"> I accept the terms and conditions of use of ElectricGo.</label><br>
+      </form>
       <button class="btn-login" [routerLink]="['/views/network']">Network</button>
       <button class="btn-login" [routerLink]="['/views/admin-page']">Admin</button>
       <button class="btn-login" [routerLink]="['/views/warehouse-manager']">Warehouse Manager</button>
