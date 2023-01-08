@@ -61,12 +61,15 @@
                     </div>
                 </div>
 
-                <div class="textfield" >
-                    <input type="text" required  #Role="ngModel" [class.is-invalid]="Role.invalid && Role.touched" name="Role" placeholder="Role" title="Please insert Role" required [(ngModel)]="role"> 
-                    <div *ngIf="Role.touched">
-                        <small class="requiredError" *ngIf="Role.errors?.['required']">Role is required!</small>
-                    </div>
-                </div>
+                <div class="dropDownRole">
+                    <select type="text" name="role" id="role"  required [(ngModel)]="role">
+                      <option selected disabled>Role</option>
+                      <option value="admin">admin</option>
+                      <option value="warehouse-manager">warehouse-manager</option>
+                      <option value="fleet-manager">fleet-manager</option>
+                      <option value="logistics-manager">logistics-manager</option>
+                    </select>
+                  </div>
 
                 <div class="textfield" >
                     <input type="number" required  #UserContact="ngModel" [class.is-invalid]="UserContact.invalid && UserContact.touched" name="UserContact" placeholder="User Contact" minlength="9" maxlength="9" title="Please insert contact" required [(ngModel)]="userContact"> 
