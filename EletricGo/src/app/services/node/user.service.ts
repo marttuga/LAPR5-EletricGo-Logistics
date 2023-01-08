@@ -20,6 +20,9 @@ export class UserService {
   logUser(email: string, password: string): Observable<any> {
     return this.httpClient.get(this.Url + '/getUser/'+ email +'/'+password).pipe(map(this.extractData));
   }
+  logUserEmail(email: string): Observable<any> {
+    return this.httpClient.get(this.Url + '/getUser/'+ email).pipe(map(this.extractData));
+  }
   logUserContact(contact: number, password: string): Observable<any> {
     return this.httpClient.get(this.Url + '/getUserContact/'+ contact +'/'+password).pipe(map(this.extractData));
   }

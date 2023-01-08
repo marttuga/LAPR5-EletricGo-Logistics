@@ -13,7 +13,12 @@
       <nav class="navbar">
         <ul>
           <li><a (click)="scroll(home)">Home</a></li>
+<!--
           <li><a (click)="scroll(login)">Login</a></li>
+-->
+          <li *ngIf="showWMBoard"><a [routerLink]="['../warehouse-manager']" >My page</a></li>
+          <li *ngIf="showAdminBoard"><a [routerLink]="['../admin-page']" >My page</a></li>
+
         </ul>
       </nav>
       <section  #home >
@@ -26,7 +31,7 @@
         </div>
       </section>
 
-      <section #login>
+      <!--<section #login>
         <div class="card-login">
           <h1>LOGIN</h1>
           <div class="textfield">
@@ -37,14 +42,65 @@
           </div>
           <div class="textfield">
               <button class="btn-login" >Login</button>
-              <button class="btn-login" [routerLink]="['/views/network']">Network</button>
+            <div *ngIf="!user">
+              <asl-google-signin-button  type="standard" size="large" shape="pill"></asl-google-signin-button>
+            </div>
+            <div *ngIf="user">
+              <p>{{user.email}}</p>
+              <button (click)="signOut()">Logout</button>
+            </div>
+            <button class="btn-login" [routerLink]="['/views/network']">Network</button>
               <button class="btn-login" [routerLink]="['/views/admin-page']">Admin</button>
               <button class="btn-login" [routerLink]="['/views/warehouse-manager']">Warehouse Manager</button>
               <button class="btn-login" [routerLink]="['/views/fleet-manager']">Fleet Manager</button>
               <button class="btn-login" [routerLink]="['/views/logistics-manager']">Logistics Manager</button>
           </div>
         </div>
-      </section>
+      </section>-->
+
+    <section #login>
+      <div class="card-login">
+      <form *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid" #f='ngForm'  novalidate>
+        <div class="form-group">
+          <label>Email</label>
+          <div class="textfield">
+            <input type="text" class="form-control" name="email" placeholder="Email" [(ngModel)]="form.email" #email='ngModel'/>
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="f.submitted && email.invalid">
+            Email is required!
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="textfield">
+            <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="form.password" required minlength="6" #password='ngModel'/>
+            <div class="alert alert-danger" role="alert" *ngIf="f.submitted && password.invalid">
+              Password is required!
+            </div>
+          </div>
+        </div>
+        <div class="textfield">
+          <button class="btn-login" (click)="signIn()">
+            Login
+          </button>
+        </div>
+        <div class="form-group">
+          <div class="alert alert-danger" role="alert" *ngIf="f.submitted && isLoginFailed">
+            Login failed:{{errorMessage}}
+          </div>
+        </div>
+        <asl-google-signin-button  type="standard" size="large" shape="pill"></asl-google-signin-button>
+      </form>
+      <div class="alert alert-success" *ngIf="isLoggedIn">
+        Logged in as {{user.role}}
+      </div>
+      <button class="btn-login" [routerLink]="['/views/network']">Network</button>
+      <button class="btn-login" [routerLink]="['/views/admin-page']">Admin</button>
+      <button class="btn-login" [routerLink]="['/views/warehouse-manager']">Warehouse Manager</button>
+      <button class="btn-login" [routerLink]="['/views/fleet-manager']">Fleet Manager</button>
+      <button class="btn-login" [routerLink]="['/views/logistics-manager']">Logistics Manager</button>
+      </div>
+    </section>
     </div>
 </body>
 

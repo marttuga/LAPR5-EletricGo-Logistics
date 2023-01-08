@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-warehouse-manager',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WarehouseManagerComponent implements OnInit {
 
-  constructor() { }
+  constructor(public router: Router) { }
 
   ngOnInit(): void {
+    /*if (localStorage.getItem('token')){
+      this.authService.goToWarehouseManager(localStorage.getItem('token')).subscribe(res=>{
+        if(res  && res['status']==='ok'){
+          console.log('eheh')
+        }
+      })
+    }*/
+  }
+
+  OnLogout(){
+    localStorage.removeItem('token')
+    this.router.navigate(['views/login'])
   }
 
   scroll(el: HTMLElement) {
