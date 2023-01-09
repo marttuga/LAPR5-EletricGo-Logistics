@@ -99,7 +99,7 @@
         Logged in as {{user.role}}
       </div>
       <form action="/action_page.php">
-        <input type="checkbox" id="termsConditions" name="termsConditions" value="termsConditions">
+        <input type="checkbox" id="termsConditions" name="termsConditions" value="termsConditions" checked>
         <label [routerLink]="['/views/rgpd']" for="termsConditions"> I accept the terms and conditions of use of ElectricGo.</label><br>
       </form>
       <button class="btn-login" [routerLink]="['/views/network']">Network</button>
