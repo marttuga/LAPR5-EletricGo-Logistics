@@ -18,10 +18,10 @@ describe('Route Tests', () => {
       cy.get('h1').contains('LOGIN')
     })
 
-    it('user and password should be empty, with buttons bellow', () => {
+    it('user and password shoul be empty, with buttons bellow', () => {
       cy.get('[type="text"]').should('be.empty')
       cy.get('[type="password"]').should('be.empty')
-      cy.get('button').should('have.length',5)
+      cy.get('button').should('have.length',6)
       
     })
 

@@ -21,8 +21,8 @@ describe('Truck Test', () => {
   it('user and password shoul be empty, with buttons bellow', () => {
     cy.get('[type="text"]').should('be.empty')
     cy.get('[type="password"]').should('be.empty')
-    cy.get('button').should('have.length', 5)
-
+    cy.get('button').should('have.length',6)
+    
   })
 
   it('Visits the Warehouse manager page', () => {
@@ -33,7 +33,7 @@ describe('Truck Test', () => {
 
 
   it('Visits the create warehouse page', () => {
-    cy.visit('/views/create-warehouse')
+    cy.visit('/views/warehouse-manager/create-warehouse')
   })
 
   it('creating warehouse fails', () => {
@@ -95,7 +95,7 @@ describe('Truck Test', () => {
   })
 
   it('Visits the list warehouse page', () => {
-    cy.visit('/views/list-warehouses')
+    cy.visit('/views/warehouse-manager/list-warehouses')
   })
 
   it('Searches warehouse', () => {

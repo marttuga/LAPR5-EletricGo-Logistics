@@ -37,7 +37,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   private activeTrucks:Object3D[]=[];
 
   private automaticTruck:string;
-  manualTruck:string;
+  public manualTruck:string;
 
   private automaticTruckInitialPosition:Vector3;
   private manualTruckInitialPosition:Vector3;
@@ -130,7 +130,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     this.scene.add(this.camera);
 
     //sounds
-    this.camera.add( this.ambientListener);
+    //this.camera.add( this.ambientListener);
     this.camera.add(this.truckListener);
 
     this.addSkybox();
@@ -144,7 +144,7 @@ export class NetworkComponent implements OnInit, AfterViewInit {
     let skyboxMaterials= [new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}), new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}), new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}), new MeshStandardMaterial({map:this.skyBoxGroundTexture,side:THREE.BackSide}), new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide}), new MeshBasicMaterial({map:this.skyBoxTexture,side:THREE.BackSide})];
 
     let skybox = new THREE.Mesh(skyboxGeo,skyboxMaterials);
-    skybox.position.y=400;
+    skybox.position.y=415;
     skybox.receiveShadow=true;
     this.scene.add(skybox);
   }
@@ -684,16 +684,16 @@ export class NetworkComponent implements OnInit, AfterViewInit {
   }
 
   public makeDelivery() {//bloquear o make delivery e mostrar as opcoes de automatic ou manual movement
-    let x1 = document.getElementById("OptionManualDelivery");
-    let x2 = document.getElementById("OptionAutomaticDelivery");
+    let optionManualDelivery = document.getElementById("OptionManualDelivery");
+    let optionAutomaticDelivery = document.getElementById("OptionAutomaticDelivery");
 
-    let z=document.getElementById("OptionMakeDelivery");
+    let optionMakeDelivery=document.getElementById("OptionMakeDelivery");
 
-    if (x1!=null && x2!=null&&z!=null) {
-      if (x1.style.display === "none" &&x2.style.display === "none") {
-        x1.style.display = "block";
-        x2.style.display = "block";
-        z.style.display="none"
+    if (optionManualDelivery!=null && optionAutomaticDelivery!=null&&optionMakeDelivery!=null) {
+      if (optionManualDelivery.style.display === "none" &&optionAutomaticDelivery.style.display === "none") {
+        optionManualDelivery.style.display = "block";
+        optionAutomaticDelivery.style.display = "block";
+        optionMakeDelivery.style.display="none"
       }
     }
   }
