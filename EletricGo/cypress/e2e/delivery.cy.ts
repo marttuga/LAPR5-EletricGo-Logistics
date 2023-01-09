@@ -72,6 +72,7 @@ describe('Delivery Test', () => {
       cy.get('[type="number"]').eq(0).type('15')
       cy.get('[type="number"]').eq(1).type('2')
       cy.get('[type="number"]').eq(2).type('7')
+      
 
       cy.get('[type="submit"]').click()
       cy.get('[class="created-message"]').should('be.visible').contains("Delivery created!")
