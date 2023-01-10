@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule,HttpTestingController } from '@angular/common/http/testing';
 
 import { RgpdComponent } from './rgpd.component';
 
@@ -8,10 +9,10 @@ describe('RgpdComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RgpdComponent ]
+      declarations: [ RgpdComponent ],
+      imports: [HttpClientTestingModule],
     })
     .compileComponents();
-
     fixture = TestBed.createComponent(RgpdComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
