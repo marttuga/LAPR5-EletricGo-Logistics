@@ -112,6 +112,10 @@ export default async ({ expressApp }) => {
     name: config.services.user.name,
     path: config.services.user.path
   }
+  const authenticationService = {
+    name: config.services.authenticate.name,
+    path: config.services.authenticate.path
+  }
 
   await dependencyInjectorLoader({
     mongoConnection,
@@ -141,7 +145,8 @@ export default async ({ expressApp }) => {
       routeService,
       truckService,
        fleetPlaningService,
-       userService
+       userService,
+        authenticationService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

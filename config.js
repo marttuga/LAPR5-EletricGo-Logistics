@@ -60,7 +60,7 @@ export default {
     user: {
       name: "UserControllercopy",
       path: "../controllers/userControllercopy"
-    } 
+    }
   },
 
   repos: {
@@ -109,6 +109,10 @@ export default {
     user: {
      name: "UserServicecopy",
      path: "../services/userServicecopy"
-   } 
+   } ,
+    authenticate: {
+      name: "AuthenticationService",
+      path: "../services/authenticationService"
+    }
   },
 };

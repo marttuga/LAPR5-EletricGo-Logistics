@@ -7,5 +7,4 @@ export interface IUserDTO {
   role: string;
   userContact: number;
   active:boolean
-
 }
