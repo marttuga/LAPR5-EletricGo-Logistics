@@ -13,10 +13,7 @@
   <div class="container">
       <nav class="navbar">
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#fleetManager" [routerLink]="['/views/fleet-manager']">FLEET MANAGER</a></li>
-
-
+          <li><a [routerLink]="['../']">FLEET MANAGER</a></li>
         </ul>
       </nav>
 
@@ -112,7 +109,7 @@
 
     </div>
     </div>
-    <button class="btn-create" [routerLink]="['../create-truck']">Create</button>
+    <button class="btn-create" [routerLink]="['create-truck']">Create</button>
   </div>
 </body>
 
@@ -173,5 +170,4 @@
       </tbody>
       <pagination-controls (pageChange)= "p=$event"></pagination-controls>
       </table>
-    </body> --> 
- 
+    </body> -->

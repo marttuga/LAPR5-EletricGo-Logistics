@@ -10,13 +10,12 @@
 <body>
   <nav class="navbar" id="navBar">
     <ul>
-      <li><a href="#home">Home</a></li>
-      <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
+      <li><a  [routerLink]="['../logistics-manager']">LOGISTICS MANAGER</a></li>
     </ul>
   </nav>
- <form class="create-form" #createForm="ngForm">   
-  <div class="container"> 
-   
+ <form class="create-form" #createForm="ngForm">
+  <div class="container">
+
 
   <div id="contentSection">
       <h2>PLAN THE ROUTE</h2>
@@ -58,22 +57,22 @@
 
           <h3>SELECT THE PREFERED ROUTE OPTION</h3>
           <select [disabled]="!createForm.valid" [ngClass]="{valid: createForm.valid}" [(ngModel)]="choice" (ngModelChange)="callFunction()" type="submit" name="options" id="options" >
-          
+
             <option selected disabled>Select an option..</option>
             <option value="bestRoute">Get Best Route</option>
             <option value="nearestWarehouse">Get Nearest Warehouse</option>
             <option value="greaterMass">Get Delivery With Greater Mass</option>
             <option value="bestRelation">Get Fastest Route With Greater Mass</option>
-            
-          </select>  
-       
+
+          </select>
+
      <!--    </div> -->
-      </div> 
+      </div>
     </section>
 
     <div id="content">
 
-      
+
 
     <div class="output">
     <!--   <h1>WAREHOUSES IDS BY ORDER</h1>
@@ -97,8 +96,8 @@
             </div>
     </div>
 
- 
-  <!--  
+
+  <!--
     <div class="button">
       <button [disabled]="!createForm.valid"  class="button-create" [ngClass]="{valid: createForm.valid}" type="submit" (click)="createPlaning()" >DONE!</button>
       <div *ngIf="submit">
@@ -106,9 +105,9 @@
       </div>
     </div> -->
 
-    <section> 
+    <section>
     </section>
-  
+
 
   </div>
 </form>

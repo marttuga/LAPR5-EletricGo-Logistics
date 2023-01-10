@@ -3,11 +3,12 @@ import {RouterModule, Routes} from "@angular/router";
 import { AdminPageComponent } from './admin-page.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { ListUserComponent } from './list-user/list-user.component';
+import {WarehouseManagerComponent} from "../warehouse-manager/warehouse-manager.component";
 
 const routes: Routes = [
-  { path: 'views/create-user', component:CreateUserComponent},
-  { path: 'views/admin-page', component:AdminPageComponent},
-  { path: 'views/list-user', component:ListUserComponent},
+  {path:'admin-page', component: AdminPageComponent},
+  { path: 'admin-page/create-user', component:CreateUserComponent},
+  { path: 'admin-page/list-user', component:ListUserComponent},
 
 ]
 @NgModule({

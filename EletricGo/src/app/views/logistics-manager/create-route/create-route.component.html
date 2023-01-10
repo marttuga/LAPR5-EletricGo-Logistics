@@ -11,8 +11,7 @@
     <div id="container">
       <nav class="navbar">
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
+          <li><a  [routerLink]="['../']">LOGISTICS MANAGER</a></li>
         </ul>
       </nav>
       <div id="header">
@@ -96,7 +95,7 @@
               <input type="text" #ExtraTime="ngModel" [class.is-invalid]="ExtraTime.invalid && ExtraTime.touched" name="extraTime" placeholder="Extra Time" title="Extra Time can not be empty" required [(ngModel)]="extraTime">
               <div *ngIf="ExtraTime.touched">
                 <small *ngIf="ExtraTime.errors?.['required']">Extra Time can not be empty.</small>
-              </div>            
+              </div>
             </div>
             <div class="button">
               <form class="create-form" #createForm="ngForm">
@@ -104,7 +103,7 @@
               <div *ngIf="submit">
                 <small class="created-message">Your route has been created!</small>
               </div>
-            </form>  
+            </form>
             </div>
           </div>
     </div>

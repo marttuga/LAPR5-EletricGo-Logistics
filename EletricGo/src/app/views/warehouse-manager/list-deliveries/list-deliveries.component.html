@@ -11,7 +11,7 @@
 <div class="container">
   <nav class="navbar">
     <ul>
-      <li><a href="#home">Home</a></li>
+      <li><a [routerLink]="['../']">My page</a></li>
 
     </ul>
   </nav>
@@ -20,11 +20,11 @@
     <thead>
       <tr>
         <th>DeliveryId</th>
-        <th (click) = "sortByDate()"> Date </th> 
+        <th (click) = "sortByDate()"> Date </th>
         <th>Mass</th>
         <th>TimeLoad</th>
         <th>TimeUnload</th>
-        <th (click) = "sortByDeliveryWarehouse()"><input type="text" class="search-input" placeholder="DeliveryWarehouse" required [(ngModel)]="searchDeliveryWarehouse"><i class="fa fa-fw fa-sort" aria-hidden="true"></i> 
+        <th (click) = "sortByDeliveryWarehouse()"><input type="text" class="search-input" placeholder="DeliveryWarehouse" required [(ngModel)]="searchDeliveryWarehouse"><i class="fa fa-fw fa-sort" aria-hidden="true"></i>
       </tr>
     </thead>
     <tbody>

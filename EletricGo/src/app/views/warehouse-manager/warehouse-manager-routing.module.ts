@@ -10,11 +10,10 @@ import {W} from "@angular/cdk/keycodes";
 
 const routes: Routes = [
   {path:'', component: WarehouseManagerComponent},
-  { path: 'views/warehouse-manager', component:WarehouseManagerComponent},
-  { path: 'views/warehouse-manager/create-warehouse', component:CreateWarehouseComponent},
-  { path: 'views/warehouse-manager/list-warehouses',  component:ListWarehousesComponent},
-  { path: 'views/warehouse-manager/create-delivery', component:CreateDeliveryComponent},
-  { path: 'views/warehouse-manager/list-deliveries', component:ListDeliveriesComponent}];
+  { path: 'warehouse-manager/create-warehouse', component:CreateWarehouseComponent},
+  { path: 'warehouse-manager/list-warehouses',  component:ListWarehousesComponent},
+  { path: 'warehouse-manager/create-delivery', component:CreateDeliveryComponent},
+  { path: 'warehouse-manager/list-deliveries', component:ListDeliveriesComponent}];
 
 @NgModule({
   declarations: [],

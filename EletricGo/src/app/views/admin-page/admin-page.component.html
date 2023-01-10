@@ -10,8 +10,8 @@
   <div class="container">
       <nav class="navbar">
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a  [routerLink]="['/views/list-user']">Manage Users</a></li>
+          <li><a  [routerLink]="['list-user']">Manage Users</a></li>
+          <li><a (click)="OnLogout()">Logout</a></li>
         <!--   <li><a (click)="scroll(createTruckComponent)">Manage Trucks</a></li>
           <li><a (click)="scroll(listTruckComponent)">See all Trucks</a></li> -->
 
@@ -25,7 +25,7 @@
           <p>WELCOME</p>
           <h1>ADMIN!</h1>
 
-         
+
         </div>
         <img class="sideImg" src="assets/boss.png">
         </section>
@@ -35,7 +35,7 @@
      <!--  <section #createTruckComponent>
         <app-create-truck></app-create-truck>
       </section>
-     
+
       <section #listTruckComponent>
         <app-list-truck></app-list-truck>
       </section>

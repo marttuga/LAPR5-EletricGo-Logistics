@@ -12,12 +12,10 @@
 <body>
   <nav class="navbar">
     <ul>
-      <li><a href="#home">Home</a></li>
-      <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
-    </ul>
+      <li><a  [routerLink]="['../']">LOGISTICS MANAGER</a></li>    </ul>
   </nav>
     <div id="contentSection">
-    <h2>ALL ROUTES AVAILABLE</h2> 
+    <h2>ALL ROUTES AVAILABLE</h2>
     </div>
 
     <div class="container">
@@ -32,7 +30,7 @@
             <th (click) = "sortByDepartureId()"><input type="text" class="search-input" placeholder="DEPARTURE_ID" required [(ngModel)]="searchDepartureID">
             <th>Extra_Time</th>
             <th class="text-right"></th>
-    
+
           </tr>
         </thead>
         <tbody>

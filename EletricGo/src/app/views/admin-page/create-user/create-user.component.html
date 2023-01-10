@@ -8,45 +8,44 @@
     <link rel="stylesheet" href="create-user.component.css">
 </head>
 
-  <body> 
+  <body>
     <nav class="navbar">
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#adminPage" [routerLink]="['/views/admin-page']">ADMIN</a></li>
+          <li><a href="#adminPage" [routerLink]="['../']">ADMIN</a></li>
         </ul>
       </nav>
     <div id="container">
 
         <div id="sideImg">
-            <img src="/assets/team.png" class="image" alt="shipping">         
+            <img src="/assets/team.png" class="image" alt="shipping">
         </div>
 
         <div id="contentSection">
-                 <h2>CREATE NEW USERS!</h2> 
-        
-        
+                 <h2>CREATE NEW USERS!</h2>
+
+
             <form class="create-form" #createForm="ngForm">
             <div id="data1">
-                
+
                 <div class="textfield">
-                    <input type="text" required maxlength="8" #FirstName="ngModel" [class.is-invalid]="FirstName.invalid && FirstName.touched" name="FirstName" placeholder="First Name"  title="Please insert first name" required [(ngModel)]="firstName"> 
+                    <input type="text" required maxlength="8" #FirstName="ngModel" [class.is-invalid]="FirstName.invalid && FirstName.touched" name="FirstName" placeholder="First Name"  title="Please insert first name" required [(ngModel)]="firstName">
                     <div *ngIf="FirstName.touched">
                         <small class="requiredError" *ngIf="FirstName.errors?.['required']">FirstName is required!</small>
                       </div>
                 </div>
 
                 <div class="textfield" >
-                    <input type="text" required  #LastName="ngModel" [class.is-invalid]="LastName.invalid && LastName.touched" name="LastName" placeholder="LastName"  title="Please insert last name" required [(ngModel)]="lastName"> 
+                    <input type="text" required  #LastName="ngModel" [class.is-invalid]="LastName.invalid && LastName.touched" name="LastName" placeholder="LastName"  title="Please insert last name" required [(ngModel)]="lastName">
                     <div *ngIf="LastName.touched">
                         <small class="requiredError"*ngIf="LastName.errors?.['required']">LastName is required!</small>
                     </div>
                 </div>
 
                 <div class="textfield" >
-                    <input type="email" required #Email="ngModel" [class.is-invalid]="Email.invalid && Email.touched" name="Email"  placeholder="Email"  title="Please insert email" required [(ngModel)]="email">  
+                    <input type="email" required #Email="ngModel" [class.is-invalid]="Email.invalid && Email.touched" name="Email"  placeholder="Email"  title="Please insert email" required [(ngModel)]="email">
                     <div *ngIf="Email.touched">
                         <small class="requiredError" *ngIf="Email.errors?.['required']">Email is required!</small>
-             
+
                     </div>
                 </div>
             </div>
@@ -54,7 +53,7 @@
             <div id="data2">
 
                 <div class="textfield" >
-                    <input type="password" required  #Password="ngModel" [class.is-invalid]="Password.invalid && Password.touched" name="Password" placeholder="Password" minlength="8"  title="1 uppercase, 1 lowercase, one digit or symbol and 8 chars min" required [(ngModel)]="password"> 
+                    <input type="password" required  #Password="ngModel" [class.is-invalid]="Password.invalid && Password.touched" name="Password" placeholder="Password" minlength="8"  title="1 uppercase, 1 lowercase, one digit or symbol and 8 chars min" required [(ngModel)]="password">
                     <div *ngIf="Password.touched">
                         <small class="requiredError"*ngIf="Password.errors?.['minlength']">Password must be 8 chars min</small>
                         <small class="requiredError" *ngIf="Password.errors?.['required']">Password is required!</small>
@@ -72,7 +71,7 @@
                   </div>
 
                 <div class="textfield" >
-                    <input type="number" required  #UserContact="ngModel" [class.is-invalid]="UserContact.invalid && UserContact.touched" name="UserContact" placeholder="User Contact" minlength="9" maxlength="9" title="Please insert contact" required [(ngModel)]="userContact"> 
+                    <input type="number" required  #UserContact="ngModel" [class.is-invalid]="UserContact.invalid && UserContact.touched" name="UserContact" placeholder="User Contact" minlength="9" maxlength="9" title="Please insert contact" required [(ngModel)]="userContact">
                     <div *ngIf="UserContact.touched">
                         <small class="requiredError"*ngIf="UserContact.errors?.['minlength']">Phone contact must be 9 digits</small>
                         <small class="requiredError"*ngIf="UserContact.errors?.['maxlength']">Phone contact must be 9 digits</small>

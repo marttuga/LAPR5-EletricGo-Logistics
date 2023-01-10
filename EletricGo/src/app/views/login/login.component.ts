@@ -3,6 +3,7 @@ import {GoogleLoginProvider, SocialAuthService, SocialUser} from "@abacritt/angu
 import {UserService} from "../../services/node/user.service";
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
+import {AuthService} from "../../services/node/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -11,85 +12,82 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
-  ROLE_URL = 'http://localhost:4200/api/views/';
-  email:string;
-  password:string;
+  response:string;
+  role:string;
+  aToken:string;
   form: any  = {};
   isLoggedIn = false;
   isLoginFailed = false;
-  showWMBoard = false;
-  showAdminBoard = false;
-  useremail: string;
-  errorMessage: '';
-  user: any;
   socialUser: SocialUser;
-  loggedIn: any;
-  constructor(private authService: SocialAuthService, private userService: UserService, public router : Router) { }
+  constructor(private authService: SocialAuthService,private aService : AuthService, private userService: UserService, public router : Router) { }
 
   ngOnInit(): void {
     this.authService.authState.subscribe((u) => {
       if (u.idToken) {
-        this.socialUser = u;
-        console.log(this.socialUser);
-        sessionStorage.setItem("google-user", JSON.stringify(u));
-        this.userService.getUserByEmail(this.socialUser.email).subscribe(data => {console.log(data)
-          this.user = data;
-          this.isLoggedIn = true;
-          if(this.roles.includes(this.user.role)){
-            this.callFunction(this.user.role)
+        this.socialUser = u
+        this.aToken = this.socialUser.idToken.slice(1,-1)
+        console.log(this.socialUser)
+        this.aService.loginGoogle(this.socialUser.email, this.aToken).subscribe(res =>{
+          if (res) {
+            localStorage.setItem("token", this.aToken);
+            this.role = res['data']['existUser']['_value']['role']
+            if(this.roles.includes(this.role)) {
+              this.callFunction(this.role)
+              this.isLoggedIn = true;
+            }
           }
         });
       }
     });
+
   }
 
   roles: string[] = [
-    "Warehouse_Manager",
-    "Logistics Manager",
-    "Fleet Manager",
-    "Admin",
-    "Client"
+    "warehouse-manager",
+    "logistics-manager",
+    "fleet-manager",
+    "admin"
   ];
+
+
+
+  login():void{
+    this.aService.login(this.form).subscribe(res =>{
+      if (res && res['status'] === 'ok'){
+        localStorage.setItem('token', res['data']['authToken'])
+        this.role = res['data']['existUser']['_value']['role']
+        if(this.roles.includes(this.role)) {
+          this.callFunction(this.role)
+        }
+        this.isLoggedIn = true;
+      }else if(res && res['status'] === 'error'){
+        this.response = res['data']['response']
+        this.isLoginFailed = true
+      }
+    });
+  }
 
   callFunction(choice:string){
     switch(choice) {
-      case "Warehouse_Manager": {
-        this.showWMBoard = true;
+      case "warehouse-manager": {
+        this.router.navigate(['warehouse-manager'])
         break;
       }
-      case "Admin":{
-        this.showAdminBoard = true;
+      case "admin":{
+        this.router.navigate(['admin-page'])
+        break;
+      }
+      case "logistics-manager":{
+        this.router.navigate(['logistics-manager'])
+        break;
+      }
+      case "fleet-manager":{
+        this.router.navigate(['fleet-manager'])
         break;
       }
     }
   }
 
-  signIn():void{
-    this.userService.logUser(this.form.email,this.form.password).subscribe(data => {console.log(data)
-      this.user = data;
-      this.isLoggedIn = true;
-      sessionStorage.setItem("user-data", JSON.stringify(data));
-      if(this.roles.includes(this.user.role)){
-        this.callFunction(this.user.role)
-      }
-    });
-  }
-
-  /*login():void{
-    this.aService.login(this.form).subscribe(res =>{
-      console.log(res)
-      if (res){
-        localStorage.setItem('token', res['data']['authToken'])
-        this.user = JSON.stringify(localStorage.getItem('token'))
-        console.log(this.user)
-        this.router.navigate(['views/Warehouse_Manager'])
-      }
-    });
-  }*/
-
-  signOut(): void {
-    this.authService.signOut();
-  }
 
   scroll(el: HTMLElement) {
     el.scrollIntoView({behavior: 'smooth'});

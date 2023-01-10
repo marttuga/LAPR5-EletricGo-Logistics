@@ -15,7 +15,6 @@ export class AuthService{
   constructor(private http: HttpClient,private router: Router) {}
 
   login(credentials):Observable<any>{
-    console.log(credentials.email);
     return this.http.post(AUTH_API + 'signin',{
       "email":credentials.email,
       "password": credentials.password
@@ -23,13 +22,22 @@ export class AuthService{
 
   }
 
-  goToWarehouseManager(token){
+  loginGoogle(email:string, token:string):Observable<any>{
+    return this.http.post(AUTH_API + 'signinGoogle',{
+      "email":email,
+      "token":token
+    }, httpOptions).pipe( map(this.extractData))
+
+  }
+
+  verifyToken(token){
     const headers = new HttpHeaders({
       'Content-Type': 'application.json',
-      'Authorization': 'Bearer ${token}'
+      'Authorization': 'Bearer ' + token
     })
-    return this.http.get(AUTH_API + 'warehouse-manager', {headers:headers})
+    return this.http.get(AUTH_API + 'verifyToken', {headers:headers})
   }
+
 
   register(user):Observable<any>{
     return this.http.post(AUTH_API + 'signup',{

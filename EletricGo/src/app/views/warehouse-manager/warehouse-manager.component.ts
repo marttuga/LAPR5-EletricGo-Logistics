@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import {AuthService} from "../../services/node/auth.service";
+import {SocialAuthService} from "@abacritt/angularx-social-login";
 
 @Component({
   selector: 'app-warehouse-manager',
@@ -8,21 +10,16 @@ import {Router} from "@angular/router";
 })
 export class WarehouseManagerComponent implements OnInit {
 
-  constructor(public router: Router) { }
+  constructor(public router: Router,private aService: SocialAuthService) { }
 
   ngOnInit(): void {
-    /*if (localStorage.getItem('token')){
-      this.authService.goToWarehouseManager(localStorage.getItem('token')).subscribe(res=>{
-        if(res  && res['status']==='ok'){
-          console.log('eheh')
-        }
-      })
-    }*/
+
   }
 
   OnLogout(){
+    this.aService.signOut();
     localStorage.removeItem('token')
-    this.router.navigate(['views/login'])
+    this.router.navigate(['login'])
   }
 
   scroll(el: HTMLElement) {

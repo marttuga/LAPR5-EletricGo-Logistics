@@ -13,10 +13,7 @@
   <div class="container">
       <nav class="navbar">
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
-
-
+          <li><a  [routerLink]="['../logistics-manager']">LOGISTICS MANAGER</a></li>
         </ul>
       </nav>
 
@@ -115,7 +112,7 @@
           <li><a href="#logisticsManager" [routerLink]="['/views/logistics-manager']">LOGISTICS MANAGER</a></li>
         </ul>
       </nav>
-      
+
     <div id="contentSection">
     <h2>ALL PLANNED ROUTES</h2>
   <!--    <h3>Selected: {{chosenTruck}}</h3>-->
@@ -133,7 +130,7 @@
 <!--             <th><input type="text" class="search-input" placeholder="Route" title="Please type the route" required [(ngModel)]="routes"></th>
  -->   <!--          <th>Route</th>
 
-            <!-- <th><input type="number" class="search-input" placeholder="Time" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th> 
+            <!-- <th><input type="number" class="search-input" placeholder="Time" min="1" max="5" title="Time to charge must be between 1h and 5h" required [(ngModel)]="searchNumber"> </th>
           <th class="text-right"></th>
 
         </tr>
@@ -142,7 +139,7 @@
         <tr *ngFor="let plannedRoute of plannedRoutes | filter : 'fleetPlaningId': searchString | filter : 'truckId': truckId| filter : 'date': date| filter : 'route': routesB| filter : 'route': routesE| paginate: { itemsPerPage: 8, currentPage: p} ; let i = index">
 
           <td class="text-left">{{plannedRoute.fleetPlaningId}}</td>
-         
+
           <td><span>{{plannedRoute.fleetPlaningId}}</span></td>
           <td><span>{{plannedRoute.truckId}}</span></td>
           <td><span>{{plannedRoute.date}}</span></td>

@@ -15,12 +15,11 @@
   <div class="container">
     <nav class="navbar">
       <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#createRoute" [routerLink]="['./create-route']">Create Route</a></li>
-        <li><a href="#listRoutes" [routerLink]="['./list-routes']">See Available Routes</a></li>
-        <li><a href="#getPlannedRoute" [routerLink]="['/views/get-planned-route']">Plan the Route</a></li>
-        <li><a href="#listPlannedRoutes" [routerLink]="['/views/list-planned-routes']">See all Planned Routes</a></li>
-
+        <li><a [routerLink]="['create-route']">Create Route</a></li>
+        <li><a  [routerLink]="['list-routes']">See Available Routes</a></li>
+        <li><a  [routerLink]="['/views/get-planned-route']">Plan the Route</a></li>
+        <li><a  [routerLink]="['/views/list-planned-routes']">See all Planned Routes</a></li>
+        <li><a (click)="OnLogout()">Logout</a></li>
       </ul>
     </nav>
 
@@ -30,9 +29,9 @@
         <h1>Welcome back!</h1>
         <img src="assets/route.gif" class="image" alt="shipping">
         <!-- <button class="btn-create" [routerLink]="['/views/create-route']">CREATE ROUTE</button> -->
-      
+
         </div>
-     
+
       </section>
 
   </div>
