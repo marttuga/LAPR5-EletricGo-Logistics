@@ -65,7 +65,7 @@
         <div class="form-group">
           <label>Email</label>
           <div class="textfield">
-            <input type="text" class="form-control" name="email" placeholder="Email" [(ngModel)]="form.email" #email='ngModel'/>
+            <input type="email" class="form-control" name="email" placeholder="Email" [(ngModel)]="form.email" #email='ngModel'/>
           </div>
           <div class="alert alert-danger" role="alert" *ngIf="f.submitted && email.invalid">
             Email is required!
