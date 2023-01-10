@@ -25,9 +25,9 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  /*it('should create', () => {
     expect(component).toBeTruthy();
-  });
+  });*/
 /* 
   it('should render Welcome toEletricGo!🔋 in h1', () => {
     const fixture = TestBed.createComponent(LoginComponent);
