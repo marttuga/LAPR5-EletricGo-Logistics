@@ -39,6 +39,7 @@ import {
     AppComponent,
     LoginComponent,
     NetworkComponent,
+    RgpdComponent,
     GetPlannedRouteComponent,
     ListPlannedRoutesComponent,
   ],
