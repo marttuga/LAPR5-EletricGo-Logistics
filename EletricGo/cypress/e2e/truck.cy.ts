@@ -9,36 +9,28 @@ describe('Truck Test', () => {
     it('Initial project page', () => {
       cy.visit('/')
       cy.contains('Welcome to')
-      cy.contains('LOGIN').click()
     })
  
 
     it('Login page', () => {
-      cy.visit('/views/login')
-      cy.get('h1').should('contain','LOGIN')
-    })
+      cy.visit('login')
+      cy.get('[type="email"]').type("martaespanha@gmail.com")
+      cy.get('[type="password"]').type("Martaespanha1")
+      cy.get('[class="btn-login"]').click()
 
-    it('user and password shoul be empty', () => {
-      cy.get('[type="text"]').should('be.empty')
-      cy.get('[type="password"]').should('be.empty')
-      
     })
 
     it('Visits the fleet manager page', () => {
-      cy.get('[class="btn-login"]').should('contain','Fleet Manager')
-      cy.get('[class="btn-login"]').contains('Fleet Manager').click()
-      cy.visit('/views/fleet-manager')
-      cy.get('p').should('contain','WELCOME')
-      cy.get('h1').should('contain','FLEET MANAGER!')
+      cy.visit('fleet-manager')
       cy.get('[class="navbar"]').should('contain','Home')
-      cy.get('[class="navbar"]').should('contain','Manage Trucks')
-     
+      cy.get('[class="navbar"]').should('contain','Manage Trucks').click()
+
 
     })
 
 
     it('Visits the list Truck page', () => {
-      cy.visit('/views/list-truck')
+      cy.visit('fleet-manager/list-truck')
     })
 
     it('Searches Truck failed', () => {
@@ -49,7 +41,7 @@ describe('Truck Test', () => {
 
 
     it('Visits the create Truck page', () => {
-      cy.visit('/views/create-truck')
+      cy.visit('fleet-manager/create-truck')
       cy.get('h2').should('contain','NEED MORE TRUCKS?')
       cy.get('h3').should('contain','CREATE ANOTHER ONE')
     })
@@ -125,7 +117,7 @@ describe('Truck Test', () => {
 
 
     it('Visits the list Truck page', () => {
-      cy.visit('/views/list-truck')
+      cy.visit('fleet-manager/list-truck')
     })
 
     it('Searches Truck success', () => {

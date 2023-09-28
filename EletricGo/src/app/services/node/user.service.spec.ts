@@ -27,7 +27,7 @@ describe('TrucksService', () => {
   });
 
 
-  it('get Truck', () => {
+  it('get user', () => {
     const expectedResult: User= {
       firstName: "Maria",
       lastName: "Flores",
@@ -53,7 +53,7 @@ describe('TrucksService', () => {
 });
  
 
-it('should create truck', () => {
+it('should create user', () => {
   const expectedResult: User= {
     firstName: "Maria",
       lastName: "Flores",

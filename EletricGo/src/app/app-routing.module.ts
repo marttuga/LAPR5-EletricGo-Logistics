@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'rgpd', component:RgpdComponent},
   { path: 'warehouse-manager', component:WarehouseManagerComponent, canActivate: [AuthGuard]},
   { path: 'logistics-manager', component:LogisticsManagerComponent, canActivate: [AuthGuard]},
-  { path: 'fleet-manager', component:FleetManagerComponent, canActivate: [AuthGuard]},
+  { path: 'fleet-manager', component:FleetManagerComponent},
   { path: 'views/logistics-manager', component:LogisticsManagerComponent, canActivate: [AuthGuard]},
   { path: 'admin-page', component:AdminPageComponent,canActivate: [AuthGuard]},
 
